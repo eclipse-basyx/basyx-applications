@@ -1,0 +1,27 @@
+// v-card-text scrollbar
+// .v-card__text::-webkit-scrollbar {
+//     width: 15px;
+//     height: 15px;
+// }
+
+// .v-card__text::-webkit-scrollbar-track {
+//     background: var(--v-scrollbarTrack-base);
+//     border-left: 1px solid var(--v-scrollbarTrackBorder-base);
+//     border-top: 1px solid var(--v-scrollbarTrackBorder-base);
+// }
+
+// .v-card__text::-webkit-scrollbar-thumb {
+//     background: var(--v-scrollbarThumb-base);
+//     border: solid 3px var(--v-scrollbarThumbBorder-base);
+//     border-radius: 7px;
+// }
+
+// .v-card__text::-webkit-scrollbar-thumb:hover {
+//     background: var(--v-scrollbarThumbHover-base);
+// }
+
+// .v-card__text::-webkit-scrollbar-corner { 
+//     background: var(--v-scrollbarCorner-base);
+//     border-left: 1px solid var(--v-scrollbarCornerBorder-base);
+//     border-top: 1px solid var(--v-scrollbarCornerBorder-base);
+// }
