@@ -105,10 +105,11 @@ export default {
             if(!this.SelectedAAS || !this.SelectedAAS.endpoints[0] || !this.SelectedAAS.endpoints[0].address) return // check if endpoint is valid
             Vue.url.options.root = this.SelectedAAS.endpoints[0].address; // update url root to selected endpoint of aas
             // build root layer with submodels
-            this.$http.get('', {accept: 'application/json'})
+            this.$http.get('submodels', {accept: 'application/json'})
                     .then(response => {
                         let finishPromise = new Promise((resolve) => {
-                            response.body.submodels.forEach( (sub, index, array) => {
+                            // console.log('response: ', response.body);
+                            response.body.forEach( (sub, index, array) => {
                                 this.checkSubmodel(sub)
                                     .then( result => {
                                         // console.log(result);
@@ -143,7 +144,7 @@ export default {
         async fetchChildren(parent) {
             // console.log('fetchChildren', parent);
             // if a submodel folder is clicked (first layer beneath root)
-            if(parent.modelType.name == 'SubmodelDescriptor') {
+            if(parent.modelType.name == 'SubmodelDescriptor' || parent.modelType.name == 'Submodel') {
                 await this.$http.get('submodels/' + parent.idShort + '/submodel', {accept: 'application/json'})
                         .then(response => {
                             // console.log(response.body);
