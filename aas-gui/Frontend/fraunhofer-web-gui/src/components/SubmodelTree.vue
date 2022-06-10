@@ -164,11 +164,12 @@ export default {
             }
             // if a submodel collection folder is clicked (from second layer beneath root until tip of branch ist reached)
             if(parent.modelType.name == 'SubmodelElementCollection') {
+                // console.log('fetchChildren', parent.idShort);
+                // console.log('fetchChildren', parent.parentID);
                 await this.$http.get('submodels/' + parent.root + '/submodel/submodelElements/' + parent.parentID + parent.idShort, {accept: 'application/json'})
                         .then(response => {
                             // console.log(response.body);
                             response.body.value.forEach(col => {
-                                // TODO: implement submodel collection ind submodel collection nesting
                                 if(col.modelType.name == 'SubmodelElementCollection') {
                                     // console.log('SubmodelElementCollection', col);
                                     col.children = [];
@@ -176,7 +177,11 @@ export default {
                                 // console.log(col);
                                 col.id = this.UUID();
                                 col.root = parent.root;
-                                col.parentID = parent.idShort + '/';
+                                if(parent.parentID){
+                                    col.parentID = parent.parentID + parent.idShort + '/';
+                                } else {
+                                    col.parentID = parent.idShort + '/';
+                                }
                                 col.submodelElementsString = parent.submodelElementsString + parent.idShort + '/';
                             });
                             // console.log(response.body.value);
