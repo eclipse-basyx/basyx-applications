@@ -168,7 +168,6 @@ export default {
                         .then(response => {
                             // console.log(response.body);
                             response.body.value.forEach(col => {
-                                // TODO: implement submodel collection ind submodel collection nesting
                                 if(col.modelType.name == 'SubmodelElementCollection') {
                                     // console.log('SubmodelElementCollection', col);
                                     col.children = [];
@@ -176,7 +175,11 @@ export default {
                                 // console.log(col);
                                 col.id = this.UUID();
                                 col.root = parent.root;
-                                col.parentID = parent.idShort + '/';
+                                if(parent.parentID){
+                                    col.parentID = parent.parentID + parent.idShort + '/';
+                                } else {
+                                    col.parentID = parent.idShort + '/';
+                                }
                                 col.submodelElementsString = parent.submodelElementsString + parent.idShort + '/';
                             });
                             // console.log(response.body.value);
