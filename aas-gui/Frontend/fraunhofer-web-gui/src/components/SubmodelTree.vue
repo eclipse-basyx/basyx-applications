@@ -164,8 +164,6 @@ export default {
             }
             // if a submodel collection folder is clicked (from second layer beneath root until tip of branch ist reached)
             if(parent.modelType.name == 'SubmodelElementCollection') {
-                // console.log('fetchChildren', parent.idShort);
-                // console.log('fetchChildren', parent.parentID);
                 await this.$http.get('submodels/' + parent.root + '/submodel/submodelElements/' + parent.parentID + parent.idShort, {accept: 'application/json'})
                         .then(response => {
                             // console.log(response.body);
