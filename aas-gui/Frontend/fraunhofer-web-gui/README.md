@@ -1,4 +1,4 @@
-# frauenhofer-web-gui
+# fraunhofer-web-gui
 
 ## Project setup
 ```
