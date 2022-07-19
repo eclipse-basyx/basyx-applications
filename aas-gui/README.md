@@ -93,7 +93,7 @@ Create deployable build:
 2. `. bootstrap.sh`
 3. On initial installation answer first question with **y** (Yes) otherwise **n** (No)
 4. Answer second question with **y** (Yes)
-5. Source Files are created here: `basyx-applications/aas-gui/Frontend/frauenhofer-web-gui/dist`
+5. Source Files are created here: `basyx-applications/aas-gui/Frontend/fraunhofer-web-gui/dist`
 
 ### Dependencies
 

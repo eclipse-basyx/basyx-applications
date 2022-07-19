@@ -12,7 +12,7 @@ fi
 echo -e "${Yello}Build for Production instead of starting dev-Server?  (y/n) Default:n ${ColorOff}"
 read just_build_no_devserver
 
-cd $PRJ_ROOT/Frontend/frauenhofer-web-gui
+cd $PRJ_ROOT/Frontend/fraunhofer-web-gui
 if [ "$FRESH_INSTALL" = "1" ]; then
     rm -rf node_modules
     npm install
