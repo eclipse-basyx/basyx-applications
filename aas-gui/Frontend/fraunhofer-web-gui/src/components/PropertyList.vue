@@ -250,7 +250,6 @@ export default {
             );
         },
         checkWidth() {
-            if (this.$route.name != 'MainWindow') return;
             let width = 0; 
             if(this.minimized) {
                 width = document.getElementsByClassName('propCard2')[0].offsetWidth;
