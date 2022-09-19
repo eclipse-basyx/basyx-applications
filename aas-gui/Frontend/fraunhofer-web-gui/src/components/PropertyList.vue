@@ -49,11 +49,15 @@
                                         <div class="primary--text font-weight-bold">Value:</div>
                                     </v-col>
                                     <v-col cols="auto">
-                                        <v-text-field v-if="propertyData" :readonly="!enableCmd" filled rounded outlined hide-details dense :value="propertyData.value" @input="updateValue" :type="propertyData.valueType == 'string' ? 'text' : 'number'" @keyup.native.enter="sendData()">
+                                        <v-text-field v-if="propertyData && propertyData.valueType != 'boolean'" :readonly="!enableCmd" filled rounded outlined hide-details dense :value="propertyData.value" @input="updateValue" :type="propertyData.valueType == 'string' ? 'text' : 'number'" @keyup.native.enter="sendData()">
                                             <template v-slot:append>
                                                 <v-btn v-if="enableCmd" @click="sendData()" x-small rounded color="primary" style="margin-top: 2px; margin-right: -12px"><v-icon small>mdi-upload</v-icon></v-btn>
                                             </template>
                                         </v-text-field>
+                                        <v-row v-if="propertyData && propertyData.valueType == 'boolean'">
+                                            <v-switch :readonly="!enableCmd" :label="propertyData.value.toString()" @change="updateValue" :input-value="propertyData.value" :false-Value="false" :true-value="true"></v-switch>
+                                            <v-btn v-if="enableCmd" @click="sendData()" x-small rounded color="primary" style="margin-top: 22px; margin-left: 14px"><v-icon small>mdi-upload</v-icon></v-btn>
+                                        </v-row>
                                     </v-col>
                                     <v-col cols="auto">
                                         <v-checkbox label="En. Cmd." v-model="enableCmd" :disabled="autoRenew"></v-checkbox>
@@ -201,9 +205,10 @@ export default {
         },
         // method to write data to the AAS
         sendData() {
-            console.log('sendData', this.propertyData, this.inputValue);
+            // console.log('sendData', this.propertyData, this.inputValue);
             if(!this.enableCmd) return;
             // console.log(this.propertyData, this.SelectedProperty);
+            if(this.inputValue === null) this.inputValue = this.propertyData.value;
             this.$http.put('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort + '/value', "'" + this.inputValue + "'", {'accept': 'application/json', 'content-type': 'application/json'})
                     .then(() => {
                         // console.log('response', response.body);
