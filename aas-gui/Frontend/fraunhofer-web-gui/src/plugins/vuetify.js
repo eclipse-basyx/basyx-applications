@@ -18,6 +18,7 @@ export default new Vuetify({
             light: {
                 primary: '#009374',
                 card: '#FFFFFF',
+                elevatedCard: '#F1F1F1',
                 listItem: '#F5F5F5',
                 // scrollbar colors
                 scrollbarTrack: '#e6e6e6',
@@ -64,6 +65,7 @@ export default new Vuetify({
             dark: {
                 primary: '#009374',
                 card: '#121212',
+                elevatedCard: '#343434',
                 listItem: '#1e1e1e',
                 // scrollbar colors
                 scrollbarTrack: '#202020',
