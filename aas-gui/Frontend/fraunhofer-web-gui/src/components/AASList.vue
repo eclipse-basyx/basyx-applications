@@ -30,6 +30,7 @@
                 <!-- Details for hovered AAS -->
                 <v-expand-transition>
                     <v-card v-if="hover && detailsObject" class="transition-fast-in-fast-out v-card--reveal" tile>
+                        <v-divider></v-divider>
                         <v-card-title class="px-0 py-0">
                             <v-list-item style="overflow-x: hidden">
                                 <v-list-item-content>
@@ -166,7 +167,7 @@ export default {
         },
         // show details for the hovered AAS
         showAASDetails(item) {
-            console.log('showDetails: ', item);
+            // console.log('showDetails: ', item);
             this.detailsObject = item;
         },
         // selects the AAS that was clicked by the user
@@ -227,7 +228,7 @@ export default {
 <style>
 .v-card--reveal {
     bottom: 0;
-    opacity: .9;
+    opacity: .96;
     position: absolute;
     width: 100%;
 }

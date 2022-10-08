@@ -60,7 +60,7 @@
         <!-- Footer with Copyright and Developer Info (LIcense needed here?) -->
         <v-footer app padless>
             <v-col v-if="isMobile" class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong></v-col>
-            <v-col v-else class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong> - <span style="font-size: 12px">developed by Aaron Zielstorff, Kiril Ralinovski</span></v-col>
+            <v-col v-else class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong> - <span style="font-size: 12px">developed by Aaron Zielstorff</span></v-col>
         </v-footer>
         <!-- global snackbar -->
         <v-snackbar v-model="Snackbar.status" :color="Snackbar.color" :timeout="Snackbar.timeout" :centered="!isMobile" :bottom="isMobile">

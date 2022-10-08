@@ -96,6 +96,17 @@
                                     </v-col>
                                 </v-row>
                             </div>
+                            <!-- MultiLanguageProperty -->
+                            <v-list-item v-else-if="propertyData.modelType.name === 'MultiLanguageProperty'">
+                                <v-row v-for="(mlpValue, i) in propertyData.value" :key="i" align="center">
+                                    <v-col cols="auto">
+                                        <div class="primary--text font-weight-bold">{{ "Value [" + mlpValue.language + "]:" }}</div>
+                                    </v-col>
+                                    <v-col cols="auto">
+                                        <v-text-field disabled filled rounded outlined hide-details dense :value="mlpValue.text"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-list-item>
                         </v-list>
                     </v-card-text>
                 </v-card>
@@ -184,10 +195,10 @@ export default {
                 this.propertyData = null;
                 return;
             }
-            if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File') {
+            if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File' || this.SelectedProperty.modelType.name === 'MultiLanguageProperty') {
                 this.$http.get('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort, {accept: 'application/json'})
                         .then(response => {
-                            // console.log('response', response.body);
+                            console.log('response', response.body);
                             let prop = response.body;
                             prop.timestamp = this.formatDate(new Date());
                             this.$store.dispatch('dispatchRealtimeProp', prop);
