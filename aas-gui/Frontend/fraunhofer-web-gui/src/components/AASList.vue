@@ -8,23 +8,57 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text style="overflow-y: auto;" :style="{height: isMobile ? '' : 'calc(100vh - 176px)' }" class="pa-0">
-                <v-list shaped color="card" class="pb-0">
-                    <!-- AAS-Items -->
-                    <v-list-item
-                        v-for="item in aasData" :key="item.identification.id" @click="selectAAS(item)" :disabled="loading"
-                        class="listItem mb-2" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px;"
-                        :style="{ 'border-color': isSelected(item) ? '#009374 !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }"
-                    >
-                        <v-overlay :value="isSelected(item) ? true : false" absolute color="primary" opacity="0.1"></v-overlay>
-                        <v-list-item-avatar>
-                            <v-icon color="primary">mdi-robot-industrial</v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="primary--text">{{ item.idShort }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ item.identification.id }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                <v-hover open-delay="600" close-delay="4000" v-model="hover">
+                    <v-list shaped color="card" class="pb-0">
+                        <!-- AAS-Items -->
+                        <v-list-item
+                            @click="selectAAS(item)" :disabled="loading" @mouseenter="showAASDetails(item)" v-for="item in aasData" :key="item.identification.id"
+                            class="listItem mb-2" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px;"
+                            :style="{ 'border-color': isSelected(item) ? '#009374 !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }"
+                        >
+                            <v-overlay :value="isSelected(item) ? true : false" absolute color="primary" opacity="0.1"></v-overlay>
+                            <v-list-item-avatar>
+                                <v-icon color="primary">mdi-robot-industrial</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title class="primary--text">{{ item.idShort }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ item.identification.id }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-hover>
+                <!-- Details for hovered AAS -->
+                <v-expand-transition>
+                    <v-card v-if="hover && detailsObject" class="transition-fast-in-fast-out v-card--reveal" tile>
+                        <v-card-title class="px-0 py-0">
+                            <v-list-item style="overflow-x: hidden">
+                                <v-list-item-content>
+                                    <v-list-item-title class="primary--text" style="font-size: 20px">{{ detailsObject.idShort }}</v-list-item-title>
+                                    <v-list-item-subtitle style="font-size: 12px">{{ 'Identification (' + detailsObject.identification.idType + '): ' + detailsObject.identification.id }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                                <v-chip outlined color="primary" small>{{ "AAS" }}</v-chip>
+                            </v-list-item>
+                        </v-card-title>
+                        <v-divider v-if="detailsObject.description && detailsObject.description.length > 0"></v-divider>
+                        <v-card-text v-if="detailsObject.description && detailsObject.description.length > 0">
+                            <div v-for="(description, i) in detailsObject.description" :key="i">{{ "Description [" + description.language + "]: " + description.text }}</div>
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-title class="px-0 py-0">
+                            <v-list-item style="overflow-x: hidden">
+                                <v-list-item-content>
+                                    <v-list-item-title class="primary--text" style="font-size: 20px">{{ detailsObject.asset.idShort }}</v-list-item-title>
+                                    <v-list-item-subtitle style="font-size: 12px">{{ 'Identification (' + detailsObject.asset.identification.idType + '): ' + detailsObject.asset.identification.id }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                                <v-chip outlined color="primary" small>{{ "Asset" }}</v-chip>
+                            </v-list-item>
+                        </v-card-title>
+                        <v-divider v-if="detailsObject.asset.description && detailsObject.asset.description.length > 0"></v-divider>
+                        <v-card-text v-if="detailsObject.asset.description && detailsObject.asset.description.length > 0">
+                            <div v-for="(description, i) in detailsObject.asset.description" :key="i">{{ "Description [" + description.language + "]: " + description.text }}</div>
+                        </v-card-text>
+                    </v-card>
+                </v-expand-transition>
             </v-card-text>
         </v-card>
         <!-- minimized window -->
@@ -55,6 +89,8 @@ export default {
             oldWidth: document.getElementsByClassName('aasCard')[0] ? document.getElementsByClassName('aasCard')[0].offsetWidth : 0,
             minimizedByButton: false,
             debounce: false,
+            hover: false,
+            detailsObject: null,
         }
     },
 
@@ -128,6 +164,11 @@ export default {
                 });
             }
         },
+        // show details for the hovered AAS
+        showAASDetails(item) {
+            console.log('showDetails: ', item);
+            this.detailsObject = item;
+        },
         // selects the AAS that was clicked by the user
         selectAAS(selectedAAS) {
             // console.log(selectedAAS);
@@ -182,3 +223,12 @@ export default {
     },
 }
 </script>
+
+<style>
+.v-card--reveal {
+    bottom: 0;
+    opacity: .9;
+    position: absolute;
+    width: 100%;
+}
+</style>
