@@ -174,7 +174,7 @@
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn color="primary" outlined @click="clearInputs">Clear</v-btn>
-                                        <v-btn color="primary" class="buttonText--text" @click="executeOperation">Execute</v-btn>
+                                        <v-btn color="primary" class="buttonText--text" @click="executeOperation" :loading="operationLoading">Execute</v-btn>
                                     </v-card-actions>
                                 </v-card>
                             </div>
@@ -220,6 +220,7 @@ export default {
             inputVariableArray: [],
             inoutputVariableArray: [],
             outputVariableArray: [],
+            operationLoading: false,
         }
     },
 
@@ -386,6 +387,7 @@ export default {
             requestObject.inoutputArguments = inoutputVariables;
             requestObject.timeout = 60000;
             // console.log('requestObject', requestObject);
+            this.operationLoading = true;
             this.$http.post(operationPath, requestObject, {'accept': 'application/json', 'content-type': 'application/json'})
                     .then(response => {
                         // console.log('response', response.body);
@@ -398,8 +400,10 @@ export default {
                             this.inoutputVariableArray.push(element.value.value);
                         });
                         this.$store.dispatch('getSnackbar', {status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Operation was successfully executed!' });
+                        this.operationLoading = false;
                     }, () => {
                         this.$store.dispatch('getSnackbar', {status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Error executing Operation!' });
+                        this.operationLoading = false;
                     });
         },
         // generate random uuid

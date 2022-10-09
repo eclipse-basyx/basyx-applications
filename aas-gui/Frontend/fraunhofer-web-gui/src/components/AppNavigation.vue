@@ -148,7 +148,7 @@ export default {
         },
         // method to change the network (http (for local) <-> https (for remote with ssl certificate))
         changeNetwork() {
-            console.log(this.local)
+            // console.log(this.local)
             if(!this.local) {
                 let path = window.location.href.slice(4);
                 window.location.replace('https' + path);
