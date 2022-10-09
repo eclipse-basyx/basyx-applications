@@ -5,11 +5,21 @@
             <v-divider v-if="!isMobile"></v-divider>
             <v-card-text style="overflow-y: auto;" :style="{height: isMobile ? '' : 'calc(100vh - 176px)' }">
                 <v-card v-if="propertyData && propertyData != {} && propertyData != null && !cleared">
+                    <!-- idShort, timestamp and modelType -->
                     <v-card-title class="px-2 py-0">
                         <v-list-item style="overflow-x: hidden">
                             <v-list-item-content>
                                 <v-list-item-title class="primary--text" style="font-size: 20px">{{ propertyData.idShort }}</v-list-item-title>
-                                <v-list-item-subtitle style="font-size: 12px">Last updated: {{ propertyData.timestamp }}</v-list-item-subtitle>
+                                <v-list-item-subtitle v-if="propertyData.modelType.name === 'Submodel'" style="font-size: 12px">
+                                    <span class="primary--text" style="font-size: 12px">{{ "Identifier (" + propertyData.identification.idType + "): " }}</span>
+                                    <span style="font-size: 12px">{{ propertyData.identification.id }}</span>
+                                </v-list-item-subtitle>
+                                <!-- SemanticId -->
+                                <v-list-item-subtitle v-if="propertyData.semanticId">
+                                    <span class="primary--text" style="font-size: 12px">{{ "SemanticID: " }}</span>
+                                    <span style="font-size: 12px">{{ "(" + propertyData.semanticId.keys[0].type + ")(" + (propertyData.semanticId.keys[0].local ? 'local' : 'no-local') + ")[" + propertyData.semanticId.keys[0].idType + "]" + propertyData.semanticId.keys[0].value }}</span>
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle v-if="propertyData.modelType.name != 'Submodel' && propertyData.modelType.name != 'SubmodelElementCollection'" style="font-size: 12px">Last updated: {{ propertyData.timestamp }}</v-list-item-subtitle>
                             </v-list-item-content>
                             <v-chip outlined color="primary" small>{{ propertyData.modelType.name }}</v-chip>
                         </v-list-item>
@@ -24,6 +34,13 @@
                                 </v-list-item-content>
                                 <v-text-field v-if="propertyData.identification" readonly filled rounded outlined hide-details dense :value="propertyData.identification.id"></v-text-field>
                             </v-list-item>
+                            <!-- Description -->
+                            <v-card-text v-if="propertyData.description && propertyData.description.length > 0" class="pt-1">
+                                <div v-for="(description, i) in propertyData.description" :key="i" class="mt-2">
+                                    <span class="primary--text">{{ "Description [" + description.language + "]: " }}</span>
+                                    <span>{{ description.text }}</span>
+                                </div>
+                            </v-card-text>
                             <!-- DataType -->
                             <v-list-item v-if="propertyData.modelType.name === 'Property'">
                                 <v-row align="center">
@@ -260,7 +277,7 @@ export default {
             if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File' || this.SelectedProperty.modelType.name === 'MultiLanguageProperty' || this.SelectedProperty.modelType.name === 'Operation') {
                 this.$http.get('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort, {accept: 'application/json'})
                         .then(response => {
-                            // console.log('response', response.body);
+                            console.log('response', response.body);
                             let prop = response.body;
                             prop.timestamp = this.formatDate(new Date());
                             prop.id = this.UUID();
@@ -274,6 +291,7 @@ export default {
                         });
             } else {
                 let prop = this.SelectedProperty;
+                console.log('prop', prop);
                 prop.timestamp = this.formatDate(new Date());
                 this.propertyData = prop;
             }

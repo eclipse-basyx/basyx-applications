@@ -30,7 +30,7 @@
                 </v-hover>
                 <!-- Details for hovered AAS -->
                 <v-expand-transition>
-                    <v-card v-if="hover && detailsObject" class="transition-fast-in-fast-out v-card--reveal" tile>
+                    <v-card v-if="hover && detailsObject" class="transition-fast-in-fast-out v-card--reveal detailsCard" tile>
                         <v-divider></v-divider>
                         <v-card-title class="px-0 py-0">
                             <v-list-item style="overflow-x: hidden">
