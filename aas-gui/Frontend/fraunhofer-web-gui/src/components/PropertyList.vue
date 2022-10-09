@@ -277,7 +277,7 @@ export default {
             if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File' || this.SelectedProperty.modelType.name === 'MultiLanguageProperty' || this.SelectedProperty.modelType.name === 'Operation') {
                 this.$http.get('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort, {accept: 'application/json'})
                         .then(response => {
-                            console.log('response', response.body);
+                            // console.log('response', response.body);
                             let prop = response.body;
                             prop.timestamp = this.formatDate(new Date());
                             prop.id = this.UUID();
@@ -291,7 +291,7 @@ export default {
                         });
             } else {
                 let prop = this.SelectedProperty;
-                console.log('prop', prop);
+                // console.log('prop', prop);
                 prop.timestamp = this.formatDate(new Date());
                 this.propertyData = prop;
             }
