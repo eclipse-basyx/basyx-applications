@@ -350,7 +350,6 @@ export default {
         },
         // execute Operation
         executeOperation() {
-            // TODO: Implement inoutputArguments
             // console.log('executeOperation', this.inputVariableArray, this.inoutputVariableArray, this.outputVariableArray);
             // console.log('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort + '/invoke');
             let operationPath = 'submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort + '/invoke';
@@ -361,7 +360,12 @@ export default {
             inputVariables.forEach((element, i) => {
                 element.value.value = this.inputVariableArray[i];
             });
+            let inoutputVariables = this.propertyData.inoutputVariables;
+            inoutputVariables.forEach((element, i) => {
+                element.value.value = this.inoutputVariableArray[i];
+            });
             requestObject.inputArguments = inputVariables;
+            requestObject.inoutputArguments = inoutputVariables;
             requestObject.timeout = 60000;
             // console.log('requestObject', requestObject);
             this.$http.post(operationPath, requestObject, {'accept': 'application/json', 'content-type': 'application/json'})
@@ -370,6 +374,10 @@ export default {
                         this.outputVariableArray = [];
                         response.body.outputArguments.forEach(element => {
                             this.outputVariableArray.push(element.value.value);
+                        });
+                        this.inoutputVariableArray = [];
+                        response.body.inoutputArguments.forEach(element => {
+                            this.inoutputVariableArray.push(element.value.value);
                         });
                         this.$store.dispatch('getSnackbar', {status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Operation was successfully executed!' });
                     }, () => {
