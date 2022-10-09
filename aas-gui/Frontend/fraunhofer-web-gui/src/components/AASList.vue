@@ -2,8 +2,9 @@
     <v-container fluid class="ma-0 pa-0">
         <v-card v-show="!minimized" tile elevation="0" :height="isMobile ? '' : 'calc(100vh - 112px)'" color="card" v-resize="checkWidth" ref="aasCard" class="aasCard">
             <v-card-title class="pa-3 header">
+                <v-btn class="mr-2" icon style="margin-left: -4px" @click="reloadList()"><v-icon>mdi-reload</v-icon></v-btn>
                 <!-- searchfield -->
-                <v-combobox outlined hide-details dense label="Search for AAS ID..." item-text="idShort" clearable @update:search-input="filterAAS"></v-combobox>
+                <v-combobox outlined hide-details hide-spin-buttons append-icon="" dense label="Search for AAS ID..." item-text="idShort" clearable @update:search-input="filterAAS"></v-combobox>
                 <v-btn v-if="!isMobile" class="ml-2" icon style="margin-right: -4px" @click="minimize()"><v-icon>mdi-window-restore</v-icon></v-btn>
             </v-card-title>
             <v-divider></v-divider>
@@ -153,6 +154,9 @@ export default {
                         this.aasData = responseData; // changable aas data array for filtering
                         this.aasDataServer = responseData; // unchangable aas data array with the complete dataset
                     });
+        },
+        reloadList() {
+            this.getAASList();
         },
         // filters the AAS-list by the search-input
         filterAAS(event) {
