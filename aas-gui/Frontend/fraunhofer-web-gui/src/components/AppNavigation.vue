@@ -7,7 +7,7 @@
             <!-- Title of the Webapp -->
             <v-toolbar-title class="primary--text ml-5" style="font-weight: bold">AAS Web GUI</v-toolbar-title>
             <!-- Registry Server URL Input -->
-            <v-text-field outlined rounded dense hide-details class="mx-5" style="max-width: 400px" label="Registry Server URL" v-model="serverURL">
+            <v-text-field outlined rounded dense hide-details class="mx-5" style="max-width: 400px" label="Registry Server URL" v-model="serverURL" @keydown.native.enter="connectToServer()">
                 <template v-slot:append>
                     <v-btn x-small rounded color="primary" class="buttonText--text" style="margin-top: 2px; margin-right: -12px" @click.native.stop="connectToServer()" :loading="loading">Connect</v-btn>
                 </template>
