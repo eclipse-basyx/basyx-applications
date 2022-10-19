@@ -7,7 +7,7 @@
             <!-- Title of the Webapp -->
             <v-toolbar-title class="primary--text ml-5" style="font-weight: bold">AAS Web GUI</v-toolbar-title>
             <!-- Registry Server URL Input -->
-            <v-text-field outlined rounded dense hide-details class="mx-5" style="max-width: 400px" label="Registry Server URL" v-model="serverURL">
+            <v-text-field outlined rounded dense hide-details class="mx-5" style="max-width: 400px" label="Registry Server URL" v-model="serverURL" @keydown.native.enter="connectToServer()">
                 <template v-slot:append>
                     <v-btn x-small rounded color="primary" class="buttonText--text" style="margin-top: 2px; margin-right: -12px" @click.native.stop="connectToServer()" :loading="loading">Connect</v-btn>
                 </template>
@@ -60,7 +60,7 @@
         <!-- Footer with Copyright and Developer Info (LIcense needed here?) -->
         <v-footer app padless>
             <v-col v-if="isMobile" class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong></v-col>
-            <v-col v-else class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong> - <span style="font-size: 12px">developed by Aaron Zielstorff, Kiril Ralinovski</span></v-col>
+            <v-col v-else class="text-center" cols="12">{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong> - <span style="font-size: 12px">developed by Aaron Zielstorff</span></v-col>
         </v-footer>
         <!-- global snackbar -->
         <v-snackbar v-model="Snackbar.status" :color="Snackbar.color" :timeout="Snackbar.timeout" :centered="!isMobile" :bottom="isMobile">
@@ -148,7 +148,7 @@ export default {
         },
         // method to change the network (http (for local) <-> https (for remote with ssl certificate))
         changeNetwork() {
-            console.log(this.local)
+            // console.log(this.local)
             if(!this.local) {
                 let path = window.location.href.slice(4);
                 window.location.replace('https' + path);

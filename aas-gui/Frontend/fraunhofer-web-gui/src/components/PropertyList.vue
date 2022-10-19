@@ -5,11 +5,21 @@
             <v-divider v-if="!isMobile"></v-divider>
             <v-card-text style="overflow-y: auto;" :style="{height: isMobile ? '' : 'calc(100vh - 176px)' }">
                 <v-card v-if="propertyData && propertyData != {} && propertyData != null && !cleared">
+                    <!-- idShort, timestamp and modelType -->
                     <v-card-title class="px-2 py-0">
                         <v-list-item style="overflow-x: hidden">
                             <v-list-item-content>
                                 <v-list-item-title class="primary--text" style="font-size: 20px">{{ propertyData.idShort }}</v-list-item-title>
-                                <v-list-item-subtitle style="font-size: 12px">Last updated: {{ propertyData.timestamp }}</v-list-item-subtitle>
+                                <v-list-item-subtitle v-if="propertyData.modelType.name === 'Submodel'" style="font-size: 12px">
+                                    <span class="primary--text" style="font-size: 12px">{{ "Identifier (" + propertyData.identification.idType + "): " }}</span>
+                                    <span style="font-size: 12px">{{ propertyData.identification.id }}</span>
+                                </v-list-item-subtitle>
+                                <!-- SemanticId -->
+                                <v-list-item-subtitle v-if="propertyData.semanticId">
+                                    <span class="primary--text" style="font-size: 12px">{{ "SemanticID: " }}</span>
+                                    <span style="font-size: 12px">{{ "(" + propertyData.semanticId.keys[0].type + ")(" + (propertyData.semanticId.keys[0].local ? 'local' : 'no-local') + ")[" + propertyData.semanticId.keys[0].idType + "]" + propertyData.semanticId.keys[0].value }}</span>
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle v-if="propertyData.modelType.name != 'Submodel' && propertyData.modelType.name != 'SubmodelElementCollection'" style="font-size: 12px">Last updated: {{ propertyData.timestamp }}</v-list-item-subtitle>
                             </v-list-item-content>
                             <v-chip outlined color="primary" small>{{ propertyData.modelType.name }}</v-chip>
                         </v-list-item>
@@ -24,6 +34,13 @@
                                 </v-list-item-content>
                                 <v-text-field v-if="propertyData.identification" readonly filled rounded outlined hide-details dense :value="propertyData.identification.id"></v-text-field>
                             </v-list-item>
+                            <!-- Description -->
+                            <v-card-text v-if="propertyData.description && propertyData.description.length > 0" class="pt-1">
+                                <div v-for="(description, i) in propertyData.description" :key="i" class="mt-2">
+                                    <span class="primary--text">{{ "Description [" + description.language + "]: " }}</span>
+                                    <span>{{ description.text }}</span>
+                                </div>
+                            </v-card-text>
                             <!-- DataType -->
                             <v-list-item v-if="propertyData.modelType.name === 'Property'">
                                 <v-row align="center">
@@ -96,6 +113,71 @@
                                     </v-col>
                                 </v-row>
                             </div>
+                            <!-- MultiLanguageProperty -->
+                            <v-list-item v-else-if="propertyData.modelType.name === 'MultiLanguageProperty'">
+                                <v-row v-for="(mlpValue, i) in propertyData.value" :key="i" align="center">
+                                    <v-col cols="auto">
+                                        <div class="primary--text font-weight-bold">{{ "Value [" + mlpValue.language + "]:" }}</div>
+                                    </v-col>
+                                    <v-col cols="auto">
+                                        <v-text-field disabled filled rounded outlined hide-details dense :value="mlpValue.text"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-list-item>
+                            <!-- Operation -->
+                            <div v-else-if="propertyData.modelType.name === 'Operation'">
+                                <v-card flat class="ma-2 elevatedCard">
+                                    <v-container class="ma-0 pa-0" fluid v-for="variableType in variableTypes" :key="variableType.id">
+                                        <template v-if="propertyData[variableType.type].length > 0">
+                                            <v-card-title class="subtitle-1 pa-3">{{ variableType.name }}:</v-card-title>
+                                            <v-card-text class="pb-0">
+                                                <div v-for="(variable, i) in propertyData[variableType.type]" :key="variable.id">
+                                                    <v-card class="pa-3 mb-2">
+                                                        <div v-if="variable.value.description && variable.value.description.length > 0" class="mb-1">
+                                                            <div v-for="(description, j) in variable.value.description" :key="j" style="font-size: 12px">{{ "[" + description.language + "] " + description.text }}</div>
+                                                        </div>
+                                                        <v-row align="center">
+                                                            <v-col cols="auto">
+                                                                <v-chip small label outlined><div class="primary--text">{{ variable.value.valueType }}</div></v-chip>
+                                                            </v-col>
+                                                            <v-col cols="auto">
+                                                                <!-- Input Variables -->
+                                                                <template v-if="variableType.type == 'inputVariables'">
+                                                                    <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="inputVariableArray[i]" :label="variable.value.idShort" filled rounded outlined hide-details dense :type="variable.value.valueType == 'string' ? 'text' : 'number'"></v-text-field>
+                                                                    <v-row v-if="variable.value.valueType == 'boolean'">
+                                                                        <v-switch :label="variable.value.idShort" v-model="inputVariableArray[i]" :false-Value="false" :true-value="true"></v-switch>
+                                                                    </v-row>
+                                                                </template>
+                                                                <!-- In-/Output Variables -->
+                                                                <template v-if="variableType.type == 'inoutputVariables'">
+                                                                    <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="inoutputVariableArray[i]" :label="variable.value.idShort" filled rounded outlined hide-details dense :type="variable.value.valueType == 'string' ? 'text' : 'number'"></v-text-field>
+                                                                    <v-row v-if="variable.value.valueType == 'boolean'">
+                                                                        <v-switch :label="variable.value.idShort" v-model="inoutputVariableArray[i]" :false-Value="false" :true-value="true"></v-switch>
+                                                                    </v-row>
+                                                                </template>
+                                                                <!-- Output Variables -->
+                                                                <template v-if="variableType.type == 'outputVariables'">
+                                                                    <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="outputVariableArray[i]" disabled :label="variable.value.idShort" filled rounded outlined hide-details dense :type="variable.value.valueType == 'string' ? 'text' : 'number'"></v-text-field>
+                                                                    <v-row v-if="variable.value.valueType == 'boolean'">
+                                                                        <v-switch :label="variable.value.idShort" v-model="outputVariableArray[i]" :false-Value="false" :true-value="true"></v-switch>
+                                                                    </v-row>
+                                                                </template>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </v-card>
+                                                </div>
+                                            </v-card-text>
+                                        </template>
+                                    </v-container>
+                                    <v-divider></v-divider>
+                                    <!-- Execute Button -->
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="primary" outlined @click="clearInputs">Clear</v-btn>
+                                        <v-btn color="primary" class="buttonText--text" @click="executeOperation" :loading="operationLoading">Execute</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </div>
                         </v-list>
                     </v-card-text>
                 </v-card>
@@ -130,6 +212,15 @@ export default {
             cleared: false,
             enableCmd: false,
             inputValue: null,
+            variableTypes: [
+                { type: 'inputVariables', name: 'Input Variables', id: 0 },
+                { type: 'inoutputVariables', name: 'In-/Output Variables', id: 1 },
+                { type: 'outputVariables', name: 'Output Variables', id: 2 },
+            ],
+            inputVariableArray: [],
+            inoutputVariableArray: [],
+            outputVariableArray: [],
+            operationLoading: false,
         }
     },
 
@@ -184,20 +275,40 @@ export default {
                 this.propertyData = null;
                 return;
             }
-            if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File') {
+            if(this.SelectedProperty.modelType.name === 'Property' || this.SelectedProperty.modelType.name === 'File' || this.SelectedProperty.modelType.name === 'MultiLanguageProperty' || this.SelectedProperty.modelType.name === 'Operation') {
                 this.$http.get('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort, {accept: 'application/json'})
                         .then(response => {
                             // console.log('response', response.body);
                             let prop = response.body;
                             prop.timestamp = this.formatDate(new Date());
+                            prop.id = this.UUID();
                             this.$store.dispatch('dispatchRealtimeProp', prop);
-                            this.propertyData = prop;
+                            // initialize Operation DataType
+                            if(this.SelectedProperty.modelType.name === 'Operation') {
+                                this.initializeOperation(prop);
+                            } else {
+                                this.propertyData = prop;
+                            }
                         });
             } else {
                 let prop = this.SelectedProperty;
+                // console.log('prop', prop);
                 prop.timestamp = this.formatDate(new Date());
                 this.propertyData = prop;
             }
+        },
+        // initialize Operation DataType
+        initializeOperation(prop) {
+            prop.inputVariables.forEach(() => {
+                this.inputVariableArray.push(null);
+            });
+            prop.inoutputVariables.forEach(() => {
+                this.inoutputVariableArray.push(null);
+            });
+            prop.outputVariables.forEach(element => {
+                this.outputVariableArray.push(element.value.value);
+            });
+            this.propertyData = prop;
         },
         updateValue(e) {
             // console.log('updateValue', e);
@@ -248,6 +359,59 @@ export default {
                     this.padTo2Digits(date.getSeconds()),
                 ].join(':')
             );
+        },
+        // clear Operation Inputs
+        clearInputs() {
+            // console.log('clearInputs');
+            this.inputVariableArray = new Array(this.inputVariableArray.length).fill(null);
+            this.inoutputVariableArray = new Array(this.inoutputVariableArray.length).fill(null);
+            this.outputVariableArray = new Array(this.outputVariableArray.length).fill(null);
+        },
+        // execute Operation
+        executeOperation() {
+            // console.log('executeOperation', this.inputVariableArray, this.inoutputVariableArray, this.outputVariableArray);
+            // console.log('submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort + '/invoke');
+            let operationPath = 'submodels/' + this.SelectedProperty.root + '/submodel/submodelElements/' + this.SelectedProperty.submodelElementsString + this.SelectedProperty.idShort + '/invoke';
+            let requestObject = {};
+            requestObject.requestId = this.UUID();
+            // console.log(this.propertyData.inputVariables);
+            let inputVariables = this.propertyData.inputVariables;
+            inputVariables.forEach((element, i) => {
+                element.value.value = this.inputVariableArray[i];
+            });
+            let inoutputVariables = this.propertyData.inoutputVariables;
+            inoutputVariables.forEach((element, i) => {
+                element.value.value = this.inoutputVariableArray[i];
+            });
+            requestObject.inputArguments = inputVariables;
+            requestObject.inoutputArguments = inoutputVariables;
+            requestObject.timeout = 60000;
+            // console.log('requestObject', requestObject);
+            this.operationLoading = true;
+            this.$http.post(operationPath, requestObject, {'accept': 'application/json', 'content-type': 'application/json'})
+                    .then(response => {
+                        // console.log('response', response.body);
+                        this.outputVariableArray = [];
+                        response.body.outputArguments.forEach(element => {
+                            this.outputVariableArray.push(element.value.value);
+                        });
+                        this.inoutputVariableArray = [];
+                        response.body.inoutputArguments.forEach(element => {
+                            this.inoutputVariableArray.push(element.value.value);
+                        });
+                        this.$store.dispatch('getSnackbar', {status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Operation was successfully executed!' });
+                        this.operationLoading = false;
+                    }, () => {
+                        this.$store.dispatch('getSnackbar', {status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Error executing Operation!' });
+                        this.operationLoading = false;
+                    });
+        },
+        // generate random uuid
+        UUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
         },
         checkWidth() {
             let width = 0; 

@@ -106,25 +106,29 @@ export default {
             Vue.url.options.root = this.SelectedAAS.endpoints[0].address; // update url root to selected endpoint of aas
             // build root layer with submodels
             this.$http.get('submodels', {accept: 'application/json'})
-                    .then(response => {
-                        let finishPromise = new Promise((resolve) => {
-                            // console.log('response: ', response.body);
-                            response.body.forEach( (sub, index, array) => {
-                                this.checkSubmodel(sub)
-                                    .then( result => {
-                                        // console.log(result);
-                                        if(result) sub.children = [];
-                                        sub.id = this.UUID();
-                                        this.submodelData.push(sub);
-                                        if (index === array.length -1) resolve();
-                                    });
-                            });
-                        });
-                        finishPromise.then(() => {
-                            // console.log('submodelData: ', this.submodelData);
-                            this.$store.dispatch('dispatchLoading', false);
+                .then(response => {
+                    let finishPromise = new Promise((resolve) => {
+                        // console.log('response: ', response.body);
+                        response.body.forEach( (sub, index, array) => {
+                            this.checkSubmodel(sub)
+                                .then( result => {
+                                    // console.log(result);
+                                    if(result) sub.children = [];
+                                    sub.id = this.UUID();
+                                    this.submodelData.push(sub);
+                                    if (index === array.length -1) resolve();
+                                });
                         });
                     });
+                    finishPromise.then(() => {
+                        // console.log('submodelData: ', this.submodelData);
+                        this.$store.dispatch('dispatchLoading', false);
+                    });
+                }, () => {
+                    // error callback when AAS is offline/not reachable
+                    this.$store.dispatch('dispatchLoading', false);
+                    this.$store.dispatch('getSnackbar', {status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Could not reach Asset administration Shell!' });
+                });
         },
         // check if submodel has props
         async checkSubmodel(sub) {
