@@ -63,8 +63,10 @@ Vue.js Webapplication to select and visualize Asset Administration Shells, Submo
 
 ### Docker:
 
+The latest version is available on [DockerHub](https://hub.docker.com/r/eclipsebasyx/aas-gui/tags).
+
 1. Build the image by executing `docker build basyx-applications/aas-gui/Frontend/aas-web-gui -t eclipsebasyx/aas-gui`
-2. Start a container by executing `docker run -p 8080:3000 eclipsebasyx/aas-gui`
+2. Start a container by executing `docker run -p 3000:3000 eclipsebasyx/aas-gui`
 
 To be able to access the BaSyx data from the GUI, you need to add a wildcard to Cross-origin resource sharing on the Registry- and AAS-Server. This can be done either in code by `contextConfig.setAccessControlAllowOrigin("*")` on the ContextConfiguration of the Registry- and AAS-Server, or in the `context.properties` files by adding the line `accessControlAllowOrigin=*`.
 
