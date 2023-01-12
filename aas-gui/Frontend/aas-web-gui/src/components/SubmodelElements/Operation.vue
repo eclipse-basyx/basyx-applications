@@ -184,7 +184,7 @@ export default defineComponent({
                         this.operationVariables.outputVariables.push(outputVariable.value.value);
                     });
                     // check the operationResult, if success is false, show an error message
-                    if (!response.data.operationResult.success) {
+                    if (response.data.operationResult && !response.data.operationResult.success) {
                         this.errorHandler(response.data.operationResult, context);
                     } else {
                         this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'Operation executed successfully.' }); // Show Success Snackbar
