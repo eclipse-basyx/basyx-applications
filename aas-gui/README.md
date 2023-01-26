@@ -1,7 +1,7 @@
 # Fraunhofer AAS GUI
 Vue.js Webapplication to select and visualize Asset Administration Shells, Submodels and Properties.
 
-![alt text](Docs/Figs/AAS-GUI.png "AAS GUI")
+![alt text](Docs/Figs/GUI_2_0.png "AAS GUI")
 
 ## Project Structure
 
