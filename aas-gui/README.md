@@ -29,6 +29,10 @@ Vue.js Webapplication to select and visualize Asset Administration Shells, Submo
 
 ## Getting Started
 
+### Quick Start:
+
+Please follow this guide: [Introductory Examples](https://wiki.eclipse.org/BaSyx_/_Introductory_Examples)
+
 ### MacOS:
 
 1. Install Node and NPM ([Node installation Tutorial for Mac](https://treehouse.github.io/installation-guides/mac/node-mac.html))
@@ -70,25 +74,6 @@ The latest version is available on [DockerHub](https://hub.docker.com/r/eclipseb
 
 To be able to access the BaSyx data from the GUI, you need to add a wildcard to Cross-origin resource sharing on the Registry- and AAS-Server. This can be done either in code by `contextConfig.setAccessControlAllowOrigin("*")` on the ContextConfiguration of the Registry- and AAS-Server, or in the `context.properties` files by adding the line `accessControlAllowOrigin=*`.
 
-## Demo :rocket:
-
-Demo available here: [**aas-gui.plc-visu.com**](http://aas-gui.plc-visu.com/)
-The following address can be used as demo registry server: [**http://52.170.212.185:4999**](http://52.170.212.185:4999)
-
-![alt text](Docs/Figs/demo.png "Finished Product")
-
-## Milestones
-
-### Current Milestone: 
-
-- **Release 1.0.0** :white_check_mark:
-
-### Finished Milestones:
-
-- **Beta Release** :white_check_mark:
-
-- **Alpha Release** :white_check_mark:
-
 ## Frontend
 
 Start Dev Environment (e.g. VSCode):
@@ -107,8 +92,12 @@ Create deployable build:
 ### Dependencies
 
 - Node (+ npm)
-- vue cli
+- Yarn
+- Vite
+- Vue CLI
 - Vuetify
+- Vue Router
+- Vuex
 
 ## Backend
 The backend consists of two components. The Asset Administration Shell **Generator** and the **Registry**-Server. 
