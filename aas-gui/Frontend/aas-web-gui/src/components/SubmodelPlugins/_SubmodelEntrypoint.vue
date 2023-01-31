@@ -3,6 +3,7 @@
         <!-- List of all available Submodel and SubmodelElement Plugins matched by their SemanticID -->
         <template v-if="Object.keys(submodelElementData).length > 0 && submodelElementData.semanticId && submodelElementData.semanticId.keys && submodelElementData.semanticId.keys.length > 0">
             <HTWFuehrungskomponente v-if="checkSemanticId('http://htw-berlin.de/smc_statemachine')"></HTWFuehrungskomponente>
+            <JSONArrayProperty v-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')"></JSONArrayProperty>
         </template>
     </v-container>
 </template>
@@ -12,11 +13,13 @@ import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 
 import HTWFuehrungskomponente from './HTWFuehrungskomponente.vue';
+import JSONArrayProperty from './JSONArrayProperty.vue';
 
 export default defineComponent({
     name: 'SubmodelEntrypoint',
     components: {
         HTWFuehrungskomponente, // SubmodelElementCollection Submodel Plugin for Führungskomponenten
+        JSONArrayProperty, // Property Plugin to visualize JSON Arrays
     },
 
     setup() {
