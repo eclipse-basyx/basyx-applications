@@ -134,9 +134,9 @@ export default defineComponent({
                 element.isActive = false;
                 // set the Path of each Element
                 if(element.modelType.name == 'Submodel') {
-                    element.path = 'submodels/' + element.idShort;
+                    element.path = 'submodels/' + element.idShort + '/submodel';
                 } else if(element.parent.modelType.name == 'Submodel') {
-                    element.path = element.parent.path + '/submodel/submodelElements/' + element.idShort;
+                    element.path = element.parent.path + '/submodelElements/' + element.idShort;
                 } else {
                     element.path = element.parent.path + '/' + element.idShort;
                 }
