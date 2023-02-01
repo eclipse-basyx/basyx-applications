@@ -9,6 +9,8 @@ import App from './App.vue'
 import router from './router';
 import store from './store';
 
+import VueApexCharts from "vue3-apexcharts";
+
 // Composables
 import { createApp } from 'vue'
 
@@ -19,6 +21,8 @@ const app = createApp(App)
 
 app.use(router);
 app.use(store);
+
+app.use(VueApexCharts);
 
 registerPlugins(app)
 
