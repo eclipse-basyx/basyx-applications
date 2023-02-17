@@ -158,7 +158,7 @@ export default defineComponent({
                 inoutputVariable.value.value = this.operationVariables.inoutputVariables[i]
             })
             // console.log('executeOperation: ', inputVariables, inoutputVariables);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/invoke';
+            let path = this.SelectedAAS.endpoints[0].address + '/' + this.operationObject.path + '/invoke';
             let content = {
                 inputArguments:     inputVariables,
                 inoutputArguments:  inoutputVariables,

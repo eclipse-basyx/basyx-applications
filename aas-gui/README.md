@@ -33,6 +33,22 @@ Vue.js Webapplication to select and visualize Asset Administration Shells, Submo
 
 Please follow this guide: [Introductory Examples](https://wiki.eclipse.org/BaSyx_/_Introductory_Examples)
 
+### Plugin Development
+
+The BaSyx-GUI includes a Feature to develop your own Plugins. They can be used to display and interact with a Submodel (and/or SubmodelElements).
+
+Plugins will be displayed in the `Visualization`-Part of the UI. In order for Plugins to be shown, a Submodel has to have a SemanticID which matches with the configured SemanticID of the desired Plugin.
+
+> new Plugins have to be registered at `Frontend/aas-web-gui/src/components/SubmodelPlugins/_SubmodelEntrypoint.vue`
+
+> a Demo-Plugin can be found here: `Frontend/aas-web-gui/src/components/SubmodelPlugins/HelloWorldPlugin.vue`
+
+The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Operation`.
+SubmodelElementCollections are not supported in this Plugin!
+The SemanticID of the Submodel has to be `http://hello.world.de/plugin_submodel`.
+
+![alt text](Docs/Figs/Plugin.png "Submodel Plugin")
+
 ### MacOS:
 
 1. Install Node and NPM ([Node installation Tutorial for Mac](https://treehouse.github.io/installation-guides/mac/node-mac.html))
