@@ -190,13 +190,20 @@ export default defineComponent({
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) { // execute if the Request was successful
                     response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
+                    response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                     // console.log('SubmodelElement Data: ', response.data)
                     this.submodelElementData = response.data;
                 } else { // execute if the Request failed
                     // show the static SubmodelElement Data from the store if the Request failed (the timestamp should show that the data is outdated)
                     this.submodelElementData = {}; // Reset the SubmodelElement Data when Node couldn't be retrieved
+                    if(Object.keys(this.SelectedNode).length == 0) {
+                        // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
+                        this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
+                        return;
+                    }
                     this.submodelElementData = { ...this.SelectedNode }; // copy the static SubmodelElement Data from the store
                     this.submodelElementData.timestamp = 'no sync';
+                    this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
                 this.store.dispatch('dispatchRealTimeObject', this.submodelElementData);

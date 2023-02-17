@@ -24,6 +24,7 @@
 import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 import RequestHandling from '../mixins/RequestHandling';
+import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
 
 import VTreeview from './UIComponents/VTreeview.vue';
 
@@ -34,7 +35,7 @@ export default defineComponent({
 
         VTreeview,
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
         const store = useStore()
@@ -47,6 +48,29 @@ export default defineComponent({
     data() {
         return {
             submodelData: [] as Array<any>, // Treeview Data
+            initialUpdate: false, // Flag to check if the initial update of the Treeview is needed and/or done
+            initialNode: {} as any, // Initial Node to set the Treeview to
+        }
+    },
+
+    mounted() {
+        // check if the SelectedAAS is already set in the Store and initialize the Treeview if so
+        if(this.SelectedAAS && this.SelectedAAS.endpoints && this.SelectedAAS.endpoints.length > 0) {
+            this.initializeTree();
+        }
+
+        // check if the aas Query and the path Query are set in the URL and if so load the Submodel/Submodelelement
+        const searchParams = new URL(window.location.href).searchParams;
+        const aasEndpoint = searchParams.get('aas');
+        const path = searchParams.get('path');
+        if (aasEndpoint && path) {
+            // console.log('AAS and Path Queris are set: ', aasEndpoint, path);
+            let node = {} as any;
+            node.path = path;
+            node.isActive = true;
+            // set the isActive prop of the node in submodelData to true
+            this.initialUpdate = true;
+            this.initialNode = node;
         }
     },
 
@@ -115,8 +139,19 @@ export default defineComponent({
                 this.store.dispatch('dispatchLoadingState', false); // set loading state to false
                 if (response.success) { // execute if the Request was successful
                     // prepare data for treeview
-                    this.submodelData = this.prepareTreeviewData(response.data);
+                    let submodelData = this.prepareTreeviewData(response.data);
                     // console.log('Treeview Data: ', this.submodelData);
+                    // set the isActive prop of the initialNode if it exists and the initialUpdate flag is set
+                    if(this.initialUpdate && this.initialNode) {
+                        let expandedSubmodelData = this.expandTree(submodelData, this.initialNode); // Update the Treeview to expand until the initially set node is reached
+                        // this.updateNode(this.initialNode); // set the isActive prop of the initialNode to true
+                        this.initialUpdate = false;
+                        this.initialNode = {};
+                        // console.log('Expanded Treeview Data: ', expandedSubmodelData)
+                        this.submodelData = expandedSubmodelData; // set the Treeview Data
+                    } else {
+                        this.submodelData = submodelData; // set the Treeview Data
+                    }
                 } else { // execute if the Request failed
                     this.submodelData = [];
                 }
@@ -178,7 +213,7 @@ export default defineComponent({
                     element.children = this.changeActiveState(element.children, updatedNode);
                 }
                 // check if the Element is the updated Node
-                if (element.id === updatedNode.id) {
+                if (element.path === updatedNode.path) {
                     // set isActive State of the updated node
                     element.isActive = updatedNode.isActive;
                 } else {
@@ -189,12 +224,59 @@ export default defineComponent({
             return data;
         },
 
-        // generate a unique ID (UUID)
-        UUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
+        // Function to expand the Treeview until the selected Node is visible
+        expandTree(submodelData: any, updatedNode: any) {
+            // console.log('Updated Node: ', updatedNode);
+            // iterate over submodelData to find the updated Node
+            let expandedSubmodelData = this.findNodeByPath(submodelData, updatedNode.path);
+            // console.log('Treeview Data: ', expandedSubmodelData);
+            return expandedSubmodelData;
+        },
+
+        // Function to find a Node in the Treeview Data (submodelData) by its path
+        findNodeByPath(data: any, path: string) {
+            // iterate over all elements in the current level of the tree (Submodels, SubmodelElements [e.g. SubmodelElementCollections, Properties])
+            let foundNode = false;
+            data.forEach((element: any) => {
+                // check if the Element is the updated Node
+                if (element.path == path) { // if node is found, recurse up the tree to set showChildren to true
+                    // console.log('Found Node: ', element);
+                    // set isActive State of the updated node
+                    if (!foundNode) {
+                        foundNode = true;
+                        element.isActive = true;
+                        this.store.dispatch('dispatchNode', element); // set the updatedNode in the Store
+                    }
+                    // if prop showChildren exists, set it to true
+                    if('showChildren' in element) {
+                        element.showChildren = true;
+                    }
+                    // set showChildren of the parent of the updated node to true, if a parent exists
+                    if(element.parent) {
+                        element.parent = this.updateParent(element.parent);
+                    }
+                } else { // recurse down the tree until node is found
+                    // check if the Element has Children
+                    if(element.children && element.children.length > 0) { // check for SubmodelElements
+                        // if the Element has Children, call the Function again with the Children as Data
+                        this.findNodeByPath(element.children, path);
+                    }
+                }
             });
+            return data;
+        },
+
+        // Function to set showChildren of the parent of the updated node to true, if a parent exists
+        updateParent(parent: any) {
+            // if prop showChildren exists, set it to true
+            if('showChildren' in parent) {
+                parent.showChildren = true;
+            }
+            // set showChildren of the parent of the updated node to true, if a parent exists
+            if(parent.parent) {
+                parent.parent = this.updateParent(parent.parent);
+            }
+            return parent;
         },
     },
 });

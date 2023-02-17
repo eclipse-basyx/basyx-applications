@@ -57,6 +57,13 @@ export default defineComponent({
         }
     },
 
+    mounted() {
+        // Check if the current items showChildren Property is true if it exists
+        if('showChildren' in this.item && this.item.showChildren) {
+            this.showChildren = true;
+        }
+    },
+
     computed: {
         // Check if the current Theme is dark
         isDark() {
@@ -77,6 +84,15 @@ export default defineComponent({
             let localItem = {...this.item};
             // invert the isActive Property
             localItem.isActive = !localItem.isActive;
+            // Add path of the selected Node to the URL as Router Query
+            if(localItem.isActive) {
+                this.$router.push({ name: 'MainWindow', query: { ...this.$route.query, path: localItem.path } });
+            } else {
+                // remove the path query from the Route entirely
+                let query = {...this.$route.query};
+                delete query.path;
+                this.$router.push({ name: 'MainWindow', query: query });
+            }
             // dispatch the selected Node to the store
             this.store.dispatch('dispatchNode', localItem);
         },
