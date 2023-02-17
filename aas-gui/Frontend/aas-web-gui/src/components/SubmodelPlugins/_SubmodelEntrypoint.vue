@@ -3,7 +3,14 @@
         <!-- List of all available Submodel and SubmodelElement Plugins matched by their SemanticID -->
         <template v-if="Object.keys(submodelElementData).length > 0 && submodelElementData.semanticId && submodelElementData.semanticId.keys && submodelElementData.semanticId.keys.length > 0">
             <HTWFuehrungskomponente v-if="checkSemanticId('http://htw-berlin.de/smc_statemachine')"></HTWFuehrungskomponente>
+            <DigitalNameplate v-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/Nameplate')"></DigitalNameplate>
+            <HelloWorldPlugin v-if="checkSemanticId('http://hello.world.de/plugin_submodel')"></HelloWorldPlugin>
             <JSONArrayProperty v-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')"></JSONArrayProperty>
+        </template>
+        <!-- List of all File-Plugins matched by theyr mimeType -->
+        <template v-if="Object.keys(submodelElementData).length > 0 && submodelElementData.modelType.name == 'File'">
+            <ImagePreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('image')"></ImagePreview>
+            <PDFPreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('pdf')"></PDFPreview>
         </template>
     </v-container>
 </template>
@@ -13,13 +20,23 @@ import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 
 import HTWFuehrungskomponente from './HTWFuehrungskomponente.vue';
+import DigitalNameplate from './DigitalNameplate.vue';
+import HelloWorldPlugin from './HelloWorldPlugin.vue';
 import JSONArrayProperty from './JSONArrayProperty.vue';
+
+import ImagePreview from './ImagePreview.vue';
+import PDFPreview from './PDFPreview.vue';
 
 export default defineComponent({
     name: 'SubmodelEntrypoint',
     components: {
-        HTWFuehrungskomponente, // SubmodelElementCollection Submodel Plugin for Führungskomponenten
+        HTWFuehrungskomponente, // SubmodelElementCollection Plugin for Führungskomponenten
+        DigitalNameplate, // Submodel Plugin for Digital Nameplates
+        HelloWorldPlugin, // Submodel Plugin used as HelloWorld Example
         JSONArrayProperty, // Property Plugin to visualize JSON Arrays
+
+        ImagePreview, // File Plugin for Image Preview
+        PDFPreview, // File Plugin for PDF Preview
     },
 
     setup() {

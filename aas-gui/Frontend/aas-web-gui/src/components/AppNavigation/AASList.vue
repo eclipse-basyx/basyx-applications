@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
@@ -89,6 +89,19 @@ export default defineComponent({
         // Load the AAS List on Startup if the Registry URL is set
         if(this.registryURL !== '') {
             this.getAASData();
+        }
+
+        // check if the aas Query is set in the URL and if so load the AAS
+        const searchParams = new URL(window.location.href).searchParams;
+        const aasEndpoint = searchParams.get('aas');
+        if (aasEndpoint) {
+            // console.log('AAS Query is set: ', aasEndpoint);
+            let aas = {} as any;
+            let endpoints = [];
+            endpoints.push({ address: aasEndpoint } );
+            aas.endpoints = endpoints;
+            // dispatch the AAS set by the URL to the store
+            this.store.dispatch('dispatchSelectedAAS', aas);
         }
     },
 
@@ -205,15 +218,18 @@ export default defineComponent({
                 this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
                 return;
             }
+            // add aas endpoint as quaery to the router
+            this.$router.push({ query: { aas: AAS.endpoints[0].address } });
+            // dispatch the selected AAS to the Store
             this.store.dispatch('dispatchSelectedAAS', AAS);
         },
 
         // checks if the AAS is selected
         isSelected(AAS: any) {
-            if (this.selectedAAS === undefined) {
+            if (this.selectedAAS === undefined || this.selectedAAS === null || Object.keys(this.selectedAAS).length === 0) {
                 return false;
             }
-            return this.selectedAAS['idShort'] === AAS['idShort'];
+            return this.selectedAAS['endpoints'][0]['address'] === AAS['endpoints'][0]['address'];
         },
 
         // Function to display the AAS Details

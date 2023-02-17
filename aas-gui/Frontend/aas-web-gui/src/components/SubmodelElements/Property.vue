@@ -135,7 +135,7 @@ export default defineComponent({
         // Function to update the value of the property
         updateValue() {
             // console.log("Update Value: " + this.newPropertyValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/value';
+            let path = this.SelectedAAS.endpoints[0].address + '/' + this.propertyObject.path + '/value';
             let content = this.propertyObject.valueType == 'boolean' ? "'" + this.booleanProp + "'" : "'" + this.newPropertyValue + "'";
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.propertyObject.modelType.name + ' "' + this.propertyObject.idShort + '"';
@@ -144,7 +144,9 @@ export default defineComponent({
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // this.newPropertyValue = ''; // reset input
-                    this.$emit('updateValue'); // emit event to update the value in the parent component
+                    let updatedPropertyObject = { ...this.propertyObject }; // copy the propertyObject
+                    updatedPropertyObject.value = content.toString().replace(/'/g, ''); // update the value of the propertyObject
+                    this.$emit('updateValue', updatedPropertyObject); // emit event to update the value in the parent component
                 }
             });
         },

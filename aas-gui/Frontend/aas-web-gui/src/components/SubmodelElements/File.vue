@@ -14,7 +14,7 @@
                     </v-list-item-title>
                     <!-- Donwload File Button -->
                     <template v-slot:append>
-                        <v-btn v-if="fileObject.value" size="small" color="primary" class="text-buttonText" :href="fileObject.value" target="_blank">Download File</v-btn>
+                        <v-btn v-if="fileObject.value" size="small" color="primary" class="text-buttonText" :href="localPathValue" target="_blank">Download File</v-btn>
                     </template>
                 </v-list-item>
                 <!-- Path in Inputfield -->
@@ -30,23 +30,9 @@
                         </v-text-field>
                     </v-list-item-title>
                 </v-list-item>
-                <v-divider v-if="(fileObject.mimeType && fileObject.mimeType.includes('image')) || !fileObject.value"></v-divider>
-                <!-- Representation of the File Element if it is an Image -->
-                <v-list-item v-if="fileObject.mimeType && fileObject.mimeType.includes('image') && !errorLoadingImage && fileObject.value" class="mt-2">
-                    <v-list-item-title>
-                        <v-card>
-                            <!-- Image Preview -->
-                            <v-img :src="fileObject.value" max-width="100%" max-height="100%" contain @error="errorLoadingImage = true"></v-img>
-                        </v-card>
-                    </v-list-item-title>
-                </v-list-item>
+                <v-divider v-if="!fileObject.value"></v-divider>
                 <!-- Alerts when File was not found/empty -->
-                <v-list-item v-if="(fileObject.mimeType && fileObject.mimeType.includes('image')) && errorLoadingImage">
-                    <v-list-item-title class="pt-2">
-                        <v-alert text="No Image found at given Path!" density="compact" type="warning" variant="outlined"></v-alert>
-                    </v-list-item-title>
-                </v-list-item>
-                <v-list-item v-if="!errorLoadingImage && !fileObject.value">
+                <v-list-item v-if="!fileObject.value">
                     <v-list-item-title class="pt-2">
                         <v-alert text="SubmodelElement doesn't contain a File!" density="compact" type="warning" variant="outlined"></v-alert>
                     </v-list-item-title>
@@ -94,8 +80,8 @@ export default defineComponent({
     data() {
         return {
             newPathValue: '',
-            errorLoadingImage: false,
             newFile: [] as any, // File Object to Upload
+            localPathValue: '', // Path to the File when it is embedded to the AAS
             loading: false,
             isFocused: false, // boolean to check if the input field is focused
         }
@@ -103,7 +89,7 @@ export default defineComponent({
 
     mounted() {
         this.newPathValue = this.fileObject.value;
-        this.errorLoadingImage = false;
+        this.localPathValue = this.getLocalPath(this.fileObject.value);
     },
 
     watch: {
@@ -112,7 +98,7 @@ export default defineComponent({
             deep: true,
             handler() {
                 this.newPathValue = '';
-                this.errorLoadingImage = false;
+                this.localPathValue = '';
             }
         },
 
@@ -122,6 +108,7 @@ export default defineComponent({
             handler() {
                 if (!this.isFocused) {
                     this.newPathValue = this.fileObject.value;
+                    this.localPathValue = this.getLocalPath(this.fileObject.value);
                 }
             }
         }
@@ -194,6 +181,16 @@ export default defineComponent({
             this.isFocused = e;
             if (!e) this.newPathValue = this.fileObject.value; // set input to current value in the AAS if the input field is not focused
         },
+
+        // Function to prepare the Image Link for the Image Preview
+        getLocalPath(path: string): string {
+            if(!path) return '';
+            // check if Link starts with '/'
+            if (path.startsWith('/')) {
+                path = this.SelectedAAS.endpoints[0].address.replace('/aas', '') + '/files' + path;
+            }
+            return path;
+        }
     },
 });
 </script>
