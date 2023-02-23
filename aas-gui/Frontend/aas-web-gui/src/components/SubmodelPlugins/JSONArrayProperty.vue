@@ -32,7 +32,7 @@ export default defineComponent({
                 height: 350,
                 background: '#ffffff00',
             },
-            colors: ['#1e8567'],
+            // colors: ['#1e8567'],
             dataLabels: {
                 enabled: false
             },
@@ -72,6 +72,8 @@ export default defineComponent({
         // wait for the chart to be initialized
         setTimeout(() => {
             this.initChart();
+            // apply the theme on component mount
+            this.applyTheme();
         }, 1000);
     },
 
@@ -87,19 +89,7 @@ export default defineComponent({
         },
         // watch for changes in the vuetify theme and update the chart options
         isDark() {
-            if (this.isDark) {
-                (this.$refs.areachart as any).updateOptions({
-                    theme: {
-                        mode: 'dark'
-                    }
-                });
-            } else {
-                (this.$refs.areachart as any).updateOptions({
-                    theme: {
-                        mode: 'light'
-                    }
-                });
-            }
+            this.applyTheme();
         },
     },
 
@@ -145,11 +135,39 @@ export default defineComponent({
             this.submodelElementData = { ...this.RealTimeObject }; // create local copy of the SubmodelElement Object
             let chartData = JSON.parse(this.submodelElementData.value); // parse the value of the SubmodelElement
             let seriesName = this.submodelElementData.idShort; // get the idShort of the SubmodelElement
-            // set/update the chart data
-            (this.$refs.areachart as any).updateSeries([{
-                name: seriesName,
-                data: chartData
-            }]);
+            // check if the value is an array or an object
+            if (Array.isArray(chartData)) { // array in form of [y1, y2, y3, ..., yn ]
+                // set/update the chart data
+                (this.$refs.areachart as any).updateSeries([{
+                    name: seriesName,
+                    data: chartData
+                }]);
+            } else if (typeof chartData === 'object') { // object in form of { title1: [y11, y12, y13, ..., y1n], title2: [y21, y22, y23, ..., y2n] }
+                // set/update the chart data
+                (this.$refs.areachart as any).updateSeries(Object.keys(chartData).map((key) => {
+                    return {
+                        name: key,
+                        data: chartData[key]
+                    }
+                }));
+            }
+        },
+
+        // Function to apply the selected theme to the chart
+        applyTheme() {
+            if (this.isDark) {
+                (this.$refs.areachart as any).updateOptions({
+                    theme: {
+                        mode: 'dark'
+                    }
+                });
+            } else {
+                (this.$refs.areachart as any).updateOptions({
+                    theme: {
+                        mode: 'light'
+                    }
+                });
+            }
         },
     },
 });
