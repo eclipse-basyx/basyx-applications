@@ -105,7 +105,7 @@ Create deployable build:
 4. Answer second question with **y** (Yes)
 5. Source Files are created here: `basyx-applications/aas-gui/Frontend/aas-web-gui/dist`
 
-:warning: If you plan on developing with npm as your package manager be advised that you either need to force the installation process ``npm i -f`` or install the release candidate version of the vue-class-component package (``npm install vue-class-component@8.0.0-rc.1``). - You will not encounter this issue when using Yarn as your pacakge manager. :warning:
+:warning: If you plan on developing with npm as your package manager be advised that you either need to force the installation process ``npm i -f`` or install the release candidate version of the vue-class-component package (``npm install vue-class-component@8.0.0-rc.1``). - You will not encounter this issue when using Yarn as your package manager. :warning:
 
 ### Dependencies
 
