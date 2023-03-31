@@ -13,6 +13,7 @@ import { useStore } from 'vuex';
 
 export default defineComponent({
     name: 'JSONArrayProperty',
+    props: ['submodelElementData'],
 
     setup() {
         const theme = useTheme()
@@ -64,32 +65,32 @@ export default defineComponent({
 
     data() {
         return {
-            submodelElementData: {} as any, // SubmodelElement Data
         }
     },
 
     mounted() {
-        // wait for the chart to be initialized
-        setTimeout(() => {
-            this.initChart();
-            // apply the theme on component mount
-            this.applyTheme();
-        }, 1000);
+        this.$nextTick(() => {
+            const chart = (this.$refs.areachart as any).chart
+            if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
+                // console.log('Chart has rendered')
+                // apply the theme on component mount
+                this.applyTheme();
+                // append the series to the chart
+                this.initChart();
+            }
+        })
     },
 
     watch: {
-        // Watch for changes in the RealTimeDataObject and (re-)initialize the Component
-        RealTimeObject: {
-            deep: true,
-            handler() {
-                // clear old submodelElementData
-                this.submodelElementData = {};
-                this.initChart(); // initialize list
-            }
-        },
         // watch for changes in the vuetify theme and update the chart options
         isDark() {
             this.applyTheme();
+        },
+
+        // watch for changes in the selected node and update the chart data
+        submodelElementData() {
+            // console.log('submodelElementData changed: ', this.submodelElementData);
+            this.initChart();
         },
     },
 
@@ -109,16 +110,6 @@ export default defineComponent({
             return this.store.getters.getSelectedNode;
         },
 
-        // Get the real-time object from the store
-        RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
-        },
-
-        // RealTimeDataObject value
-        RealTimeObjectValue() {
-            return this.RealTimeObject.value;
-        },
-
         // Check if the current Theme is dark
         isDark() {
             return this.theme.global.current.value.dark
@@ -128,11 +119,9 @@ export default defineComponent({
     methods: {
         initChart() {
             // Check if a Node is selected
-            if (Object.keys(this.RealTimeObject).length == 0) {
-                this.submodelElementData = {}; // Reset the SubmodelElement Data when no Node is selected
+            if (Object.keys(this.submodelElementData).length == 0) {
                 return;
             }
-            this.submodelElementData = { ...this.RealTimeObject }; // create local copy of the SubmodelElement Object
             let chartData = JSON.parse(this.submodelElementData.value); // parse the value of the SubmodelElement
             let seriesName = this.submodelElementData.idShort; // get the idShort of the SubmodelElement
             // check if the value is an array or an object

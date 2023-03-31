@@ -4,6 +4,7 @@ interface state {
     updatedNode: object,
     selectedNode: object,
     realTimeObject: object,
+    initTreeByReferenceElement: boolean,
 };
 
 const state: state = {
@@ -12,6 +13,7 @@ const state: state = {
     updatedNode: {}, // holds the most recently updated Node in the AAS Treeview Component
     selectedNode: {}, // holds the currently selected Node in the AAS Treeview Component
     realTimeObject: {}, // holds the newest synced SubmodelElement (for the ComponentViasualization)
+    initTreeByReferenceElement: false, // holds the state if the AAS Treeview Component should be initialized because the Jump-Button was clicked on a ReferenceElement
 };
 
 const getters = {
@@ -34,6 +36,10 @@ const getters = {
     // returns the newest synced SubmodelElement (for the ComponentViasualization)
     getRealTimeObject(state: state) {
         return state.realTimeObject;
+    },
+    // returns the state if the AAS Treeview Component should be initialized because the Jump-Button was clicked on a ReferenceElement
+    getInitTreeByReferenceElement(state: state) {
+        return state.initTreeByReferenceElement;
     },
 };
 
@@ -61,6 +67,11 @@ const actions = {
         // console.log('dispatchRealTimeObject: ', realTimeObject);
         commit('setRealTimeObject', realTimeObject);
     },
+    // dispatches Action to set the state if the AAS Treeview Component should be initialized because the Jump-Button was clicked on a ReferenceElement
+    dispatchInitTreeByReferenceElement({ commit }: { commit: Function }, initTreeByReferenceElement: boolean) {
+        // console.log('dispatchInitTreeByReferenceElement: ', initTreeByReferenceElement);
+        commit('setInitTreeByReferenceElement', initTreeByReferenceElement);
+    },
 };
 
 const mutations = {
@@ -83,6 +94,10 @@ const mutations = {
     // commit Mutation for the newest synced SubmodelElement (for the ComponentViasualization) to set the State
     setRealTimeObject(state: state, realTimeObject: any) {
         state.realTimeObject = realTimeObject;
+    },
+    // commit Mutation for the state if the AAS Treeview Component should be initialized because the Jump-Button was clicked on a ReferenceElement to set the State
+    setInitTreeByReferenceElement(state: state, initTreeByReferenceElement: boolean) {
+        state.initTreeByReferenceElement = initTreeByReferenceElement;
     },
 };
 

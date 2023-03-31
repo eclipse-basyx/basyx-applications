@@ -31,8 +31,10 @@ export default defineComponent({
                     if (data && data.hasOwnProperty('success') && data.success === false) { // If the Server responded with an error
                         if(!disableMessage) this.errorHandler(data, context); // Call the error handler
                         return { success: false };
-                    } else { // If the Server responded with a success
+                    } else if (data) { // If the Server responded with a success
                         return { success: true, data: data };
+                    } else { // If the Server responded without content
+                        return { success: false };
                     }
                 })
                 .catch(error => { // Catch any errors

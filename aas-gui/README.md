@@ -87,6 +87,26 @@ The latest version is available on [DockerHub](https://hub.docker.com/r/eclipseb
 
 1. Build the image by executing `docker build basyx-applications/aas-gui/Frontend/aas-web-gui -t eclipsebasyx/aas-gui`
 2. Start a container by executing `docker run -p 3000:3000 eclipsebasyx/aas-gui`
+3. You can also predefine the Registry Path, AAS Server Path and the Apllications primary color by adding the following arguments to the run command: `-e VITE_REGISTRY_PATH=<registry_path> -e VITE_AAS_SERVER_PATH=<aas_server_path> -e VITE_PRIMARY_COLOR=<primary_color>`
+4. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command: `-v <local_path_to_logo>:/app/src/assets/Logo -v <local_path_to_plugins>:/app/src/UserPlugins`
+5. If you execute step 4, please also add the following arguments to the run command: `-e CHOCKIDAR_USEPOLLING=true`
+6. The GUI is now available at `http://localhost:3000`
+
+### Docker Compose:
+
+aas-web-gui:
+    image: eclipsebasyx/aas-gui
+    container_name: aas-web-gui
+    ports:
+        - "3000:3000"
+    environment:
+        CHOKIDAR_USEPOLLING: "true"
+        VITE_REGISTRY_PATH: "<registry_path>"
+        VITE_AAS_SERVER_PATH: "<aas_server_path>"
+        VITE_PRIMARY_COLOR: "<primary_color>"
+    volumes:
+        - <local_path_to_logo>:/app/src/assets/Logo
+        - <local_path_to_plugins>:/app/src/UserPlugins
 
 To be able to access the BaSyx data from the GUI, you need to add a wildcard to Cross-origin resource sharing on the Registry- and AAS-Server. This can be done either in code by `contextConfig.setAccessControlAllowOrigin("*")` on the ContextConfiguration of the Registry- and AAS-Server, or in the `context.properties` files by adding the line `accessControlAllowOrigin=*`.
 

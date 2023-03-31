@@ -15,18 +15,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
-import RequestHandling from '../../mixins/RequestHandling'; // Mixin to handle the requests to the AAS
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling'; // Mixin to handle typical SubmodelElement-Actions
+import RequestHandling from '@/mixins/RequestHandling'; // Mixin to handle the requests to the AAS
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling'; // Mixin to handle typical SubmodelElement-Actions
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
+import SubmodelElementWrapper from '../components/UIComponents/SubmodelElementWrapper.vue';
 
 export default defineComponent({
-    name: 'HelloWorldPlugin',
+    name: 'PluginJSONArray',
+    SemanticID: 'http://hello.world.de/plugin_submodel', // SemanticID of the HelloWorld-Plugin
+    props: ['submodelElementData'],
     components: {
-        SubmodelElementWrapper, // UI Component to display SubmodelElements (e.g. Property, File, etc.)
+        SubmodelElementWrapper,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
 
@@ -47,36 +49,14 @@ export default defineComponent({
     },
 
     mounted() {
+        // console.log('HelloWorldPlugin mounted');
         this.initializePlugin(); // Initialize the HelloWorld-Plugin when the component is mounted
     },
 
-    watch: {
-    },
-
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
-        // get selected AAS from Store
-        SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
-        },
-
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
             return this.store.getters.getSelectedNode;
-        },
-
-        // Get the real-time object from the store
-        RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
-        },
-
-        // Check if the current Theme is dark
-        isDark() {
-            return this.theme.global.current.value.dark
         },
     },
 
@@ -84,11 +64,11 @@ export default defineComponent({
         // Function to initialize the HelloWorld-Plugin
         initializePlugin() {
             // Check if a Node is selected
-            if (Object.keys(this.RealTimeObject).length == 0) {
+            if (Object.keys(this.submodelElementData).length == 0) {
                 this.pluginData = {}; // Reset the Plugin Data when no Node is selected
                 return;
             }
-            let pluginData = { ...this.RealTimeObject }; // Get the SubmodelElement from the AAS
+            let pluginData = { ...this.submodelElementData }; // Get the SubmodelElement from the AAS
             let pluginSubmodelElements = pluginData.submodelElements;
             // add pathes and id's to the SubmodelElements
             this.pluginData = this.preparePluginData(pluginSubmodelElements, this.SelectedNode.path + '/submodelElements');

@@ -19,10 +19,14 @@
                 <!-- Icon for every other SubmodelElement (like Property) -->
                 <v-icon v-else color="primary">mdi-file-code</v-icon>
             </template>
-            <template v-slot:append>
-                <!-- TODO: Change Text- and Border-Color to something more subtile (don't forget theme!) -->
-                <input type="text" v-if="item.identification" :value="item.identification.id" readonly style="border: solid; border-radius: 3px; border-width: 1px; padding: 2px 6px; font-size: 10px" size="30" :style="{ 'color': isDark ? '#A5A5A5' : '#626262','border-color': isDark ? '#2F2F2F' : '#E0E0E0' }">
-                <v-chip v-if="item.modelType && item.modelType.name != 'Submodel' && item.modelType.name != 'SubmodelDescriptor'"  color="primary" size="x-small">{{ item.modelType.name }}</v-chip>
+            <template v-slot:append="{isActive}">
+                <v-chip v-if="item.modelType && item.modelType.name"  color="primary" size="x-small" :style="{ 'margin-right': isActive ? '-14px' : '' }">{{ item.modelType.name }}</v-chip>
+                <!-- Button to Copy the Path to the Clipboard -->
+                <v-tooltip v-if="isActive" text="Copy Path to Clipboard" :open-delay="600" location="bottom">
+                    <template v-slot:activator="{ props }">
+                        <v-icon color="subtitleText" v-bind="props" @click.stop.prevent="copyPathToClipboard(item.path)">{{ copyIcon }}</v-icon>
+                    </template>
+                </v-tooltip>
             </template>
         </v-list-item>
         <!-- Recursive Treeview -->
@@ -54,6 +58,7 @@ export default defineComponent({
     data() {
         return {
             showChildren: false,
+            copyIcon: 'mdi-clipboard-file-outline',
         }
     },
 
@@ -65,9 +70,24 @@ export default defineComponent({
     },
 
     computed: {
+        // Check if the current Platform is Mobile
+        isMobile() {
+            return this.platform.android || this.platform.ios ? true : false;
+        },
+
+        // get Platform from store
+        platform() {
+            return this.store.getters.getPlatform;
+        },
+
         // Check if the current Theme is dark
         isDark() {
             return this.theme.global.current.value.dark
+        },
+
+        // get selected AAS from Store
+        SelectedAAS() {
+            return this.store.getters.getSelectedAAS;
         },
     },
 
@@ -86,15 +106,36 @@ export default defineComponent({
             localItem.isActive = !localItem.isActive;
             // Add path of the selected Node to the URL as Router Query
             if(localItem.isActive) {
-                this.$router.push({ name: 'MainWindow', query: { ...this.$route.query, path: localItem.path } });
+                if (this.isMobile) {
+                    // Change to SubmodelElementView on Mobile and add the path to the URL
+                    this.$router.push({ path: '/submodelelementview', query: { aas: this.SelectedAAS.endpoints[0].address, path: localItem.path } });
+                } else {
+                    // just add the path to the URL
+                    this.$router.push({ query: { aas: this.SelectedAAS.endpoints[0].address, path: localItem.path } });
+                }
             } else {
                 // remove the path query from the Route entirely
                 let query = {...this.$route.query};
                 delete query.path;
-                this.$router.push({ name: 'MainWindow', query: query });
+                this.$router.push({ query: query });
             }
             // dispatch the selected Node to the store
             this.store.dispatch('dispatchNode', localItem);
+        },
+
+        // Function to copy the path of the current Node to the Clipboard
+        copyPathToClipboard(path: string) {
+            // console.log('Copy Path to Clipboard: ', this.SelectedAAS.endpoints[0].address + '/' +  path);
+            // set the icon to checkmark
+            this.copyIcon = 'mdi-check';
+            // copy the path to the clipboard
+            navigator.clipboard.writeText(this.SelectedAAS.endpoints[0].address + '/' +  path);
+            // set the clipboard tooltip to false after 1.5 seconds
+            setTimeout(() => {
+                this.copyIcon = 'mdi-clipboard-file-outline';
+            }, 2000);
+            // open Snackbar to inform the user that the path was copied to the clipboard
+            this.store.dispatch('getSnackbar', { status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Path copied to Clipboard.' });
         },
     },
 });

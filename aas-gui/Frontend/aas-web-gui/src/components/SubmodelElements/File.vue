@@ -82,7 +82,6 @@ export default defineComponent({
             newPathValue: '',
             newFile: [] as any, // File Object to Upload
             localPathValue: '', // Path to the File when it is embedded to the AAS
-            loading: false,
             isFocused: false, // boolean to check if the input field is focused
         }
     },
@@ -158,20 +157,31 @@ export default defineComponent({
             // console.log("Upload File: ", this.newFile);
             // check if a file is selected
             if (this.newFile.length == 0) return;
-            
+            // let mimeType = this.newFile[0].type;
             let context = 'uploading ' + this.fileObject.modelType.name + '-SubmodelElement' + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
             let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/upload';
             var headers = new Headers();
             var formData = new FormData();
             formData.append("file", this.newFile[0]);
-            this.loading = true;
             // Send Request to upload the file
             this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
-                this.loading = false;
-                // TODO: Add success response handling including updating the File SubmodelElement -> mimeType + value
+                // TODO: Add success response handling including updating the File SubmodelElement -> mimeType (+ value)
                 if (response.success) {
-                    console.log(response);
+                    location.reload(); // reload the page to update the file preview
+                    // let context = 'updating mimeType of ' + this.fileObject.modelType.name + ' "' + this.fileObject.idShort + '"';
+                    // let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path;
+                    // let contentJSON = { ...this.fileObject };
+                    // contentJSON.mimeType = mimeType;
+                    // let content = JSON.stringify(contentJSON);
+                    // let headers = { 'Content-Type': 'application/json' };
+                    // let disableMessage = false;
+                    // // Send Request to update the value of the property
+                    // this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+                    //     if (response.success && (contentJSON.mimeType.includes('image') || contentJSON.mimeType.includes('pdf'))) {
+                    //         location.reload(); // reload the page to update the file preview
+                    //     }
+                    // });
                 }
             });
         },

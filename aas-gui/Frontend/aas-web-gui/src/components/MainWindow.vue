@@ -7,9 +7,9 @@
         <AASTreeview />
       </div>
       <!-- Divider between AASTreeview and PropertyView -->
-      <div style="position: relative; z-index: 1; height: calc(100vh - 105px);">
+      <div style="position: realtive; height: calc(100vh - 106px); z-index: 1">
         <v-icon style="position: absolute; top: -3px; left: -16.5px;">mdi-pan-left</v-icon>
-        <v-divider vertical style="z-index: 1; height: calc(100vh - 105px); position: absolute;"></v-divider>
+        <v-divider vertical style="position: absolute; height: calc(100vh - 106px); z-index: 1"></v-divider>
         <v-icon style="position: absolute; top: -3px; right: -16.5px;">mdi-pan-right</v-icon>
       </div>
       <!-- SubmodelElementView Component -->
@@ -17,9 +17,9 @@
         <SubmodelElementView />
       </div>
       <!-- Divider between PropertyView and ComponentVisualization -->
-      <div style="position: relative; z-index: 1; height: calc(100vh - 105px);">
+      <div style="position: realtive; height: calc(100vh - 106px); z-index: 1">
         <v-icon style="position: absolute; top: -3px; left: -16.5px;">mdi-pan-left</v-icon>
-        <v-divider vertical style="z-index: 1; height: calc(100vh - 105px); position: absolute;"></v-divider>
+        <v-divider vertical style="position: absolute; height: calc(100vh - 106px); z-index: 1"></v-divider>
         <v-icon style="position: absolute; top: -3px; right: -16.5px;">mdi-pan-right</v-icon>
       </div>
       <!-- ComponentVisualization Component -->
@@ -32,6 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import { useStore } from 'vuex';
 import AASTreeview from './AASTreeview.vue';
 import SubmodelElementView from './SubmodelElementView.vue';
 import ComponentVisualization from './ComponentVisualization.vue';
@@ -44,6 +45,14 @@ export default defineComponent({
     ComponentVisualization,
   },
 
+  setup() {
+    const store = useStore()
+
+    return {
+      store, // Store Object
+    }
+  },
+
   mounted() {
     // get the HTML Elements of all Columns (Windows) in the MainWindow
     let windows = document.getElementsByClassName('window');
@@ -51,7 +60,21 @@ export default defineComponent({
     for(let i = 0; i < windows.length; i++) {
       if(i != windows.length -1) this.resizableWindow(windows[i]);
     }
+  },
 
+  beforeUnmount() {
+    // remove all Event Listeners from the Resize Bars
+    let divs = document.getElementsByClassName('resizeBar');
+    for(let i = 0; i < divs.length; i++) {
+      divs[i].removeEventListener('mouseover', function(e: any) {});
+      divs[i].removeEventListener('mouseout', function(e: any) {});
+      divs[i].removeEventListener('mousedown', function(e: any) {});
+      document.removeEventListener('mousemove', function(e: any) {});
+      document.removeEventListener('mouseup', function(e: any) {});
+    }
+    // clear the current AAS and Node
+    this.store.dispatch('dispatchSelectedAAS', {});
+    this.store.dispatch('dispatchNode', {});
   },
   
   methods: {

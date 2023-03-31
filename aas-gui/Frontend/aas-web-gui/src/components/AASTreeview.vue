@@ -1,12 +1,12 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card height="calc(100vh - 105px)" color="card" elevation="0">
+        <v-card color="rgba(0,0,0,0)" elevation="0">
             <v-card-title style="padding: 15px 16px 16px">
                 <!-- TODO: Add Searchfield to filter the Treeview -->
                 AAS Treeview
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: calc(100vh - 170px); overflow-y: auto">
+            <v-card-text style="overflow-y: auto; height: calc(100vh - 170px)">
                 <!-- Spinner for loading State -->
                 <v-row v-if="loading" justify="center" class="ma-3">
                     <v-col cols="auto">
@@ -54,24 +54,7 @@ export default defineComponent({
     },
 
     mounted() {
-        // check if the SelectedAAS is already set in the Store and initialize the Treeview if so
-        if(this.SelectedAAS && this.SelectedAAS.endpoints && this.SelectedAAS.endpoints.length > 0) {
-            this.initializeTree();
-        }
-
-        // check if the aas Query and the path Query are set in the URL and if so load the Submodel/Submodelelement
-        const searchParams = new URL(window.location.href).searchParams;
-        const aasEndpoint = searchParams.get('aas');
-        const path = searchParams.get('path');
-        if (aasEndpoint && path) {
-            // console.log('AAS and Path Queris are set: ', aasEndpoint, path);
-            let node = {} as any;
-            node.path = path;
-            node.isActive = true;
-            // set the isActive prop of the node in submodelData to true
-            this.initialUpdate = true;
-            this.initialNode = node;
-        }
+        this.initTreeWithRouteParams();
     },
 
     watch: {
@@ -94,6 +77,14 @@ export default defineComponent({
         // change the submodelData Object when the updated Node changes
         updatedNode() {
             this.updateNode(this.updatedNode);
+        },
+
+        // initialize Treeview when the initTree flag changes
+        initTree() {
+            if(this.initTree) {
+                this.initTreeWithRouteParams();
+                this.store.dispatch('dispatchInitTreeByReferenceElement', false); // reset the initTree flag
+            }
         },
     },
 
@@ -118,11 +109,16 @@ export default defineComponent({
         updatedNode() {
             return this.store.getters.getUpdatedNode;
         },
+        // get the init treeview flag from Store
+        initTree() {
+            return this.store.getters.getInitTreeByReferenceElement;
+        },
     },
 
     methods: {
         // Function to get the Submodels from the selected AAS (retrieved from the AAS with the provided endpoint)
         initializeTree() {
+            // console.log('Initialize Treeview', this.initialUpdate, this.initialNode);
             // return if no endpoints are available
             if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].address) {
                 this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
@@ -245,7 +241,7 @@ export default defineComponent({
                     if (!foundNode) {
                         foundNode = true;
                         element.isActive = true;
-                        this.store.dispatch('dispatchNode', element); // set the updatedNode in the Store
+                        // this.store.dispatch('dispatchNode', element); // set the updatedNode in the Store
                     }
                     // if prop showChildren exists, set it to true
                     if('showChildren' in element) {
@@ -277,6 +273,28 @@ export default defineComponent({
                 parent.parent = this.updateParent(parent.parent);
             }
             return parent;
+        },
+
+        // Function to initialize the treeview with route params
+        initTreeWithRouteParams() {
+            // check if the SelectedAAS is already set in the Store and initialize the Treeview if so
+            if (this.SelectedAAS && this.SelectedAAS.endpoints && this.SelectedAAS.endpoints.length > 0) {
+                this.initializeTree();
+            }
+
+            // check if the aas Query and the path Query are set in the URL and if so load the Submodel/Submodelelement
+            const searchParams = new URL(window.location.href).searchParams;
+            const aasEndpoint = searchParams.get('aas');
+            const path = searchParams.get('path');
+            if (aasEndpoint && path) {
+                // console.log('AAS and Path Queris are set: ', aasEndpoint, path);
+                let node = {} as any;
+                node.path = path;
+                node.isActive = true;
+                // set the isActive prop of the node in submodelData to true
+                this.initialUpdate = true;
+                this.initialNode = node;
+            }
         },
     },
 });
