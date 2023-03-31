@@ -51,6 +51,7 @@ export default defineComponent({
         CollectionWrapper,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
+    props: ['submodelElementData'],
 
     setup() {
         const theme = useTheme()
@@ -72,9 +73,6 @@ export default defineComponent({
         this.initializeDigitalNameplate(); // initialize DigitalNameplate Plugin
     },
 
-    watch: {
-    },
-
     computed: {
         // get Registry Server URL from Store
         registryServerURL() {
@@ -91,11 +89,6 @@ export default defineComponent({
             return this.store.getters.getSelectedNode;
         },
 
-        // Get the real-time object from the store
-        RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
-        },
-
         // Check if the current Theme is dark
         isDark() {
             return this.theme.global.current.value.dark
@@ -106,11 +99,11 @@ export default defineComponent({
         // Function to initialize the Digital Nameplate
         initializeDigitalNameplate() {
             // Check if a Node is selected
-            if (Object.keys(this.RealTimeObject).length == 0) {
+            if (Object.keys(this.submodelElementData).length == 0) {
                 this.digitalNameplateData = {}; // Reset the DigitalNameplate Data when no Node is selected
                 return;
             }
-            let digitalNameplateData = { ...this.RealTimeObject }; // create local copy of the Nameplate Object
+            let digitalNameplateData = { ...this.submodelElementData }; // create local copy of the Nameplate Object
             let nameplateElements = digitalNameplateData.submodelElements;
             // add pathes to the SubmodelElements
             this.digitalNameplateData = this.prepareDigitalNameplateData(nameplateElements, this.SelectedNode.path + '/submodelElements');

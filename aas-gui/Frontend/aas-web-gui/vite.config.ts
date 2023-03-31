@@ -4,7 +4,7 @@ import vuetify from 'vite-plugin-vuetify'
 
 // Utilities
 import { defineConfig } from 'vite'
-import { fileURLToPath, URL } from 'node:url'
+import * as path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
   define: { 'process.env': {} },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': path.resolve(__dirname, './src'),
     },
     extensions: [
       '.js',
@@ -32,5 +32,6 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    hmr: true, // enable hot module replacement
   },
 })

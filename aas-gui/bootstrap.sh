@@ -21,7 +21,7 @@ fi
 if [ "$just_build_no_devserver" = "y" ]; then
     yarn run build
 else
-    yarn dev
+    yarn dev --host
 fi
 
 cd $PRJ_ROOT

@@ -15,8 +15,7 @@ import { useStore } from 'vuex';
 
 export default defineComponent({
     name: 'ImagePreview',
-    components: {
-    },
+    props: ['submodelElementData'],
 
     setup() {
         const theme = useTheme()
@@ -36,13 +35,13 @@ export default defineComponent({
     },
 
     mounted() {
-        this.localPathValue = this.getLocalPath(this.RealTimeObject.value)
+        this.localPathValue = this.getLocalPath(this.submodelElementData.value)
         this.errorLoadingImage = false;
     },
 
     watch: {
-        RealTimeObject() {
-            this.localPathValue = this.getLocalPath(this.RealTimeObject.value)
+        submodelElementData() {
+            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
             this.errorLoadingImage = false;
         },
     },
@@ -61,11 +60,6 @@ export default defineComponent({
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
             return this.store.getters.getSelectedNode;
-        },
-
-        // Get the real-time object from the store
-        RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
         },
     },
 

@@ -86,6 +86,7 @@ export default defineComponent({
     },
 
     mounted() {
+        // console.log('Property Mounted');
         // set the booleanProp to the current value if the valueType is boolean
         if (this.propertyObject.valueType == 'boolean') {
             this.booleanProp = this.propertyObject.value;

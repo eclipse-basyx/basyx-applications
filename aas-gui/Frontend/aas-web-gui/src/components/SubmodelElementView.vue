@@ -1,9 +1,9 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card height="calc(100vh - 105px)" color="rgba(0,0,0,0)" elevation="0">
+        <v-card color="rgba(0,0,0,0)" elevation="0">
             <v-card-title style="padding: 15px 16px 16px">Element Details</v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: calc(100vh - 170px); overflow-y: auto">
+            <v-card-text style="overflow-y: auto; height: calc(100vh - 170px)">
                 <!-- Detailed View of the selected SubmodelElement (e.g. Property, Operation, etc.) -->
                 <v-card v-if="submodelElementData && Object.keys(submodelElementData).length > 0">
                     <v-list nav>
@@ -24,6 +24,7 @@
                         <MultyLanguageProperty      v-else-if="submodelElementData.modelType.name === 'MultiLanguageProperty'"      :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
                         <Operation                  v-else-if="submodelElementData.modelType.name === 'Operation'"                  :operationObject="submodelElementData"></Operation>
                         <File                       v-else-if="submodelElementData.modelType.name === 'File'"                       :fileObject="submodelElementData" @updatePath="initializeView()"></File>
+                        <ReferenceElement           v-else-if="submodelElementData.modelType.name === 'ReferenceElement'"           :referenceElementObject="submodelElementData"></ReferenceElement>
                         <InvalidElement             v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
@@ -54,6 +55,7 @@
 import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 import RequestHandling from '../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import IdentificationElement    from './UIComponents/IdentificationElement.vue';
 import DescriptionElement       from './UIComponents/DescriptionElement.vue';
@@ -66,12 +68,14 @@ import Property                     from './SubmodelElements/Property.vue';
 import MultyLanguageProperty        from './SubmodelElements/MultiLanguageProperty.vue';
 import Operation                    from './SubmodelElements/Operation.vue';
 import File                         from './SubmodelElements/File.vue';
+import ReferenceElement             from './SubmodelElements/ReferenceElement.vue';
 import InvalidElement               from './SubmodelElements/InvalidElement.vue';
 
 export default defineComponent({
     name: 'SubmodelElementView',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the SubmodelElements
 
         IdentificationElement,
         DescriptionElement,
@@ -84,9 +88,10 @@ export default defineComponent({
         MultyLanguageProperty,
         Operation,
         File,
+        ReferenceElement,
         InvalidElement,
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
         const store = useStore()
@@ -104,6 +109,20 @@ export default defineComponent({
     },
 
     mounted() {
+        if (this.autoSync.state) {
+            // create new interval
+            this.requestInterval = setInterval(() => {
+                if (Object.keys(this.SelectedNode).length > 0) {
+                    this.initializeView();
+                }
+            }, this.autoSync.interval);
+        } else {
+            this.initializeView();
+        }
+    },
+
+    beforeUnmount() {
+        clearInterval(this.requestInterval); // clear old interval
     },
 
     watch: {
@@ -141,7 +160,7 @@ export default defineComponent({
                     clearInterval(this.requestInterval); // clear old interval
                     // create new interval
                     this.requestInterval = setInterval(() => {
-                        if (Object.keys(this.SelectedNode).length > 0 && this.SelectedNode.modelType.name !== 'Submodel') { // no auto-sync for Submodels
+                        if (Object.keys(this.SelectedNode).length > 0) {
                             this.initializeView();
                         }
                     }, this.autoSync.interval);
@@ -205,33 +224,11 @@ export default defineComponent({
                     this.submodelElementData.timestamp = 'no sync';
                     this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
+                // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
                 this.store.dispatch('dispatchRealTimeObject', this.submodelElementData);
             });
         },
-
-        // convert date element to digits
-        padTo2Digits(num: number) {
-            return num.toString().padStart(2, '0');
-        },
-
-        // convert js date object to string
-        formatDate(date: Date) {
-            return (
-                [
-                    date.getFullYear(),
-                    this.padTo2Digits(date.getMonth() + 1),
-                    this.padTo2Digits(date.getDate()),
-                ].join('-') +
-                ' ' +
-                [
-                    this.padTo2Digits(date.getHours()),
-                    this.padTo2Digits(date.getMinutes()),
-                    this.padTo2Digits(date.getSeconds()),
-                ].join(':')
-            );
-        },
-
     },
 });
 </script>

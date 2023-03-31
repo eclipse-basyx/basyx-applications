@@ -1,8 +1,8 @@
 <template>
-    <v-container class="pa-0">
+    <v-container v-if="showExtended" class="pa-0" fluid>
         <!-- AAS Details Card (only visible if the Information Button is pressed on an AAS) -->
         <v-expand-transition>
-            <div v-if="showDetailsCard" class="transition-fast-in-fast-out v-card--reveal bg-detailsCard">
+            <div v-if="showDetailsCard" class="transition-fast-in-fast-out" :class="isMobile ? 'v-card--reveal-mobile' : 'v-card--reveal-desktop'" style="z-index: 9000">
                 <v-divider></v-divider>
                 <v-card-title class="bg-detailsHeader pl-3">
                     <v-row align="center" class="pl-4">
@@ -16,7 +16,7 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <!-- AAS Details -->
-                <v-list v-if="detailsObject" lines="one" nav>
+                <v-list v-if="detailsObject" lines="one" nav class="bg-detailsCard">
                     <!-- AAS Identification -->
                     <IdentificationElement class="mb-2" :identificationObject="detailsObject" :modelType="'AAS'"></IdentificationElement>
                     <v-divider v-if="detailsObject.description && detailsObject.description.length > 0"></v-divider>
@@ -25,7 +25,7 @@
                 </v-list>
                 <v-divider v-if="detailsObject && detailsObject.asset"></v-divider>
                 <!-- Asset Details -->
-                <v-list v-if="detailsObject && detailsObject.asset" lines="one" nav>
+                <v-list v-if="detailsObject && detailsObject.asset" lines="one" nav class="bg-detailsCard">
                     <!-- Asset Identification -->
                     <IdentificationElement class="mb-2" :identificationObject="detailsObject.asset" :modelType="'Asset'"></IdentificationElement>
                     <v-divider v-if="detailsObject.asset.description && detailsObject.asset.description.length > 0"></v-divider>
@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import { useStore } from 'vuex';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
@@ -48,7 +49,27 @@ export default defineComponent({
         IdentificationElement,
         DescriptionElement,
     },
-    props: ['detailsObject', 'showDetailsCard'], // Props from the parent component witj the AAS Details Object and the boolean to show the AAS Details Card
+    props: ['detailsObject', 'showDetailsCard', 'showExtended'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
+
+    setup() {
+        const store = useStore()
+
+        return {
+            store, // Store Object
+        }
+    },
+
+    computed: {
+        // Check if the current Platform is Mobile
+        isMobile() {
+            return this.platform.android || this.platform.ios ? true : false;
+        },
+
+        // get Platform from store
+        platform() {
+            return this.store.getters.getPlatform;
+        },
+    },
 
     methods: {
         // Function to close the AAS Details Card and emit the event to the parent component
@@ -58,3 +79,18 @@ export default defineComponent({
     }
 });
 </script>
+
+<style>
+.v-card--reveal-mobile {
+    bottom: 0px;
+    opacity: .96;
+    position: absolute;
+    width: 100%;
+}
+.v-card--reveal-desktop {
+    bottom: 48px;
+    opacity: .96;
+    position: absolute;
+    width: 100%;
+}
+</style>

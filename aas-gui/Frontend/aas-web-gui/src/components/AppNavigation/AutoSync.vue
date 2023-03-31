@@ -60,12 +60,14 @@ export default defineComponent({
     },
 
     mounted() {
-    },
-
-    watch: {
+        this.autoSyncStatus = this.autoSync;
     },
 
     computed: {
+        // Get the auto-sync state from the store
+        autoSync() {
+            return this.store.getters.getAutoSync ? this.store.getters.getAutoSync.state : false;
+        },
     },
 
     methods: {

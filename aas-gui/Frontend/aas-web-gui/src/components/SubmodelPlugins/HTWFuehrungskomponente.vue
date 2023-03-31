@@ -4,14 +4,14 @@
             <!-- svg graphic of the PackML Statemachine -->
             <svg id="PackML" viewBox="0 0 1856 1012">
                 <g id="OuterArea" style="opacity:0.2">
-                    <path d="M1159,773a6,6,0,0,1,6-6h716a6,6,0,0,0,6-6V17a6,6,0,0,0-6-6H38a6,6,0,0,0-6,6v999a6,6,0,0,0,6,6H1153a6,6,0,0,0,6-6Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
+                    <path d="M1159,773a6,6,0,0,1,6-6h716a6,6,0,0,0,6-6V17a6,6,0,0,0-6-6H38a6,6,0,0,0-6,6v999a6,6,0,0,0,6,6H1153a6,6,0,0,0,6-6Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColorLighten2 }" />
                     <path d="M1159,773a6,6,0,0,1,6-6h716a6,6,0,0,0,6-6V17a6,6,0,0,0-6-6H38a6,6,0,0,0-6,6v999a6,6,0,0,0,6,6H1153a6,6,0,0,0,6-6Z" transform="translate(-31.5 -10.5)" style="fill:none;stroke:#000;stroke-miterlimit:10" />
                 </g>
-                <rect id="InnerArea" x="11.5" y="10.5" width="1833" height="735" rx="6" style="fill:#009374;stroke:#000;stroke-miterlimit:10;opacity:0.4" />
+                <rect id="InnerArea" x="11.5" y="10.5" width="1833" height="735" rx="6" :style="{ fill: primaryColor }" style="stroke:#000;stroke-miterlimit:10;opacity:0.4" />
                 <g id="Clearing_Group">
                     <g id="Clearing_Form">
-                        <path id="Clearing" d="M860,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Clearing_Border" d="M1060,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Clearing" d="M860,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Clearing_Border' + uniqueId" d="M1060,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M914.6,901.58a6.67,6.67,0,0,1-2.18,4.62,7.47,7.47,0,0,1-5.07,1.65,7.19,7.19,0,0,1-3.89-1.05,6.78,6.78,0,0,1-2.59-3,10.82,10.82,0,0,1-1-4.48v-1.73a10.81,10.81,0,0,1,.93-4.61,7,7,0,0,1,2.66-3.07,7.39,7.39,0,0,1,4-1.08,7.12,7.12,0,0,1,4.93,1.66,6.9,6.9,0,0,1,2.17,4.69h-3.2a4.58,4.58,0,0,0-1.16-2.88,3.82,3.82,0,0,0-2.74-.88,3.75,3.75,0,0,0-3.21,1.53,7.59,7.59,0,0,0-1.15,4.49v1.64a8.18,8.18,0,0,0,1.07,4.58,3.56,3.56,0,0,0,3.14,1.57,4.17,4.17,0,0,0,2.85-.85,4.47,4.47,0,0,0,1.2-2.83Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -26,8 +26,8 @@
                 </g>
                 <g id="Unsuspending_Group">
                     <g id="Unsuspending_Form">
-                        <path id="Unsuspending" d="M460,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Unsuspending_Border" d="M660,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Unsuspending" d="M460,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Unsuspending_Border' + uniqueId" d="M660,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M478.4,589.11v12.36a6,6,0,0,1-1.88,4.66,8.29,8.29,0,0,1-10.07,0,6.05,6.05,0,0,1-1.86-4.71V589.11h3.2v12.37a3.92,3.92,0,0,0,.94,2.83,3.66,3.66,0,0,0,2.76,1c2.48,0,3.71-1.31,3.71-3.91V589.11Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -46,8 +46,8 @@
                 </g>
                 <g id="Idle_Group">
                     <g id="Idle_Form">
-                        <path id="Idle" d="M60,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Idle_Border" d="M260,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Idle" d="M60,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Idle_Border' + uniqueId" d="M260,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M138.72,347.6h-3.2V329.11h3.2Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -58,8 +58,8 @@
                 </g>
                 <g id="Unholding_Group">
                     <g id="Unholding_Form">
-                        <path id="Unholding" d="M460,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Unholding_Border" d="M660,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Unholding" d="M460,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Unholding_Border' + uniqueId" d="M660,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M502.21,69.11V81.47a6,6,0,0,1-1.88,4.66,8.29,8.29,0,0,1-10.07,0,6.05,6.05,0,0,1-1.86-4.71V69.11h3.2V81.48a3.92,3.92,0,0,0,.94,2.83,3.66,3.66,0,0,0,2.76,1c2.48,0,3.71-1.31,3.71-3.91V69.11Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -75,8 +75,8 @@
                 </g>
                 <g id="Held_Group">
                     <g id="Held_Form">
-                        <path id="Held" d="M860,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Held_Border" d="M1060,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Held" d="M860,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Held_Border' + uniqueId" d="M1060,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M944.44,87.6h-3.2V79.4H933v8.2h-3.21V69.11H933v7.7h8.26v-7.7h3.2Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -87,8 +87,8 @@
                 </g>
                 <g id="Holding_Group">
                     <g id="Holding_Form">
-                        <path id="Holding" d="M1260,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Holding_Border" d="M1460,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Holding" d="M1260,128.5a5.51,5.51,0,0,1-5.5-5.5V37a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Holding_Border' + uniqueId" d="M1460,32a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V37a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V37a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1321.07,87.6h-3.2V79.4h-8.26v8.2h-3.22V69.11h3.22v7.7h8.26v-7.7h3.2Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -102,8 +102,8 @@
                 </g>
                 <g id="Starting_Group">
                     <g id="Starting_Form">
-                        <path id="Starting" d="M460,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Starting_Border" d="M660,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Starting" d="M460,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Starting_Border' + uniqueId" d="M660,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M510.48,342.84a2.2,2.2,0,0,0-.86-1.88,10.08,10.08,0,0,0-3.09-1.33,14.93,14.93,0,0,1-3.55-1.5,4.74,4.74,0,0,1-2.53-4.14,4.5,4.5,0,0,1,1.82-3.68,7.37,7.37,0,0,1,4.73-1.45,8,8,0,0,1,3.44.71,5.63,5.63,0,0,1,2.38,2,5.2,5.2,0,0,1,.86,2.91h-3.2a2.89,2.89,0,0,0-.91-2.27,3.76,3.76,0,0,0-2.59-.82,3.92,3.92,0,0,0-2.45.68,2.24,2.24,0,0,0-.87,1.88,2,2,0,0,0,.94,1.69,11,11,0,0,0,3.1,1.32,14.18,14.18,0,0,1,3.47,1.46,5.46,5.46,0,0,1,1.91,1.88,4.85,4.85,0,0,1,.61,2.48,4.41,4.41,0,0,1-1.77,3.68,7.67,7.67,0,0,1-4.8,1.36,9.11,9.11,0,0,1-3.69-.74,6.32,6.32,0,0,1-2.62-2.05,5.13,5.13,0,0,1-.93-3.05h3.21a3,3,0,0,0,1,2.44,4.61,4.61,0,0,0,3,.86,3.94,3.94,0,0,0,2.52-.68A2.19,2.19,0,0,0,510.48,342.84Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -118,8 +118,8 @@
                 </g>
                 <g id="Execute_Group">
                     <g id="Execute_Form">
-                        <path id="Execute" d="M860,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#364b44" />
-                        <path id="Execute_Border" d="M1060,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Execute" d="M860,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: executeColor }" />
+                        <path :id="'Execute_Border' + uniqueId" d="M1060,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M917.55,339.35H910V345h8.88v2.57H906.75V329.11h12v2.59H910v5.11h7.59Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -133,8 +133,8 @@
                 </g>
                 <g id="Completing_Group">
                     <g id="Completing_Form">
-                        <path id="Completing" d="M1260,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Completing_Border" d="M1460,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Completing" d="M1260,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Completing_Border' + uniqueId" d="M1460,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1294.68,341.58a6.67,6.67,0,0,1-2.18,4.62,7.47,7.47,0,0,1-5.07,1.65,7.28,7.28,0,0,1-3.89-1,6.93,6.93,0,0,1-2.59-3,10.82,10.82,0,0,1-1-4.48v-1.73a10.81,10.81,0,0,1,.93-4.61,7,7,0,0,1,2.66-3.07,7.43,7.43,0,0,1,4-1.08,7.1,7.1,0,0,1,4.92,1.66,6.88,6.88,0,0,1,2.17,4.69h-3.2a4.58,4.58,0,0,0-1.16-2.88,3.81,3.81,0,0,0-2.73-.88,3.75,3.75,0,0,0-3.22,1.53,7.67,7.67,0,0,0-1.15,4.49v1.64a8.18,8.18,0,0,0,1.07,4.58,3.56,3.56,0,0,0,3.14,1.57,4.15,4.15,0,0,0,2.85-.85,4.47,4.47,0,0,0,1.2-2.83Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -151,8 +151,8 @@
                 </g>
                 <g id="Complete_Group">
                     <g id="Complete_Form">
-                        <path id="Complete" d="M1660,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Complete_Border" d="M1860,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1660a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H1660a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Complete" d="M1660,388.5a5.51,5.51,0,0,1-5.5-5.5V297a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Complete_Border' + uniqueId" d="M1860,292a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1660a5,5,0,0,1-5-5V297a5,5,0,0,1,5-5h200m0-1H1660a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V297a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1709.08,341.58a6.71,6.71,0,0,1-2.18,4.62,7.47,7.47,0,0,1-5.07,1.65,7.28,7.28,0,0,1-3.89-1,7,7,0,0,1-2.6-3,10.82,10.82,0,0,1-.95-4.48v-1.73a10.81,10.81,0,0,1,.93-4.61,7,7,0,0,1,2.66-3.07,7.39,7.39,0,0,1,4-1.08,7.14,7.14,0,0,1,4.93,1.66,6.92,6.92,0,0,1,2.17,4.69h-3.2a4.58,4.58,0,0,0-1.16-2.88,3.84,3.84,0,0,0-2.74-.88,3.76,3.76,0,0,0-3.22,1.53,7.67,7.67,0,0,0-1.14,4.49v1.64a8.1,8.1,0,0,0,1.07,4.58,3.55,3.55,0,0,0,3.14,1.57,4.12,4.12,0,0,0,2.84-.85,4.42,4.42,0,0,0,1.21-2.83Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -167,8 +167,8 @@
                 </g>
                 <g id="Resetting_Group">
                     <g id="Resetting_Form">
-                        <path id="Resetting" d="M60,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Resetting_Border" d="M260,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Resetting" d="M60,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Resetting_Border' + uniqueId" d="M260,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M100.26,600.49H96.68v7.11H93.46V589.11H100a7.54,7.54,0,0,1,4.94,1.44,5.08,5.08,0,0,1,1.74,4.15,5.24,5.24,0,0,1-.89,3.11,5.76,5.76,0,0,1-2.5,1.93l4.15,7.69v.17H104Zm-3.58-2.59H100a3.71,3.71,0,0,0,2.54-.82,2.89,2.89,0,0,0,.91-2.24,3.05,3.05,0,0,0-.84-2.3,3.63,3.63,0,0,0-2.52-.84H96.68Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -184,8 +184,8 @@
                 </g>
                 <g id="Suspended_Group">
                     <g id="Suspended_Form">
-                        <path id="Suspended" d="M860,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Suspended_Border" d="M1060,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Suspended" d="M860,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Suspended_Border' + uniqueId" d="M1060,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H860a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5h200m0-1H860a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M898.15,602.84a2.23,2.23,0,0,0-.86-1.88,10.29,10.29,0,0,0-3.09-1.34,14.55,14.55,0,0,1-3.55-1.49,4.74,4.74,0,0,1-2.53-4.14,4.5,4.5,0,0,1,1.82-3.68,7.35,7.35,0,0,1,4.73-1.45,8,8,0,0,1,3.44.71,5.54,5.54,0,0,1,2.37,2,5.13,5.13,0,0,1,.87,2.91h-3.2a2.89,2.89,0,0,0-.91-2.27,3.77,3.77,0,0,0-2.6-.82,3.91,3.91,0,0,0-2.44.68,2.22,2.22,0,0,0-.87,1.88,2,2,0,0,0,.94,1.69,11,11,0,0,0,3.1,1.32,14.09,14.09,0,0,1,3.46,1.46,5.49,5.49,0,0,1,1.92,1.88,4.85,4.85,0,0,1,.61,2.48,4.41,4.41,0,0,1-1.77,3.68,7.68,7.68,0,0,1-4.81,1.36,9.09,9.09,0,0,1-3.68-.74,6.2,6.2,0,0,1-2.62-2.05,5.13,5.13,0,0,1-.93-3h3.21a3,3,0,0,0,1,2.44,4.58,4.58,0,0,0,3,.86,3.91,3.91,0,0,0,2.52-.68A2.17,2.17,0,0,0,898.15,602.84Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -201,8 +201,8 @@
                 </g>
                 <g id="Suspending_Group">
                     <g id="Suspending_Form">
-                        <path id="Suspending" d="M1260,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Suspending_Border" d="M1460,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Suspending" d="M1260,648.5a5.51,5.51,0,0,1-5.5-5.5V557a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Suspending_Border' + uniqueId" d="M1460,552a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V557a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V557a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1292.25,602.84a2.23,2.23,0,0,0-.86-1.88,10.29,10.29,0,0,0-3.09-1.34,14.65,14.65,0,0,1-3.56-1.49,4.75,4.75,0,0,1-2.52-4.14,4.48,4.48,0,0,1,1.82-3.68,7.34,7.34,0,0,1,4.73-1.45,8.07,8.07,0,0,1,3.44.71,5.66,5.66,0,0,1,2.37,2,5.12,5.12,0,0,1,.86,2.91h-3.19a2.92,2.92,0,0,0-.91-2.27,3.79,3.79,0,0,0-2.6-.82,3.89,3.89,0,0,0-2.44.68,2.22,2.22,0,0,0-.87,1.88,2,2,0,0,0,.94,1.69,11,11,0,0,0,3.09,1.32,14.18,14.18,0,0,1,3.47,1.46,5.58,5.58,0,0,1,1.92,1.88,5,5,0,0,1,.61,2.48,4.41,4.41,0,0,1-1.77,3.68,7.72,7.72,0,0,1-4.81,1.36,9.11,9.11,0,0,1-3.69-.74,6.23,6.23,0,0,1-2.61-2.05,5.13,5.13,0,0,1-.94-3h3.22a3,3,0,0,0,1,2.44,4.58,4.58,0,0,0,3,.86,3.91,3.91,0,0,0,2.52-.68A2.19,2.19,0,0,0,1292.25,602.84Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -219,8 +219,8 @@
                 </g>
                 <g id="Stopping_Group">
                     <g id="Stopping_Form">
-                        <path id="Stopping" d="M460,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Stopping_Border" d="M660,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Stopping" d="M460,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5H660a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Stopping_Border' + uniqueId" d="M660,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H460a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5H660m0-1H460a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H660a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M508.64,902.84a2.2,2.2,0,0,0-.86-1.88,10.29,10.29,0,0,0-3.09-1.34,14.55,14.55,0,0,1-3.55-1.49,4.74,4.74,0,0,1-2.53-4.14,4.5,4.5,0,0,1,1.82-3.68,7.35,7.35,0,0,1,4.73-1.45,8,8,0,0,1,3.44.71,5.63,5.63,0,0,1,2.38,2,5.2,5.2,0,0,1,.86,2.91h-3.2a2.89,2.89,0,0,0-.91-2.27,3.76,3.76,0,0,0-2.59-.82,3.92,3.92,0,0,0-2.45.68,2.22,2.22,0,0,0-.87,1.88,2,2,0,0,0,.94,1.69,11,11,0,0,0,3.1,1.32,14.18,14.18,0,0,1,3.47,1.46,5.46,5.46,0,0,1,1.91,1.88,4.85,4.85,0,0,1,.61,2.48,4.41,4.41,0,0,1-1.77,3.68,7.67,7.67,0,0,1-4.8,1.36,9.11,9.11,0,0,1-3.69-.74,6.32,6.32,0,0,1-2.62-2.05,5.13,5.13,0,0,1-.93-3h3.21a3,3,0,0,0,1,2.44,4.61,4.61,0,0,0,3,.86,3.94,3.94,0,0,0,2.52-.68A2.19,2.19,0,0,0,508.64,902.84Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -235,8 +235,8 @@
                 </g>
                 <g id="Stopped_Group">
                     <g id="Stopped_Form">
-                        <path id="Stopped" d="M60,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Stopped_Border" d="M260,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Stopped" d="M60,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5H260a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Stopped_Border' + uniqueId" d="M260,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H60a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5H260m0-1H60a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6H260a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M114.54,902.84a2.22,2.22,0,0,0-.85-1.88,10.29,10.29,0,0,0-3.09-1.34,14.65,14.65,0,0,1-3.56-1.49,4.75,4.75,0,0,1-2.52-4.14,4.48,4.48,0,0,1,1.82-3.68,7.34,7.34,0,0,1,4.73-1.45,8.07,8.07,0,0,1,3.44.71,5.66,5.66,0,0,1,2.37,2,5.12,5.12,0,0,1,.86,2.91h-3.2a2.92,2.92,0,0,0-.9-2.27,3.79,3.79,0,0,0-2.6-.82,3.89,3.89,0,0,0-2.44.68,2.22,2.22,0,0,0-.87,1.88,2,2,0,0,0,.94,1.69,11,11,0,0,0,3.09,1.32,14.18,14.18,0,0,1,3.47,1.46,5.58,5.58,0,0,1,1.92,1.88,5,5,0,0,1,.61,2.48,4.41,4.41,0,0,1-1.77,3.68,7.72,7.72,0,0,1-4.81,1.36,9.11,9.11,0,0,1-3.69-.74,6.23,6.23,0,0,1-2.61-2.05,5.07,5.07,0,0,1-.94-3h3.22a3,3,0,0,0,1,2.44,4.58,4.58,0,0,0,3,.86,3.91,3.91,0,0,0,2.52-.68A2.19,2.19,0,0,0,114.54,902.84Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -250,8 +250,8 @@
                 </g>
                 <g id="Aborted_Group">
                     <g id="Aborted_Form">
-                        <path id="Aborted" d="M1260,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#009374" />
-                        <path id="Aborted_Border" d="M1460,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Aborted" d="M1260,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: primaryColor }" />
+                        <path :id="'Aborted_Border' + uniqueId" d="M1460,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1260a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H1260a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1314.87,903.29h-7.16l-1.5,4.31h-3.34l7-18.49h2.89l7,18.49h-3.35Zm-6.26-2.59H1314l-2.68-7.66Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -265,8 +265,8 @@
                 </g>
                 <g id="Aborting_Group">
                     <g id="Aborting_Form">
-                        <path id="Aborting" d="M1660,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" style="fill:#99b0a8" />
-                        <path id="Aborting_Border" d="M1860,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1660a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H1660a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
+                        <path id="Aborting" d="M1660,948.5a5.51,5.51,0,0,1-5.5-5.5V857a5.51,5.51,0,0,1,5.5-5.5h200a5.51,5.51,0,0,1,5.5,5.5v86a5.51,5.51,0,0,1-5.5,5.5Z" transform="translate(-31.5 -10.5)" :style="{ fill: stateTransitionColor }" />
+                        <path :id="'Aborting_Border' + uniqueId" d="M1860,852a5,5,0,0,1,5,5v86a5,5,0,0,1-5,5H1660a5,5,0,0,1-5-5V857a5,5,0,0,1,5-5h200m0-1H1660a6,6,0,0,0-6,6v86a6,6,0,0,0,6,6h200a6,6,0,0,0,6-6V857a6,6,0,0,0-6-6Z" transform="translate(-31.5 -10.5)" style="fill: ''" />
                     </g>
                     <g style="isolation:isolate">
                         <path d="M1709,903.29h-7.16l-1.49,4.31H1697l7-18.49h2.88l7,18.49h-3.35Zm-6.25-2.59h5.35l-2.68-7.66Z" transform="translate(-31.5 -10.5)" :style="{ fill: isDark ? '#272727' : '#ffffff' }" />
@@ -392,15 +392,15 @@
                 <v-card-title class="text-subtitle-2">Send State Command</v-card-title>
                 <v-divider></v-divider>
                 <v-card-actions>
-                    <v-btn v-if="resetStates.includes(makeUniform(RealTimeObject.value[0].value))"      @click="setState(1)" variant="elevated" class="mr-2">Reset</v-btn>
-                    <v-btn v-if="startStates.includes(makeUniform(RealTimeObject.value[0].value))"      @click="setState(2)" variant="elevated" class="mr-2">Start</v-btn>
-                    <v-btn v-if="stopStates.includes(makeUniform(RealTimeObject.value[0].value))"       @click="setState(3)" variant="elevated" class="mr-2">Stop</v-btn>
-                    <v-btn v-if="holdStates.includes(makeUniform(RealTimeObject.value[0].value))"       @click="setState(4)" variant="elevated" class="mr-2">Hold</v-btn>
-                    <v-btn v-if="unholdStates.includes(makeUniform(RealTimeObject.value[0].value))"     @click="setState(5)" variant="elevated" class="mr-2">Unhold</v-btn>
-                    <v-btn v-if="suspendStates.includes(makeUniform(RealTimeObject.value[0].value))"    @click="setState(6)" variant="elevated" class="mr-2">Suspend</v-btn>
-                    <v-btn v-if="unsuspendStates.includes(makeUniform(RealTimeObject.value[0].value))"  @click="setState(7)" variant="elevated" class="mr-2">Unsuspend</v-btn>
-                    <v-btn v-if="abortStates.includes(makeUniform(RealTimeObject.value[0].value))"      @click="setState(8)" variant="elevated" class="mr-2">Abort</v-btn>
-                    <v-btn v-if="clearStates.includes(makeUniform(RealTimeObject.value[0].value))"      @click="setState(9)" variant="elevated" class="mr-2">Clear</v-btn>
+                    <v-btn v-if="resetStates.includes(makeUniform(submodelElementData.value[0].value))"      @click="setState(1)" variant="elevated" class="mr-2">Reset</v-btn>
+                    <v-btn v-if="startStates.includes(makeUniform(submodelElementData.value[0].value))"      @click="setState(2)" variant="elevated" class="mr-2">Start</v-btn>
+                    <v-btn v-if="stopStates.includes(makeUniform(submodelElementData.value[0].value))"       @click="setState(3)" variant="elevated" class="mr-2">Stop</v-btn>
+                    <v-btn v-if="holdStates.includes(makeUniform(submodelElementData.value[0].value))"       @click="setState(4)" variant="elevated" class="mr-2">Hold</v-btn>
+                    <v-btn v-if="unholdStates.includes(makeUniform(submodelElementData.value[0].value))"     @click="setState(5)" variant="elevated" class="mr-2">Unhold</v-btn>
+                    <v-btn v-if="suspendStates.includes(makeUniform(submodelElementData.value[0].value))"    @click="setState(6)" variant="elevated" class="mr-2">Suspend</v-btn>
+                    <v-btn v-if="unsuspendStates.includes(makeUniform(submodelElementData.value[0].value))"  @click="setState(7)" variant="elevated" class="mr-2">Unsuspend</v-btn>
+                    <v-btn v-if="abortStates.includes(makeUniform(submodelElementData.value[0].value))"      @click="setState(8)" variant="elevated" class="mr-2">Abort</v-btn>
+                    <v-btn v-if="clearStates.includes(makeUniform(submodelElementData.value[0].value))"      @click="setState(9)" variant="elevated" class="mr-2">Clear</v-btn>
                 </v-card-actions>
             </v-card>
         </v-card>
@@ -412,13 +412,16 @@ import { defineComponent, reactive } from 'vue';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'HTWFuehrungskomponente',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the submodel elements
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
+    props: ['submodelElementData', 'selectedNode'],
 
     setup() {
         const theme = useTheme()
@@ -449,43 +452,45 @@ export default defineComponent({
     },
 
     watch: {
-        RealTimeObjectValue() {
-            // TODO: needs fixing because the object gets reassigned in the store which triggers the watcher!
-            // console.log("RealTimeObjectValue changed", this.RealTimeObjectValue)
-            if (Object.keys(this.RealTimeObject).length == 0) return; // if the object is empty, do nothing
-            this.updateSVG(); // initialize list
+        // Watch for changes in the submodelElementData and update the SVG
+        submodelElementData: {
+            handler() {
+                this.updateSVG();
+            },
+            deep: true,
         },
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
-        // get selected AAS from Store
-        SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
-        },
-
-        // Get the selected Treeview Node (SubmodelElement) from the store
-        SelectedNode() {
-            return this.store.getters.getSelectedNode;
-        },
-
-        // Get the real-time object from the store
-        RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
-        },
-
-        // RealTimeDataObject value
-        RealTimeObjectValue() {
-            return this.RealTimeObject.value;
-        },
-
         // Check if the current Theme is dark
         isDark() {
             return this.theme.global.current.value.dark
+        },
+
+        // Returns a hash created from the selectedNode.pathFull
+        uniqueId() {
+            return this.generateUUIDFromString(this.selectedNode.pathFull);
+        },
+
+        // returns the primary color of the current theme
+        primaryColor() {
+            return this.$vuetify.theme.themes.light.colors.primary;
+        },
+
+        // returns the primary lighten 2 color of the current theme
+        primaryColorLighten2() {
+            let primary = this.$vuetify.theme.themes.light.colors.primary;
+            return this.lightenDarkenColor(primary, 20);
+        },
+
+        // returns the state transition color
+        stateTransitionColor() {
+            return '#999999';
+        },
+
+        // returns the primary darken 2 color of the current theme
+        executeColor() {
+            return '#565656';
         },
 
         // States of the Statemachine
@@ -499,87 +504,87 @@ export default defineComponent({
                 {
                     value: 1,
                     text: 'Clearing',
-                    path: document.getElementById('Clearing_Border')
+                    path: document.getElementById('Clearing_Border' + this.uniqueId)
                 },
                 {
                     value: 2,
                     text: 'Stopped',
-                    path: document.getElementById('Stopped_Border')
+                    path: document.getElementById('Stopped_Border' + this.uniqueId)
                 },
                 {
                     value: 3,
                     text: 'Starting',
-                    path: document.getElementById('Starting_Border')
+                    path: document.getElementById('Starting_Border' + this.uniqueId)
                 },
                 {
                     value: 4,
                     text: 'Idle',
-                    path: document.getElementById('Idle_Border')
+                    path: document.getElementById('Idle_Border' + this.uniqueId)
                 },
                 {
                     value: 5,
                     text: 'Suspended',
-                    path: document.getElementById('Suspended_Border')
+                    path: document.getElementById('Suspended_Border' + this.uniqueId)
                 },
                 {
                     value: 6,
                     text: 'Execute',
-                    path: document.getElementById('Execute_Border')
+                    path: document.getElementById('Execute_Border' + this.uniqueId)
                 },
                 {
                     value: 7,
                     text: 'Stopping',
-                    path: document.getElementById('Stopping_Border')
+                    path: document.getElementById('Stopping_Border' + this.uniqueId)
                 },
                 {
                     value: 8,
                     text: 'Aborting',
-                    path: document.getElementById('Aborting_Border')
+                    path: document.getElementById('Aborting_Border' + this.uniqueId)
                 },
                 {
                     value: 9,
                     text: 'Aborted',
-                    path: document.getElementById('Aborted_Border')
+                    path: document.getElementById('Aborted_Border' + this.uniqueId)
                 },
                 {
                     value: 10,
                     text: 'Holding',
-                    path: document.getElementById('Holding_Border')
+                    path: document.getElementById('Holding_Border' + this.uniqueId)
                 },
                 {
                     value: 11,
                     text: 'Held',
-                    path: document.getElementById('Held_Border')
+                    path: document.getElementById('Held_Border' + this.uniqueId)
                 },
                 {
                     value: 12,
                     text: 'Unholding',
-                    path: document.getElementById('Unholding_Border')
+                    path: document.getElementById('Unholding_Border' + this.uniqueId)
                 },
                 {
                     value: 13,
                     text: 'Suspending',
-                    path: document.getElementById('Suspending_Border')
+                    path: document.getElementById('Suspending_Border' + this.uniqueId)
                 },
                 {
                     value: 14,
                     text: 'Unsuspending',
-                    path: document.getElementById('Unsuspending_Border')
+                    path: document.getElementById('Unsuspending_Border' + this.uniqueId)
                 },
                 {
                     value: 15,
                     text: 'Resetting',
-                    path: document.getElementById('Resetting_Border')
+                    path: document.getElementById('Resetting_Border' + this.uniqueId)
                 },
                 {
                     value: 16,
                     text: 'Completing',
-                    path: document.getElementById('Completing_Border')
+                    path: document.getElementById('Completing_Border' + this.uniqueId)
                 },
                 {
                     value: 17,
                     text: 'Complete',
-                    path: document.getElementById('Complete_Border')
+                    path: document.getElementById('Complete_Border' + this.uniqueId)
                 },
             ]
         },
@@ -592,7 +597,7 @@ export default defineComponent({
             let states = [] as any;
             states = this.states;
             states.forEach((state: any) => {
-                if (this.RealTimeObject.value[0].value && state.text === this.makeUniform(this.RealTimeObject.value[0].value)) {
+                if (this.submodelElementData.value[0].value && state.text === this.makeUniform(this.submodelElementData.value[0].value)) {
                     state.path.style.strokeWidth = "4";
                     state.path.style.stroke = this.isDark ? "#ff0000" : "#ff0000";
                     state.path.style.fill = "rgb(0,0,0);";
@@ -615,8 +620,13 @@ export default defineComponent({
 
         // Function to set the Mode of the PackML Statemachine
         setMode(mode: number) {
-            // console.log("Update Value: " + this.newPropertyValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/Prop_UnitMode/value';
+            // console.log("Set Mode: ", mode, this.selectedNode.pathFull + '/Prop_UnitMode/value');
+            let propName = 'Prop_Mode';
+            // console.log('setState: ', state, this.selectedNode)
+            this.submodelElementData.value.forEach((element: any) => {
+                if (element.idShort == 'Prop_UnitMode') propName = 'Prop_UnitMode';
+            });
+            let path = this.selectedNode.pathFull + '/' + propName + '/value';
             let content = "'" + mode + "'";
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating Property "Prop_UnitMode"';
@@ -631,13 +641,13 @@ export default defineComponent({
 
         // Function to set the State of the PackML Statemachine
         setState(state: number) {
-            // console.log("Update Value: " + this.newPropertyValue);
             // check which property-name is used for the state
             let propName = 'Prop_ControlCommand';
-            this.SelectedNode.value.forEach((element: any) => {
+            // console.log('setState: ', state, this.selectedNode)
+            this.submodelElementData.value.forEach((element: any) => {
                 if (element.idShort == 'Prop_eCommand') propName = 'Prop_eCommand';
             });
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/' + propName + '/value';
+            let path = this.selectedNode.pathFull + '/' + propName + '/value';
             let content = "'" + state + "'";
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating Property "' + propName + '"';
@@ -647,6 +657,23 @@ export default defineComponent({
                 this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'PackML State updated successfully.' }); // Show Success Snackbar
             });
         },
+
+        lightenDarkenColor(hex: string, percent: number) {
+            // Parse the hex color string to RGB values
+            const hexColor = hex.replace('#', '');
+            const r = parseInt(hexColor.substring(0, 2), 16);
+            const g = parseInt(hexColor.substring(2, 4), 16);
+            const b = parseInt(hexColor.substring(4, 6), 16);
+
+            // Calculate the new RGB values based on the percent
+            const newR = Math.round(Math.min(255, r + (percent / 100) * r));
+            const newG = Math.round(Math.min(255, g + (percent / 100) * g));
+            const newB = Math.round(Math.min(255, b + (percent / 100) * b));
+
+            // Convert the RGB values back to a hex color string
+            const newHexColor = ((newR << 16) | (newG << 8) | newB).toString(16).padStart(6, '0');
+            return "#" + newHexColor;
+        }
     },
 });
 </script>

@@ -57,6 +57,7 @@ export default defineComponent({
                 'MultiLanguageProperty',
                 'File',
                 'Operation',
+                'ReferenceElement',
             ] as string[],
         }
     },
