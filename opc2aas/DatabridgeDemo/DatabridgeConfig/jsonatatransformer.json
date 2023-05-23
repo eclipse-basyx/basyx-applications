@@ -1,0 +1,8 @@
+[
+  {
+    "uniqueId": "jsonataExtractValue",
+    "queryPath": "jsonataExtractValue.json",
+    "inputType": "JsonString",
+    "outputType": "JsonString"
+  }
+]
