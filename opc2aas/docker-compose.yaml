@@ -1,0 +1,89 @@
+version: '3.8'
+services:
+  opcua:
+    build:
+      context: ./DatabridgeDemo/OpcUaServer/
+      dockerfile: ./Dockerfile
+    container_name: opcserver
+    ports:
+      - "4840:4840"
+    restart: always
+  registrydb:
+    image: eclipsebasyx/aas-registry:1.3.1
+    ports:
+      - 4099:4099
+    environment:
+      - basyxregistry_registry_backend=InMemory
+      - basyxcontext_contextpath=/registry
+      - basyxcontext_contextport=4099
+      - basyxcontext_accesscontrolalloworigin=*
+    hostname: registrydb
+    container_name: registrydb
+    restart: always
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider registrydb:4099/health || exit 1
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s
+  aasserverdb:
+    image: eclipsebasyx/aas-server:1.4.0-SNAPSHOT
+    container_name: aasserverdb
+    ports:
+      - 4500:4500
+    volumes: 
+      - "./DatabridgeDemo/AASServerConfig:/usr/share/config"
+    environment:
+      - basyxaas_registry_path=http://registrydb:4099/registry/
+      - basyxaas_aas_backend=InMemory
+      - basyxcontext_contextpath=/aasServer
+      - basyxcontext_contextport=4500
+      - waiting_for=[{"host":"registrydb","port":"4099"}]
+      - basyxcontext_accesscontrolalloworigin=*
+      - basyxaas_aas_source=/usr/share/config/AAS.aasx
+    restart: always
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider aasserverdb:4500/health || exit 1
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s
+    depends_on:
+      - opcua
+  databridge:
+    image: eclipsebasyx/databridge:1.0.0-SNAPSHOT
+    container_name: databridge
+    volumes:
+      - "./DatabridgeDemo/DatabridgeConfig:/usr/share/config"
+    depends_on:
+      aasserverdb:
+        condition: service_healthy
+      registrydb:
+        condition: service_healthy
+    restart: always
+  opc2aas:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: opc2aas
+    ports:
+      - "4700:4700"
+    depends_on:
+      aasserverdb:
+        condition: service_healthy
+      registrydb:
+        condition: service_healthy
+    restart: always
+  gui:
+    image: eclipsebasyx/aas-gui:v230403
+    container_name: webui
+    ports:
+      - "4088:3000"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      VITE_REGISTRY_PATH: "http://localhost:4099/registry"
+      VITE_AAS_SERVER_PATH: "http://localhost:4500/aasServer"
+      VITE_PRIMARY_COLOR: "#76b900"
+    volumes:
+      - ./DatabridgeDemo/Logo:/app/src/assets/Logo
+    restart: always
