@@ -119,7 +119,7 @@ In order to run the application, the following command must be executed from the
 > docker-compose up -d
 
 The database must be created and the demonstrator will be build. Potential warnings can be associated with the generated 
-[TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs](TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs) file.
+[TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs](src/TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs) file.
 For more information read the thesis.
 
 The AAS should be available under [http://localhost:8080](http://localhost:8080). 
