@@ -1,0 +1,117 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: KeyError: aas:valueType on line 189 has no text!
+ -> Failed to construct aas:property on line 179 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 219 has no text!
+ -> Failed to construct aas:property on line 209 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 301 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 348 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 492 has no text!
+ -> Failed to construct aas:property on line 482 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 522 has no text!
+ -> Failed to construct aas:property on line 512 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 570 has no text!
+ -> Failed to construct aas:property on line 557 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 585 has no text!
+ -> Failed to construct aas:property on line 575 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 693 has no text!
+ -> Failed to construct aas:property on line 683 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 708 has no text!
+ -> Failed to construct aas:property on line 698 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 738 has no text!
+ -> Failed to construct aas:property on line 728 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 753 has no text!
+ -> Failed to construct aas:property on line 743 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 768 has no text!
+ -> Failed to construct aas:property on line 758 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 783 has no text!
+ -> Failed to construct aas:property on line 773 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 813 has no text!
+ -> Failed to construct aas:property on line 803 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 828 has no text!
+ -> Failed to construct aas:property on line 818 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 843 has no text!
+ -> Failed to construct aas:property on line 833 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 896 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1453 has no text!
+ -> Failed to construct aas:property on line 1443 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1498 has no text!
+ -> Failed to construct aas:property on line 1488 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1546 has no text!
+ -> Failed to construct aas:property on line 1533 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1561 has no text!
+ -> Failed to construct aas:property on line 1551 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1624 has no text!
+ -> Failed to construct aas:property on line 1614 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1669 has no text!
+ -> Failed to construct aas:property on line 1659 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1684 has no text!
+ -> Failed to construct aas:property on line 1674 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1714 has no text!
+ -> Failed to construct aas:property on line 1704 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1729 has no text!
+ -> Failed to construct aas:property on line 1719 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1744 has no text!
+ -> Failed to construct aas:property on line 1734 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1759 has no text!
+ -> Failed to construct aas:property on line 1749 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1789 has no text!
+ -> Failed to construct aas:property on line 1779 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1804 has no text!
+ -> Failed to construct aas:property on line 1794 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1819 has no text!
+ -> Failed to construct aas:property on line 1809 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 1872 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 2360 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 2848 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3336 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3824 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4312 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4800 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 5288 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 5776 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 6264 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 6752 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 7240 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 7728 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 8216 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 8704 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 9192 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 9680 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 10168 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 10656 using construct_submodel_element!
+ - ERROR: ValueError: aas:valueType on line 11452 has invalid text: langString
+ -> Failed to construct aas:property on line 11442 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11496 has no text!
+ -> Failed to construct aas:property on line 11487 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11556 has no text!
+ -> Failed to construct aas:property on line 11546 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11571 has no text!
+ -> Failed to construct aas:property on line 11561 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11586 has no text!
+ -> Failed to construct aas:property on line 11576 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11601 has no text!
+ -> Failed to construct aas:property on line 11591 using construct_submodel_element!

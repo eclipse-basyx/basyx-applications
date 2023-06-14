@@ -1,0 +1,43 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:assetAdministrationShell on line 4 using construct_asset_administration_shell!
+ - ERROR: ValueError: The id_short must start with a letter
+ -> Failed to construct aas:asset on line 47 using construct_asset!
+ - ERROR: ValueError: Value is not a valid XSD date string
+ -> Failed to construct aas:property on line 250 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 275 has no text!
+ -> Failed to construct aas:file on line 265 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3142 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3180 using construct_submodel_element!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5378 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5410 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5448 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5480 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5517 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5554 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5591 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5623 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5655 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5771 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5803 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5835 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5867 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 5899 using construct_administrative_information!

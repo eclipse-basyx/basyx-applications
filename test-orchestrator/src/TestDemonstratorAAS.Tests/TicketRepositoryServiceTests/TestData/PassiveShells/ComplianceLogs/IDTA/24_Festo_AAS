@@ -1,0 +1,51 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:assetAdministrationShell on line 4 using construct_asset_administration_shell!
+ - ERROR: ValueError: The id_short must start with a letter
+ -> Failed to construct aas:asset on line 57 using construct_asset!
+ - ERROR: ValueError: Value is not a valid XSD date string
+ -> Failed to construct aas:property on line 260 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 285 has no text!
+ -> Failed to construct aas:file on line 275 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4314 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4640 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4716 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4735 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4754 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4773 using construct_submodel_element!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6721 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6753 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6791 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6823 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6860 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6897 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6934 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6966 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 6998 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 7114 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 7146 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 7178 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 7210 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 7242 using construct_administrative_information!

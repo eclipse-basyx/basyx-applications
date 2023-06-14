@@ -1,0 +1,27 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 2897 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 2928 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 2959 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 2990 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3021 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3052 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3083 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3114 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3145 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3176 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3207 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3238 using construct_concept_description!

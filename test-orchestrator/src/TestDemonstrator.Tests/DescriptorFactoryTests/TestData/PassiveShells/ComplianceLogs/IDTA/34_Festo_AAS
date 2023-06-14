@@ -1,0 +1,500 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: KeyError: aas:valueType on line 106 has no text!
+ -> Failed to construct aas:property on line 96 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 121 has no text!
+ -> Failed to construct aas:property on line 111 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 136 has no text!
+ -> Failed to construct aas:property on line 126 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 151 has no text!
+ -> Failed to construct aas:property on line 141 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 166 has no text!
+ -> Failed to construct aas:property on line 156 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 181 has no text!
+ -> Failed to construct aas:property on line 171 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 196 has no text!
+ -> Failed to construct aas:property on line 186 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 211 has no text!
+ -> Failed to construct aas:property on line 201 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 226 has no text!
+ -> Failed to construct aas:property on line 216 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 241 has no text!
+ -> Failed to construct aas:property on line 231 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 256 has no text!
+ -> Failed to construct aas:property on line 246 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 271 has no text!
+ -> Failed to construct aas:property on line 261 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 286 has no text!
+ -> Failed to construct aas:property on line 276 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 301 has no text!
+ -> Failed to construct aas:property on line 291 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 316 has no text!
+ -> Failed to construct aas:file on line 306 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 331 has no text!
+ -> Failed to construct aas:property on line 321 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 346 has no text!
+ -> Failed to construct aas:property on line 336 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 361 has no text!
+ -> Failed to construct aas:property on line 351 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 376 has no text!
+ -> Failed to construct aas:property on line 366 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 391 has no text!
+ -> Failed to construct aas:property on line 381 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 406 has no text!
+ -> Failed to construct aas:property on line 396 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 421 has no text!
+ -> Failed to construct aas:property on line 411 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 436 has no text!
+ -> Failed to construct aas:property on line 426 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 451 has no text!
+ -> Failed to construct aas:file on line 441 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 480 has no text!
+ -> Failed to construct aas:property on line 470 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 495 has no text!
+ -> Failed to construct aas:property on line 485 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 524 has no text!
+ -> Failed to construct aas:property on line 514 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 539 has no text!
+ -> Failed to construct aas:property on line 529 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 554 has no text!
+ -> Failed to construct aas:property on line 544 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 569 has no text!
+ -> Failed to construct aas:property on line 559 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 584 has no text!
+ -> Failed to construct aas:property on line 574 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 602 has no text!
+ -> Failed to construct aas:property on line 592 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 617 has no text!
+ -> Failed to construct aas:property on line 607 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 632 has no text!
+ -> Failed to construct aas:property on line 622 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 647 has no text!
+ -> Failed to construct aas:property on line 637 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 665 has no text!
+ -> Failed to construct aas:file on line 655 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 680 has no text!
+ -> Failed to construct aas:property on line 670 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 863 has no text!
+ -> Failed to construct aas:property on line 853 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 984 has no text!
+ -> Failed to construct aas:file on line 974 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 1053 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 1069 using construct_submodel_element!
+ - ERROR: ValueError: Value is not a valid XSD date string
+ -> Failed to construct aas:property on line 1295 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 1320 has no text!
+ -> Failed to construct aas:file on line 1310 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1352 has no text!
+ -> Failed to construct aas:property on line 1342 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1398 has no text!
+ -> Failed to construct aas:property on line 1388 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1413 has no text!
+ -> Failed to construct aas:property on line 1403 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1428 has no text!
+ -> Failed to construct aas:property on line 1418 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1443 has no text!
+ -> Failed to construct aas:property on line 1433 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1458 has no text!
+ -> Failed to construct aas:property on line 1448 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1476 has no text!
+ -> Failed to construct aas:property on line 1466 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1491 has no text!
+ -> Failed to construct aas:property on line 1481 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1506 has no text!
+ -> Failed to construct aas:property on line 1496 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1521 has no text!
+ -> Failed to construct aas:property on line 1511 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1536 has no text!
+ -> Failed to construct aas:property on line 1526 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1565 has no text!
+ -> Failed to construct aas:property on line 1555 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 1580 has no text!
+ -> Failed to construct aas:file on line 1570 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1659 has no text!
+ -> Failed to construct aas:property on line 1649 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1706 has no text!
+ -> Failed to construct aas:property on line 1696 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1721 has no text!
+ -> Failed to construct aas:property on line 1711 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1736 has no text!
+ -> Failed to construct aas:property on line 1726 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1751 has no text!
+ -> Failed to construct aas:property on line 1741 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1800 has no text!
+ -> Failed to construct aas:property on line 1790 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1815 has no text!
+ -> Failed to construct aas:property on line 1805 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1830 has no text!
+ -> Failed to construct aas:property on line 1820 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1845 has no text!
+ -> Failed to construct aas:property on line 1835 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1860 has no text!
+ -> Failed to construct aas:property on line 1850 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1875 has no text!
+ -> Failed to construct aas:property on line 1865 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1890 has no text!
+ -> Failed to construct aas:property on line 1880 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1905 has no text!
+ -> Failed to construct aas:property on line 1895 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1920 has no text!
+ -> Failed to construct aas:property on line 1910 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 1935 has no text!
+ -> Failed to construct aas:file on line 1925 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1950 has no text!
+ -> Failed to construct aas:property on line 1940 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1965 has no text!
+ -> Failed to construct aas:property on line 1955 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1980 has no text!
+ -> Failed to construct aas:property on line 1970 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 1995 has no text!
+ -> Failed to construct aas:property on line 1985 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2010 has no text!
+ -> Failed to construct aas:property on line 2000 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2025 has no text!
+ -> Failed to construct aas:property on line 2015 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2040 has no text!
+ -> Failed to construct aas:property on line 2030 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2055 has no text!
+ -> Failed to construct aas:property on line 2045 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 2070 has no text!
+ -> Failed to construct aas:file on line 2060 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2099 has no text!
+ -> Failed to construct aas:property on line 2089 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2114 has no text!
+ -> Failed to construct aas:property on line 2104 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2143 has no text!
+ -> Failed to construct aas:property on line 2133 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2158 has no text!
+ -> Failed to construct aas:property on line 2148 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2173 has no text!
+ -> Failed to construct aas:property on line 2163 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2188 has no text!
+ -> Failed to construct aas:property on line 2178 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2203 has no text!
+ -> Failed to construct aas:property on line 2193 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2221 has no text!
+ -> Failed to construct aas:property on line 2211 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2236 has no text!
+ -> Failed to construct aas:property on line 2226 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2251 has no text!
+ -> Failed to construct aas:property on line 2241 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2266 has no text!
+ -> Failed to construct aas:property on line 2256 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 2284 has no text!
+ -> Failed to construct aas:file on line 2274 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2299 has no text!
+ -> Failed to construct aas:property on line 2289 using construct_submodel_element!
+ - ERROR: KeyError: Referable with id_short 'AssetId' is already present in this set of objects
+ -> Failed to construct aas:submodel on line 2380 using construct_submodel!
+ - ERROR: KeyError: aas:valueType on line 2868 has no text!
+ -> Failed to construct aas:property on line 2858 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 2883 has no text!
+ -> Failed to construct aas:file on line 2873 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2898 has no text!
+ -> Failed to construct aas:property on line 2888 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2913 has no text!
+ -> Failed to construct aas:property on line 2903 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 2928 has no text!
+ -> Failed to construct aas:property on line 2918 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 3004 has no text!
+ -> Failed to construct aas:property on line 2994 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 3019 has no text!
+ -> Failed to construct aas:property on line 3009 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 3034 has no text!
+ -> Failed to construct aas:property on line 3024 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3059 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3226 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3317 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3332 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3347 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3362 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3377 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3392 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3407 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3422 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3437 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3452 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3467 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3482 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3514 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3529 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3544 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3576 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3591 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3606 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3621 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3636 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3651 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3666 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3681 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3696 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3711 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3726 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3741 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3773 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3788 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3803 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3818 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3833 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3848 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3863 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3878 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 3893 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3911 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 3958 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4108 has no text!
+ -> Failed to construct aas:property on line 4098 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 4123 has no text!
+ -> Failed to construct aas:file on line 4113 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4138 has no text!
+ -> Failed to construct aas:property on line 4128 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4153 has no text!
+ -> Failed to construct aas:property on line 4143 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4168 has no text!
+ -> Failed to construct aas:property on line 4158 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 4183 has no text!
+ -> Failed to construct aas:file on line 4173 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 4198 has no text!
+ -> Failed to construct aas:file on line 4188 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4244 has no text!
+ -> Failed to construct aas:property on line 4234 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4259 has no text!
+ -> Failed to construct aas:property on line 4249 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4274 has no text!
+ -> Failed to construct aas:property on line 4264 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4313 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4338 has no text!
+ -> Failed to construct aas:property on line 4328 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4343 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4358 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4373 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4388 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4403 using construct_submodel_element!
+ - ERROR: ValueError: aas:valueType on line 4428 has invalid text: langString
+ -> Failed to construct aas:property on line 4418 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4433 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4448 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4473 has no text!
+ -> Failed to construct aas:property on line 4463 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4488 has no text!
+ -> Failed to construct aas:property on line 4478 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4503 has no text!
+ -> Failed to construct aas:property on line 4493 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:property on line 4508 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4533 has no text!
+ -> Failed to construct aas:property on line 4523 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4548 has no text!
+ -> Failed to construct aas:property on line 4538 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4563 has no text!
+ -> Failed to construct aas:property on line 4553 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4578 has no text!
+ -> Failed to construct aas:property on line 4568 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 4593 has no text!
+ -> Failed to construct aas:property on line 4583 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4601 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4716 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4803 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 4955 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 5062 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 5347 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 5441 has no text!
+ -> Failed to construct aas:property on line 5431 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 5456 has no text!
+ -> Failed to construct aas:property on line 5446 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodel on line 4071 using construct_submodel!
+ - ERROR: ValueError: Attribute type of aas:key on line 5485 has invalid value: 
+ -> Failed to construct aas:key on line 5485 using construct_key!
+ - ERROR: KeyError: aas:type on line 5495 has no text!
+ -> Failed to construct aas:qualifier on line 5489 using construct_constraint!
+ - ERROR: KeyError: aas:langString on line 5705 has no text!
+ -> Failed to construct aas:value on line 5701 using construct_lang_string_set!
+ - ERROR: KeyError: aas:mimeType on line 5720 has no text!
+ -> Failed to construct aas:file on line 5710 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 6304 has no text!
+ -> Failed to construct aas:file on line 6294 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 6735 has no text!
+ -> Failed to construct aas:file on line 6725 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 6972 has no text!
+ -> Failed to construct aas:file on line 6962 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 7209 has no text!
+ -> Failed to construct aas:file on line 7199 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 7446 has no text!
+ -> Failed to construct aas:file on line 7436 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 7683 has no text!
+ -> Failed to construct aas:file on line 7673 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 7920 has no text!
+ -> Failed to construct aas:file on line 7910 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 8157 has no text!
+ -> Failed to construct aas:file on line 8147 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 8394 has no text!
+ -> Failed to construct aas:file on line 8384 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 8631 has no text!
+ -> Failed to construct aas:file on line 8621 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 8869 has no text!
+ -> Failed to construct aas:file on line 8859 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 9107 has no text!
+ -> Failed to construct aas:file on line 9097 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 9663 has no text!
+ -> Failed to construct aas:file on line 9653 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 10009 has no text!
+ -> Failed to construct aas:file on line 9999 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:submodelElementCollection on line 10091 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 10715 has no text!
+ -> Failed to construct aas:file on line 10705 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10835 has no text!
+ -> Failed to construct aas:property on line 10825 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 10850 has no text!
+ -> Failed to construct aas:file on line 10840 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10865 has no text!
+ -> Failed to construct aas:property on line 10855 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10880 has no text!
+ -> Failed to construct aas:property on line 10870 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10895 has no text!
+ -> Failed to construct aas:property on line 10885 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 10910 has no text!
+ -> Failed to construct aas:file on line 10900 using construct_submodel_element!
+ - ERROR: KeyError: aas:mimeType on line 10925 has no text!
+ -> Failed to construct aas:file on line 10915 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10971 has no text!
+ -> Failed to construct aas:property on line 10961 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 10986 has no text!
+ -> Failed to construct aas:property on line 10976 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11001 has no text!
+ -> Failed to construct aas:property on line 10991 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11036 has no text!
+ -> Failed to construct aas:property on line 11026 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11065 has no text!
+ -> Failed to construct aas:property on line 11055 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11094 has no text!
+ -> Failed to construct aas:property on line 11084 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11132 has no text!
+ -> Failed to construct aas:property on line 11122 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 11147 has no text!
+ -> Failed to construct aas:property on line 11137 using construct_submodel_element!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 11581 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 11617 using construct_concept_description!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12190 using construct_administrative_information!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 12300 using construct_concept_description!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12339 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12374 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12414 using construct_administrative_information!
+ - ERROR: ConceptDescription[Identifier(IRDI=0173-1#02-AAW338#001)] has a duplicate identifier already parsed in the document! skipping it...
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12449 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12484 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12519 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12559 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12599 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12639 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12674 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12709 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12744 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12784 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12819 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12859 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12894 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12934 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 12969 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13009 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13044 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13079 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13119 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13154 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13189 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13224 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13259 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13294 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13334 using construct_administrative_information!
+ - ERROR: ValueError: A revision requires a version. This means, if there is no version there is no revision neither.
+ -> Failed to construct aas:administration on line 13374 using construct_administrative_information!

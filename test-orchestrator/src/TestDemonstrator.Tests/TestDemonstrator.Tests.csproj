@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+    <PackageReference Include="Testcontainers" Version="2.1.0" />
+    <PackageReference Include="TestContainers.Container.Abstractions" Version="1.5.4" />
+    <PackageReference Include="TestContainers.Container.Database" Version="1.5.4" />
+    <PackageReference Include="TestContainers.Container.Database.MsSql" Version="1.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TestDemonstrator\TestDemonstrator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DescriptorFactoryTests\TestData\PassiveShells\ComplianceLogs\HTW\" />
+    <Folder Include="DescriptorFactoryTests\TestData\PassiveShells\ComplianceLogs\IDTA\" />
+    <Folder Include="DescriptorFactoryTests\TestData\PassiveShells\IDTA\ComplianceCheck\" />
+    <Folder Include="TestObjectTests\TestData\PassiveShells\IDTA\ComplianceCheck\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="StateMachineDescriptorXsd.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StateMachineDescriptorXsd.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="StateMachineDescriptorXsd.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StateMachineDescriptorXsd.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+</Project>

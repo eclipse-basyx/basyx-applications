@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      # Map port 3306 on the host to 1433 inside the container
+      # This allows non-containerised applications to connect to the database
+      - "3306:1433"
+    environment:
+      - MSSQL_SA_PASSWORD=Rootpassword12:4
+      - ACCEPT_EULA=Y
+  testorchestrator:
+    build:
+      context: .
+    depends_on:
+      - db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8080:80"
+      - "5000:5000"

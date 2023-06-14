@@ -1,0 +1,99 @@
+﻿Compliance Test executed:
+SUCCESS:      Open file
+FAILED:       Read file and check if it is deserializable
+ - ERROR: KeyError: aas:valueType on line 196 has no text!
+ -> Failed to construct aas:property on line 186 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 226 has no text!
+ -> Failed to construct aas:property on line 216 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 525 has no text!
+ -> Failed to construct aas:property on line 516 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 539 has no text!
+ -> Failed to construct aas:property on line 530 using construct_submodel_element!
+ - ERROR: ValueError: aas:valueType on line 569 has invalid text: langString
+ -> Failed to construct aas:property on line 559 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 614 has no text!
+ -> Failed to construct aas:property on line 604 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 629 has no text!
+ -> Failed to construct aas:property on line 619 using construct_submodel_element!
+ - ERROR: ValueError: aas:valueType on line 658 has invalid text: langString
+ -> Failed to construct aas:property on line 648 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 673 has no text!
+ -> Failed to construct aas:property on line 663 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 702 has no text!
+ -> Failed to construct aas:property on line 693 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 762 has no text!
+ -> Failed to construct aas:property on line 752 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 777 has no text!
+ -> Failed to construct aas:property on line 767 using construct_submodel_element!
+ - ERROR: ValueError: Value is not a valid XSD date string
+ -> Failed to construct aas:property on line 782 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 807 has no text!
+ -> Failed to construct aas:property on line 797 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 822 has no text!
+ -> Failed to construct aas:property on line 812 using construct_submodel_element!
+ - ERROR: KeyError: aas:valueType on line 837 has no text!
+ -> Failed to construct aas:property on line 827 using construct_submodel_element!
+ - ERROR: ValueError: aas:valueType on line 940 has invalid text: langString
+ -> Failed to construct aas:property on line 930 using construct_submodel_element!
+ - ERROR: ValueError: Attribute type of aas:key on line 1096 has invalid value: 
+ -> Failed to construct aas:key on line 1096 using construct_key!
+ - ERROR: ValueError: Value is not a valid XSD date string
+ -> Failed to construct aas:property on line 1105 using construct_submodel_element!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1123 using construct_submodel_element!
+ - ERROR: ValueError: Attribute type of aas:key on line 1151 has invalid value: 
+ -> Failed to construct aas:key on line 1151 using construct_key!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1187 using construct_submodel_element!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1206 using construct_submodel_element!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1224 using construct_submodel_element!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1242 using construct_submodel_element!
+ - ERROR: ValueError: Decimal is not a valid simple built-in XSD type
+ -> Failed to construct aas:property on line 1260 using construct_submodel_element!
+ - ERROR: ValueError: invalid literal for int() with base 10: '0.2'
+ -> Failed to construct aas:property on line 1279 using construct_submodel_element!
+ - ERROR: ValueError: Attribute type of aas:key on line 1308 has invalid value: 
+ -> Failed to construct aas:key on line 1308 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1344 has invalid value: 
+ -> Failed to construct aas:key on line 1344 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1362 has invalid value: 
+ -> Failed to construct aas:key on line 1362 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1380 has invalid value: 
+ -> Failed to construct aas:key on line 1380 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1398 has invalid value: 
+ -> Failed to construct aas:key on line 1398 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1416 has invalid value: 
+ -> Failed to construct aas:key on line 1416 using construct_key!
+ - ERROR: ValueError: Attribute type of aas:key on line 1434 has invalid value: 
+ -> Failed to construct aas:key on line 1434 using construct_key!
+ - ERROR: KeyError: aas:valueType on line 1456 has no text!
+ -> Failed to construct aas:property on line 1443 using construct_submodel_element!
+ - ERROR: ValueError: Attribute type of aas:key on line 1471 has invalid value: 
+ -> Failed to construct aas:key on line 1471 using construct_key!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3939 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 3970 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4001 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4032 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4063 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4094 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4125 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4156 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4187 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4218 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4249 using construct_concept_description!
+ - ERROR: ValueError: The id_short must contain only letters, digits and underscore
+ -> Failed to construct aas:conceptDescription on line 4280 using construct_concept_description!
