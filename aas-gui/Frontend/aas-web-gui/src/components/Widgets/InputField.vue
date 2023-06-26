@@ -8,14 +8,14 @@
                 <v-text-field v-if="element.name" v-model="newPropertyValues[i]" variant="outlined" density="compact" hide-details style="width: 300px" clearable @keydown.native.enter="updateValue(element, i)">
                     <!-- Current Value -->
                     <template v-slot:prepend-inner>
-                        <v-chip label size="x-small" border style="margin-top: 2px">{{ element.value }}</v-chip>
+                        <v-chip label size="x-small" border>{{ element.value }}</v-chip>
                         <v-divider class="ml-3 mr-1" vertical inset style="margin-top: 4px"></v-divider>
                     </template>
                     <template v-slot:append-inner>
                         <!-- Suffix with Unit -->
                         <span v-if="element.unit" class="text-subtitleText">{{ element.unit }}</span>
                         <!-- Update Button -->
-                        <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="updateValue(element, i)">
+                        <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue(element, i)">
                             <v-icon>mdi-upload</v-icon>
                         </v-btn>
                     </template>

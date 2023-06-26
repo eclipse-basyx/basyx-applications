@@ -24,6 +24,7 @@
                         <MultyLanguageProperty      v-else-if="submodelElementData.modelType.name === 'MultiLanguageProperty'"      :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
                         <Operation                  v-else-if="submodelElementData.modelType.name === 'Operation'"                  :operationObject="submodelElementData"></Operation>
                         <File                       v-else-if="submodelElementData.modelType.name === 'File'"                       :fileObject="submodelElementData" @updatePath="initializeView()"></File>
+                        <Blob                       v-else-if="submodelElementData.modelType.name === 'Blob'"                       :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
                         <ReferenceElement           v-else-if="submodelElementData.modelType.name === 'ReferenceElement'"           :referenceElementObject="submodelElementData"></ReferenceElement>
                         <InvalidElement             v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
@@ -68,6 +69,7 @@ import Property                     from './SubmodelElements/Property.vue';
 import MultyLanguageProperty        from './SubmodelElements/MultiLanguageProperty.vue';
 import Operation                    from './SubmodelElements/Operation.vue';
 import File                         from './SubmodelElements/File.vue';
+import Blob                         from './SubmodelElements/Blob.vue';
 import ReferenceElement             from './SubmodelElements/ReferenceElement.vue';
 import InvalidElement               from './SubmodelElements/InvalidElement.vue';
 
@@ -88,6 +90,7 @@ export default defineComponent({
         MultyLanguageProperty,
         Operation,
         File,
+        Blob,
         ReferenceElement,
         InvalidElement,
     },

@@ -9,7 +9,7 @@
                         <v-text-field v-model="value.text" variant="outlined" density="compact" hide-details clearable append-icon="mdi-delete" @click:append="removeEntry(i)" @update:focused="setFocus($event, value)" @keydown.native.enter="updateValue()">
                             <template v-slot:prepend-inner>
                                 <!-- language -->
-                                <v-chip label size="x-small" border style="margin-top: 2px">
+                                <v-chip label size="x-small" border>
                                     <span>{{ value.language ? value.language : 'no-lang' }}</span>
                                     <v-icon site="x-small" style="margin-right: -3px">mdi-chevron-down</v-icon>
                                     <!-- Menu to select the Language -->
@@ -24,7 +24,7 @@
                             </template>
                             <!-- Update Value Button -->
                             <template v-slot:append-inner>
-                                <v-btn v-if="value.isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="updateValue()">
+                                <v-btn v-if="value.isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
                                     <v-icon>mdi-upload</v-icon>
                                 </v-btn>
                             </template>

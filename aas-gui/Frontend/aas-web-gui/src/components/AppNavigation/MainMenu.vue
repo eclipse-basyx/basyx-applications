@@ -1,6 +1,6 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card :min-width="isMobile ? 0 : 700">
+        <v-card :min-width="isMobile ? 0 : 700" :flat="isMobile ? true : false" :color="isMobile ? 'card' : ''">
             <v-row>
                 <v-col :cols="isMobile ? 12 : 4" :class="isMobile ? 'bg-card' : ''">
                     <v-card variant="flat" style="border-radius: 0px" class="pt-3" color="card">
@@ -29,26 +29,36 @@
                     </v-card>
                 </v-col>
                 <v-divider :vertical="isMobile ? false : true" style="margin-left: -12px"></v-divider>
-                <v-col :cols="isMobile ? 12: 8" :class="isMobile ? 'pt-0 mb-2 bg-card px-6' : 'pt-6 elevatedCard'">
+                <v-col :cols="isMobile ? 12: 8" :class="isMobile ? 'pt-0 mb-2 px-6' : 'pt-6'" class="bg-card">
                     <!-- Configure Registry URL -->
                     <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="Registry Server URL" v-model="registryURL" @keydown.native.enter="connectToRegistry()">
                         <template v-slot:append-inner>
-                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="connectToRegistry()" :loading="loadingRegistry">Connect</v-btn>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToRegistry()" :loading="loadingRegistry">Connect</v-btn>
                         </template>
                     </v-text-field>
                     <!-- Configure AAS-Server URL -->
                     <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="AAS-Server URL" v-model="aasServerURL" @keydown.native.enter="connectToAASServer()">
                         <template v-slot:append-inner>
-                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="connectToAASServer()" :loading="loadingServer">Connect</v-btn>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToAASServer()" :loading="loadingServer">Connect</v-btn>
                         </template>
                     </v-text-field>
-                    <v-divider></v-divider>
+                    <v-divider v-if="aasServerURL && aasServerURL != ''"></v-divider>
                     <!-- AASX Upload to AAS Server -->
                     <v-file-input v-if="aasServerURL && aasServerURL != ''" variant="outlined" density="compact" :multiple="false" v-model="aasxFile" clearable hide-details class="my-1 mt-3" label="AASX File Upload" accept=".aasx">
                         <template v-slot:append-inner>
-                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="uploadAASXFile()">Upload</v-btn>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="uploadAASXFile()">Upload</v-btn>
                         </template>
                     </v-file-input>
+                </v-col>
+            </v-row>
+            <!-- Platform I 4.0 Logo -->
+            <v-row v-if="isMobile">
+                <v-col align="center">
+                    <v-img src="I40.png" max-width="260px" :style="{ filter: isDark ? 'invert(1)' : 'invert(0)' }">
+                        <template #sources>
+                            <source srcset="@/assets/I40.png">
+                        </template>
+                    </v-img>
                 </v-col>
             </v-row>
         </v-card>
@@ -58,6 +68,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
+import { useTheme } from 'vuetify';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -69,9 +80,11 @@ export default defineComponent({
 
     setup() {
         const store = useStore()
+        const theme = useTheme()
 
         return {
             store, // Store Object
+            theme, // Theme Object
         }
     },
 
@@ -114,6 +127,11 @@ export default defineComponent({
         // Get the Activation Status of the Widget Feature
         WidgetFeatureActive() {
             return this.store.getters.getWidgetFeatureActive;
+        },
+
+        // Check if the current Theme is dark
+        isDark() {
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -177,8 +195,10 @@ export default defineComponent({
             // Send Request to upload the file
             this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'AASX-File uploaded. Please reload AAS List!' }); // Show Success Snackbar
+                    this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'AASX-File uploaded.' }); // Show Success Snackbar
                     this.aasxFile = []; // clear the AASX File
+                    // reload the AAS list
+                    this.store.dispatch('dispatchTriggerAASListReload', true);
                 }
             });
         },
