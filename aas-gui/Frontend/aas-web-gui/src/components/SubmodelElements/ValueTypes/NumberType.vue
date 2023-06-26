@@ -60,8 +60,8 @@ export default defineComponent({
             }
         },
 
-        // Watch for changes in the propertyObject and update the newPropertyValue if the input field is not focused
-        stringValue: {
+        // Watch for changes in the numberValue and update the newNumberValue if the input field is not focused
+        numberValue: {
             deep: true,
             handler() {
                 if (!this.isFocused) {

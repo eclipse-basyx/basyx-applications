@@ -56,8 +56,8 @@ export default defineComponent({
             }
         },
 
-        // Watch for changes in the propertyObject and update the newPropertyValue if the input field is not focused
-        stringValue: {
+        // Watch for changes in the booleanValue and update the newBooleanValue if the input field is not focused
+        booleanValue: {
             deep: true,
             handler() {
                 if (!this.isFocused) {

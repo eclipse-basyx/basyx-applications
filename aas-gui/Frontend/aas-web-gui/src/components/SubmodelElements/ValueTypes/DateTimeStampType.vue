@@ -56,17 +56,18 @@ export default defineComponent({
     data() {
         return {
             newDateTimeStampValue: '',          // new value of the property
-            dateObject: null as Date | null,    // date object to store the date
             time: '',                           // string to store the time
         }
     },
 
     mounted() {
-        this.newDateTimeStampValue = this.dateTimeStampValue.value;
-        let date = this.createDateObject(this.dateTimeStampValue.value); // create a new Date Object from the given string
-        let time = this.getTimeFromDate(date); // get the time from the date
-        this.dateObject = date; // set the dateObject
-        this.time = time; // set the time
+        if (!this.dateTimeStampValue.value || this.dateTimeStampValue.value == '') {
+            this.newDateTimeStampValue = this.createXSDDateString();
+        } else {
+            this.newDateTimeStampValue = this.dateTimeStampValue.value;
+        }
+        let date = this.createDateObject(this.newDateTimeStampValue); // create a new Date Object from the given string
+        this.time = this.getTimeFromDate(date); // get the time from the date
     },
 
     watch: {
@@ -75,6 +76,18 @@ export default defineComponent({
             deep: true,
             handler() {
                 this.newDateTimeStampValue = '';
+            }
+        },
+
+        // Watch for changes in the dateTimeStampValue and update the newDateTimeStampValue if the input field is not focused
+        dateTimeStampValue: {
+            deep: true,
+            handler() {
+                if (!this.dateTimeStampValue.value || this.dateTimeStampValue.value == '') {
+                    this.newDateTimeStampValue = this.createXSDDateString();
+                } else {
+                    this.newDateTimeStampValue = this.dateTimeStampValue.value;
+                }
             }
         },
     },
@@ -118,6 +131,29 @@ export default defineComponent({
             } else {
                 return '';
             }
+        },
+
+        // create XSD Date String for the current date
+        createXSDDateString() {
+            const date = new Date();
+
+            // Generate the date and time part in the format 'yyyy-mm-ddThh:mm:ss.sss'
+            let dateTime = date.toISOString();
+
+            // Get the timezone offset in minutes and convert it to the format '+hh:mm'
+            let timezoneOffset = -date.getTimezoneOffset();
+            const timezoneSign = timezoneOffset >= 0 ? '+' : '-';
+            timezoneOffset = Math.abs(timezoneOffset);
+            const timezoneHours = String(Math.floor(timezoneOffset / 60)).padStart(2, '0');
+            const timezoneMinutes = String(timezoneOffset % 60).padStart(2, '0');
+            const timezone = timezoneSign + timezoneHours + ':' + timezoneMinutes;
+
+            // Add pseudo microseconds and replace the timezone part
+            const pseudoMicroseconds = '000';
+            dateTime = dateTime.replace('Z', pseudoMicroseconds + timezone);
+
+            // console.log(dateTime);
+            return dateTime;
         },
 
         // Function to create a new Date Object from the given string
