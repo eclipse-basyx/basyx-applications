@@ -23,7 +23,7 @@
                         <v-text-field variant="outlined" density="compact" hide-details clearable @keydown.native.enter="updatePath()" v-model="newPathValue" @click:clear="clearPath()" @update:focused="setFocus">
                             <!-- Update Path Button -->
                             <template v-slot:append-inner="{ isFocused }">
-                                <v-btn v-if="isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="updatePath()">
+                                <v-btn v-if="isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updatePath()">
                                     <v-icon>mdi-upload</v-icon>
                                 </v-btn>
                             </template>
@@ -46,7 +46,7 @@
                         <!-- Upload-Button -->
                         <v-file-input variant="outlined" density="compact" :multiple="false" v-model="newFile" clearable hide-details class="my-1">
                             <template v-slot:append-inner>
-                                <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="margin-top: -2.5px; right: -6px" @click.stop="uploadFile()">Upload File</v-btn>
+                                <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="uploadFile()">Upload File</v-btn>
                             </template>
                         </v-file-input>
                     </template>

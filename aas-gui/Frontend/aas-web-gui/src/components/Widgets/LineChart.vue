@@ -130,6 +130,10 @@ export default defineComponent({
                 // console.log('collectionValues: ', collectionValues, 'widgetSettings: ', this.widgetSettings);
                 collectionValues.forEach((element: any, index: number) => {
                     // seriesName is updated with set value for Displayed Name
+                    // if value to display is a boolean, convert true to 1 and false to 0
+                    if(typeof element.value === "boolean"){
+                        element.value ? 1 : 0;
+                    }
                     let seriesName = this.widgetSettings.chartNamesUnits[index].name + ' [' + this.widgetSettings.chartNamesUnits[index].unit + ']';
                     let chartValues = [{ x: this.submodelElementData.timestamp, y: element.value }];
                     let chartSeries = {
@@ -182,6 +186,13 @@ export default defineComponent({
                         }
                     }
                 } as any;
+                // if value to display is a boolean, convert true to 1 and false to 0
+                if(typeof this.submodelElementData.value === "boolean"){
+                    chartOptions.xaxis.stroke = "straight";
+                    this.submodelElementData.value ? 1 : 0;
+                } else {
+                    chartOptions.xaxis.stroke = "smooth"
+                }
                 // update the chartOptions
                 // console.log('chartOptions: ', chartOptions);
                 (this.$refs.linechart as any).updateOptions(chartOptions);
@@ -213,12 +224,20 @@ export default defineComponent({
                 // create a new array in the form [{ data: [{ x, y }] }, { data: [{ x, y }] }]
                 let chartValues = [] as Array<any>;
                 collectionValues.forEach((element: any) => {
+                    // if value to display is a boolean, convert true to 1 and false to 0
+                    if(typeof element.value === "boolean"){
+                        element.value ? 1 : 0;
+                    }
                     let chartValue = { x: this.submodelElementData.timestamp, y: element.value };
                     chartValues.push({ data: [chartValue] });
                 });
                 // append the new chartValues to the chart
                 (this.$refs.linechart as any).appendData(chartValues);
             } else { // Property
+                // if value to display is a boolean, convert true to 1 and false to 0
+                if(typeof this.submodelElementData.value === "boolean"){
+                    this.submodelElementData.value ? 1 : 0;
+                }
                 const x = this.submodelElementData.timestamp;
                 const y = this.submodelElementData.value;
                 (this.$refs.linechart as any).appendData([{ 

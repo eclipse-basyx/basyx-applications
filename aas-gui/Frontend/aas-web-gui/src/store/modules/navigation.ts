@@ -5,9 +5,11 @@ interface state {
     widgetApiURL: string,
     Snackbar: object,
     AutoSync: object,
+    StatusCheck: boolean,
     isMobile: boolean,
     platform: object,
     plugins: Array<object>,
+    triggerAASListReload: boolean,
 };
 
 const state: state = {
@@ -17,9 +19,11 @@ const state: state = {
     widgetApiURL: '',
     Snackbar: {},
     AutoSync: {},
+    StatusCheck: false,
     isMobile: false,
     platform: {},
     plugins: [],
+    triggerAASListReload: false,
 };
 
 const getters = {
@@ -41,6 +45,9 @@ const getters = {
     getAutoSync(state: state) {
         return state.AutoSync;
     },
+    getStatusCheck(state: state) {
+        return state.StatusCheck;
+    },
     getIsMobile(state: state) {
         return state.isMobile;
     },
@@ -49,6 +56,9 @@ const getters = {
     },
     getPlugins(state: state) {
         return state.plugins;
+    },
+    getTriggerAASListReload(state: state) {
+        return state.triggerAASListReload;
     },
 };
 
@@ -78,6 +88,10 @@ const actions = {
         // console.log('dispatchUpdateAutoSync: ', autoSync);
         commit('updateAutoSync', autoSync);
     },
+    dispatchUpdateStatusCheck({ commit }: { commit: Function }, statusCheck: boolean) {
+        // console.log('dispatchUpdateStatusCheck: ', statusCheck);
+        commit('updateStatusCheck', statusCheck);
+    },
     dispatchIsMobile({ commit }: { commit: Function }, isMobile: boolean) {
         // console.log('dispatchIsMobile: ', isMobile);
         commit('setIsMobile', isMobile);
@@ -89,6 +103,10 @@ const actions = {
     dispatchPlugins({ commit }: { commit: Function }, plugins: Array<object>) {
         // console.log('dispatchPlugins: ', plugins);
         commit('setPlugins', plugins);
+    },
+    dispatchTriggerAASListReload({ commit }: { commit: Function }, triggerAASListReload: boolean) {
+        // console.log('dispatchTriggerAASListReload: ', triggerAASListReload);
+        commit('setTriggerAASListReload', triggerAASListReload);
     },
 };
 
@@ -111,6 +129,9 @@ const mutations = {
     updateAutoSync(state: state, autoSync: object) {
         state.AutoSync = autoSync;
     },
+    updateStatusCheck(state: state, statusCheck: boolean) {
+        state.StatusCheck = statusCheck;
+    },
     setIsMobile(state: state, isMobile: boolean) {
         state.isMobile = isMobile;
     },
@@ -119,6 +140,9 @@ const mutations = {
     },
     setPlugins(state: state, plugins: Array<object>) {
         state.plugins = plugins;
+    },
+    setTriggerAASListReload(state: state, triggerAASListReload: boolean) {
+        state.triggerAASListReload = triggerAASListReload;
     },
 };
 

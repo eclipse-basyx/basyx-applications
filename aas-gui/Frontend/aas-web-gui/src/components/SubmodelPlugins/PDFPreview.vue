@@ -1,9 +1,11 @@
 <template>
     <v-container fluid class="pa-0">
         <v-card class="pdfCard" style="transform: translateY(0px)">
-            <!-- PDF Preview -->
-            <iframe v-if="useIFrame" :src="localPathValue" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
-            <vue-pdf-embed ref="pdfPreview" v-if="pdfData && !useIFrame" :source="pdfData" />
+            <!-- PDF File Preview -->
+            <iframe v-if="useIFrame && submodelElementData.modelType.name == 'File'" :src="localPathValue" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
+            <vue-pdf-embed ref="pdfPreview" v-if="pdfData && !useIFrame && submodelElementData.modelType.name == 'File'" :source="pdfData" />
+            <!-- PDF Blob Preview -->
+            <vue-pdf-embed ref="pdfPreview" v-if="submodelElementData.modelType.name == 'Blob'" :source="Base64PDF" />
         </v-card>
     </v-container>
 </template>
@@ -36,15 +38,18 @@ export default defineComponent({
     data() {
         return {
             localPathValue: '', // Path to the File when it is embedded to the AAS
-            errorLoadingImage: false,
-            useIFrame: true,
+            Base64PDF: '',      // Base64 PDF String
+            useIFrame: false,
             pdfData: '',
         }
     },
 
     mounted() {
-        this.localPathValue = this.getLocalPath(this.submodelElementData.value)
-        this.errorLoadingImage = false;
+        if (this.submodelElementData.modelType.name == 'File') {
+            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+        } else if (this.submodelElementData.modelType.name == 'Blob') {
+            this.Base64PDF = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+        }
 
         let timeoutId: ReturnType<typeof setTimeout> | null = null;
         let lastWidth = 0;
@@ -71,8 +76,11 @@ export default defineComponent({
 
     watch: {
         submodelElementData() {
-            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
-            this.errorLoadingImage = false;
+            if (this.submodelElementData.modelType.name == 'File') {
+                this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+            } else if (this.submodelElementData.modelType.name == 'Blob') {
+                this.Base64PDF = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+            }
         },
     },
 

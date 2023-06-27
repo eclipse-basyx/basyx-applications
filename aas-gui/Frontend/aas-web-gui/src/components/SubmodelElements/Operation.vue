@@ -22,7 +22,7 @@
                                     <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="operationVariables[variableType.type][i]" variant="outlined" density="compact" hide-details clearable :type="variable.value.valueType == 'string' ? 'text' : 'number'" :label="variable.value.idShort" :readonly="variableType.type == 'outputVariables'">
                                         <template v-slot:prepend-inner>
                                             <!-- Variable Type -->
-                                            <v-chip label size="x-small" border color="primary" style="margin-top: 2px">{{ variable.value.valueType }}</v-chip>
+                                            <v-chip label size="x-small" border color="primary">{{ variable.value.valueType }}</v-chip>
                                         </template>
                                     </v-text-field>
                                     <!-- Switch containing the Variable Value (boolean) -->

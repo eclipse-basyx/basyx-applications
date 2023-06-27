@@ -1,10 +1,15 @@
 <template>
-    <v-btn class="mr-6" variant="outlined">
+    <!-- Mobile Autosync Toggle -->
+    <v-badge v-if="isMobile" dot :color="autoSyncStatus ? 'success' : 'rgba(0,0,0,0)'" :offset-x="10" :offset-y="10" @click="toggleAutoSync()">
+        <v-btn icon="mdi-autorenew"></v-btn>
+    </v-badge>
+    <!-- Desktop Autosync Menu -->
+    <v-btn v-else class="mr-6" variant="outlined">
         <span class="mr-1">{{ 'Auto Sync:' }}</span>
         <span class="text-primary">{{ (autoSyncStatus ? 'On' : 'Off') }}</span>
         <v-icon :style="{ 'margin-left': autoSyncStatus ? '12.5px' : '6px' }">mdi-chevron-down</v-icon>
-        <v-menu activator="parent" open-on-hover :close-on-content-click="false" width="300px">
-            <v-list nav class="py-0 bg-elevatedCard">
+        <v-menu activator="parent" :close-on-content-click="false" width="300px">
+            <v-list nav class="py-0 bg-card">
                 <!-- Switch to activate/deactive auto-sync -->
                 <v-list-item class="py-0">
                     <v-switch label="Auto Sync" color="primary" class="mx-3" hide-details v-model="autoSyncStatus" @change="updateAutoSync()">
@@ -31,6 +36,9 @@
                     <v-list-item-subtitle class="ml-1">{{ 'Be careful decreasing the time!' }}</v-list-item-subtitle>
                     <v-list-item-subtitle class="ml-1">{{ 'A smaller time means more requests.' }}</v-list-item-subtitle>
                 </v-list-item>
+                <v-divider></v-divider>
+                <!-- Switch to enable/disable AAS Status Checks -->
+                <StatusSwitch></StatusSwitch>
             </v-list>
         </v-menu>
     </v-btn>
@@ -40,8 +48,13 @@
 import { defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 
+import StatusSwitch from './Settings/StatusSwitch.vue';
+
 export default defineComponent({
     name: 'AutoSync',
+    components: {
+        StatusSwitch,
+    },
     props: ['submodelObject'],
 
     setup() {
@@ -68,6 +81,16 @@ export default defineComponent({
         autoSync() {
             return this.store.getters.getAutoSync ? this.store.getters.getAutoSync.state : false;
         },
+
+        // Check if the current Platform is Mobile
+        isMobile() {
+            return this.platform.android || this.platform.ios ? true : false;
+        },
+
+        // get Platform from store
+        platform() {
+            return this.store.getters.getPlatform;
+        },
     },
 
     methods: {
@@ -80,6 +103,12 @@ export default defineComponent({
         // Updates the auto-sync (+ interval) in the store
         updateAutoSync() {
             this.store.dispatch('dispatchUpdateAutoSync', { state: this.autoSyncStatus, interval: this.intervalTime });
+        },
+
+        // Toggles the auto-sync
+        toggleAutoSync() {
+            this.autoSyncStatus = !this.autoSyncStatus;
+            this.updateAutoSync();
         },
     },
 });
