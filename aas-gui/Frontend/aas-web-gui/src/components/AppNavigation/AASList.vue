@@ -6,15 +6,24 @@
                 <v-row align="center">
                     <!-- Reload Button -->
                     <v-col cols="auto" class="pr-0">
-                        <v-btn icon="mdi-reload" variant="plain" @click="reloadList()" :loading="listLoading">
-                            <template v-slot:loader>
-                                <span class="custom-loader"><v-icon light>mdi-cached</v-icon></span>
+                        <v-tooltip open-delay="600" location="bottom">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon="mdi-reload" variant="plain" @click="reloadList()" :loading="listLoading" v-bind="props">
+                                    <template v-slot:loader>
+                                        <span class="custom-loader"><v-icon light>mdi-cached</v-icon></span>
+                                    </template>
+                                </v-btn>
                             </template>
-                        </v-btn>
+                            <span>Refresh AAS List</span>
+                        </v-tooltip>
                     </v-col>
                     <!-- AAS Search Field -->
-                    <v-col class="pl-1" v-if="showExtended">
+                    <v-col class="pl-1 pr-0" v-if="showExtended">
                         <v-text-field variant="outlined" density="compact" hide-details label="Search for AAS..." clearable @update:modelValue="filterAASList"></v-text-field>
+                    </v-col>
+                    <!-- Add existing AAS -->
+                    <v-col cols="auto" class="px-0">
+                        <RegisterAAS></RegisterAAS>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -83,11 +92,13 @@ import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASListDetails from './AASListDetails.vue';
+import RegisterAAS from './RegisterAAS.vue';
 
 export default defineComponent({
     name: 'AASList',
     components: {
         AASListDetails, // AAS Details Component
+        RegisterAAS,    // Register AAS Component
     },
     mixins: [RequestHandling],
 
