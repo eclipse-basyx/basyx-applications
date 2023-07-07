@@ -53,7 +53,7 @@ services:
     restart: always
   
   webuitestenv:
-    image: eclipsebasyx/aas-gui:v230403
+    image: eclipsebasyx/aas-gui:v230703
     container_name: webuitestenv
     ports:
       - "4277:3000"

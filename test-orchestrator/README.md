@@ -119,7 +119,19 @@ To run the application, the following command must be executed from the root dir
 The database will be created and the Test Orchestrator will be built.
 *Potential warnings can be associated with the generated [TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs](src/TestDemonstratorAAS/StateMachineDescriptorXsd.Designer.cs) file.*
 
-The AAS should be available under [http://localhost:8080](http://localhost:8080). 
+The AAS of the Test Orchestrator can be accessed through the AAS Web UI. Currently, the Test Orchestrator is not registered and therefore not visible in the UI from the beginning.
+To register the Test Orchestrator, the following steps must be performed:
+
+1. Open the AAS Web UI (http://localhost:4277)
+
+2. Click on the plus-icon in the top right corner of the AAS list on the left side.
+
+3. Enter the following URL:
+> http://localhost:9000/aas
+
+4. The AAS should appear in the list.
+
+![Register Process](docs/figs/RegisterTestOrchestrator.png)
 
 ## Handling
 To perform a test pipeline, a ticket must be loaded through the **TicketManagement** submodel. 
@@ -137,36 +149,33 @@ via the [AASX Package Explorer](https://github.com/admin-shell-io/aasx-package-e
 
 The operation can be called by opening the TestManagementShell in the AAS Web UI.
 
-1. Register the TestManagementShell through the AAS Web UI (plus-icon in the top right corner of the AAS list on the left side).
+1. Open the TestManagementShell from the AAS list.
 
-> Enter the following URL: http://localhost:8080/aas
-
-2. Open the newly added TestManagementShell from the AAS list.
-3. Find the following Operation:
+2. Find the following Operation:
 
 > TicketManagement/UploadPassiveTicket
 
-5. Paste the XML content for the test object (AAS).
+3. Paste the XML content for the test object (AAS).
 
 > Example AASs can be found here: [Demo AASs](src/TestDemonstratorAAS.Tests/TicketRepositoryServiceTests/TestData/PassiveShells)
 
-6. Paste the XML content for the structure descriptor.
+4. Paste the XML content for the structure descriptor.
 
 > An always successfull test result can be archieved by using the same AAS for the structure descriptor.
 
-7. After the ticket was successfully uploaded, we want to retrieve all registered ticket identificators. Execute
+5. After the ticket was successfully uploaded, we want to retrieve all registered ticket identificators. Execute
 the **RetrieveTicketIdentificators** operation of the **TicketManagement** submodel.
 
 Since there are many tickets in the repository, which would not be the case on the first run, the demonstrator responds with the following message.
 The operation returns a string of comma separated ticket identificators.
 
-8. Copy the identificator and clear the request body.
+6. Copy the identificator and clear the request body.
 
-9. Execute the **ExetuteTestPipelineById** operation of the **TestExecution** submodel. Do not forget to specify the ID of the uploaded ticket.
+7. Execute the **ExetuteTestPipelineById** operation of the **TestExecution** submodel. Do not forget to specify the ID of the uploaded ticket.
 
 The test protocol is stored in the ticket now. Clear the request body.
 
-10. Execute the **RetrieveTicketById** operation of the **TicketManagement** submodel. Use the following request body.
+8. Execute the **RetrieveTicketById** operation of the **TicketManagement** submodel. Use the following request body.
 Do not forget to specify the ID of the uploaded ticket.
 
 The response body contains the whole ticket as well as the generated test protocol as an XML string. The XML element 
