@@ -10,12 +10,11 @@ each of which was created as a result of a test-driven development process. The 
 ```mermaid
 flowchart TD
     subgraph structure
-        root --> TestDemonstrator
-        root --> TestDemonstrator.Tests
-        root --> TestDemonstratorAAS
-        root --> TestDemonstratorAAS.Tests
-        root --> docket-compose.yaml
-        root --> Dockerfile
+        root --> src
+        src --> TestDemonstrator
+        src --> TestDemonstratorAAS
+        src --> Dockerfile
+        root --> docker-compose.yaml
 end
 ```
 
@@ -34,7 +33,7 @@ The following diagram illustrates the dependencies between the four projects. As
 cannot be compiled without the core components implemented by the **TestDemonstrator**. 
 
 ```mermaid
-flowchart TD
+flowchart LR
   subgraph dependencies
       root --> TestDemonstrator
       subgraph TestDemonstrator
@@ -62,19 +61,6 @@ flowchart TD
         Program.cs
         StateMachineDescriptorXsd
       end
-      root --> TestDemonstrator.Tests
-        subgraph TestDemonstrator.Tests
-            DescriptorFactoryTests
-            TestObjectProviderTests
-            TestObjectTests
-            TestRunnerTests
-            TicketBuilderTests
-            TicketRepositoryTests
-            TicketTests
-            appsettings.Development.json
-            StateMachineDescriptorXsd
-            Usings.cs
-        end
       root --> TestDemonstratorAAS
         subgraph TestDemonstratorAAS
             AdministrationShell
@@ -85,28 +71,7 @@ flowchart TD
             Program.cs
             StateMachineDescriptorXsd
         end
-      TestDemonstratorAAS -.->|use| TestDemonstrator
-      TestDemonstrator.Tests -.->|use| TestDemonstrator
-      TestDemonstratorAAS.Tests -.->|use| TestDemonstratorAAS
-        subgraph TestDemonstrator.Tests
-            DescriptorFactoryTests
-            TestObjectProviderTests
-            TestObjectTests
-            TestRunnerTests
-            TicketBuilderTests
-            TicketRepositoryTests
-            TicketTests
-            appsettings.Development.json
-            StateMachineDescriptorXsd
-            Usings.cs
-        end
-      root --> TestDemonstratorAAS.Tests
-        subgraph TestDemonstratorAAS.Tests
-            OrchestrationServiceTests
-            TicketRepositoryServiceTests
-            appsettings.Development.json
-            StateMachineDescriptorXsd
-        end
+      TestDemonstratorAAS -.->|use| TestDemonstrator 
 end
 ```
 The local execution of each test project requires a connection string to a test database, which must be specified in the <em>appsettings.Development.json</em>-file.
@@ -157,7 +122,7 @@ The operation can be called by opening the TestManagementShell in the AAS Web UI
 
 3. Paste the XML content for the test object (AAS).
 
-> Example AASs can be found here: [Demo AASs](src/TestDemonstratorAAS.Tests/TicketRepositoryServiceTests/TestData/PassiveShells)
+> Example AASs can be found here: [Demo AASs](https://admin-shell-io.com/samples/)
 
 4. Paste the XML content for the structure descriptor.
 
