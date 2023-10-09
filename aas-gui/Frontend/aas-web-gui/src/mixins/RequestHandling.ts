@@ -1,45 +1,47 @@
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
-    setup() {
-        const store = useStore()
-
-        return {
-            store, // Store Object
-        }
-    },
 
     data() {
         return {
+            navigationStore: useNavigationStore(), // NavigationStore Object
         }
     },
+
     methods: {
+
         // Function to send get Request which returns a Promise
         getRequest(path: string, context: string, disableMessage: boolean): any {
             return fetch(path, { method: 'GET' })
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
-                        return response.json(); // Return the response as JSON
+                        return response.json();  // Return the response as JSON
+                    } else if (!response.ok) {
+                        // No content but received an HTTP error status
+                        throw new Error('Error status: ' + response.status);
                     } else {
                         return; // Return without content
                     }
                 })
                 .then(data => {
                     // Check if the Server responded with an error
-                    if (data && data.hasOwnProperty('success') && data.success === false) { // If the Server responded with an error
-                        if(!disableMessage) this.errorHandler(data, context); // Call the error handler
+                    if (data && data.hasOwnProperty('status') && (data.status >= 400)) {
+                        // Error response from the server
+                        if (!disableMessage) this.errorHandler(data, context);  // Call the error handler
                         return { success: false };
-                    } else if (data) { // If the Server responded with a success
+                    } else if (data) {
+                        // Successful response from the server
                         return { success: true, data: data };
-                    } else { // If the Server responded without content
-                        return { success: false };
+                    } else {
+                        // Unexpected response format
+                        throw new Error('Unexpected response format');
                     }
                 })
-                .catch(error => { // Catch any errors
-                    console.error('Error: ', error); // Log the error
-                    if (!disableMessage) this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error }); // Show Error Snackbar
+                .catch(error => {  // Catch any errors
+                    // console.error('Error: ', error);  // Log the error
+                    if (!disableMessage) this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error });
                     return { success: false };
                 })
         },
@@ -51,24 +53,32 @@ export default defineComponent({
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json(); // Return the response as JSON
+                    } else if (!response.ok) {
+                        // No content but received an HTTP error status
+                        throw new Error('Error status: ' + response.status);
                     } else {
                         return; // Return without content
                     }
                 })
                 .then(data => {
                     // Check if the Server responded with an error
-                    if (data && data.hasOwnProperty('success') && data.success === false) { // If the Server responded with an error
+                    if (data && data.hasOwnProperty('status') && (data.status >= 400)) {
+                        // Error response from the server
                         if (!disableMessage) this.errorHandler(data, context); // Call the error handler
                         return { success: false };
-                    } else { // If the Server responded with a success
+                    } else if (data) {
+                        // Successful response from the server
                         return { success: true, data: data };
+                    } else {
+                        // Unexpected response format
+                        throw new Error('Unexpected response format');
                     }
                 })
                 .catch(error => { // Catch any errors
-                    console.error('Error: ', error); // Log the error
-                    if (!disableMessage) this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error }); // Show Error Snackbar
+                    // console.error('Error: ', error); // Log the error
+                    if (!disableMessage) this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error });
                     return { success: false };
-                })
+                });
         },
 
         // Function to send put Request which returns a Promise
@@ -78,24 +88,67 @@ export default defineComponent({
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json(); // Return the response as JSON
+                    } else if (!response.ok) {
+                        // No content but received an HTTP error status
+                        throw new Error('Error status: ' + response.status);
                     } else {
                         return; // Return without content
                     }
                 })
                 .then(data => {
                     // Check if the Server responded with an error
-                    if (data && data.hasOwnProperty('success') && data.success === false) { // If the Server responded with an error
+                    if (data && data.hasOwnProperty('status') && (data.status >= 400)) {
+                        // Error response from the server
                         if (!disableMessage) this.errorHandler(data, context); // Call the error handler
                         return { success: false };
-                    } else { // If the Server responded with a success
-                        return { success: true };
+                    } else if (data) {
+                        // Successful response from the server
+                        return { success: true, data: data };
+                    } else {
+                        // Unexpected response format
+                        throw new Error('Unexpected response format');
                     }
                 })
                 .catch(error => { // Catch any errors
-                    console.error('Error: ', error); // Log the error
-                    if (!disableMessage) this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error }); // Show Error Snackbar
+                    // console.error('Error: ', error); // Log the error
+                    if (!disableMessage) this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error });
                     return { success: false };
+                });
+        },
+
+        // Function to send patch Request which returns a Promise
+        patchRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+            return fetch(path, { method: 'PATCH', body: body, headers: headers })
+                .then(response => {
+                    // Check if the Server responded with content
+                    if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
+                        return response.json(); // Return the response as JSON
+                    } else if (!response.ok) {
+                        // No content but received an HTTP error status
+                        throw new Error('Error status: ' + response.status);
+                    } else {
+                        return; // Return without content
+                    }
                 })
+                .then(data => {
+                    // Check if the Server responded with an error
+                    if (data && data.hasOwnProperty('status') && (data.status >= 400)) {
+                        // Error response from the server
+                        if (!disableMessage) this.errorHandler(data, context); // Call the error handler
+                        return { success: false };
+                    } else if (data) {
+                        // Successful response from the server
+                        return { success: true, data: data };
+                    } else {
+                        // Unexpected response format
+                        throw new Error('Unexpected response format');
+                    }
+                })
+                .catch(error => { // Catch any errors
+                    // console.error('Error: ', error); // Log the error
+                    if (!disableMessage) this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error });
+                    return { success: false };
+                });
         },
 
         // Function to send delete Request which returns a Promise
@@ -105,24 +158,32 @@ export default defineComponent({
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json(); // Return the response as JSON
+                    } else if (!response.ok) {
+                        // No content but received an HTTP error status
+                        throw new Error('Error status: ' + response.status);
                     } else {
                         return; // Return without content
                     }
                 })
                 .then(data => {
                     // Check if the Server responded with an error
-                    if (data && data.hasOwnProperty('success') && data.success === false) { // If the Server responded with an error
+                    if (data && data.hasOwnProperty('status') && (data.status >= 400)) {
+                        // Error response from the server
                         if (!disableMessage) this.errorHandler(data, context); // Call the error handler
                         return { success: false };
-                    } else { // If the Server responded with a success
+                    } else if (data) {
+                        // Successful response from the server
+                        return { success: true, data: data };
+                    } else {
+                        // in this case no content is expected
                         return { success: true };
                     }
                 })
                 .catch(error => { // Catch any errors
-                    console.error('Error: ', error); // Log the error
-                    if (!disableMessage) this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error }); // Show Error Snackbar
+                    // console.error('Error: ', error); // Log the error
+                    if (!disableMessage) this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error });
                     return { success: false };
-                })
+                });
         },
 
         // Function to handle errors
@@ -130,12 +191,30 @@ export default defineComponent({
             // console.log('Error: ', errorData, 'Context: ', context)
             let initialErrorMessage = 'Error ' + context + '!';
             let errorMessage = '';
-            if(errorData.messages && errorData.messages.length > 0) {
-                errorData.messages.forEach((message: any) => {
-                    errorMessage += '\n' + message.messageType + (message.code ? '[Code ' + message.code + ']: ' : ': ') + message.text;
-                })
+
+            // Building error message based on the new error response structure
+            if (errorData.status) {
+                errorMessage += '\nStatus: ' + errorData.status;
             }
-            this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', baseError: initialErrorMessage, extendedError: errorMessage });
+            if (errorData.error) {
+                errorMessage += '\nError: ' + errorData.error;
+            }
+            if (errorData.timestamp) {
+                let errorDate = new Date(errorData.timestamp).toLocaleString();
+                errorMessage += '\nTimestamp: ' + errorDate;
+            }
+            if (errorData.path) {
+                errorMessage += '\nPath: ' + errorData.path;
+            }
+
+            this.navigationStore.dispatchSnackbar({
+                status: true,
+                timeout: 60000,
+                color: 'error',
+                btnColor: 'buttonText',
+                baseError: initialErrorMessage,
+                extendedError: errorMessage
+            });
         },
-    },
-})
+    }
+});

@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useAASStore } from '@/store/AASDataStore';
 import AASTreeview from './AASTreeview.vue';
 import SubmodelElementView from './SubmodelElementView.vue';
 import ComponentVisualization from './ComponentVisualization.vue';
@@ -46,10 +46,10 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useStore()
+    const aasStore = useAASStore()
 
     return {
-      store, // Store Object
+      aasStore, // AASStore Object
     }
   },
 
@@ -73,8 +73,15 @@ export default defineComponent({
       document.removeEventListener('mouseup', function(e: any) {});
     }
     // clear the current AAS and Node
-    this.store.dispatch('dispatchSelectedAAS', {});
-    this.store.dispatch('dispatchNode', {});
+    this.aasStore.dispatchSelectedAAS({});
+    this.aasStore.dispatchNode({});
+  },
+
+  computed: {
+    // returns the primary color of the current theme
+    primaryColor() {
+      return this.$vuetify.theme.themes.light.colors.primary;
+    },
   },
   
   methods: {
@@ -91,9 +98,11 @@ export default defineComponent({
 			let pageX: number, curCol: any, nxtCol: any, curColWidth: number, nxtColWidth: number;
 
       // highlight Resize Bar when mouse is over it
-			div.addEventListener('mouseover', function(e: any) {
-				if(e.target) e.target.style.borderRight = '2px solid #1e8567'; // TODO: this needs to follow the vuetify primary color
-			});
+      div.addEventListener('mouseover', (e: Event) => {
+        let target = e.target as HTMLElement;
+        if (target) target.style.borderRight = '2px solid ' + this.primaryColor;
+      });
+
       // remove highlight from Resize Bar when mouse leaves it
 			div.addEventListener('mouseout', function(e: any) {
 				if(e.target) e.target.style.borderRight = '';

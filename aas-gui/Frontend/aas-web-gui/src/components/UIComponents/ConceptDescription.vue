@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import SemanticID from './SemanticID.vue';
 import DataSpecificationContent from './DataSpecificationContent.vue';
 

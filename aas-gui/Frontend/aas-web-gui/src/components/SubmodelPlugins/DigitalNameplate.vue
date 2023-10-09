@@ -10,11 +10,11 @@
             <v-expansion-panels multiple>
                 <v-expansion-panel v-for="NameplateElement in digitalNameplateData" :key="NameplateElement.id">
                     <v-expansion-panel-title class="pl-0 py-0">
-                        <IdentificationElement :identificationObject="NameplateElement" :modelType="NameplateElement.modelType.name"></IdentificationElement>
+                        <IdentificationElement :identificationObject="NameplateElement" :modelType="NameplateElement.modelType"></IdentificationElement>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text class="pa-0">
                         <!-- Display NameplateElement directly when it is no SubmodelElementCollection -->
-                        <SubmodelElementWrapper v-if="NameplateElement.modelType.name != 'SubmodelElementCollection'" :SubmodelElementObject="NameplateElement" @updateValue="updateNameplateValue"></SubmodelElementWrapper>
+                        <SubmodelElementWrapper v-if="NameplateElement.modelType != 'SubmodelElementCollection'" :SubmodelElementObject="NameplateElement" @updateValue="updateNameplateValue"></SubmodelElementWrapper>
                         <!-- Display NameplateElement as SubmodelElementCollection when it is a SubmodelElementCollection -->
                         <CollectionWrapper v-else :SubmodelElementObject="NameplateElement" @updateValue="updateNameplateValue"></CollectionWrapper>
                     </v-expansion-panel-text>
@@ -25,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
@@ -55,11 +55,11 @@ export default defineComponent({
 
     setup() {
         const theme = useTheme()
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -74,19 +74,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         // Check if the current Theme is dark
@@ -115,7 +110,7 @@ export default defineComponent({
             nameplateElements.forEach((submodelElement: any) => {
                 submodelElement.id = this.UUID();
                 submodelElement.path = path + '/' + submodelElement.idShort;
-                if (submodelElement.modelType.name == 'SubmodelElementCollection') {
+                if (submodelElement.modelType == 'SubmodelElementCollection') {
                     submodelElement.children = this.prepareDigitalNameplateData(submodelElement.value, submodelElement.path);
                 }
             });

@@ -50,8 +50,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -63,10 +63,10 @@ export default defineComponent({
     props: ['blobObject'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -103,19 +103,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -123,10 +118,10 @@ export default defineComponent({
         // Function to update the Blob of the File Element
         updateBlob() {
             // console.log("Update Blob: " + this.newBlobValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/value';
+            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/value';
             let content = "'" + this.newBlobValue + "'";
             let headers = { 'Content-Type': 'application/json' };
-            let context = 'updating ' + this.blobObject.modelType.name + ' "' + this.blobObject.idShort + '"';
+            let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the content of the Blob element
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
@@ -164,9 +159,9 @@ export default defineComponent({
                 contentJSON.value = value;
                 let content = JSON.stringify(contentJSON);
                 // console.log("Content: ", content);
-                let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path;
+                let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path;
                 let headers = { 'Content-Type': 'application/json' };
-                let context = 'updating ' + this.blobObject.modelType.name + ' "' + this.blobObject.idShort + '"';
+                let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
                 let disableMessage = false;
                 // Send Request to update the content of the Blob element
                 this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {

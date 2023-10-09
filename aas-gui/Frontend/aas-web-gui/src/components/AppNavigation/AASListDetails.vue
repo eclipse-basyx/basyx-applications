@@ -24,7 +24,7 @@
                     <DescriptionElement v-if="detailsObject.description && detailsObject.description.length > 0" :descriptionObject="detailsObject.description" :descriptionTitle="'Description'" :small="false"></DescriptionElement>
                 </v-list>
                 <v-divider v-if="detailsObject && detailsObject.asset"></v-divider>
-                <!-- Asset Details -->
+                <!-- Asset Details (deprecated TODO: remove if not needed!) -->
                 <v-list v-if="detailsObject && detailsObject.asset" lines="one" nav class="bg-detailsCard">
                     <!-- Asset Identification -->
                     <IdentificationElement class="mb-2" :identificationObject="detailsObject.asset" :modelType="'Asset'"></IdentificationElement>
@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
@@ -52,10 +52,10 @@ export default defineComponent({
     props: ['detailsObject', 'showDetailsCard', 'showExtended'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
         }
     },
 
@@ -67,7 +67,7 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
     },
 

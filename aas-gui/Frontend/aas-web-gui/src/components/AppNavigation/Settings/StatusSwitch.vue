@@ -4,16 +4,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
     name: 'StatusSwitch',
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
         }
     },
 
@@ -30,14 +30,14 @@ export default defineComponent({
     computed: {
         // get the status-check state from the store
         statusCheck() {
-            return this.store.getters.getStatusCheck;
+            return this.navigationStore.getStatusCheck;
         },
     },
 
     methods: {
         // Function to toggle the status-check
         updateStatusCheck() {
-            this.store.dispatch('dispatchUpdateStatusCheck', this.statusCheckStatus);
+            this.navigationStore.dispatchUpdateStatusCheck(this.statusCheckStatus);
             // save status-check preference in local storage
             localStorage.setItem('statusCheck', this.statusCheckStatus.toString());
         },

@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling'; // Mixin to handle the requests to the AAS
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling'; // Mixin to handle typical SubmodelElement-Actions
 
@@ -34,11 +34,11 @@ export default defineComponent({
 
     setup() {
         const theme = useTheme()
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -56,7 +56,7 @@ export default defineComponent({
     computed: {
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -81,7 +81,7 @@ export default defineComponent({
                 submodelElement.id = this.UUID(); // add a unique id to the SubmodelElement
                 submodelElement.path = path + '/' + submodelElement.idShort; // add the path to the SubmodelElement
                 // the next Step is not needed for the HelloWorld-Plugin, but it is still displayed as an Example for more complex Situations using SubmodelElementCollections
-                if (submodelElement.modelType.name == 'SubmodelElementCollection') {
+                if (submodelElement.modelType == 'SubmodelElementCollection') {
                     // Method calls itself to add the pathes and id's to the SubmodelElements in the SubmodelElementCollection
                     submodelElement.children = this.preparePluginData(submodelElement.value, submodelElement.path);
                 }

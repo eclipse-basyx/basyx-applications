@@ -57,8 +57,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -70,10 +70,10 @@ export default defineComponent({
     props: ['multiLanguagePropertyObject'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -115,19 +115,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -169,10 +164,10 @@ export default defineComponent({
         // Function to update the value of the property
         updateMLP() {
             // console.log("Update Value: ", this.multiLanguagePropertyObject);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.multiLanguagePropertyObject.path;
+            let path = this.multiLanguagePropertyObject.path;
             let content = JSON.stringify(this.multiLanguagePropertyObject);
             let headers = { 'Content-Type': 'application/json' };
-                let context = 'updating ' + this.multiLanguagePropertyObject.modelType.name + ' "' + this.multiLanguagePropertyObject.idShort + '"';
+                let context = 'updating ' + this.multiLanguagePropertyObject.modelType + ' "' + this.multiLanguagePropertyObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {

@@ -25,18 +25,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import { useTheme } from 'vuetify';
 
 export default defineComponent({
     name: 'ThemeSwitch',
 
     setup() {
-        const store = useStore()
         const theme = useTheme()
 
         return {
-            store, // Store Object
             theme, // Theme Object
         }
     },

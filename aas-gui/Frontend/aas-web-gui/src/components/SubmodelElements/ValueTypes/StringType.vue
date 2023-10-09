@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -33,10 +33,10 @@ export default defineComponent({
     props: ['stringValue'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -74,12 +74,12 @@ export default defineComponent({
     computed: {
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -87,13 +87,13 @@ export default defineComponent({
         // Function to update the value of the property
         updateValue() {
             // console.log("Update Value: " + this.newPropertyValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.stringValue.path + '/value';
-            let content = "'" + this.newStringValue + "'";
+            let path = this.stringValue.path + '/$value';
+            let content = JSON.stringify(this.newStringValue);
             let headers = { 'Content-Type': 'application/json' };
-            let context = 'updating ' + this.stringValue.modelType.name + ' "' + this.stringValue.idShort + '"';
+            let context = 'updating ' + this.stringValue.modelType + ' "' + this.stringValue.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
-            this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+            this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // this.newPropertyValue = ''; // reset input
                     let updatedStringValue = { ...this.stringValue }; // copy the stringValue

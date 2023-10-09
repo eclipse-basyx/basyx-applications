@@ -1,14 +1,11 @@
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
 
 export default defineComponent({
     setup() {
-        const store = useStore()
 
         return {
-            store, // Store Object
         }
     },
 
@@ -17,6 +14,12 @@ export default defineComponent({
         }
     },
     methods: {
+        // converts AAS identification to UTF8 BASE64 encoded URL
+        URLEncode(aasId: string) {
+            const base64Id = btoa(unescape(encodeURIComponent(aasId)));
+            const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+            return urlSafeBase64Id;
+        },
         // generate a unique ID (UUID)
         UUID() {
             return uuidv4();
@@ -62,6 +65,39 @@ export default defineComponent({
                 }
             });
             return result;
+        },
+
+        // Function to check if the valueType is a number
+        isNumber(valueType: any) {
+            // List of all number types
+            let numberTypes = [
+                'double',
+                'float',
+                'integer',
+                'int',
+                'nonNegativeInteger',
+                'positiveInteger',
+                'unsignedLong',
+                'unsignedInt',
+                'unsignedShort',
+                'unsignedByte',
+                'nonPositiveInteger',
+                'negativeInteger',
+                'long',
+                'short',
+                'decimal',
+                'byte'
+            ];
+            // strip xs: from the property if it exists
+            if (valueType.includes('xs:')) {
+                valueType = valueType.replace('xs:', '');
+            }
+            // check if the property is a number
+            if (numberTypes.includes(valueType)) {
+                return true;
+            } else {
+                return false;
+            }
         },
     },
 })

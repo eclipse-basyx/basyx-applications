@@ -21,8 +21,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
 
@@ -38,10 +39,12 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -62,7 +65,6 @@ export default defineComponent({
         SelectedAAS: {
             deep: true,
             handler() {
-                // console.log('Selected AAS: ', this.SelectedAAS);
                 this.initializeTree();
             }
         },
@@ -83,7 +85,7 @@ export default defineComponent({
         initTree() {
             if(this.initTree) {
                 this.initTreeWithRouteParams();
-                this.store.dispatch('dispatchInitTreeByReferenceElement', false); // reset the initTree flag
+                this.aasStore.dispatchInitTreeByReferenceElement(false); // reset the initTree flag
             }
         },
     },
@@ -92,26 +94,31 @@ export default defineComponent({
     computed: {
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // gets loading State from Store
         loading() {
-            return this.store.getters.getLoadingState;
+            return this.aasStore.getLoadingState;
         },
 
         // get Registry Server URL from Store
         registryServerURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
+        },
+
+        // Get the Submodel Repository URL from the Store
+        submodelRepoURL() {
+            return this.navigationStore.getSubmodelRepoURL;
         },
 
         // get the updated Treeview Node from Store
         updatedNode() {
-            return this.store.getters.getUpdatedNode;
+            return this.aasStore.getUpdatedNode;
         },
         // get the init treeview flag from Store
         initTree() {
-            return this.store.getters.getInitTreeByReferenceElement;
+            return this.aasStore.getInitTreeByReferenceElement;
         },
     },
 
@@ -120,33 +127,44 @@ export default defineComponent({
         initializeTree() {
             // console.log('Initialize Treeview', this.initialUpdate, this.initialNode);
             // return if no endpoints are available
-            if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].address) {
-                this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
+            if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].protocolInformation || !this.SelectedAAS.endpoints[0].protocolInformation.href) {
+                // TODO: this seems to get executed on reload with a selected AAS
+                console.warn('AAS with no (valid) Endpoint selected!');
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
                 return;
             }
             if(this.loading) return; // return if loading state is true -> prevents multiple requests
-            this.store.dispatch('dispatchLoadingState', true); // set loading state to true
+            this.aasStore.dispatchLoadingState(true); // set loading state to true
             this.submodelData = []; // reset Treeview Data
             // retrieve AAS from endpoint
-            let path = this.SelectedAAS.endpoints[0].address + '/submodels';
-            let context = 'retrieving AAS Data';
+            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/submodel-refs';
+            let context = 'retrieving Submodel References';
             let disableMessage = false;
-            this.getRequest(path, context, disableMessage).then((response: any) => {
-                this.store.dispatch('dispatchLoadingState', false); // set loading state to false
+            this.getRequest(path, context, disableMessage).then(async (response: any) => {
+                this.aasStore.dispatchLoadingState(false); // set loading state to false
                 if (response.success) { // execute if the Request was successful
-                    // prepare data for treeview
-                    let submodelData = this.prepareTreeviewData(response.data);
-                    // console.log('Treeview Data: ', this.submodelData);
-                    // set the isActive prop of the initialNode if it exists and the initialUpdate flag is set
-                    if(this.initialUpdate && this.initialNode) {
-                        let expandedSubmodelData = this.expandTree(submodelData, this.initialNode); // Update the Treeview to expand until the initially set node is reached
-                        // this.updateNode(this.initialNode); // set the isActive prop of the initialNode to true
-                        this.initialUpdate = false;
-                        this.initialNode = {};
-                        // console.log('Expanded Treeview Data: ', expandedSubmodelData)
-                        this.submodelData = expandedSubmodelData; // set the Treeview Data
-                    } else {
-                        this.submodelData = submodelData; // set the Treeview Data
+                    try {
+                        // show an error message when the Submodel Repository URL is not set
+                        if(!this.submodelRepoURL) {
+                            this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Submodel Repository URL not set!' });
+                            return;
+                        }
+                        // request submodels from the retrieved AAS (top layer of the Treeview)
+                        let submodelData = await this.requestSubmodels(response.data.result);
+                        // set the isActive prop of the initialNode if it exists and the initialUpdate flag is set
+                        if(this.initialUpdate && this.initialNode) {
+                            let expandedSubmodelData = this.expandTree(submodelData, this.initialNode); // Update the Treeview to expand until the initially set node is reached
+                            // this.updateNode(this.initialNode); // set the isActive prop of the initialNode to true
+                            this.initialUpdate = false;
+                            this.initialNode = {};
+                            // console.log('Expanded Treeview Data: ', expandedSubmodelData)
+                            this.submodelData = expandedSubmodelData; // set the Treeview Data
+                        } else {
+                            this.submodelData = submodelData; // set the Treeview Data
+                            // console.log('Treeview Data: ', this.submodelData)
+                        }
+                    } catch (error) {
+                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Error while parsing the Submodel References!', baseError: JSON.stringify(error) });
                     }
                 } else { // execute if the Request failed
                     this.submodelData = [];
@@ -154,41 +172,71 @@ export default defineComponent({
             });
         },
 
+        // Function to request all Submodels from the selected AAS
+        async requestSubmodels(submodelRefs: any) {
+            // console.log('SubmodelRefs: ', submodelRefs);
+            let submodelPromises = submodelRefs.map((submodelRef: any) => {
+                // retrieve Submodel from endpoint
+                let path = this.submodelRepoURL + '/' + this.URLEncode(submodelRef.keys[0].value);
+                let context = 'retrieving Submodel Data';
+                let disableMessage = true;
+                return this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) { // execute if the Request was successful
+                        let submodel = response.data;
+                        // give the Submodel a unique ID
+                        submodel.id = this.UUID();
+                        // set the active State of the Submodel
+                        submodel.isActive = false;
+                        // set the Path of the Submodel
+                        submodel.path = path;
+                        // check if submodel has SubmodelElements
+                        if(submodel.submodelElements || submodel.submodelElements.length > 0) {
+                            // recursively create treestructure for contained submodelElements
+                            let submodelElements = this.prepareTreeviewData(submodel.submodelElements, submodel);
+                            // add the SubmodelElements to the Submodel
+                            submodel.children = submodelElements;
+                            // set showChildren to false (for the Treeview Component)
+                            submodel.showChildren = false;
+                        }
+                        return submodel;
+                    }
+                });
+            });
+            let submodels = await Promise.all(submodelPromises);
+            return submodels;
+        },
+
         // Function to prepare the Datastructure for the Treeview
-        prepareTreeviewData(data: any) {
-            // console.log('Data: ', data);
-            // iterate over all elements in the current level of the tree (Submodels, SubmodelElements [e.g. SubmodelElementCollections, Properties])
-            data.forEach((element: any) => {
+        prepareTreeviewData(SubmodelElements: any, parent: any) {
+            // console.log('SubmodeElements: ', SubmodelElements);
+            // iterate over all elements in the current level of the tree (SubmodelElements [e.g. SubmodelElementCollections, SubmodelElementLists, Properties, ...])
+            SubmodelElements.forEach((element: any, index: number) => {
                 // give the Element a unique ID
                 element.id = this.UUID();
                 // set the active State of each Element
                 element.isActive = false;
+                // set the Parent of each Element
+                element.parent = parent;
                 // set the Path of each Element
-                if(element.modelType.name == 'Submodel') {
-                    element.path = 'submodels/' + element.idShort + '/submodel';
-                } else if(element.parent.modelType.name == 'Submodel') {
-                    element.path = element.parent.path + '/submodelElements/' + element.idShort;
+                if(element.parent.modelType == 'Submodel') {
+                    element.path = element.parent.path + '/submodel-elements/' + element.idShort;
+                } else if(element.parent.modelType == 'SubmodelElementList') {
+                    element.path = element.parent.path + encodeURIComponent('[') + index + encodeURIComponent(']');
                 } else {
-                    element.path = element.parent.path + '/' + element.idShort;
+                    element.path = element.parent.path + '.' + element.idShort;
                 }
                 // check if the Element has Children
                 if(element.submodelElements && element.submodelElements.length > 0) { // check for SubmodelElements
-                    element.submodelElements.forEach((submodelElement: any) => {
-                        submodelElement.parent = element; // set the Parent of the SubmodelElement
-                    });
                     // if the Element has Children, call the Function again with the Children as Data
-                    element.children = this.prepareTreeviewData(element.submodelElements);
+                    element.children = this.prepareTreeviewData(element.submodelElements, element);
                     element.showChildren = false; // set showChildren to false (for the Treeview Component)
-                } else if(element.value && Array.isArray(element.value) && element.value.length > 0 && element.modelType.name == 'SubmodelElementCollection') { // check for Values
-                    element.value.forEach((submodelElement: any) => {
-                        submodelElement.parent = element; // set the Parent of the SubmodelElement
-                    });
+                } else if(element.value && Array.isArray(element.value) && element.value.length > 0 && (element.modelType == 'SubmodelElementCollection' || element.modelType == 'SubmodelElementList')) { // check for Values (SubmodelElementCollections or SubmodelElementLists)
                     // if the Element has Children, call the Function again with the Children as Data
-                    element.children = this.prepareTreeviewData(element.value);
+                    element.children = this.prepareTreeviewData(element.value, element);
                     element.showChildren = false; // set showChildren to false (for the Treeview Component)
                 }
             });
-            return data;
+            return SubmodelElements;
         },
 
         // Function to select a Property
@@ -196,7 +244,6 @@ export default defineComponent({
             // console.log('Updated Node: ', updatedNode);
             // change the isActive State of the selected Node in the Treeview Data (submodelData)
             this.submodelData = this.changeActiveState(this.submodelData, updatedNode);
-
         },
 
         // Function to change the isActive State of a Node in the Treeview Data (submodelData)
@@ -241,7 +288,6 @@ export default defineComponent({
                     if (!foundNode) {
                         foundNode = true;
                         element.isActive = true;
-                        // this.store.dispatch('dispatchNode', element); // set the updatedNode in the Store
                     }
                     // if prop showChildren exists, set it to true
                     if('showChildren' in element) {
@@ -278,7 +324,8 @@ export default defineComponent({
         // Function to initialize the treeview with route params
         initTreeWithRouteParams() {
             // check if the SelectedAAS is already set in the Store and initialize the Treeview if so
-            if (this.SelectedAAS && this.SelectedAAS.endpoints && this.SelectedAAS.endpoints.length > 0) {
+            if (this.SelectedAAS && this.SelectedAAS.endpoints && this.SelectedAAS.endpoints[0] && this.SelectedAAS.endpoints[0].protocolInformation && this.SelectedAAS.endpoints[0].protocolInformation.href) {
+                // console.log('init Tree from Route Params: ', this.SelectedAAS);
                 this.initializeTree();
             }
 

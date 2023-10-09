@@ -126,10 +126,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import { mergeProps } from 'vue'
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useWidgetsStore } from '@/store/WidgetsStore';
+import { useEnvStore } from '@/store/EnvironmentStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASList  from './AASList.vue';
 import AutoSync from './AutoSync.vue';
@@ -152,21 +154,27 @@ export default defineComponent({
 
     setup () {
         const theme = useTheme()
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const widgetsStore = useWidgetsStore()
+        const envStore = useEnvStore()
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            widgetsStore, // WidgetsStore Object
+            envStore, // EnvironmentStore Object
         }
     },
     
     data() {
         return {
-            loading: false,     // Variable to show the loading animation on the Connect Button
-            registryURL: '',    // Variable to store the Registry Server URL
-            aasServerURL: '',   // Variable to store the AAS Server URL
-            mainMenu: false,    // Variable to show the Main Menu
-            mobileMenu: false,  // Variable to show the Mobile Menu
+            loading: false,                 // Variable to show the loading animation on the Connect Button
+            registryURL: '',                // Variable to store the Registry Server URL
+            AASRepoURL: '',                 // Variable to store the AAS Repository URL
+            SubmodelRepoURL: '',            // Variable to store the Submodel Repository URL
+            ConceptDescriptionRepoURL: '',  // Variable to store the Concept Description Repository URL
+            mainMenu: false,                // Variable to show the Main Menu
+            mobileMenu: false,              // Variable to show the Mobile Menu
             menuEntries: [
                 { name: 'AAS List',         icon: 'mdi-format-list-text',               route: '/aaslist',                  id: 1 },
                 { name: 'AAS Treeview',     icon: 'mdi-format-list-group',              route: '/aastreeview',              id: 2 },
@@ -211,18 +219,44 @@ export default defineComponent({
                 this.connectToRegistry();
             }
         }
-        // auto connect to aas server that was saved in local storage
-        let AASServerURL = window.localStorage.getItem('aasServerURL');
-        if(AASServerURL) {
-            this.aasServerURL = AASServerURL;
-            this.connectToAASServer();
-            // console.log('AASServerURL was found in local storage', AASServerURL);
-        } else { // if no aas server was saved in local storage, check if an environment variable is set
-            if (this.EnvAASServerPath && this.EnvAASServerPath != '') {
-                this.aasServerURL = this.EnvAASServerPath;
-                this.connectToAASServer();
-            }
 
+        // auto connect to AAS Repository that was saved in local storage
+        let aasRepoURL = window.localStorage.getItem('AASRepoURL');
+        if(aasRepoURL) {
+            this.AASRepoURL = aasRepoURL;
+            this.connectToEnvironment('AAS');
+            // console.log('AASRepoURL was found in local storage', AASRepoURL);
+        } else { // if no aas server was saved in local storage, check if an environment variable is set
+            if (this.EnvAASRepoPath && this.EnvAASRepoPath != '') {
+                this.AASRepoURL = this.EnvAASRepoPath;
+                this.connectToEnvironment('AAS');
+            }
+        }
+
+        // auto connect to Submodel Repository that was saved in local storage
+        let submodelRepoURL = window.localStorage.getItem('SubmodelRepoURL');
+        if(submodelRepoURL) {
+            this.SubmodelRepoURL = submodelRepoURL;
+            this.connectToEnvironment('Submodel');
+            // console.log('SubmodelRepoURL was found in local storage', SubmodelRepoURL);
+        } else { // if no submodel server was saved in local storage, check if an environment variable is set
+            if (this.EnvSubmodelRepoPath && this.EnvSubmodelRepoPath != '') {
+                this.SubmodelRepoURL = this.EnvSubmodelRepoPath;
+                this.connectToEnvironment('Submodel');
+            }
+        }
+
+        // auto connect to Concept Description Repository that was saved in local storage
+        let conceptDescriptionRepoURL = window.localStorage.getItem('ConceptDescriptionRepoURL');
+        if(conceptDescriptionRepoURL) {
+            this.ConceptDescriptionRepoURL = conceptDescriptionRepoURL;
+            this.connectToEnvironment('ConceptDescription');
+            // console.log('ConceptDescriptionRepoURL was found in local storage', ConceptDescriptionRepoURL);
+        } else { // if no concept description server was saved in local storage, check if an environment variable is set
+            if (this.EnvConceptDescriptionRepoPath && this.EnvConceptDescriptionRepoPath != '') {
+                this.ConceptDescriptionRepoURL = this.EnvConceptDescriptionRepoPath;
+                this.connectToEnvironment('ConceptDescription');
+            }
         }
     },
 
@@ -244,12 +278,12 @@ export default defineComponent({
         
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
 
         // get Drawer State from store
         drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
-            return this.store.getters.getDrawerState;
+            return this.navigationStore.getDrawerState;
         },
 
         // Check if the current Theme is dark
@@ -259,7 +293,7 @@ export default defineComponent({
 
         // get snackbar data from store
         Snackbar() {
-            return this.store.getters.snackbar;
+            return this.navigationStore.getSnackbar;
         },
 
         // to check if the MainWindow is the current Route
@@ -269,17 +303,27 @@ export default defineComponent({
 
         // Get the Activation Status of the Widget Feature
         WidgetFeatureActive() {
-            return this.store.getters.getWidgetFeatureActive;
+            return this.widgetsStore.getWidgetFeatureActive;
         },
 
         // Get the Env Variable for the Registry Server URL from the store
         EnvRegistryPath() {
-            return this.store.getters.getEnvRegistryPath;
+            return this.envStore.getEnvRegistryPath;
         },
 
-        // Get the Env Variable for the AAS Server URL from the store
-        EnvAASServerPath() {
-            return this.store.getters.getEnvAASServerPath;
+        // Get the Env Variable for the AAS Repo URL from the store
+        EnvAASRepoPath() {
+            return this.envStore.getEnvAASRepoPath;
+        },
+
+        // Get the Env Variable for the Submodel Repo URL from the store
+        EnvSubmodelRepoPath() {
+            return this.envStore.getEnvSubmodelRepoPath;
+        },
+
+        // Get the Env Variable for the Concept Description Repo URL from the store
+        EnvConceptDescriptionRepoPath() {
+            return this.envStore.getEnvConceptDescriptionRepoPath;
         },
 
         imagePath() {
@@ -305,37 +349,39 @@ export default defineComponent({
             // console.log('connect to registry: ' + this.registryURL);
             if(this.registryURL != '') {
                 this.loading = true;
-                let path = this.registryURL + '/api/v1/registry';
+                let path = this.registryURL + '/api/v3.0/shell-descriptors';
                 let context = 'connecting to Registry Server'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loading = false;
                     if (response.success) {
-                        this.store.dispatch('dispatchRegistryURL', this.registryURL); // save the URL in the store
+                        this.navigationStore.dispatchRegistryURL(this.registryURL); // save the URL in the NavigationStore
                         window.localStorage.setItem('registryURL', this.registryURL); // save the URL in the local storage
                         this.checkWidgetApi(); // check if the Widget API is available
                     } else {
-                        this.store.dispatch('dispatchRegistryURL', ''); // clear the URL in the store
+                        this.navigationStore.dispatchRegistryURL(''); // clear the URL in the NavigationStore
                         window.localStorage.removeItem('registryURL'); // remove the URL from the local storage
                     }
                 });
             }
         },
 
-        // Function to connect to the AAS Server
-        connectToAASServer() {
-            // console.log('connect to aas server: ' + this.aasServerURL);
-            if(this.aasServerURL != '') {
-                let path = this.aasServerURL + '/shells';
-                let context = 'connecting to AAS Server'
+        // Function to connect to the respective Repository
+        connectToEnvironment(RepoType: string) {
+            // console.log('connect to ' + RepoType + ' Repository: ' + (this as any)[RepoType + 'RepoURL']);
+            if ((this as any)[RepoType + 'RepoURL'] != '') {
+                (this as any)['loading' + RepoType + 'Repo'] = true;
+                let path = (this as any)[RepoType + 'RepoURL'];
+                let context = 'connecting to ' + RepoType + ' Repository'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
+                    (this as any)['loading' + RepoType + 'Repo'] = false;
                     if (response.success) {
-                        this.store.dispatch('dispatchAASServerURL', this.aasServerURL); // save the URL in the store
-                        window.localStorage.setItem('aasServerURL', this.aasServerURL); // save the URL in the local storage
+                        this.navigationStore.dispatchRepoURL(RepoType, (this as any)[RepoType + 'RepoURL']); // save the URL in the NavigationStore
+                        window.localStorage.setItem(RepoType + 'RepoURL', (this as any)[RepoType + 'RepoURL']); // save the URL in the local storage
                     } else {
-                        this.store.dispatch('dispatchAASServerURL', ''); // clear the URL in the store
-                        window.localStorage.removeItem('aasServerURL'); // remove the URL from the local storage
+                        this.navigationStore.dispatchRepoURL(RepoType, ''); // clear the URL in the NavigationStore
+                        window.localStorage.removeItem(RepoType + 'RepoURL'); // remove the URL from the local storage
                     }
                 });
             }
@@ -354,18 +400,18 @@ export default defineComponent({
             // Send Request to get all Widgets
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    this.store.dispatch('dispatchWidgetApiURL', WidgetApiURL); // save the Widget API URL in the store
-                    this.store.dispatch('dispatchWidgetFeatureActive', true); // set the Widget Feature Activation Status to true
+                    this.navigationStore.dispatchWidgetApiURL(WidgetApiURL); // save the Widget API URL in the NavigationStore
+                    this.widgetsStore.dispatchWidgetFeatureActive(true); // set the Widget Feature Activation Status to true
                 } else {
-                    this.store.dispatch('dispatchWidgetApiURL', ''); // clear the Widget API URL in the store
-                    this.store.dispatch('dispatchWidgetFeatureActive', false); // set the Widget Feature Activation Status to false
+                    this.navigationStore.dispatchWidgetApiURL(''); // clear the Widget API URL in the NavigationStore
+                    this.widgetsStore.dispatchWidgetFeatureActive(false); // set the Widget Feature Activation Status to false
                 }
             });
         },
 
         // Function to close the Snackbar
         closeSnackbar() {
-            this.store.dispatch('getSnackbar', { status: false })
+            this.navigationStore.dispatchSnackbar({ status: false });
         },
 
         // Function to open the Dashboard
