@@ -1,8 +1,11 @@
 <template>
     <v-container fluid class="pa-0">
         <v-card>
-            <!-- Image Preview -->
-            <v-img :src="localPathValue" max-width="100%" max-height="100%" contain @error="errorLoadingImage = true"></v-img>
+            <!-- Image File Preview -->
+            <v-img v-if="submodelElementData.modelType.name == 'File'" :src="localPathValue" max-width="100%" max-height="100%" contain @error="errorLoadingImage = true"></v-img>
+            <!-- Image Blob Preview -->
+            <v-img v-if="submodelElementData.modelType.name == 'Blob'" :src="Base64Image" max-width="100%" max-height="100%" contain @error="errorLoadingImage = true"></v-img>
+            <!-- Error Message -->
             <v-alert v-if="errorLoadingImage" text="No Image found at given Path!" density="compact" type="warning" variant="outlined"></v-alert>
         </v-card>
     </v-container>
@@ -30,18 +33,27 @@ export default defineComponent({
     data() {
         return {
             localPathValue: '', // Path to the File when it is embedded to the AAS
+            Base64Image: '',    // Base64 Image String
             errorLoadingImage: false,
         }
     },
 
     mounted() {
-        this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+        if (this.submodelElementData.modelType.name == 'File') {
+            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+        } else if (this.submodelElementData.modelType.name == 'Blob') {
+            this.Base64Image =`data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+        }
         this.errorLoadingImage = false;
     },
 
     watch: {
         submodelElementData() {
-            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+            if (this.submodelElementData.modelType.name == 'File') {
+                this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+            } else if (this.submodelElementData.modelType.name == 'Blob') {
+                this.Base64Image = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+            }
             this.errorLoadingImage = false;
         },
     },

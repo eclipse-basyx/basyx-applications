@@ -6,15 +6,24 @@
                 <v-row align="center">
                     <!-- Reload Button -->
                     <v-col cols="auto" class="pr-0">
-                        <v-btn icon="mdi-reload" variant="plain" @click="reloadList()" :loading="listLoading">
-                            <template v-slot:loader>
-                                <span class="custom-loader"><v-icon light>mdi-cached</v-icon></span>
+                        <v-tooltip open-delay="600" location="bottom">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon="mdi-reload" variant="plain" @click="reloadList()" :loading="listLoading" v-bind="props">
+                                    <template v-slot:loader>
+                                        <span class="custom-loader"><v-icon light>mdi-cached</v-icon></span>
+                                    </template>
+                                </v-btn>
                             </template>
-                        </v-btn>
+                            <span>Refresh AAS List</span>
+                        </v-tooltip>
                     </v-col>
                     <!-- AAS Search Field -->
-                    <v-col class="pl-1" v-if="showExtended">
+                    <v-col class="pl-1 pr-0" v-if="showExtended">
                         <v-text-field variant="outlined" density="compact" hide-details label="Search for AAS..." clearable @update:modelValue="filterAASList"></v-text-field>
+                    </v-col>
+                    <!-- Add existing AAS -->
+                    <v-col cols="auto" class="px-0">
+                        <RegisterAAS></RegisterAAS>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -60,14 +69,14 @@
             <v-list v-if="!isMobile" nav style="width: 100%; z-index: 9000" class="bg-detailsCard pa-0">
                 <v-divider style="margin-left: -8px; margin-right: -8px"></v-divider>
                 <!-- Button to collapse the Sidebar -->
-                <v-list-item v-if="!drawerState" @click="collapseSidebar()">
+                <v-list-item v-if="!drawerState" @click="collapseSidebar()" class="ma-0">
                     <template v-slot:prepend>
                         <v-icon class="ml-2">mdi-chevron-double-left</v-icon>
                     </template>
                     <v-list-item-title class="text-caption">Collapse Sidebar</v-list-item-title>
                 </v-list-item>
                 <!-- Button to extend the Sidebar -->
-                <v-list-item v-else @click="extendSidebar()">
+                <v-list-item v-else @click="extendSidebar()" class="ma-0">
                     <template v-slot:prepend>
                         <v-icon class="ml-2">mdi-chevron-double-right</v-icon>
                     </template>
@@ -83,11 +92,13 @@ import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASListDetails from './AASListDetails.vue';
+import RegisterAAS from './RegisterAAS.vue';
 
 export default defineComponent({
     name: 'AASList',
     components: {
         AASListDetails, // AAS Details Component
+        RegisterAAS,    // Register AAS Component
     },
     mixins: [RequestHandling],
 
@@ -132,6 +143,13 @@ export default defineComponent({
             // dispatch the AAS set by the URL to the store
             this.store.dispatch('dispatchSelectedAAS', aas);
         }
+
+        // check if the status-check is set in the local storage and if so set the status-check state in the store
+        const statusCheck = localStorage.getItem('statusCheck');
+        if (statusCheck) {
+            // console.log('Status Check is set: ', statusCheck);
+            this.store.dispatch('dispatchUpdateStatusCheck', statusCheck === 'true');
+        }
     },
 
     watch: {
@@ -139,7 +157,9 @@ export default defineComponent({
         registryURL() {
             if(this.registryURL !== '') {
                 this.reloadList();
-                this.addConnectionInterval();
+                if (this.statusCheck) {
+                    this.addConnectionInterval();
+                }
             } else {
                 this.AASData = [];
             }
@@ -151,6 +171,21 @@ export default defineComponent({
             setTimeout(() => {
                 this.showExtended = true;
             }, 300);
+        },
+
+        // watch for changes in the status-check state and add/remove the connection interval
+        statusCheck() {
+            if(this.statusCheck) {
+                this.addConnectionInterval();
+            }
+        },
+
+        // watch for changes in the trigger for AAS List reload
+        triggerAASListReload(triggerVal) {
+            if(triggerVal === true) {
+                this.reloadList();
+                this.store.dispatch('dispatchTriggerAASListReload', false);
+            }
         },
     },
 
@@ -193,6 +228,16 @@ export default defineComponent({
         primaryColor() {
             return this.$vuetify.theme.themes.light.colors.primary;
         },
+
+        // get the status-check state from the store
+        statusCheck() {
+            return this.store.getters.getStatusCheck;
+        },
+
+        // get trigger signal for AAS List reload from store
+        triggerAASListReload() {
+            return this.store.getters.getTriggerAASListReload;
+        },
     },
 
     methods: {
@@ -217,11 +262,13 @@ export default defineComponent({
                     let sortedData = response.data.sort((a: { [x: string]: { [x: string]: number; }; }, b: { [x: string]: { [x: string]: number; }; }) => (a['identification']['id'] > b['identification']['id']) ? 1 : -1);
                     // add status online to the AAS Data
                     sortedData.forEach((AAS: any) => {
-                        AAS['status'] = 'online';
+                        AAS['status'] = 'check disabled';
                     });
                     this.AASData = sortedData; // store the sorted data in the AASData variable
                     this.unfilteredAASData = sortedData; // make a copy of the sorted data and store it in the unfilteredAASData variable
-                    this.checkAASStatus(); // check the AAS Status
+                    if (this.statusCheck) {
+                        this.checkAASStatus(); // check the AAS Status
+                    }
                 } else { // execute if the Registry Server is not found
                     this.store.dispatch('dispatchRegistryURL', ''); // clear the URL in the store
                 }

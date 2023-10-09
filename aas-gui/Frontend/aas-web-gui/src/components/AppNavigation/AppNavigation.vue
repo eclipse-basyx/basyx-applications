@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <!-- Desktop App Bar -->
+        <!-- Main App Bar -->
         <v-app-bar class="px-3" color="appBar">
             <v-row class="mx-0" align="center">
                 <v-tooltip location="bottom" :open-delay="600">
@@ -20,8 +20,28 @@
                     </template>
                     <span v-if="WidgetFeatureActive">{{ 'Dashboard' }}</span>
                 </v-tooltip>
+                <!-- Menu Toggle (Desktop) -->
+                <v-menu v-if="!isMobile" :close-on-content-click="false" v-model="mainMenu">
+                    <template v-slot:activator="{ props: menu }">
+                        <v-tooltip text="Main Menu" location="bottom" :open-delay="600">
+                            <template v-slot:activator="{ props: tooltip }">
+                                <v-app-bar-nav-icon class="ml-3" v-bind="mergeProps(menu, tooltip)"></v-app-bar-nav-icon>
+                            </template>
+                        </v-tooltip>
+                    </template>
+                    <!-- Main Menu Component -->
+                    <MainMenu @closeMenu="mainMenu = false"></MainMenu>
+                </v-menu>
+                <v-spacer></v-spacer>
+                <!-- Settings-Menu for Auto-Sync and Sync-Interval -->
+                <AutoSync></AutoSync>
+                <!-- Platform I 4.0 Logo -->
+                <v-img v-if="!isMobile" src="I40.png" max-width="260px" :style="{filter: isDark ? 'invert(1)' : 'invert(0)'}">
+                    <template #sources>
+                        <source srcset="@/assets/I40.png">
+                    </template>
+                </v-img>
                 <!-- Menu Toggle (Mobile) -->
-                <v-spacer v-if="isMobile"></v-spacer>
                 <v-dialog v-if="isMobile" fullscreen v-model="mainMenu" :z-index="9993">
                     <template v-slot:activator="{ props: menu }">
                         <v-tooltip text="Main Menu" location="bottom" :open-delay="600">
@@ -41,9 +61,7 @@
                         <!-- Auto-Sync and Theme Settings in Mobile View -->
                         <v-row justify="center" style="max-height: 128px !important">
                             <v-col cols="12" class="text-center">
-                                <AutoSync class="mb-3"></AutoSync>
-                                <v-divider></v-divider>
-                                <v-switch label="Theme" class="mx-5 mt-2" @change="toggleTheme" v-model="dark" density="compact" color="primary" hide-details inline append-icon="mdi-theme-light-dark"></v-switch>
+                                <ThemeSwitch></ThemeSwitch>
                             </v-col>
                         </v-row>
                         <v-divider></v-divider>
@@ -51,31 +69,8 @@
                         <MainMenu @closeMenu="mainMenu = false"></MainMenu>
                     </v-card>
                 </v-dialog>
-                <!-- Menu Toggle (Desktop) -->
-                <v-menu v-else :close-on-content-click="false" v-model="mainMenu">
-                    <template v-slot:activator="{ props: menu }">
-                        <v-tooltip text="Main Menu" location="bottom" :open-delay="600">
-                            <template v-slot:activator="{ props: tooltip }">
-                                <v-app-bar-nav-icon class="ml-3" v-bind="mergeProps(menu, tooltip)"></v-app-bar-nav-icon>
-                            </template>
-                        </v-tooltip>
-                    </template>
-                    <!-- Main Menu Component -->
-                    <MainMenu @closeMenu="mainMenu = false"></MainMenu>
-                </v-menu>
-                <v-spacer v-if="!isMobile"></v-spacer>
-                <!-- Settings-Menu for Auto-Sync and Sync-Interval -->
-                <AutoSync v-if="!isMobile"></AutoSync>
-                <!-- Platform I 4.0 Logo -->
-                <v-img v-if="!isMobile" src="I40.png" max-width="260px" :style="{filter: isDark ? 'invert(1)' : 'invert(0)'}">
-                    <template #sources>
-                        <source srcset="@/assets/I40.png">
-                    </template>
-                </v-img>
-                <!-- Switch to change between dark and light Theme -->
-                <v-col cols="auto" v-if="!isMobile">
-                    <v-switch class="ml-5" label="Theme" @change="toggleTheme" v-model="dark" density="compact" color="primary" hide-details inline append-icon="mdi-theme-light-dark"></v-switch>
-                </v-col>
+                <!-- Settings Menu -->
+                <Settings v-if="!isMobile"></Settings>
             </v-row>
         </v-app-bar>
 
@@ -138,7 +133,9 @@ import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASList  from './AASList.vue';
 import AutoSync from './AutoSync.vue';
+import ThemeSwitch from './Settings/ThemeSwitch.vue';
 import MainMenu from './MainMenu.vue';
+import Settings from './Settings.vue';
 
 export default defineComponent({
     name: 'AppNavigation', // Name of the Component
@@ -147,7 +144,9 @@ export default defineComponent({
 
         AASList,    // Component to display the AAS List
         AutoSync,   // Component to display the Auto-Sync Settings
+        ThemeSwitch,// Component to display the Theme Switch
         MainMenu,   // Component to display the Main Menu
+        Settings,   // Component to display the Settings Menu
     },
     mixins: [RequestHandling],
 
@@ -157,15 +156,12 @@ export default defineComponent({
 
         return {
             theme, // Theme Object
-            toggleTheme: () => theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark', // Function to toggle between dark and light Theme
-
             store, // Store Object
         }
     },
     
     data() {
         return {
-            dark: false,        // Variable reflecting the current Theme
             loading: false,     // Variable to show the loading animation on the Connect Button
             registryURL: '',    // Variable to store the Registry Server URL
             aasServerURL: '',   // Variable to store the AAS Server URL
@@ -181,18 +177,28 @@ export default defineComponent({
     },
 
     mounted() {
-        // sets the Theme according to the Users preferred Theme
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            this.theme.global.name.value = 'dark';
+        // check the local storage for a saved theme preference
+        let theme = localStorage.getItem('theme');
+        if (theme) {
+            if (theme == 'dark' || theme == 'light') {
+                this.theme.global.name.value = theme;
+            } else {
+                // sets the Theme according to the Users preferred Theme
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    this.theme.global.name.value = 'dark';
+                } else {
+                    this.theme.global.name.value = 'light';
+                }
+            }
         } else {
-            this.theme.global.name.value = 'light';
+            // sets the Theme according to the Users preferred Theme
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                this.theme.global.name.value = 'dark';
+            } else {
+                this.theme.global.name.value = 'light';
+            }
         }
-        // sets the theme variable for the switch on startup
-        if(this.isDark) {
-            this.dark = true;
-        } else {
-            this.dark = false;
-        }
+
         // auto connect to registry server that was saved in local storage
         let RegistryURL = window.localStorage.getItem('registryURL');
         if(RegistryURL) {
