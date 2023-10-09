@@ -64,63 +64,8 @@ Data from the Concept Description Repository is currently **not** being used in 
 
 ### Quick Start:
 
-1. Clone this Repository
-
-```bash
-git clone https://github.com/eclipse-basyx/basyx-applications
-```
-
-2. Navigate to
-
-```bash
-aas-gui/UsageExample
-```
-
-3. run
-
-```bash
-docker-compose up -d
-```
-
-This desploys the AAS Environment (AAS-, Submodel-, Concept Description Repository), the BaSyx Registry and the BaSyx AAS Web UI.
-
-The UI can be accessed under:
-
-```bash
-http://localhost:1502
-```
-
-As of right now you have to register all Asset Administration Shells on your own (possible through the UI).
-
-You can use the following endpoints to register Asset Administration Shells which are included in the usage example:
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9odHctYmVybGluLmRlL2lkcy9hYXMvZGVtb2Fhc3Yz
-```
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vMjQxMV83MTYwXzAxMzJfNDUyMw==
-```
-
-![alt text](Docs/Figs/RegisterAAS.png "Register Asset Administration Shells")
-
-The example project includes some more shells to try out which include SubmodelElements that have currently no frontend representation. Here, a provisional visualization is shown.
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9hY3BsdC5vcmcvVGVzdF9Bc3NldEFkbWluaXN0cmF0aW9uU2hlbGw=
-```
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9hY3BsdC5vcmcvVGVzdF9Bc3NldEFkbWluaXN0cmF0aW9uU2hlbGxfTWFuZGF0b3J5
-```
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9hY3BsdC5vcmcvVGVzdF9Bc3NldEFkbWluaXN0cmF0aW9uU2hlbGwyX01hbmRhdG9yeQ==
-```
-
-```bash
-http://localhost:1500/shells/aHR0cHM6Ly9hY3BsdC5vcmcvVGVzdF9Bc3NldEFkbWluaXN0cmF0aW9uU2hlbGxfTWlzc2luZw==
-```
+See examples in the [basyx-java-server-sdk](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/examples
+) Repository.
 
 ### Plugin Development
 
