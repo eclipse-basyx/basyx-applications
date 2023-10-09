@@ -13,30 +13,35 @@
                     <v-text-field variant="outlined" density="compact" label="AAS Endpoint" hint="E.g. http://localhost:4000/shells/<UTF8_BASE64_encoded_aasIdentification>" persistent-hint clearable v-model="aasEndpoint"></v-text-field>
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-subtitle class="mt-3 ml-2">URL Encoding of aasIddentification</v-card-subtitle>
-                <v-card-text>
-                    <!-- aasIdentification converter -->
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field variant="outlined" density="compact" label="aasIdentification" clearable v-model="aasIdentification" hide-details class="mb-2" @change="encodeIdentification()"></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field variant="outlined" density="compact" label="Encoded Identification" v-model="EncodedAasIdentification" hide-details class="mb-2" readonly>
-                                <template v-slot:append-inner>
-                                    <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="copyToClipboard()">
-                                        <v-icon>mdi-clipboard-file-outline</v-icon>
-                                    </v-btn>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn size="small" variant="outlined" color="primary" @click="RegisterAASDialog = false">Cancel</v-btn>
                     <v-btn size="small" class="text-buttonText" variant="elevated" color="primary" @click="addAAS()" :loading="registrationLoading">Add</v-btn>
                 </v-card-actions>
+                <v-divider></v-divider>
+                <!-- aasIdentification converter -->
+                <v-expansion-panels>
+                    <v-expansion-panel title="Need help encoding the aasIdentification?">
+                        <v-expansion-panel-text class="px-2">
+                            <v-card-text>
+                                <v-row>
+                                    <v-col cols="6">
+                                        <v-text-field variant="outlined" density="compact" label="aasIdentification" clearable v-model="aasIdentification" hide-details class="mb-2" @change="encodeIdentification()"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-text-field variant="outlined" density="compact" label="Encoded Identification" v-model="EncodedAasIdentification" hide-details class="mb-2" readonly>
+                                            <template v-slot:append-inner>
+                                                <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="copyToClipboard()">
+                                                    <v-icon>mdi-clipboard-file-outline</v-icon>
+                                                </v-btn>
+                                            </template>
+                                        </v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </v-card>
         </v-dialog>
     </v-btn>
@@ -110,7 +115,7 @@ export default defineComponent({
                     // remove administration key
                     delete registrationContent['administration'];
 
-                    let path = this.registryURL + '/api/v3.0/shell-descriptors';
+                    let path = this.registryURL + '/shell-descriptors';
                     let content = JSON.stringify(registrationContent);
                     let headers = { 'Content-Type': 'application/json' };
                     let context = 'registering AAS';

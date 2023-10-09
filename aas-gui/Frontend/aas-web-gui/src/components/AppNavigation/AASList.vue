@@ -257,7 +257,7 @@ export default defineComponent({
         // Function to get the AAS Data from the Registry Server
         getAASData() {
             this.listLoading = true;
-            let path = this.registryURL + '/api/v3.0/shell-descriptors';
+            let path = this.registryURL + '/shell-descriptors';
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -376,7 +376,7 @@ export default defineComponent({
             // show a confirmation Dialog to delete the AAS
             if(confirm('Are you sure you want to delete the AAS from the Registry?')) {
                 // execute if the user confirms the removal
-                let path = this.registryURL + '/api/v3.0/shell-descriptors/' + this.URLEncode(AAS.id);
+                let path = this.registryURL + '/shell-descriptors/' + this.URLEncode(AAS.id);
                 let context = 'removing AAS from Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {

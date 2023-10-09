@@ -126,7 +126,7 @@ export default defineComponent({
             // console.log('checkReference: ', this.referenceValue);
             this.loading = true;
             // Request all registered AAS
-            let path = this.registryURL + '/api/v3.0/shell-descriptors';
+            let path = this.registryURL + '/shell-descriptors';
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             try {
