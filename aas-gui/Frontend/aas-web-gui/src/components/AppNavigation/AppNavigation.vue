@@ -349,7 +349,7 @@ export default defineComponent({
             // console.log('connect to registry: ' + this.registryURL);
             if(this.registryURL != '') {
                 this.loading = true;
-                let path = this.registryURL + '/api/v3.0/shell-descriptors';
+                let path = this.registryURL + '/shell-descriptors';
                 let context = 'connecting to Registry Server'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
