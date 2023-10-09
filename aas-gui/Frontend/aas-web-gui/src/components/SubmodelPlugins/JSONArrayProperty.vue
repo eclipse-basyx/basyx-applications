@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 
 export default defineComponent({
     name: 'JSONArrayProperty',
@@ -17,7 +17,7 @@ export default defineComponent({
 
     setup() {
         const theme = useTheme()
-        const store = useStore()
+        const aasStore = useAASStore()
 
         const chartData = ref([
             {
@@ -57,7 +57,7 @@ export default defineComponent({
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            aasStore, // AASStore Object
             chartData,
             chartOptions,
         }
@@ -95,19 +95,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         // Check if the current Theme is dark

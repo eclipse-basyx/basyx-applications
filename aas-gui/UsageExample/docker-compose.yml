@@ -1,0 +1,33 @@
+version: "3"
+services:
+  aas-environment_v2:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: aas-environment_v2
+    ports:
+      - 1500:9000
+    volumes:
+      - ./aas-config/application.properties:/application/application.properties
+      - "./shells:/usr/share/config/shells"
+    restart: always
+  aas-registry_v2:
+    image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
+    container_name: aas-registry_v2
+    pull_policy: never
+    ports:
+      - "1501:8080"
+    volumes:
+      - ./aas-config/application.yml:/workspace/config/application.yml
+    restart: always
+  aas-web-ui_v2:
+    build:
+      context: ../Frontend/aas-web-gui/
+      dockerfile: Dockerfile
+    container_name: aas-web-ui_v2
+    ports:
+      - "1502:3000"
+    environment:
+      VITE_REGISTRY_PATH: "http://localhost:1501"
+      VITE_AAS_REPO_PATH: "http://localhost:1500/shells"
+      VITE_SUBMODEL_REPO_PATH: "http://localhost:1500/submodels"
+      VITE_CD_REPO_PATH: "http://localhost:1500/concept-descriptions"
+    restart: always

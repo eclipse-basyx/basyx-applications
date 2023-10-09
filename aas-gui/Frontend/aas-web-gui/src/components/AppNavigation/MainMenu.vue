@@ -36,19 +36,32 @@
                             <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToRegistry()" :loading="loadingRegistry">Connect</v-btn>
                         </template>
                     </v-text-field>
-                    <!-- Configure AAS-Server URL -->
-                    <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="AAS-Server URL" v-model="aasServerURL" @keydown.native.enter="connectToAASServer()">
+                    <!-- Configure AAS Repository URL -->
+                    <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="AAS Repository URL" v-model="AASRepoURL" @keydown.native.enter="connectToEnvironment('AAS')">
                         <template v-slot:append-inner>
-                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToAASServer()" :loading="loadingServer">Connect</v-btn>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToEnvironment('AAS')" :loading="loadingAASRepo">Connect</v-btn>
                         </template>
                     </v-text-field>
-                    <v-divider v-if="aasServerURL && aasServerURL != ''"></v-divider>
+                    <!-- Configure Submodel Repository URL -->
+                    <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="Submodel Repository URL" v-model="SubmodelRepoURL" @keydown.native.enter="connectToEnvironment('Submodel')">
+                        <template v-slot:append-inner>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToEnvironment('Submodel')" :loading="loadingSubmodelRepo">Connect</v-btn>
+                        </template>
+                    </v-text-field>
+                    <!-- Configure Concept Description Repository URL -->
+                    <v-text-field variant="outlined" density="compact" hide-details class="my-3" label="Concept Description Repository URL" v-model="ConceptDescriptionRepoURL" @keydown.native.enter="connectToEnvironment('ConceptDescription')">
+                        <template v-slot:append-inner>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToEnvironment('ConceptDescription')" :loading="loadingConceptDescriptionRepo">Connect</v-btn>
+                        </template>
+                    </v-text-field>
+                    <!-- TODO: Update AASX Upload -->
+                    <!-- <v-divider v-if="aasServerURL && aasServerURL != ''"></v-divider> -->
                     <!-- AASX Upload to AAS Server -->
-                    <v-file-input v-if="aasServerURL && aasServerURL != ''" variant="outlined" density="compact" :multiple="false" v-model="aasxFile" clearable hide-details class="my-1 mt-3" label="AASX File Upload" accept=".aasx">
+                    <!-- <v-file-input v-if="aasServerURL && aasServerURL != ''" variant="outlined" density="compact" :multiple="false" v-model="aasxFile" clearable hide-details class="my-1 mt-3" label="AASX File Upload" accept=".aasx">
                         <template v-slot:append-inner>
                             <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="uploadAASXFile()">Upload</v-btn>
                         </template>
-                    </v-file-input>
+                    </v-file-input> -->
                 </v-col>
             </v-row>
             <!-- Platform I 4.0 Logo -->
@@ -66,8 +79,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useWidgetsStore } from '@/store/WidgetsStore';
 import { useTheme } from 'vuetify';
 import RequestHandling from '../../mixins/RequestHandling';
 
@@ -79,28 +93,36 @@ export default defineComponent({
     mixins: [RequestHandling],
 
     setup() {
-        const store = useStore()
         const theme = useTheme()
+        const navigationStore = useNavigationStore()
+        const widgetsStore = useWidgetsStore()
 
         return {
-            store, // Store Object
             theme, // Theme Object
+            navigationStore, // NavigationStore Object
+            widgetsStore, // WidgetsStore Object
         }
     },
 
     data() {
         return {
-            registryURL: '',        // Registry URL
-            aasServerURL: '',       // AAS-Server URL
-            loadingRegistry: false, // Loading State of the Registry Connection
-            loadingServer: false,   // Loading State of the AAS-Server Connection
-            aasxFile: [] as any,    // AASX File to upload
+            registryURL: '',                        // Registry URL
+            AASRepoURL: '',                         // AAS Repository URL
+            SubmodelRepoURL: '',                    // Submodel Repository URL
+            ConceptDescriptionRepoURL: '',          // Concept Description Repository URL
+            loadingRegistry: false,                 // Loading State of the Registry Connection
+            loadingAASRepo: false,                  // Loading State of the AAS Repository Connection
+            loadingSubmodelRepo: false,             // Loading State of the Submodel Repository Connection
+            loadingConceptDescriptionRepo: false,   // Loading State of the Concept Description Repository Connection
+            aasxFile: [] as any,                    // AASX File to upload
         }
     },
 
     mounted() {
         this.registryURL = this.registryServerURL;
-        this.aasServerURL = this.serverURL;
+        this.AASRepoURL = this.aasRepoURL;
+        this.SubmodelRepoURL = this.submodelRepoURL;
+        this.ConceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
     },
 
     computed: {
@@ -111,22 +133,32 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
 
         // get Registry Server URL from Store
         registryServerURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
         },
 
-        // Get the AAS Server URL from the Store
-        serverURL() {
-            return this.store.getters.getAASServerURL;
+        // Get the AAS Repository URL from the Store
+        aasRepoURL() {
+            return this.navigationStore.getAASRepoURL;
+        },
+
+        // Get the Submodel Repository URL from the Store
+        submodelRepoURL() {
+            return this.navigationStore.getSubmodelRepoURL;
+        },
+
+        // Get the Concept Description Repository URL from the Store
+        conceptDescriptionRepoURL() {
+            return this.navigationStore.getConceptDescriptionRepoURL;
         },
 
         // Get the Activation Status of the Widget Feature
         WidgetFeatureActive() {
-            return this.store.getters.getWidgetFeatureActive;
+            return this.widgetsStore.getWidgetFeatureActive;
         },
 
         // Check if the current Theme is dark
@@ -141,67 +173,67 @@ export default defineComponent({
             // console.log('connect to server: ' + this.registryURL);
             if (this.registryURL != '') {
                 this.loadingRegistry = true;
-                let path = this.registryURL + '/api/v1/registry';
+                let path = this.registryURL + '/api/v3.0/shell-descriptors';
                 let context = 'connecting to Registry Server'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingRegistry = false;
                     if (response.success) {
-                        this.store.dispatch('dispatchRegistryURL', this.registryURL); // save the URL in the store
+                        this.navigationStore.dispatchRegistryURL(this.registryURL); // save the URL in the NavigationStore
                         this.checkWidgetApi(); // check if the Widget API is available
                         window.localStorage.setItem('registryURL', this.registryURL); // save the URL in the local storage
                     } else {
-                        this.store.dispatch('dispatchRegistryURL', ''); // clear the Registry URL in the store
-                        this.store.dispatch('dispatchWidgetApiURL', ''); // clear the Widget Api URL in the store
+                        this.navigationStore.dispatchRegistryURL(''); // clear the Registry URL in the NavigationStore
+                        this.navigationStore.dispatchWidgetApiURL(''); // clear the Widget Api URL in the NavigationStore
                         window.localStorage.removeItem('registryURL'); // remove the URL from the local storage
                     }
                 });
             }
         },
 
-        // Function to connect to the AAS-Server
-        connectToAASServer() {
-            // console.log('connect to aas server: ' + this.aasServerURL);
-            if (this.aasServerURL != '') {
-                this.loadingServer = true;
-                let path = this.aasServerURL + '/shells';
-                let context = 'connecting to AAS Server'
+        // Function to connect to the respective Repository
+        connectToEnvironment(RepoType: string) {
+            // console.log('connect to ' + RepoType + ' Repository: ' + (this as any)[RepoType + 'RepoURL']);
+            if ((this as any)[RepoType + 'RepoURL'] != '') {
+                (this as any)['loading' + RepoType + 'Repo'] = true;
+                let path = (this as any)[RepoType + 'RepoURL'];
+                let context = 'connecting to ' + RepoType + ' Repository'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
-                    this.loadingServer = false;
+                    (this as any)['loading' + RepoType + 'Repo'] = false;
                     if (response.success) {
-                        this.store.dispatch('dispatchAASServerURL', this.aasServerURL); // save the URL in the store
-                        window.localStorage.setItem('aasServerURL', this.aasServerURL); // save the URL in the local storage
+                        this.navigationStore.dispatchRepoURL(RepoType, (this as any)[RepoType + 'RepoURL']); // save the URL in the NavigationStore
+                        window.localStorage.setItem(RepoType + 'RepoURL', (this as any)[RepoType + 'RepoURL']); // save the URL in the local storage
                     } else {
-                        this.store.dispatch('dispatchAASServerURL', ''); // clear the URL in the store
-                        window.localStorage.removeItem('aasServerURL'); // remove the URL from the local storage
+                        this.navigationStore.dispatchRepoURL(RepoType, ''); // clear the URL in the NavigationStore
+                        window.localStorage.removeItem(RepoType + 'RepoURL'); // remove the URL from the local storage
                     }
                 });
             }
         },
 
-        // Function to upload the AASX File to the AAS-Server
-        uploadAASXFile() {
-            // console.log('upload aasx file: ' + this.aasxFile);
-            // check if a file is selected
-            if (this.aasxFile.length == 0) return;
+        // // Function to upload the AASX File to the AAS-Server (TODO: Update AASX Upload)
+        // uploadAASXFile() {
+        //     // console.log('upload aasx file: ' + this.aasxFile);
+        //     // check if a file is selected
+        //     if (this.aasxFile.length == 0) return;
 
-            let context = 'uploading AASX File';
-            let disableMessage = false;
-            let path = this.serverURL + '/shells/aasx';
-            var headers = new Headers();
-            var formData = new FormData();
-            formData.append("file", this.aasxFile[0]);
-            // Send Request to upload the file
-            this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
-                if (response.success) {
-                    this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'AASX-File uploaded.' }); // Show Success Snackbar
-                    this.aasxFile = []; // clear the AASX File
-                    // reload the AAS list
-                    this.store.dispatch('dispatchTriggerAASListReload', true);
-                }
-            });
-        },
+        //     let context = 'uploading AASX File';
+        //     let disableMessage = false;
+        //     let path = this.serverURL + '/shells/aasx';
+        //     var headers = new Headers();
+        //     var formData = new FormData();
+        //     formData.append("file", this.aasxFile[0]);
+        //     // Send Request to upload the file
+        //     this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
+        //         if (response.success) {
+        //             this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'AASX-File uploaded.' }); // Show Success Snackbar
+        //             this.aasxFile = []; // clear the AASX File
+        //             // reload the AAS list
+        //             this.navigationStore.dispatchTriggerAASListReload(true);
+        //         }
+        //     });
+        // },
 
         // Function to check if Widget API is available and set the Widget Feature Activation Status in the store
         checkWidgetApi() {
@@ -216,11 +248,11 @@ export default defineComponent({
             // Send Request to get all Widgets
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    this.store.dispatch('dispatchWidgetApiURL', WidgetApiURL); // save the Widget API URL in the store
-                    this.store.dispatch('dispatchWidgetFeatureActive', true); // set the Widget Feature Activation Status to true
+                    this.navigationStore.dispatchWidgetApiURL(WidgetApiURL); // save the Widget API URL in the NavigationStore
+                    this.widgetsStore.dispatchWidgetFeatureActive(true); // set the Widget Feature Activation Status to true
                 } else {
-                    this.store.dispatch('dispatchWidgetApiURL', ''); // clear the Widget API URL in the store
-                    this.store.dispatch('dispatchWidgetFeatureActive', false); // set the Widget Feature Activation Status to false
+                    this.navigationStore.dispatchWidgetApiURL(''); // clear the Widget API URL in the NavigationStore
+                    this.widgetsStore.dispatchWidgetFeatureActive(false); // set the Widget Feature Activation Status to false
                 }
             });
         },

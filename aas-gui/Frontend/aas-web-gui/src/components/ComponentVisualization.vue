@@ -25,8 +25,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
+import { useWidgetsStore } from '@/store/WidgetsStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
 
@@ -49,10 +51,14 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
+        const widgetsStore = useWidgetsStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
+            widgetsStore, // WidgetsStore Object
         }
     },
 
@@ -111,25 +117,25 @@ export default defineComponent({
     computed: {
         // get Registry Server URL from Store
         registryServerURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
         },
 
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         // return the selected Node with the full path to the SubmodelElement
         SelectedNodeToTransfer() {
-            let aas = { ...this.store.getters.getSelectedAAS };
-            let node = { ...this.store.getters.getSelectedNode };
-            if (aas && aas.endpoints && aas.endpoints[0] && aas.endpoints[0].address) {
-                node.pathFull = aas.endpoints[0].address + '/' + node.path;
+            let aas = { ...this.aasStore.getSelectedAAS };
+            let node = { ...this.aasStore.getSelectedNode };
+            if (aas && aas.endpoints && aas.endpoints[0] && aas.endpoints[0].protocolInformation.href) {
+                node.pathFull = aas.endpoints[0].protocolInformation.href + '/' + node.path;
             }
             // console.log('SelectedNodeToTransfer: ', node);
             return node;
@@ -137,12 +143,12 @@ export default defineComponent({
 
         // Get the real-time object from the store
         RealTimeObject() {
-            return this.store.getters.getRealTimeObject;
+            return this.aasStore.getRealTimeObject;
         },
 
         // Get the Activation Status of the Widget Feature
         WidgetFeatureActive() {
-            return this.store.getters.getWidgetFeatureActive;
+            return this.widgetsStore.getWidgetFeatureActive;
         },
 
         // Check if the current Platform is Mobile
@@ -152,7 +158,7 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
     },
 
@@ -167,37 +173,6 @@ export default defineComponent({
             }
             this.submodelElementData = { ...this.RealTimeObject }; // create local copy of the SubmodelElement Object
             // console.log('SubmodelElement Data (ComponentVisualization): ', this.submodelElementData);
-
-            // console.log('SubmodelElement Data: ', this.submodelElementData)
-            // // console.log('Selected Node: ', this.SelectedNode);
-            // // Check if a Node is selected
-            // if (Object.keys(this.SelectedNode).length == 0) {
-            //     this.submodelElementData = {}; // Reset the SubmodelElement Data when no Node is selected
-            //     return;
-            // }
-            // // Request the selected SubmodelElement
-            // let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path;
-            // let context = 'retrieving SubmodelElement';
-            // let disableMessage = true;
-            // this.getRequest(path, context, disableMessage).then((response: any) => {
-            //     if (response.success) { // execute if the Request was successful
-            //         response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
-            //         response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
-            //         // console.log('SubmodelElement Data: ', response.data)
-            //         this.submodelElementData = response.data;
-            //     } else { // execute if the Request failed
-            //         // show the static SubmodelElement Data from the store if the Request failed (the timestamp should show that the data is outdated)
-            //         this.submodelElementData = {}; // Reset the SubmodelElement Data when Node couldn't be retrieved
-            //         if (Object.keys(this.SelectedNode).length == 0) {
-            //             // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
-            //             this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
-            //             return;
-            //         }
-            //         this.submodelElementData = { ...this.SelectedNode }; // copy the static SubmodelElement Data from the store
-            //         this.submodelElementData.timestamp = 'no sync';
-            //         this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
-            //     }
-            // });
         },
     },
 });

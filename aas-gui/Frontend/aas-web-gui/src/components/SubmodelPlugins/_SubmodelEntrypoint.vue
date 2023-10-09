@@ -9,7 +9,7 @@
             <component v-for="(plugin, i) in filteredPlugins" :key="i" :is="plugin.name" :submodelElementData="submodelElementData"></component>
         </template>
         <!-- List of all File/Blob-Plugins matched by their mimeType -->
-        <template v-if="SelectedNode && Object.keys(SelectedNode).length > 0 && Object.keys(submodelElementData).length > 0 && (submodelElementData.modelType.name == 'File' || submodelElementData.modelType.name == 'Blob')">
+        <template v-if="SelectedNode && Object.keys(SelectedNode).length > 0 && Object.keys(submodelElementData).length > 0 && (submodelElementData.modelType == 'File' || submodelElementData.modelType == 'Blob')">
             <ImagePreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('image')" :submodelElementData="submodelElementData"></ImagePreview>
             <PDFPreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('pdf')" :submodelElementData="submodelElementData"></PDFPreview>
         </template>
@@ -17,8 +17,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 
 import HTWFuehrungskomponente from './HTWFuehrungskomponente.vue';
 import DigitalNameplate from './DigitalNameplate.vue';
@@ -39,10 +40,12 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
             plugins: [] as Array<any>,
         }
     },
@@ -50,11 +53,11 @@ export default defineComponent({
     computed: {
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         ImportedPlugins() {
-            return this.store.getters.getPlugins;
+            return this.navigationStore.getPlugins;
         },
 
         // Filtered Plugins

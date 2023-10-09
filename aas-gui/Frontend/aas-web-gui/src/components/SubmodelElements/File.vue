@@ -57,8 +57,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -70,10 +70,10 @@ export default defineComponent({
     props: ['fileObject'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -114,19 +114,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -134,10 +129,10 @@ export default defineComponent({
         // Function to update the Path of the File Element
         updatePath() {
             // console.log("Update Path: " + this.newPathValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/value';
+            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/value';
             let content = "'" + this.newPathValue + "'";
             let headers = { 'Content-Type': 'application/json' };
-            let context = 'updating ' + this.fileObject.modelType.name + ' "' + this.fileObject.idShort + '"';
+            let context = 'updating ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the path of the file element
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
@@ -158,9 +153,9 @@ export default defineComponent({
             // check if a file is selected
             if (this.newFile.length == 0) return;
             // let mimeType = this.newFile[0].type;
-            let context = 'uploading ' + this.fileObject.modelType.name + '-SubmodelElement' + ' "' + this.fileObject.idShort + '"';
+            let context = 'uploading ' + this.fileObject.modelType + '-SubmodelElement' + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path + '/upload';
+            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/upload';
             var headers = new Headers();
             var formData = new FormData();
             formData.append("file", this.newFile[0]);
@@ -169,8 +164,8 @@ export default defineComponent({
                 // TODO: Add success response handling including updating the File SubmodelElement -> mimeType (+ value)
                 if (response.success) {
                     location.reload(); // reload the page to update the file preview
-                    // let context = 'updating mimeType of ' + this.fileObject.modelType.name + ' "' + this.fileObject.idShort + '"';
-                    // let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path;
+                    // let context = 'updating mimeType of ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
+                    // let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path;
                     // let contentJSON = { ...this.fileObject };
                     // contentJSON.mimeType = mimeType;
                     // let content = JSON.stringify(contentJSON);
@@ -197,7 +192,7 @@ export default defineComponent({
             if(!path) return '';
             // check if Link starts with '/'
             if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].address.replace('/aas', '') + '/files' + path;
+                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
             }
             return path;
         }

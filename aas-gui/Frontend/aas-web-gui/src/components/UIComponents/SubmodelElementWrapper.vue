@@ -4,11 +4,11 @@
             <v-list nav class="pt-0">
                 <DescriptionElement     v-if="SubmodelElementObject.embeddedDataSpecifications && SubmodelElementObject.embeddedDataSpecifications.length > 0 && SubmodelElementObject.embeddedDataSpecifications[0].dataSpecificationContent.definition" :descriptionObject="SubmodelElementObject.embeddedDataSpecifications[0].dataSpecificationContent.definition" :descriptionTitle="'Definition'" :small="true"></DescriptionElement>
                 <v-divider              v-if="SubmodelElementObject.embeddedDataSpecifications && SubmodelElementObject.embeddedDataSpecifications.length > 0 && SubmodelElementObject.embeddedDataSpecifications[0].dataSpecificationContent.definition" class="mt-2"></v-divider>
-                <MultiLanguageProperty  v-if="SubmodelElementObject.modelType.name == 'MultiLanguageProperty'"  :multiLanguagePropertyObject="SubmodelElementObject"></MultiLanguageProperty>
-                <Property               v-if="SubmodelElementObject.modelType.name == 'Property'"               :propertyObject="SubmodelElementObject" @updateValue="updatePropertyValue"></Property>
-                <File                   v-if="SubmodelElementObject.modelType.name == 'File'"                   :fileObject="SubmodelElementObject"></File>
-                <Operation              v-if="SubmodelElementObject.modelType.name == 'Operation'"              :operationObject="SubmodelElementObject"></Operation>
-                <ReferenceElement       v-if="SubmodelElementObject.modelType.name == 'ReferenceElement'"       :referenceElementObject="SubmodelElementObject"></ReferenceElement>
+                <MultiLanguageProperty  v-if="SubmodelElementObject.modelType == 'MultiLanguageProperty'"  :multiLanguagePropertyObject="SubmodelElementObject"></MultiLanguageProperty>
+                <Property               v-if="SubmodelElementObject.modelType == 'Property'"               :propertyObject="SubmodelElementObject" @updateValue="updatePropertyValue"></Property>
+                <File                   v-if="SubmodelElementObject.modelType == 'File'"                   :fileObject="SubmodelElementObject"></File>
+                <Operation              v-if="SubmodelElementObject.modelType == 'Operation'"              :operationObject="SubmodelElementObject"></Operation>
+                <ReferenceElement       v-if="SubmodelElementObject.modelType == 'ReferenceElement'"       :referenceElementObject="SubmodelElementObject"></ReferenceElement>
             </v-list>
         </v-card>
     </v-container>

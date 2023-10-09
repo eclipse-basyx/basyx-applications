@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -22,10 +21,8 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode', 'widgetSettings'],
 
     setup() {
-        const store = useStore()
 
         return {
-            store, // Store Object
         }
     },
 
@@ -88,7 +85,7 @@ export default defineComponent({
             let value = buttonValue as any;
             // console.log(this.submodelElementData);
             let path = this.selectedNode.pathFull + '/value';
-            if (this.submodelElementData.modelType.name == 'SubmodelElementCollection') {
+            if (this.submodelElementData.modelType == 'SubmodelElementCollection') {
                 path = this.selectedNode.pathFull + '/' + buttonElement.idShort + '/value';
             }
             let content = "'" + value + "'";

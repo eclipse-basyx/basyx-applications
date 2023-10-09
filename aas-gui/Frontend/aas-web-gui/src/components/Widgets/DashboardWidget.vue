@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
@@ -85,10 +85,10 @@ export default defineComponent({
     props: ['selectedWidget', 'selectedNode'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object        
         }
     },
 
@@ -107,7 +107,7 @@ export default defineComponent({
     computed: {
         // get Widget Api URL from Store
         widgetApiURL() {
-            return this.store.getters.getWidgetApiURL;
+            return this.navigationStore.getWidgetApiURL;
         },
     },
 

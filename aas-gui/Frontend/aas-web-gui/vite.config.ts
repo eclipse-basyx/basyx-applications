@@ -15,7 +15,8 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
-  define: { 'process.env': {} },
+  // define: { 'process.env': {} },
+  base: `${process.env.VITE_BASE_PATH || ''}/`,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

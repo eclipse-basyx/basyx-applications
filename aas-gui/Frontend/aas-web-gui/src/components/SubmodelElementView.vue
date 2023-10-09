@@ -8,7 +8,7 @@
                 <v-card v-if="submodelElementData && Object.keys(submodelElementData).length > 0">
                     <v-list nav>
                         <!-- SubmodelELement Identification -->
-                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType.name"></IdentificationElement>
+                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType"></IdentificationElement>
                         <v-divider v-if="submodelElementData.description && submodelElementData.description.length > 0" class="mt-2"></v-divider>
                         <!-- SubmodelELement Description -->
                         <DescriptionElement v-if="submodelElementData.description && submodelElementData.description.length > 0" :descriptionObject="submodelElementData.description" :descriptionTitle="'Description'" :small="false"></DescriptionElement>
@@ -18,15 +18,16 @@
                     </v-list>
                     <v-divider></v-divider>
                     <v-list nav class="px-4 pt-0 pb-0"><!-- SubmodelELement Representation for different modelTypes -->
-                        <Submodel                   v-if="submodelElementData.modelType.name      === 'Submodel'"                   :submodelObject="submodelElementData"></Submodel>
-                        <SubmodelElementCollection  v-else-if="submodelElementData.modelType.name === 'SubmodelElementCollection'"  :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
-                        <Property                   v-else-if="submodelElementData.modelType.name === 'Property'"                   :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
-                        <MultyLanguageProperty      v-else-if="submodelElementData.modelType.name === 'MultiLanguageProperty'"      :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
-                        <Operation                  v-else-if="submodelElementData.modelType.name === 'Operation'"                  :operationObject="submodelElementData"></Operation>
-                        <File                       v-else-if="submodelElementData.modelType.name === 'File'"                       :fileObject="submodelElementData" @updatePath="initializeView()"></File>
-                        <Blob                       v-else-if="submodelElementData.modelType.name === 'Blob'"                       :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
-                        <ReferenceElement           v-else-if="submodelElementData.modelType.name === 'ReferenceElement'"           :referenceElementObject="submodelElementData"></ReferenceElement>
-                        <InvalidElement             v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
+                        <Submodel                   v-if="submodelElementData.modelType      === 'Submodel'"                    :submodelObject="submodelElementData"></Submodel>
+                        <SubmodelElementCollection  v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"   :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
+                        <SubmodelElementList        v-else-if="submodelElementData.modelType === 'SubmodelElementList'"         :submodelElementListObject="submodelElementData"></SubmodelElementList>
+                        <Property                   v-else-if="submodelElementData.modelType === 'Property'"                    :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
+                        <MultyLanguageProperty      v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"       :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
+                        <Operation                  v-else-if="submodelElementData.modelType === 'Operation'"                   :operationObject="submodelElementData"></Operation>
+                        <File                       v-else-if="submodelElementData.modelType === 'File'"                        :fileObject="submodelElementData" @updatePath="initializeView()"></File>
+                        <Blob                       v-else-if="submodelElementData.modelType === 'Blob'"                        :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
+                        <ReferenceElement           v-else-if="submodelElementData.modelType === 'ReferenceElement'"            :referenceElementObject="submodelElementData"></ReferenceElement>
+                        <InvalidElement             v-else                                                                      :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
                     <v-divider v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" class="mt-5"></v-divider>
@@ -53,8 +54,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
@@ -65,6 +67,7 @@ import ConceptDescription       from './UIComponents/ConceptDescription.vue';
 
 import Submodel                     from './SubmodelElements/Submodel.vue';
 import SubmodelElementCollection    from './SubmodelElements/SubmodelElementCollection.vue';
+import SubmodelElementList          from './SubmodelElements/SubmodelElementList.vue';
 import Property                     from './SubmodelElements/Property.vue';
 import MultyLanguageProperty        from './SubmodelElements/MultiLanguageProperty.vue';
 import Operation                    from './SubmodelElements/Operation.vue';
@@ -86,6 +89,7 @@ export default defineComponent({
 
         Submodel,
         SubmodelElementCollection,
+        SubmodelElementList,
         Property,
         MultyLanguageProperty,
         Operation,
@@ -97,10 +101,12 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -134,7 +140,7 @@ export default defineComponent({
             if (!this.registryServerURL) {
                 this.submodelElementData = {};
                 // also reset the realTimeObject in the store
-                this.store.dispatch('dispatchRealTimeObject', this.submodelElementData);
+                this.aasStore.dispatchRealTimeObject(this.submodelElementData);
             }
         },
 
@@ -142,7 +148,7 @@ export default defineComponent({
         SelectedAAS() {
             this.submodelElementData = {};
             // also reset the realTimeObject in the store
-            this.store.dispatch('dispatchRealTimeObject', this.submodelElementData);
+            this.aasStore.dispatchRealTimeObject(this.submodelElementData);
         },
 
         // Watch for changes in the selected Node and (re-)initialize the Component
@@ -177,22 +183,22 @@ export default defineComponent({
     computed: {
         // get Registry Server URL from Store
         registryServerURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
         },
 
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         // Get the auto-sync state from the store
         autoSync() {
-            return this.store.getters.getAutoSync;
+            return this.navigationStore.getAutoSync;
         },
     },
 
@@ -206,7 +212,7 @@ export default defineComponent({
                 return;
             }
             // Request the selected SubmodelElement
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.SelectedNode.path;
+            let path = this.SelectedNode.path;
             let context = 'retrieving SubmodelElement';
             let disableMessage = true;
             this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -220,7 +226,7 @@ export default defineComponent({
                     this.submodelElementData = {}; // Reset the SubmodelElement Data when Node couldn't be retrieved
                     if(Object.keys(this.SelectedNode).length == 0) {
                         // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
-                        this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
+                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
                         return;
                     }
                     this.submodelElementData = { ...this.SelectedNode }; // copy the static SubmodelElement Data from the store
@@ -229,7 +235,7 @@ export default defineComponent({
                 }
                 // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
-                this.store.dispatch('dispatchRealTimeObject', this.submodelElementData);
+                this.aasStore.dispatchRealTimeObject(this.submodelElementData);
             });
         },
     },

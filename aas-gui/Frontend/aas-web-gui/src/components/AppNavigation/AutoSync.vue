@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
 
 import StatusSwitch from './Settings/StatusSwitch.vue';
 
@@ -58,10 +58,10 @@ export default defineComponent({
     props: ['submodelObject'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
         }
     },
 
@@ -79,7 +79,7 @@ export default defineComponent({
     computed: {
         // Get the auto-sync state from the store
         autoSync() {
-            return this.store.getters.getAutoSync ? this.store.getters.getAutoSync.state : false;
+            return this.navigationStore.getAutoSync ? this.navigationStore.getAutoSync.state : false;
         },
 
         // Check if the current Platform is Mobile
@@ -89,7 +89,7 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
     },
 
@@ -102,7 +102,7 @@ export default defineComponent({
 
         // Updates the auto-sync (+ interval) in the store
         updateAutoSync() {
-            this.store.dispatch('dispatchUpdateAutoSync', { state: this.autoSyncStatus, interval: this.intervalTime });
+            this.navigationStore.dispatchUpdateAutoSync({ state: this.autoSyncStatus, interval: this.intervalTime });
         },
 
         // Toggles the auto-sync

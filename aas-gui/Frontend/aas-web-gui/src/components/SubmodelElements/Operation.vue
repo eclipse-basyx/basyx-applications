@@ -19,7 +19,7 @@
                             <v-list-item>
                                 <v-list-item-title class="pt-2">
                                     <!-- Input Field containing the Variable Value (non boolean) -->
-                                    <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="operationVariables[variableType.type][i]" variant="outlined" density="compact" hide-details clearable :type="variable.value.valueType == 'string' ? 'text' : 'number'" :label="variable.value.idShort" :readonly="variableType.type == 'outputVariables'">
+                                    <v-text-field v-if="variable.value.valueType != 'boolean'" v-model="operationVariables[variableType.type][i]" variant="outlined" density="compact" hide-details clearable :type="isNumber(variable.value.valueType) ? 'number' : 'text'" :label="variable.value.idShort" :readonly="variableType.type == 'outputVariables'">
                                         <template v-slot:prepend-inner>
                                             <!-- Variable Type -->
                                             <v-chip label size="x-small" border color="primary">{{ variable.value.valueType }}</v-chip>
@@ -58,9 +58,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
@@ -68,17 +70,20 @@ export default defineComponent({
     name: 'Operation',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the SubmodelElements
 
         DescriptionElement,
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
     props: ['operationObject'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -107,19 +112,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -158,7 +158,7 @@ export default defineComponent({
                 inoutputVariable.value.value = this.operationVariables.inoutputVariables[i]
             })
             // console.log('executeOperation: ', inputVariables, inoutputVariables);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.operationObject.path + '/invoke';
+            let path = this.operationObject.path + '/invoke';
             let content = {
                 inputArguments:     inputVariables,
                 inoutputArguments:  inoutputVariables,
@@ -167,7 +167,7 @@ export default defineComponent({
             };
             let body = JSON.stringify(content);
             let headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
-            let context = 'invoking ' + this.operationObject.modelType.name + ' "' + this.operationObject.idShort + '"';
+            let context = 'invoking ' + this.operationObject.modelType + ' "' + this.operationObject.idShort + '"';
             let disableMessage = false;
             this.loading = true;
             this.postRequest(path, body, headers, context, disableMessage).then((response: any) => {
@@ -187,7 +187,7 @@ export default defineComponent({
                     if (response.data.operationResult && !response.data.operationResult.success) {
                         this.errorHandler(response.data.operationResult, context);
                     } else {
-                        this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'Operation executed successfully.' }); // Show Success Snackbar
+                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'Operation executed successfully.' }); // Show Success Snackbar
                     }
                 }
             });

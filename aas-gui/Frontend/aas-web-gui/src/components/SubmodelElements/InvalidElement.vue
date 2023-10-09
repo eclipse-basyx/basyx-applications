@@ -8,6 +8,12 @@
                         <v-alert text="Invalid SubmodelElement!" density="compact" type="warning" variant="outlined"></v-alert>
                     </v-list-item-title>
                 </v-list-item>
+                <!-- Show Blob of the current SubmodelElement -->
+                <v-list-item class="px-2 py-0">
+                    <v-card style="height: 300px; overflow: auto" class="pa-2">
+                        <pre>{{ invalidElementObject }}</pre>
+                    </v-card>
+                </v-list-item>
                 <v-divider class="mt-3"></v-divider>
                 <!-- Info listing all available SubmodelElements -->
                 <v-list-item class="px-3 py-0">
@@ -33,18 +39,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'InvalidElement',
     props: ['invalidElementObject'],
 
     setup() {
-        const store = useStore()
 
         return {
-            store, // Store Object
         }
     },
 
@@ -53,9 +56,11 @@ export default defineComponent({
             submodelElements: [
                 'Submodel',
                 'SubmodelElementCollection',
+                'SubmodelElementList',
                 'Property',
                 'MultiLanguageProperty',
                 'File',
+                'Blob',
                 'Operation',
                 'ReferenceElement',
             ] as string[],

@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../../mixins/RequestHandling';
 
 import { VDatePicker } from 'vuetify/labs/VDatePicker';
@@ -44,11 +44,11 @@ export default defineComponent({
     props: ['dateTimeStampValue'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
         const date = useDate()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
             date,
         }
     },
@@ -95,12 +95,12 @@ export default defineComponent({
     computed: {
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
     },
 
@@ -108,13 +108,13 @@ export default defineComponent({
         // Function to update the value of the property
         updateValue() {
             // console.log("Update Value: " + this.newPropertyValue);
-            let path = this.SelectedAAS.endpoints[0].address + '/' + this.dateTimeStampValue.path + '/value';
-            let content = "'" + this.newDateTimeStampValue + "'";
+            let path = this.dateTimeStampValue.path + '/$value';
+            let content = JSON.stringify(this.newDateTimeStampValue);
             let headers = { 'Content-Type': 'application/json' };
-            let context = 'updating ' + this.dateTimeStampValue.modelType.name + ' "' + this.dateTimeStampValue.idShort + '"';
+            let context = 'updating ' + this.dateTimeStampValue.modelType + ' "' + this.dateTimeStampValue.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
-            this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+            this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // this.newPropertyValue = ''; // reset input
                     let updatedDateTimeStampValue = { ...this.dateTimeStampValue }; // copy the stringValue
@@ -171,7 +171,7 @@ export default defineComponent({
         },
 
         // Function to apply the selected date to the newDateTimeStampValue
-        applyDate(date: Date[] | []) {
+        applyDate(date: any) {
             if(!date) return;
             let singleDate = date[0];
             // convert date to string (format: YYYY-MM-DD)

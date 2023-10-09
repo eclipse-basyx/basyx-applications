@@ -9,18 +9,22 @@
                 <v-btn v-if="item.children" size="small" variant="plain" @click.stop="toggleChildren()" :icon="showChildren ? 'mdi-menu-down' : 'mdi-menu-right'" :ripple="false"></v-btn>
                 <div v-else style="width: 40px; height: 40px"></div>
                 <!-- Empty Submodel Icon -->
-                <v-icon v-if="item.modelType.name === 'Submodel' && !item.children" color="primary">mdi-folder-alert</v-icon>
+                <v-icon v-if="item.modelType === 'Submodel' && !item.children" color="primary">mdi-folder-alert</v-icon>
                 <!-- Icon for Submodel with children (open/closed) -->
-                <v-icon v-else-if="item.modelType.name === 'Submodel' && item.children" color="primary">{{ showChildren ? 'mdi-folder-open' : 'mdi-folder' }}</v-icon>
+                <v-icon v-else-if="item.modelType === 'Submodel' && item.children" color="primary">{{ showChildren ? 'mdi-folder-open' : 'mdi-folder' }}</v-icon>
                 <!-- Icon for SubmodelelementCollection -->
-                <v-icon v-else-if="item.modelType.name === 'SubmodelElementCollection' && !item.children" color="primary">mdi-file-alert</v-icon>
+                <v-icon v-else-if="item.modelType === 'SubmodelElementCollection' && !item.children" color="primary">mdi-file-alert</v-icon>
                 <!-- Icon for SubmodelelementCollection -->
-                <v-icon v-else-if="item.modelType.name === 'SubmodelElementCollection'" color="primary">mdi-file-multiple</v-icon>
+                <v-icon v-else-if="item.modelType === 'SubmodelElementCollection'" color="primary">mdi-file-multiple</v-icon>
+                <!-- Icon for SubmodelelementList -->
+                <v-icon v-else-if="item.modelType === 'SubmodelElementList' && !item.children" color="primary">mdi-file-alert</v-icon>
+                <!-- Icon for SubmodelelementList -->
+                <v-icon v-else-if="item.modelType === 'SubmodelElementList'" color="primary">mdi-list-box</v-icon>
                 <!-- Icon for every other SubmodelElement (like Property) -->
                 <v-icon v-else color="primary">mdi-file-code</v-icon>
             </template>
             <template v-slot:append="{isActive}">
-                <v-chip v-if="item.modelType && item.modelType.name"  color="primary" size="x-small" :style="{ 'margin-right': isActive ? '-14px' : '' }">{{ item.modelType.name }}</v-chip>
+                <v-chip v-if="item.modelType"  color="primary" size="x-small" :style="{ 'margin-right': isActive ? '14px' : '' }">{{ item.modelType }}</v-chip>
                 <!-- Button to Copy the Path to the Clipboard -->
                 <v-tooltip v-if="isActive" text="Copy Path to Clipboard" :open-delay="600" location="bottom">
                     <template v-slot:activator="{ props }">
@@ -37,8 +41,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import { useTheme } from 'vuetify';
 
 export default defineComponent({
@@ -46,12 +51,14 @@ export default defineComponent({
     props: ['item', 'depth'],
 
     setup() {
-        const store = useStore()
         const theme = useTheme()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
             theme, // Theme Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         };
     },
 
@@ -77,7 +84,7 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
 
         // Check if the current Theme is dark
@@ -87,7 +94,7 @@ export default defineComponent({
 
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
     },
 
@@ -108,10 +115,10 @@ export default defineComponent({
             if(localItem.isActive) {
                 if (this.isMobile) {
                     // Change to SubmodelElementView on Mobile and add the path to the URL
-                    this.$router.push({ path: '/submodelelementview', query: { aas: this.SelectedAAS.endpoints[0].address, path: localItem.path } });
+                    this.$router.push({ path: '/submodelelementview', query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
                 } else {
                     // just add the path to the URL
-                    this.$router.push({ query: { aas: this.SelectedAAS.endpoints[0].address, path: localItem.path } });
+                    this.$router.push({ query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
                 }
             } else {
                 // remove the path query from the Route entirely
@@ -120,22 +127,22 @@ export default defineComponent({
                 this.$router.push({ query: query });
             }
             // dispatch the selected Node to the store
-            this.store.dispatch('dispatchNode', localItem);
+            this.aasStore.dispatchNode(localItem);
         },
 
         // Function to copy the path of the current Node to the Clipboard
         copyPathToClipboard(path: string) {
-            // console.log('Copy Path to Clipboard: ', this.SelectedAAS.endpoints[0].address + '/' +  path);
+            // console.log('Copy Path to Clipboard: ', path);
             // set the icon to checkmark
             this.copyIcon = 'mdi-check';
             // copy the path to the clipboard
-            navigator.clipboard.writeText(this.SelectedAAS.endpoints[0].address + '/' +  path);
+            navigator.clipboard.writeText(path);
             // set the clipboard tooltip to false after 1.5 seconds
             setTimeout(() => {
                 this.copyIcon = 'mdi-clipboard-file-outline';
             }, 2000);
             // open Snackbar to inform the user that the path was copied to the clipboard
-            this.store.dispatch('getSnackbar', { status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Path copied to Clipboard.' });
+            this.navigationStore.dispatchSnackbar({ status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Path copied to Clipboard.' });
         },
     },
 });

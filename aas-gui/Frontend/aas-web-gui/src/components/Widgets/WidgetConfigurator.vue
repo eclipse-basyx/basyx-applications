@@ -45,15 +45,15 @@
                         <!-- Select Textfield Element if Textfield is selected -->
                         <v-select v-if="widgetType.value == 'outputElement'" label="Select Element" :items="textElements" density="compact" variant="outlined" v-model="textElement" hide-details></v-select>
                         <!-- Select multiple Data for Collection -->
-                        <v-select v-if="submodelElementData.modelType.name == 'SubmodelElementCollection' && ((chartType != 'Radial Chart' && chartType != 'Donut Chart' && chartType != '') || widgetType.value == 'outputElement' || widgetType.value == 'inputElement')" label="Select Data" :items="submodelElementData.value" item-title="idShort" item-value="idShort" chips multiple density="compact" variant="outlined" v-model="chartCollectionValues" return-object class="mt-5" hide-details></v-select>
+                        <v-select v-if="submodelElementData.modelType == 'SubmodelElementCollection' && ((chartType != 'Radial Chart' && chartType != 'Donut Chart' && chartType != '') || widgetType.value == 'outputElement' || widgetType.value == 'inputElement')" label="Select Data" :items="submodelElementData.value" item-title="idShort" item-value="idShort" chips multiple density="compact" variant="outlined" v-model="chartCollectionValues" return-object class="mt-5" hide-details></v-select>
                         <!-- Textfield to set range of Area- and Line-Chart -->
                         <v-text-field v-if="widgetType.value == 'chart' && (chartType == 'Area Chart' || chartType == 'Line Chart')" label="Set Range" v-model="chartRange" variant="outlined" density="compact" class="mt-5" hide-details type="number" suffix="ms"></v-text-field>
                         <!-- Select special Data for Radial Chart -->
-                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType.name == 'SubmodelElementCollection' && (chartType == 'Radial Chart' || chartType == 'Donut Chart')" label="Select Target Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="radialChartTarget" return-object class="mt-5" hide-details></v-select>
-                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType.name == 'SubmodelElementCollection' && (chartType == 'Radial Chart' || chartType == 'Donut Chart')" label="Select Actual Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="radialChartCurrent" return-object class="mt-5" hide-details></v-select>
-                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType.name == 'SubmodelElementCollection' && chartType == 'Donut Chart'" label="Select Maximal Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="donutChartMax" return-object class="mt-5" hide-details></v-select>
+                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType == 'SubmodelElementCollection' && (chartType == 'Radial Chart' || chartType == 'Donut Chart')" label="Select Target Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="radialChartTarget" return-object class="mt-5" hide-details></v-select>
+                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType == 'SubmodelElementCollection' && (chartType == 'Radial Chart' || chartType == 'Donut Chart')" label="Select Actual Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="radialChartCurrent" return-object class="mt-5" hide-details></v-select>
+                        <v-select v-if="widgetType.value == 'chart' && submodelElementData.modelType == 'SubmodelElementCollection' && chartType == 'Donut Chart'" label="Select Maximal Value" :items="submodelElementData.value" item-title="idShort" item-value="idShort" density="compact" variant="outlined" v-model="donutChartMax" return-object class="mt-5" hide-details></v-select>
                         
-                        <v-divider v-if="chartCollectionValues.length > 0 || (widgetType.value == 'chart' && submodelElementData.modelType.name == 'Property' && chartType != '') || (radialChartTarget != '' && radialChartCurrent != '') || (widgetType.value == 'inputElement' && submodelElementData.modelType.name == 'Property')" class="my-5"></v-divider>
+                        <v-divider v-if="chartCollectionValues.length > 0 || (widgetType.value == 'chart' && submodelElementData.modelType == 'Property' && chartType != '') || (radialChartTarget != '' && radialChartCurrent != '') || (widgetType.value == 'inputElement' && submodelElementData.modelType == 'Property')" class="my-5"></v-divider>
 
                         <!-- Option to Change Names of Data to be displayed for Collection -->
                         <template v-if="chartCollectionValues.length > 0">
@@ -69,7 +69,7 @@
                             </v-row>
                         </template>
                         <!-- Option to Change Names of Data to be displayed for Property -->
-                        <v-row v-else-if="submodelElementData.modelType.name == 'Property' && (chartType != '' || widgetType.value == 'outputElement' || widgetType.value == 'inputElement')">
+                        <v-row v-else-if="submodelElementData.modelType == 'Property' && (chartType != '' || widgetType.value == 'outputElement' || widgetType.value == 'inputElement')">
                             <!-- DisplayName -->
                             <v-col cols="12" :md="widgetType.value == 'inputElement' ? 12 : 6" :class="widgetType.value == 'inputElement' ? '' : 'pr-0'">
                                 <v-text-field label="Displayed Name" v-model="chartNamesUnits[0].name" variant="outlined" density="compact" :class="widgetType.value == 'inputElement' ? '' : 'mr-2'" hide-details clearable></v-text-field>
@@ -107,7 +107,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
+import { useWidgetsStore } from '@/store/WidgetsStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
@@ -121,10 +123,14 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
+        const widgetsStore = useWidgetsStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
+            widgetsStore, // WidgetsStore Object
         }
     },
 
@@ -226,7 +232,7 @@ export default defineComponent({
         },
 
         chartType() {
-            if(this.submodelElementData.modelType.name == 'Property') { // If the SubmodelElement is a Property
+            if(this.submodelElementData.modelType == 'Property') { // If the SubmodelElement is a Property
                 let entry = {
                     id: 0,
                     name: this.submodelElementData.idShort,
@@ -246,24 +252,19 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.store.getters.getRegistryURL;
-        },
-
         // get Widget Api URL from Store
         widgetApiURL() {
-            return this.store.getters.getWidgetApiURL;
+            return this.navigationStore.getWidgetApiURL;
         },
 
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
-            return this.store.getters.getSelectedNode;
+            return this.aasStore.getSelectedNode;
         },
 
         // returs the available widgetTypes
@@ -281,7 +282,7 @@ export default defineComponent({
             let chartTypes = [
                 "Area Chart", "Bar Chart", "Line Chart", "Column Chart"
             ] as Array<any>
-            if (this.submodelElementData.modelType.name == 'SubmodelElementCollection') chartTypes.push("Radial Chart", "Donut Chart");
+            if (this.submodelElementData.modelType == 'SubmodelElementCollection') chartTypes.push("Radial Chart", "Donut Chart");
             return chartTypes;
         },
     },
@@ -330,7 +331,7 @@ export default defineComponent({
                 smSmeID: this.generateUUIDFromString(this.SelectedNode.path),
                 smSmePath: this.SelectedNode.path,
                 smSmeName: this.SelectedNode.idShort,
-                shellEndpoint: this.SelectedAAS.endpoints[0].address,
+                shellEndpoint: this.SelectedAAS.endpoints[0].protocolInformation.href,
                 showInDash: true,
                 widgetWeight: this.widgetWeight,
                 widgetSettings: widgetObjectJSON,
@@ -342,7 +343,7 @@ export default defineComponent({
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if(response.success) {
                     // trigger request in _WidgetEntrypoint.vue to update the widget
-                    this.store.dispatch('dispatchUpdateWidget', true);
+                    this.widgetsStore.dispatchUpdateWidget(true);
                     // close the configurator dialog
                     this.configuratorDialog = false;
                 }

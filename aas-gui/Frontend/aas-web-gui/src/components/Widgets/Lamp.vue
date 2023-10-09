@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
@@ -27,10 +26,8 @@ export default defineComponent({
     props: ['submodelElementData', 'widgetSettings'],
 
     setup() {
-        const store = useStore()
 
         return {
-            store, // Store Object
         }
     },
 

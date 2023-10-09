@@ -25,8 +25,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import StringType from './ValueTypes/StringType.vue';
 import NumberType from './ValueTypes/NumberType.vue';
@@ -37,6 +38,7 @@ export default defineComponent({
     name: 'Property',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the SubmodelElements
 
         // Value Types
         StringType,
@@ -44,14 +46,14 @@ export default defineComponent({
         BooleanType,
         DateTimeStampType,
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
     props: ['propertyObject'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -63,7 +65,7 @@ export default defineComponent({
     computed: {
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
     },
 
@@ -71,35 +73,6 @@ export default defineComponent({
         // Function to update the value of the property
         updateValue(updatedPropertyObject: any) {
             this.$emit('updateValue', updatedPropertyObject); // emit event to update the value in the parent component
-        },
-
-        // Function to check if the property is a number
-        isNumber(prop: any) {
-            // List of all number types
-            let numberTypes = [
-                'double',
-                'float',
-                'integer',
-                'int',
-                'nonNegativeInteger',
-                'positiveInteger',
-                'unsignedLong',
-                'unsignedInt',
-                'unsignedShort',
-                'unsignedByte',
-                'nonPositiveInteger',
-                'negativeInteger',
-                'long',
-                'short',
-                'decimal',
-                'byte'
-            ];
-            // check if the property is a number
-            if (numberTypes.includes(prop)) {
-                return true;
-            } else {
-                return false;
-            }
         },
     },
 });

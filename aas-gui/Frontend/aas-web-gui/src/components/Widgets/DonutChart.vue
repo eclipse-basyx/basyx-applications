@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import { useTheme } from 'vuetify';
 
 export default defineComponent({
@@ -14,11 +13,9 @@ export default defineComponent({
     props: ['submodelElementData', 'widgetSettings'],
 
     setup() {
-        const store = useStore()
         const theme = useTheme()
 
         return {
-            store, // Store Object
             theme, // Theme Object
         }
     },

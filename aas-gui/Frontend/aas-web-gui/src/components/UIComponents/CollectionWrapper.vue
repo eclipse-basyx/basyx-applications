@@ -3,11 +3,11 @@
         <v-expansion-panels multiple class="pa-3">
             <v-expansion-panel v-for="SubmodelElement in SubmodelElementObject.children" :key="SubmodelElement.id">
                 <v-expansion-panel-title class="pl-0 py-0">
-                    <IdentificationElement :identificationObject="SubmodelElement" :modelType="SubmodelElement.modelType.name"></IdentificationElement>
+                    <IdentificationElement :identificationObject="SubmodelElement" :modelType="SubmodelElement.modelType"></IdentificationElement>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
                     <!-- Display NameplateElement directly when it is no SubmodelElementCollection -->
-                    <SubmodelElementWrapper v-if="SubmodelElement.modelType.name != 'SubmodelElementCollection'" :SubmodelElementObject="SubmodelElement" @updateValue="updateCollectionValue"></SubmodelElementWrapper>
+                    <SubmodelElementWrapper v-if="SubmodelElement.modelType != 'SubmodelElementCollection'" :SubmodelElementObject="SubmodelElement" @updateValue="updateCollectionValue"></SubmodelElementWrapper>
                     <!-- Display NameplateElement as SubmodelElementCollection when it is a SubmodelElementCollection -->
                     <CollectionWrapper v-else :SubmodelElementObject="SubmodelElement" @updateValue="updateCollectionValue"></CollectionWrapper>
                 </v-expansion-panel-text>
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 
 import IdentificationElement from './IdentificationElement.vue';
 import DescriptionElement from './DescriptionElement.vue';

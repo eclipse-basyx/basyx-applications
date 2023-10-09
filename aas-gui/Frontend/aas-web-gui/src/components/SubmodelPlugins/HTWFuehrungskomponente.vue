@@ -408,9 +408,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
@@ -425,11 +425,11 @@ export default defineComponent({
 
     setup() {
         const theme = useTheme()
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            navigationStore, // NavigationStore Object
         }
     },
 
@@ -634,7 +634,7 @@ export default defineComponent({
             // Send Request to update the value of the property
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'PackML Mode updated successfully.' }); // Show Success Snackbar
+                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'PackML Mode updated successfully.' }); // Show Success Snackbar
                 }
             });
         },
@@ -654,7 +654,7 @@ export default defineComponent({
             let disableMessage = false;
             // Send Request to update the value of the property
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
-                this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'PackML State updated successfully.' }); // Show Success Snackbar
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'PackML State updated successfully.' }); // Show Success Snackbar
             });
         },
 

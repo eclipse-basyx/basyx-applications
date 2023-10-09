@@ -22,7 +22,7 @@
                         <v-text-field variant="outlined" density="compact" hide-details label="Search for AAS..." clearable @update:modelValue="filterAASList"></v-text-field>
                     </v-col>
                     <!-- Add existing AAS -->
-                    <v-col cols="auto" class="px-0">
+                    <v-col cols="auto" class="px-0" v-if="showExtended">
                         <RegisterAAS></RegisterAAS>
                     </v-col>
                 </v-row>
@@ -32,11 +32,11 @@
                 <!-- AAS List -->
                 <v-list nav class="bg-card">
                     <!-- Single AAS -->
-                    <v-list-item v-for="(AAS, i) in AASData" :key="AAS['identification']['id']" @click="selectAAS(AAS)" class="bg-listItem" :class="i == AASData.length - 1 ? 'mb-0' : 'mb-2'" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(AAS) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
-                        <!-- Tooltip with idShort and identification id -->
+                    <v-list-item v-for="(AAS, i) in AASData" :key="AAS['id']" @click="selectAAS(AAS)" class="bg-listItem" :class="i == AASData.length - 1 ? 'mb-0' : 'mb-2'" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(AAS) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
+                        <!-- Tooltip with idShort and id -->
                         <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
                             <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ AAS['idShort'] }}</div>
-                            <div class="text-caption"><span class="font-weight-bold">{{ 'Identification ID: ' }}</span>{{ AAS['identification']['id'] }}</div>
+                            <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ AAS['id'] }}</div>
                         </v-tooltip>
                         <!-- Icon of the AAS -->
                         <template v-if="drawerState" v-slot:prepend>
@@ -46,9 +46,9 @@
                         <template v-if="!drawerState" v-slot:title>
                             <div class="text-primary" style="z-index: 9999">{{ AAS['idShort'] }}</div>
                         </template>
-                        <!-- identification id of the AAS -->
+                        <!-- id of the AAS -->
                         <template v-if="!drawerState" v-slot:subtitle>
-                            <div v-html="AAS['identification']['id']"></div>
+                            <div v-html="AAS['id']"></div>
                         </template>
                         <!-- open Details Button (with Status Badge) -->
                         <template v-if="!drawerState" v-slot:append>
@@ -89,8 +89,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import AASListDetails from './AASListDetails.vue';
 import RegisterAAS from './RegisterAAS.vue';
 
@@ -100,15 +102,17 @@ export default defineComponent({
         AASListDetails, // AAS Details Component
         RegisterAAS,    // Register AAS Component
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
         const theme = useTheme()
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
             theme, // Theme Object
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -138,17 +142,17 @@ export default defineComponent({
             // console.log('AAS Query is set: ', aasEndpoint);
             let aas = {} as any;
             let endpoints = [];
-            endpoints.push({ address: aasEndpoint } );
+            endpoints.push({ protocolInformation: {href: aasEndpoint } });
             aas.endpoints = endpoints;
             // dispatch the AAS set by the URL to the store
-            this.store.dispatch('dispatchSelectedAAS', aas);
+            this.aasStore.dispatchSelectedAAS(aas);
         }
 
         // check if the status-check is set in the local storage and if so set the status-check state in the store
         const statusCheck = localStorage.getItem('statusCheck');
         if (statusCheck) {
             // console.log('Status Check is set: ', statusCheck);
-            this.store.dispatch('dispatchUpdateStatusCheck', statusCheck === 'true');
+            this.navigationStore.dispatchUpdateStatusCheck(statusCheck === 'true');
         }
     },
 
@@ -184,7 +188,7 @@ export default defineComponent({
         triggerAASListReload(triggerVal) {
             if(triggerVal === true) {
                 this.reloadList();
-                this.store.dispatch('dispatchTriggerAASListReload', false);
+                this.navigationStore.dispatchTriggerAASListReload(false);
             }
         },
     },
@@ -197,21 +201,21 @@ export default defineComponent({
 
         // get Platform from store
         platform() {
-            return this.store.getters.getPlatform;
+            return this.navigationStore.getPlatform;
         },
 
         // get Drawer State from store
         drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
-            return this.store.getters.getDrawerState;
+            return this.navigationStore.getDrawerState;
         },
         // get Registry URL from Store
         registryURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
         },
 
         // get the selected AAS from Store
         selectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
 
         // Check if the current Theme is dark
@@ -221,7 +225,7 @@ export default defineComponent({
 
         // gets loading State from Store
         loading() {
-            return this.store.getters.getLoadingState;
+            return this.aasStore.getLoadingState;
         },
 
         // returns the primary color of the current theme
@@ -231,12 +235,12 @@ export default defineComponent({
 
         // get the status-check state from the store
         statusCheck() {
-            return this.store.getters.getStatusCheck;
+            return this.navigationStore.getStatusCheck;
         },
 
         // get trigger signal for AAS List reload from store
         triggerAASListReload() {
-            return this.store.getters.getTriggerAASListReload;
+            return this.navigationStore.getTriggerAASListReload;
         },
     },
 
@@ -244,22 +248,24 @@ export default defineComponent({
         // Function to collapse the Sidebar
         collapseSidebar() {
             this.showExtended = false;
-            this.store.dispatch('dispatchDrawerState', true);
+            this.navigationStore.dispatchDrawerState(true);
         },
         // Function to extend the Sidebar
         extendSidebar() {
-            this.store.dispatch('dispatchDrawerState', false);
+            this.navigationStore.dispatchDrawerState(false);
         },
         // Function to get the AAS Data from the Registry Server
         getAASData() {
             this.listLoading = true;
-            let path = this.registryURL + '/api/v1/registry';
+            let path = this.registryURL + '/api/v3.0/shell-descriptors';
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) { // execute if the Registry Server is found
                     // sort data by idetification id (ascending) and store it in the AASData variable
-                    let sortedData = response.data.sort((a: { [x: string]: { [x: string]: number; }; }, b: { [x: string]: { [x: string]: number; }; }) => (a['identification']['id'] > b['identification']['id']) ? 1 : -1);
+                    let registerredAAS = response.data.result;
+                    let sortedData = registerredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
+
                     // add status online to the AAS Data
                     sortedData.forEach((AAS: any) => {
                         AAS['status'] = 'check disabled';
@@ -270,7 +276,7 @@ export default defineComponent({
                         this.checkAASStatus(); // check the AAS Status
                     }
                 } else { // execute if the Registry Server is not found
-                    this.store.dispatch('dispatchRegistryURL', ''); // clear the URL in the store
+                    this.navigationStore.dispatchRegistryURL(''); // clear the URL in the NavigationStore
                 }
                 this.listLoading = false;
             });
@@ -293,7 +299,7 @@ export default defineComponent({
             // console.log('Check AAS Status: ', AAS);
             // iterate over all AAS in the AAS List
             this.AASData.forEach((AAS: any) => {
-                let path = AAS.endpoints[0].address + '/submodels';
+                let path = AAS.endpoints[0].protocolInformation.href;
                 let context = 'evaluating AAS Status';
                 let disableMessage = true;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -329,19 +335,19 @@ export default defineComponent({
             // console.log('Select AAS: ', AAS);
             // return if loading state is true -> prevents multiple requests
             if(this.loading) {
-                this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
                 return;
             }
             
             if (this.isMobile) {
                 // Change to Treeview add AAS Endpoint as Query to the Router
-                this.$router.push({ path: '/aastreeview', query: { aas: AAS.endpoints[0].address } });
+                this.$router.push({ path: '/aastreeview', query: { aas: AAS.endpoints[0].protocolInformation.href } });
             } else {
                 // Add AAS Endpoint as Query to the Router
-                this.$router.push({ query: { aas: AAS.endpoints[0].address } });
+                this.$router.push({ query: { aas: AAS.endpoints[0].protocolInformation.href } });
             }
             // dispatch the selected AAS to the Store
-            this.store.dispatch('dispatchSelectedAAS', AAS);
+            this.aasStore.dispatchSelectedAAS(AAS);
         },
 
         // checks if the AAS is selected
@@ -349,7 +355,7 @@ export default defineComponent({
             if (this.selectedAAS === undefined || this.selectedAAS === null || Object.keys(this.selectedAAS).length === 0) {
                 return false;
             }
-            return this.selectedAAS['endpoints'][0]['address'] === AAS['endpoints'][0]['address'];
+            return this.selectedAAS['endpoints'][0]['protocolInformation']['href'] === AAS['endpoints'][0]['protocolInformation']['href'];
         },
 
         // Function to display the AAS Details
@@ -364,13 +370,13 @@ export default defineComponent({
             // console.log('Remove AAS: ', AAS);
             // return if loading state is true -> prevents multiple requests
             if(this.loading) {
-                this.store.dispatch('getSnackbar', { status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
                 return;
             }
             // show a confirmation Dialog to delete the AAS
             if(confirm('Are you sure you want to delete the AAS from the Registry?')) {
                 // execute if the user confirms the removal
-                let path = this.registryURL + '/api/v1/registry/' + AAS.identification.id;
+                let path = this.registryURL + '/api/v3.0/shell-descriptors/' + this.URLEncode(AAS.id);
                 let context = 'removing AAS from Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {

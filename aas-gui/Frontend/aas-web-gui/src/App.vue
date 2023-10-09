@@ -15,11 +15,20 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from './mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import AppNavigation from './components/AppNavigation/AppNavigation.vue';
+
+interface AASType {
+  endpoints: Array<{
+    protocolInformation: {
+      href: string;
+    };
+  }>;
+}
 
 export default defineComponent({
   name: 'App',
@@ -32,17 +41,19 @@ export default defineComponent({
   mixins: [RequestHandling, SubmodelElementHandling],
 
   setup() {
-    const store = useStore()
+    const navigationStore = useNavigationStore()
+    const aasStore = useAASStore()
 
     return {
-      store, // Store Object
+      navigationStore, // NavigationStore Object
+      aasStore, // AASStore Object
     }
   },
 
   mounted() {
     // console.log(this.$vuetify.display.mobile)
-    this.store.dispatch('dispatchIsMobile', this.$vuetify.display.mobile);
-    this.store.dispatch('dispatchPlatform', this.$vuetify.display.platform);
+    this.navigationStore.dispatchIsMobile(this.$vuetify.display.mobile);
+    this.navigationStore.dispatchPlatform(this.$vuetify.display.platform);
 
     // check if the aas and path Queries are set in the URL and include them in the URL when switching to the mobile view
     const searchParams = new URL(window.location.href).searchParams;
@@ -51,18 +62,18 @@ export default defineComponent({
 
     if (aasEndpoint) {
       // console.log('AAS Query is set: ', aasEndpoint);
-      let aas = {} as any;
+      let aas = {} as AASType;
       let endpoints = [];
-      endpoints.push({ address: aasEndpoint });
+      endpoints.push({ protocolInformation: { href: aasEndpoint } });
       aas.endpoints = endpoints;
       // dispatch the AAS set by the URL to the store
-      this.store.dispatch('dispatchSelectedAAS', aas);
+      this.aasStore.dispatchSelectedAAS(aas);
     }
 
     if (aasEndpoint && submodelElementPath) {
-      // console.log('AAS and Path Queries are set: ', aasEndpoint + '/' + submodelElementPath);
+      // console.log('AAS and Path Queries are set: ', submodelElementPath);
       // Request the selected SubmodelElement
-      let path = aasEndpoint + '/' + submodelElementPath;
+      let path = submodelElementPath;
       let context = 'retrieving SubmodelElement';
       let disableMessage = true;
       this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -72,14 +83,14 @@ export default defineComponent({
           response.data.isActive = true; // add the isActive Property to the SubmodelElement Data
           // console.log('SubmodelElement Data: ', response.data)
           // dispatch the SubmodelElementPath set by the URL to the store
-          this.store.dispatch('dispatchNode', response.data); // set the updatedNode in the Store
+          this.aasStore.dispatchNode(response.data); // set the updatedNode in the AASStore
         } else { // execute if the Request failed
           if (Object.keys(response.data).length == 0) {
             // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
-            this.store.dispatch('getSnackbar', { status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
+            this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
             return;
           }
-          this.store.dispatch('dispatchNode', {});
+          this.aasStore.dispatchNode({});
         }
       });
     }

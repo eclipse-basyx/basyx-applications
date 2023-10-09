@@ -49,7 +49,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
+import { useWidgetsStore } from '@/store/WidgetsStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
@@ -93,10 +94,12 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
+        const widgetsStore = useWidgetsStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
+            widgetsStore, // WidgetsStore Object
         }
     },
 
@@ -122,14 +125,14 @@ export default defineComponent({
         // Watch for changes in the UpdateWidget and (re-)initialize the Component
         UpdateWidget() {
             this.getSubmodelElementWidget() // Get the Widget Information for the SubmodelElement
-            this.store.dispatch('dispatchUpdateWidget', false);
+            this.widgetsStore.dispatchUpdateWidget(false);
         },
     },
 
     computed: {
         // Get the prompt to get the Widget Information for the SubmodelElement
         UpdateWidget() {
-            return this.store.getters.getUpdateWidget;
+            return this.widgetsStore.getUpdateWidget;
         },
 
         // Get the ID of the submodelElementData
@@ -139,7 +142,7 @@ export default defineComponent({
 
         // get Widget Api URL from Store
         widgetApiURL() {
-            return this.store.getters.getWidgetApiURL;
+            return this.navigationStore.getWidgetApiURL;
         },
     },
 

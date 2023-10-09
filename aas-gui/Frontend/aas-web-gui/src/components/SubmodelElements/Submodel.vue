@@ -6,36 +6,45 @@
                     <v-list-item class="pt-0">
                         <v-list-item-title class="pt-2">
                             <!-- SubmodelElementCollection -->
-                            <v-alert v-if="SubmodelElement.modelType.name == 'SubmodelElementCollection'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
+                            <v-alert v-if="SubmodelElement.modelType == 'SubmodelElementCollection'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
                                 <template v-slot:prepend>
-                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType.name }}</v-chip>
+                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
+                                </template>
+                                <template v-slot:append>
+                                    <v-badge :content="SubmodelElement.value.length" inline></v-badge>
+                                </template>
+                            </v-alert>
+                            <!-- SubmodelElementList -->
+                            <v-alert v-else-if="SubmodelElement.modelType == 'SubmodelElementList'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
+                                <template v-slot:prepend>
+                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                                 <template v-slot:append>
                                     <v-badge :content="SubmodelElement.value.length" inline></v-badge>
                                 </template>
                             </v-alert>
                             <!-- Property -->
-                            <v-text-field v-else-if="SubmodelElement.modelType.name == 'Property'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'Property'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <!-- Current Value -->
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.valueType }}</v-chip>
                                 </template>
                             </v-text-field>
                             <!-- MultiLanguageProperty -->
-                            <DescriptionElement v-else-if="SubmodelElement.modelType.name == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="SubmodelElement.idShort" :small="false" style="margin-top: -12px"></DescriptionElement>
+                            <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="SubmodelElement.idShort" :small="false" style="margin-top: -12px"></DescriptionElement>
                             <!-- Operation -->
-                            <v-alert v-else-if="SubmodelElement.modelType.name == 'Operation'" :text="SubmodelElement.idShort" density="compact" variant="tonal" border="start">
+                            <v-alert v-else-if="SubmodelElement.modelType == 'Operation'" :text="SubmodelElement.idShort" density="compact" variant="tonal" border="start">
                                 <template v-slot:prepend>
-                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType.name }}</v-chip>
+                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                                 <template v-slot:append>
                                     <v-icon style="margin-right: 5px">mdi-lightning-bolt-circle</v-icon>
                                 </template>
                             </v-alert>
                             <!-- File -->
-                            <v-text-field v-else-if="SubmodelElement.modelType.name == 'File'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'File'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <template v-slot:prepend-inner>
-                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType.name }}</v-chip>
+                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                                 <template v-slot:append-inner>
                                     <v-btn :disabled="!SubmodelElement.value" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="downloadFile(SubmodelElement.value)">
@@ -44,9 +53,9 @@
                                 </template>
                             </v-text-field>
                             <!-- Blob -->
-                            <v-text-field v-else-if="SubmodelElement.modelType.name == 'Blob'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'Blob'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <template v-slot:prepend-inner>
-                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType.name }}</v-chip>
+                                    <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                             </v-text-field>
                             <!-- InvalidElement -->
@@ -68,8 +77,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useAASStore } from '@/store/AASDataStore';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
 export default defineComponent({
@@ -80,10 +89,10 @@ export default defineComponent({
     props: ['submodelObject'],
 
     setup() {
-        const store = useStore()
+        const aasStore = useAASStore()
 
         return {
-            store, // Store Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -101,7 +110,7 @@ export default defineComponent({
     computed: {
         // get selected AAS from Store
         SelectedAAS() {
-            return this.store.getters.getSelectedAAS;
+            return this.aasStore.getSelectedAAS;
         },
     },
 
@@ -117,7 +126,7 @@ export default defineComponent({
             if (!path) return '';
             // check if Link starts with '/'
             if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].address.replace('/aas', '') + '/files' + path;
+                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
             }
             return path;
         },

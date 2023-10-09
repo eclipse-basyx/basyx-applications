@@ -9,7 +9,27 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-text-field variant="outlined" density="compact" label="AAS Endpoint" hint="E.g. http://localhost:4000/aas" clearable v-model="aasEndpoint"></v-text-field>
+                    <!-- Endpoint Textfield of the AAS to be registered -->
+                    <v-text-field variant="outlined" density="compact" label="AAS Endpoint" hint="E.g. http://localhost:4000/shells/<UTF8_BASE64_encoded_aasIdentification>" persistent-hint clearable v-model="aasEndpoint"></v-text-field>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-subtitle class="mt-3 ml-2">URL Encoding of aasIddentification</v-card-subtitle>
+                <v-card-text>
+                    <!-- aasIdentification converter -->
+                    <v-row>
+                        <v-col cols="6">
+                            <v-text-field variant="outlined" density="compact" label="aasIdentification" clearable v-model="aasIdentification" hide-details class="mb-2" @change="encodeIdentification()"></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field variant="outlined" density="compact" label="Encoded Identification" v-model="EncodedAasIdentification" hide-details class="mb-2" readonly>
+                                <template v-slot:append-inner>
+                                    <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="copyToClipboard()">
+                                        <v-icon>mdi-clipboard-file-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -24,18 +44,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
+import { useNavigationStore } from '@/store/NavigationStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'RegisterAAS',
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const store = useStore()
+        const navigationStore = useNavigationStore()
 
         return {
-            store, // Store Object
+            navigationStore, // NavigationStore Object
         }
     },
 
@@ -44,13 +65,15 @@ export default defineComponent({
             RegisterAASDialog: false, // Dialog State Handler
             registrationLoading: false, // Loading State Handler
             aasEndpoint: '', // AAS Endpoint
+            aasIdentification: '', // AAS Identification
+            EncodedAasIdentification: '', // Encoded AAS Identification
         }
     },
 
     computed: {
         // get Registry URL from Store
         registryURL() {
-            return this.store.getters.getRegistryURL;
+            return this.navigationStore.getRegistryURL;
         },
     },
 
@@ -64,24 +87,52 @@ export default defineComponent({
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) { // execute if the AAS exists
                     let aas = response.data;
-                    let identificationId = aas.identification.id;
-                    // console.log('Add AAS to Registry', aas, identificationId);
-                    aas.endpoints[0].address = this.aasEndpoint;
-                    aas.endpoints[0].type = this.aasEndpoint.split(':')[0];
-                    let path = this.registryURL + '/api/v1/registry/' + identificationId;
-                    let content = JSON.stringify(aas);
+
+                    // add method call here to create json content for registering AAS
+                    const createRegisterContent = (fetchedAAS: any) => {
+                        return {
+                            ...fetchedAAS,  // Spread to include all existing properties
+                            endpoints: [  // Add or update the endpoints
+                                {
+                                    interface: "HTTP-REST",
+                                    protocolInformation: {
+                                        href: this.aasEndpoint,
+                                        endpointProtocol: this.aasEndpoint.split(':')[0],
+                                        endpointProtocolVersion: ["1.1"]
+                                    }
+                                }
+                            ]
+                        };
+                    };
+
+                    // Create the registration content
+                    let registrationContent = createRegisterContent(aas);
+                    // remove administration key
+                    delete registrationContent['administration'];
+
+                    let path = this.registryURL + '/api/v3.0/shell-descriptors';
+                    let content = JSON.stringify(registrationContent);
                     let headers = { 'Content-Type': 'application/json' };
                     let context = 'registering AAS';
                     let disableMessage = false;
-                    this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+                    this.postRequest(path, content, headers, context, disableMessage).then((response: any) => {
                         if (response.success) { // execute if the AAS is successfully registered
-                            this.store.dispatch('dispatchTriggerAASListReload', true); // trigger AAS List reload
+                            this.navigationStore.dispatchTriggerAASListReload(true); // trigger AAS List reload
                             this.RegisterAASDialog = false; // close dialog
                         }
                     });
                 }
                 this.registrationLoading = false;
             });
+        },
+        // Function to encode the AAS Identification
+        encodeIdentification() {
+            this.EncodedAasIdentification = this.URLEncode(this.aasIdentification);
+        },
+        // Function to copy the encoded AAS Identification to the clipboard 
+        copyToClipboard() {
+            navigator.clipboard.writeText(this.EncodedAasIdentification);
+            this.navigationStore.dispatchSnackbar({ status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Path copied to Clipboard.' });
         },
     },
 });
