@@ -9,6 +9,7 @@
                 <File                   v-if="SubmodelElementObject.modelType == 'File'"                   :fileObject="SubmodelElementObject"></File>
                 <Operation              v-if="SubmodelElementObject.modelType == 'Operation'"              :operationObject="SubmodelElementObject"></Operation>
                 <ReferenceElement       v-if="SubmodelElementObject.modelType == 'ReferenceElement'"       :referenceElementObject="SubmodelElementObject"></ReferenceElement>
+                <Range                  v-if="SubmodelElementObject.modelType == 'Range'"                  :rangeObject="SubmodelElementObject"></Range>
             </v-list>
         </v-card>
     </v-container>
@@ -17,20 +18,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import IdentificationElement    from './IdentificationElement.vue';
-import DescriptionElement       from './DescriptionElement.vue';
+import DescriptionElement from './DescriptionElement.vue';
 
 import Property                 from '../SubmodelElements/Property.vue';
 import MultiLanguageProperty    from '../SubmodelElements/MultiLanguageProperty.vue';
 import File                     from '../SubmodelElements/File.vue';
 import Operation                from '../SubmodelElements/Operation.vue';
 import ReferenceElement         from '../SubmodelElements/ReferenceElement.vue';
+import Range                    from '../SubmodelElements/Range.vue';
 
 export default defineComponent({
     name: 'SubmodelELementWrapper',
     components: {
         // UI Components
-        IdentificationElement,
         DescriptionElement,
 
         // SubmodelElements
@@ -39,6 +39,7 @@ export default defineComponent({
         File,
         Operation,
         ReferenceElement,
+        Range,
     },
     props: ['SubmodelElementObject'],
 

@@ -10,11 +10,11 @@
                     <!-- mimeType -->
                     <v-list-item-title>
                         <span class="text-caption">{{ 'Mime Type: ' }}</span>
-                        <v-chip label size="x-small" border color="primary">{{ blobObject.mimeType ? blobObject.mimeType : 'no-mime' }}</v-chip>
+                        <v-chip label size="x-small" border color="primary">{{ blobObject.contentType ? blobObject.contentType : 'no-mime' }}</v-chip>
                     </v-list-item-title>
                     <!-- Donwload File Button -->
                     <template v-slot:append>
-                        <v-btn v-if="blobObject.value && blobObject.mimeType" size="small" color="primary" class="text-buttonText" @click="downloadFile">Download Blob to File</v-btn>
+                        <v-btn v-if="blobObject.value && blobObject.contentType" size="small" color="primary" class="text-buttonText" @click="downloadFile">Download Blob to File</v-btn>
                     </template>
                 </v-list-item>
                 <!-- Blob in Inputfield -->
@@ -142,7 +142,7 @@ export default defineComponent({
             // check if a file is selected
             if (this.newFile.length == 0) return;
             let file = this.newFile[0];
-            let mimeType = file.type;
+            let contentType = file.type;
             // decode the file to base64
             let reader = new FileReader();
             reader.readAsDataURL(file);
@@ -155,7 +155,7 @@ export default defineComponent({
                     value = base64String ? base64String.trim() : '';
                 }
                 let contentJSON = { ...this.blobObject };
-                contentJSON.mimeType = mimeType;
+                contentJSON.contentType = contentType;
                 contentJSON.value = value;
                 let content = JSON.stringify(contentJSON);
                 // console.log("Content: ", content);
@@ -181,17 +181,17 @@ export default defineComponent({
         // Function to download the Blob as File
         downloadFile() {
             // Convert base64 to Blob
-            fetch(`data:${this.blobObject.mimeType};base64,${this.newBlobValue}`)
+            fetch(`data:${this.blobObject.contentType};base64,${this.newBlobValue}`)
                 .then(response => response.blob())
                 .then(blob => {
                     // Create a downloadable link for the Blob
                     const link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
-                    // check if mimetype is text
-                    if (this.blobObject.mimeType.split('/')[0] == 'text') {
+                    // check if contentType is text
+                    if (this.blobObject.contentType.split('/')[0] == 'text') {
                         link.download = this.SelectedNode.idShort + '.txt';
                     } else {
-                        link.download = this.SelectedNode.idShort + '.' + this.blobObject.mimeType.split('/')[1];
+                        link.download = this.SelectedNode.idShort + '.' + this.blobObject.contentType.split('/')[1];
                     }
 
                     // Append the link to the document body and simulate a click

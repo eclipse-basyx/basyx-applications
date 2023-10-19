@@ -8,7 +8,7 @@
                 <v-card v-if="submodelElementData && Object.keys(submodelElementData).length > 0">
                     <v-list nav>
                         <!-- SubmodelELement Identification -->
-                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType"></IdentificationElement>
+                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType" :idType="'Identification (ID)'" :nameType="'idShort'"></IdentificationElement>
                         <v-divider v-if="submodelElementData.description && submodelElementData.description.length > 0" class="mt-2"></v-divider>
                         <!-- SubmodelELement Description -->
                         <DescriptionElement v-if="submodelElementData.description && submodelElementData.description.length > 0" :descriptionObject="submodelElementData.description" :descriptionTitle="'Description'" :small="false"></DescriptionElement>
@@ -27,6 +27,8 @@
                         <File                       v-else-if="submodelElementData.modelType === 'File'"                        :fileObject="submodelElementData" @updatePath="initializeView()"></File>
                         <Blob                       v-else-if="submodelElementData.modelType === 'Blob'"                        :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
                         <ReferenceElement           v-else-if="submodelElementData.modelType === 'ReferenceElement'"            :referenceElementObject="submodelElementData"></ReferenceElement>
+                        <Range                      v-else-if="submodelElementData.modelType === 'Range'"                       :rangeObject="submodelElementData"></Range>
+                        <Entity                     v-else-if="submodelElementData.modelType === 'Entity'"                      :entityObject="submodelElementData"></Entity>
                         <InvalidElement             v-else                                                                      :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
@@ -74,6 +76,8 @@ import Operation                    from './SubmodelElements/Operation.vue';
 import File                         from './SubmodelElements/File.vue';
 import Blob                         from './SubmodelElements/Blob.vue';
 import ReferenceElement             from './SubmodelElements/ReferenceElement.vue';
+import Range                        from './SubmodelElements/Range.vue';
+import Entity                       from './SubmodelElements/Entity.vue';
 import InvalidElement               from './SubmodelElements/InvalidElement.vue';
 
 export default defineComponent({
@@ -96,6 +100,8 @@ export default defineComponent({
         File,
         Blob,
         ReferenceElement,
+        Range,
+        Entity,
         InvalidElement,
     },
     mixins: [RequestHandling, SubmodelElementHandling],

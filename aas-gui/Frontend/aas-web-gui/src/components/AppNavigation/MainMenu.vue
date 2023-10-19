@@ -196,7 +196,7 @@ export default defineComponent({
             // console.log('connect to ' + RepoType + ' Repository: ' + (this as any)[RepoType + 'RepoURL']);
             if ((this as any)[RepoType + 'RepoURL'] != '') {
                 (this as any)['loading' + RepoType + 'Repo'] = true;
-                let path = (this as any)[RepoType + 'RepoURL'];
+                let path = (this as any)[RepoType + 'RepoURL'] + '?limit=1' + (RepoType == 'Submodel' ? '&level=core' : '');
                 let context = 'connecting to ' + RepoType + ' Repository'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {

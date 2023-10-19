@@ -10,7 +10,7 @@
             <v-expansion-panels multiple>
                 <v-expansion-panel v-for="NameplateElement in digitalNameplateData" :key="NameplateElement.id">
                     <v-expansion-panel-title class="pl-0 py-0">
-                        <IdentificationElement :identificationObject="NameplateElement" :modelType="NameplateElement.modelType"></IdentificationElement>
+                        <IdentificationElement :identificationObject="NameplateElement" :modelType="NameplateElement.modelType" :idType="'Identification (ID)'" :nameType="'idShort'"></IdentificationElement>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text class="pa-0">
                         <!-- Display NameplateElement directly when it is no SubmodelElementCollection -->

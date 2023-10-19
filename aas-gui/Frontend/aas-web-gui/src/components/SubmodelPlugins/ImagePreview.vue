@@ -42,7 +42,7 @@ export default defineComponent({
         if (this.submodelElementData.modelType == 'File') {
             this.localPathValue = this.getLocalPath(this.submodelElementData.value)
         } else if (this.submodelElementData.modelType == 'Blob') {
-            this.Base64Image =`data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+            this.Base64Image =`data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
         }
         this.errorLoadingImage = false;
     },
@@ -52,7 +52,7 @@ export default defineComponent({
             if (this.submodelElementData.modelType == 'File') {
                 this.localPathValue = this.getLocalPath(this.submodelElementData.value)
             } else if (this.submodelElementData.modelType == 'Blob') {
-                this.Base64Image = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+                this.Base64Image = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
             }
             this.errorLoadingImage = false;
         },

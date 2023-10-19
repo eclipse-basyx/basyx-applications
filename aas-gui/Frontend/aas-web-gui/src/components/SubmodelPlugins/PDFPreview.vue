@@ -51,7 +51,7 @@ export default defineComponent({
         if (this.submodelElementData.modelType == 'File') {
             this.localPathValue = this.getLocalPath(this.submodelElementData.value)
         } else if (this.submodelElementData.modelType == 'Blob') {
-            this.Base64PDF = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+            this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
         }
 
         let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -82,7 +82,7 @@ export default defineComponent({
             if (this.submodelElementData.modelType == 'File') {
                 this.localPathValue = this.getLocalPath(this.submodelElementData.value)
             } else if (this.submodelElementData.modelType == 'Blob') {
-                this.Base64PDF = `data:${this.submodelElementData.mimetype};base64,${this.submodelElementData.value}`;
+                this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
             }
         },
     },

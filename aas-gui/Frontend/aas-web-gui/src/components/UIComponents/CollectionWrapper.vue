@@ -3,7 +3,7 @@
         <v-expansion-panels multiple class="pa-3">
             <v-expansion-panel v-for="SubmodelElement in SubmodelElementObject.children" :key="SubmodelElement.id">
                 <v-expansion-panel-title class="pl-0 py-0">
-                    <IdentificationElement :identificationObject="SubmodelElement" :modelType="SubmodelElement.modelType"></IdentificationElement>
+                    <IdentificationElement :identificationObject="SubmodelElement" :modelType="SubmodelElement.modelType" :idType="'Identification (ID)'" :nameType="'idShort'"></IdentificationElement>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
                     <!-- Display NameplateElement directly when it is no SubmodelElementCollection -->

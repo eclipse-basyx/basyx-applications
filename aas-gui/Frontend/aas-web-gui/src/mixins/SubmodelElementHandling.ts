@@ -99,5 +99,30 @@ export default defineComponent({
                 return false;
             }
         },
+
+        // Function to download a JSON File
+        downloadJson(obj: any, fileName: string) {
+            const jsonStr = JSON.stringify(obj, null, 4);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        },
+
+        // Function to download a binary File
+        downloadFile(filename: string, binaryText: string, contentType: string) {
+            const blob = new Blob([new TextEncoder().encode(binaryText)], { type: contentType });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     },
 })
