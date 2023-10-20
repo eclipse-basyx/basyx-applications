@@ -68,14 +68,20 @@
                                 </template>
                             </v-text-field>
                             <!-- ReferenceElement -->
-                            <div v-else-if="SubmodelElement.modelType == 'ReferenceElement'" class="pt-2">
+                            <div v-else-if="SubmodelElement.modelType == 'ReferenceElement'">
+                                <v-list-item style="margin-top: -12px">
+                                    <!-- Reference idShort -->
+                                    <template v-slot:title>
+                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                    </template>
+                                </v-list-item>
                                 <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.value.keys[SubmodelElement.value.keys.length - 1].type }}</v-chip>
                                 <span v-html="SubmodelElement.value.keys[0].value"></span>
                             </div>
                             <!-- Range -->
                             <div v-else-if="SubmodelElement.modelType == 'Range'">
                                 <v-list-item style="margin-top: -12px">
-                                    <!-- Description Title -->
+                                    <!-- Range idShort -->
                                     <template v-slot:title>
                                         <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
                                     </template>
@@ -88,6 +94,48 @@
                                         <v-text-field label="max" density="compact" variant="outlined" v-model="SubmodelElement.max" readonly hide-details></v-text-field>
                                     </v-col>
                                 </v-row>
+                            </div>
+                            <!-- RelationshipElement -->
+                            <div v-else-if="SubmodelElement.modelType == 'RelationshipElement'">
+                                <v-list-item style="margin-top: -12px">
+                                    <!-- Relationship idShort -->
+                                    <template v-slot:title>
+                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                    </template>
+                                </v-list-item>
+                                <div>
+                                    <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
+                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
+                                    <span v-html="SubmodelElement.first.keys[0].value"></span>
+                                </div>
+                                <div class="mt-3">
+                                    <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
+                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
+                                    <span v-html="SubmodelElement.second.keys[0].value"></span>
+                                </div>
+                            </div>
+                            <!-- AnnotatedRelationshipElement -->
+                            <div v-else-if="SubmodelElement.modelType == 'AnnotatedRelationshipElement'">
+                                <v-list-item style="margin-top: -12px">
+                                    <!-- Relationship idShort -->
+                                    <template v-slot:title>
+                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                    </template>
+                                </v-list-item>
+                                <div>
+                                    <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
+                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
+                                    <span v-html="SubmodelElement.first.keys[0].value"></span>
+                                </div>
+                                <div class="mt-3">
+                                    <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
+                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
+                                    <span v-html="SubmodelElement.second.keys[0].value"></span>
+                                </div>
+                                <div class="mt-3 ml-3">
+                                    <span class="text-caption">{{ 'Annotations: ' }}</span>
+                                    <v-chip size="x-small" border class="mr-2">{{ SubmodelElement.annotations.length }}</v-chip>
+                                </div>
                             </div>
                             <!-- InvalidElement -->
                             <v-alert v-else text="Invalid SubmodelElement!" density="compact" type="warning" variant="outlined"></v-alert>

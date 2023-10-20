@@ -57,6 +57,8 @@ As of now, not all new SubmodelElements of the AAS V3 are supported. Additional 
 - ReferenceElement
 - Range
 - Entity
+- RelationshipElement
+- AnnotatedRelationshipElement
 
 ### Concept Description Repository
 
@@ -83,7 +85,7 @@ A Demo-Plugin can be found here:
 
 [HelloWorldPlugin.vue](./Frontend/aas-web-gui/src/components/SubmodelPlugins/HelloWorldPlugin.vue)
 
-The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Operation`, `Range`.
+The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Blob`, `Operation`, `ReferenceElement`, `Range`, `RelationshipElement` or `AnnotatedRelationshipElement`.
 SubmodelElementCollections are not supported in this Plugin!
 The SemanticID of the Submodel is:
 

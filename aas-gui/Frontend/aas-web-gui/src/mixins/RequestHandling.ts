@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
-
+    name: 'RequestHandling',
     data() {
         return {
             navigationStore: useNavigationStore(), // NavigationStore Object

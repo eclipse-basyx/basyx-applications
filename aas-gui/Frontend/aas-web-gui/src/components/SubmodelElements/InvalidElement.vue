@@ -65,6 +65,8 @@ export default defineComponent({
                 'ReferenceElement',
                 'Range',
                 'Entity',
+                'RelationshipElement',
+                'AnnotatedRelationshipElement',
             ] as string[],
         }
     },

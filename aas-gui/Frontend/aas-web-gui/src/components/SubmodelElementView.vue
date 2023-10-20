@@ -17,19 +17,22 @@
                         <SemanticID v-if="submodelElementData.semanticId && submodelElementData.semanticId.keys && submodelElementData.semanticId.keys.length > 0" :semanticIdObject="submodelElementData.semanticId" :semanticTitle="'SemanticID'"></SemanticID>
                     </v-list>
                     <v-divider></v-divider>
-                    <v-list nav class="px-4 pt-0 pb-0"><!-- SubmodelELement Representation for different modelTypes -->
-                        <Submodel                   v-if="submodelElementData.modelType      === 'Submodel'"                    :submodelObject="submodelElementData"></Submodel>
-                        <SubmodelElementCollection  v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"   :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
-                        <SubmodelElementList        v-else-if="submodelElementData.modelType === 'SubmodelElementList'"         :submodelElementListObject="submodelElementData"></SubmodelElementList>
-                        <Property                   v-else-if="submodelElementData.modelType === 'Property'"                    :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
-                        <MultyLanguageProperty      v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"       :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
-                        <Operation                  v-else-if="submodelElementData.modelType === 'Operation'"                   :operationObject="submodelElementData"></Operation>
-                        <File                       v-else-if="submodelElementData.modelType === 'File'"                        :fileObject="submodelElementData" @updatePath="initializeView()"></File>
-                        <Blob                       v-else-if="submodelElementData.modelType === 'Blob'"                        :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
-                        <ReferenceElement           v-else-if="submodelElementData.modelType === 'ReferenceElement'"            :referenceElementObject="submodelElementData"></ReferenceElement>
-                        <Range                      v-else-if="submodelElementData.modelType === 'Range'"                       :rangeObject="submodelElementData"></Range>
-                        <Entity                     v-else-if="submodelElementData.modelType === 'Entity'"                      :entityObject="submodelElementData"></Entity>
-                        <InvalidElement             v-else                                                                      :invalidElementObject="submodelElementData"></InvalidElement>
+                    <v-list nav class="px-4 pt-0 pb-0">
+                        <!-- SubmodelELement Representation for different modelTypes -->
+                        <Submodel                       v-if="submodelElementData.modelType      === 'Submodel'"                        :submodelObject="submodelElementData"></Submodel>
+                        <SubmodelElementCollection      v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"       :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
+                        <SubmodelElementList            v-else-if="submodelElementData.modelType === 'SubmodelElementList'"             :submodelElementListObject="submodelElementData"></SubmodelElementList>
+                        <Property                       v-else-if="submodelElementData.modelType === 'Property'"                        :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
+                        <MultyLanguageProperty          v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"           :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
+                        <Operation                      v-else-if="submodelElementData.modelType === 'Operation'"                       :operationObject="submodelElementData"></Operation>
+                        <File                           v-else-if="submodelElementData.modelType === 'File'"                            :fileObject="submodelElementData" @updatePath="initializeView()"></File>
+                        <Blob                           v-else-if="submodelElementData.modelType === 'Blob'"                            :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
+                        <ReferenceElement               v-else-if="submodelElementData.modelType === 'ReferenceElement'"                :referenceElementObject="submodelElementData"></ReferenceElement>
+                        <Range                          v-else-if="submodelElementData.modelType === 'Range'"                           :rangeObject="submodelElementData"></Range>
+                        <Entity                         v-else-if="submodelElementData.modelType === 'Entity'"                          :entityObject="submodelElementData"></Entity>
+                        <RelationshipElement            v-else-if="submodelElementData.modelType === 'RelationshipElement'"             :relationshipElementObject="submodelElementData"></RelationshipElement>
+                        <AnnotatedRelationshipElement   v-else-if="submodelElementData.modelType === 'AnnotatedRelationshipElement'"    :annotatedRelationshipElementObject="submodelElementData"></AnnotatedRelationshipElement>
+                        <InvalidElement                 v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
                     <v-divider v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" class="mt-5"></v-divider>
@@ -78,6 +81,8 @@ import Blob                         from './SubmodelElements/Blob.vue';
 import ReferenceElement             from './SubmodelElements/ReferenceElement.vue';
 import Range                        from './SubmodelElements/Range.vue';
 import Entity                       from './SubmodelElements/Entity.vue';
+import RelationshipElement          from './SubmodelElements/RelationshipElement.vue';
+import AnnotatedRelationshipElement from './SubmodelElements/AnnotatedRelationshipElement.vue';
 import InvalidElement               from './SubmodelElements/InvalidElement.vue';
 
 export default defineComponent({
@@ -102,6 +107,8 @@ export default defineComponent({
         ReferenceElement,
         Range,
         Entity,
+        RelationshipElement,
+        AnnotatedRelationshipElement,
         InvalidElement,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
