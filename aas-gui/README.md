@@ -60,10 +60,6 @@ As of now, not all new SubmodelElements of the AAS V3 are supported. Additional 
 - RelationshipElement
 - AnnotatedRelationshipElement
 
-### Concept Description Repository
-
-Data from the Concept Description Repository is currently **not** being used in the AAS Web UI. A future update will implement Concept Descriptions in the UI.
-
 ## Getting Started
 
 ### Quick Start:
