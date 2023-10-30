@@ -62,6 +62,7 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import { useEnvStore } from '@/store/EnvironmentStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
@@ -116,16 +117,19 @@ export default defineComponent({
     setup() {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const envStore = useEnvStore()
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            envStore, // EnvironmentStore Object
         }
     },
 
     data() {
         return {
             submodelElementData: {} as any, // SubmodelElement Data
+            conceptDescription: {} as any, // ConceptDescription Data
             requestInterval: null as any, // interval to send requests to the AAS
         }
     },
@@ -139,7 +143,7 @@ export default defineComponent({
                 }
             }, this.autoSync.interval);
         } else {
-            this.initializeView();
+            this.initializeView(true);
         }
     },
 
@@ -170,7 +174,7 @@ export default defineComponent({
             handler() {
                 // clear old submodelElementData
                 this.submodelElementData = {};
-                this.initializeView(); // initialize list
+                this.initializeView(true); // initialize list
             }
         },
 
@@ -213,11 +217,16 @@ export default defineComponent({
         autoSync() {
             return this.navigationStore.getAutoSync;
         },
+
+        // Get the Concept Description Repository URL from the Store
+        conceptDescriptionRepoURL() {
+            return this.navigationStore.getConceptDescriptionRepoURL;
+        },
     },
 
     methods: {
         // Initialize the Component
-        initializeView() {
+        initializeView(withConceptDescription = false) {
             // console.log('Selected Node: ', this.SelectedNode);
             // Check if a Node is selected
             if (Object.keys(this.SelectedNode).length == 0) {
@@ -229,6 +238,8 @@ export default defineComponent({
             let context = 'retrieving SubmodelElement';
             let disableMessage = true;
             this.getRequest(path, context, disableMessage).then((response: any) => {
+                // save embeddedDataSpecifications (ConceptDescription) before overwriting the SubmodelElement Data
+                let embeddedDataSpecifications = this.submodelElementData.embeddedDataSpecifications;
                 if (response.success) { // execute if the Request was successful
                     response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
                     response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
@@ -246,9 +257,44 @@ export default defineComponent({
                     this.submodelElementData.timestamp = 'no sync';
                     this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
+                if (withConceptDescription) {
+                    this.getConceptDescription(); // fetch ConceptDescriptions for the SubmodelElement
+                } else {
+                    this.submodelElementData.embeddedDataSpecifications = embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
+                }
                 // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
                 this.aasStore.dispatchRealTimeObject(this.submodelElementData);
+            });
+        },
+
+        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        getConceptDescription() {
+            // Check if a Node is selected
+            if (Object.keys(this.SelectedNode).length == 0 || !this.SelectedNode.semanticId || !this.SelectedNode.semanticId.keys || this.SelectedNode.semanticId.keys.length == 0) {
+                this.conceptDescription = {}; // Reset the SubmodelElement Data when no Node is selected
+                return;
+            }
+            let conceptDescriptionRepoURL = '';
+            // console.log('SemanticID: ', this.SelectedNode.semanticId.keys[0].value);
+            if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
+                conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
+            } else {
+                return;
+            }
+            // console.log('ConceptDescription Repo URL: ', conceptDescriptionRepoURL);
+            // Request the ConceptDescriptions for the SubmodelElement
+            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(this.SelectedNode.semanticId.keys[0].value);
+            let context = 'retrieving ConceptDescription';
+            let disableMessage = true;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) { // execute if the Request was successful
+                    // console.log('ConceptDescription Data: ', response.data.embeddedDataSpecifications)
+                    this.conceptDescription = response.data;
+                    this.submodelElementData.embeddedDataSpecifications = response.data.embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
+                } else { // execute if the Request failed
+                    this.conceptDescription = {}; // Reset the ConceptDescription Data when content couldn't be retrieved
+                }
             });
         },
     },
