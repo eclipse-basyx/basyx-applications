@@ -19,7 +19,7 @@ export default defineComponent({
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json();  // Return the response as JSON
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/asset-administration-shell-package+xml' && response.headers.get('Content-Length') !== '0') {
-                        return response.text();  // Return the response as Text
+                        return response.blob();  // Return the response as Blob
                     } else if (!response.ok) {
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);

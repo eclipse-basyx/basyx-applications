@@ -145,10 +145,9 @@ export default defineComponent({
         },
 
         // Function to download a binary File
-        downloadFile(filename: string, binaryText: string, contentType: string) {
-            const blob = new Blob([new TextEncoder().encode(binaryText)], { type: contentType });
+        downloadFile(filename: string, fileContent: Blob, contentType: string) {
             const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
+            link.href = window.URL.createObjectURL(fileContent);
             link.download = filename;
             document.body.appendChild(link);
             link.click();
