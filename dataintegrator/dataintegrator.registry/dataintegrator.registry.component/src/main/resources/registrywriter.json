@@ -1,0 +1,19 @@
+[
+	{
+		"uniqueId": "registryWriter",
+		"aasAPIURL": "http://localhost:4001/aasServer/shells",
+		"aasDescriptorConfig": {
+			"aasIdValueId": "serial_number",
+			"aasIdentifierType": "Custom",
+			"isIdAlteredWithSuffix": true,
+			"suffix": "_amb",
+			"aasIdShortRegex": "^(.*)(.{5})$",
+			"suffixIdShort": "_aas"
+		},
+		"smDescriptorConfig": {
+			"smIdentifierType": "Custom",
+			"smIdShortRegex": "^(.*)(.{5})$",
+			"suffixIdShort": "_sm"
+		}
+	}
+]

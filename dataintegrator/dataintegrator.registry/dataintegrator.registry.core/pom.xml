@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.digitaltwin.basyx</groupId>
+		<artifactId>dataintegrator.registry</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>dataintegrator.registry.core</artifactId>
+	<name>DataIntegrator Registry core</name>
+	<description>Core of the Data Integrator Registry</description>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.basyx/basyx.sdk -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.sdk</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.basyx/basyx.components.registry -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.registry</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.digitaltwin.basyx</groupId>
+			<artifactId>dataintegrator.common.core</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

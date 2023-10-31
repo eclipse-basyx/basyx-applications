@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.digitaltwin.basyx</groupId>
+		<artifactId>dataintegrator.common</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>dataintegrator.common.configuration</artifactId>
+	<name>DataIntegrator Common Configuration</name>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.sdk</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.digitaltwin.basyx</groupId>
+			<artifactId>dataintegrator.common.core</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>

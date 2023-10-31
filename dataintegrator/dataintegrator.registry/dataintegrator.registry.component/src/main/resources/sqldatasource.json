@@ -1,0 +1,14 @@
+{
+    "uniqueId": "sqlDataSource",
+    "host": "host.docker.internal",
+    "port": 1433,
+    "databaseName": "scales-net",
+    "options": {
+        "encrypt": true,
+        "trustServerCertificate": true
+    },
+    "credential": {
+        "username": "danish",
+        "password": "Sajjad%786"
+    }
+}

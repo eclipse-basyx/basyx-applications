@@ -1,0 +1,260 @@
+{
+    "assetAdministrationShells": [
+        {
+            "modelType": {
+                "name": "AssetAdministrationShell"
+            },
+            "idShort": "SimpleAAS",
+            "identification": {
+                "idType": "IRI",
+                "id": "163834"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "submodels": [
+                {
+                    "keys": [
+                        {
+                            "type": "AssetAdministrationShell",
+                            "local": false,
+                            "value": "163834",
+                            "idType": "IRI"
+                        },
+                        {
+                            "type": "Submodel",
+                            "local": true,
+                            "value": "calibrationPlan",
+                            "idType": "Custom"
+                        }
+                    ]
+                }
+            ],
+            "asset": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ],
+                "modelType": {
+                    "name": "Asset"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "idShort": "SimpleAsset",
+                "identification": {
+                    "idType": "IRI",
+                    "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+                },
+                "kind": "Instance"
+            },
+            "views": [],
+            "conceptDictionary": [],
+            "administration": {
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "version": "1.0",
+                "revision": "120"
+            },
+            "assetRef": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ],
+    "assets": [
+        {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                    "idType": "IRI"
+                }
+            ],
+            "modelType": {
+                "name": "Asset"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "idShort": "SimpleAsset",
+            "identification": {
+                "idType": "IRI",
+                "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+            },
+            "kind": "Instance"
+        }
+    ],
+    "conceptDescriptions": [],
+    "submodels": [
+        {
+            "idShort": "calibrationPlan",
+            "identification": {
+                "idType": "Custom",
+                "id": "calibrationPlan"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "modelType": {
+                "name": "Submodel"
+            },
+            "kind": "Instance",
+            "submodelElements": {
+                "level0": {
+                    "modelType": {
+                        "name": "SubmodelElementCollection"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": {
+                        "level1": {
+                            "modelType": {
+                                "name": "SubmodelElementCollection"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": {
+                                "level2": {
+                                    "modelType": {
+                                        "name": "SubmodelElementCollection"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": {
+                                        "propertySMEFixedLvl3": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "This is the value at level 3 i.e. Fixed Value",
+                                            "valueType": "string",
+                                            "idShort": "propertySMEFixedLvl3",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            }
+                                        },
+                                        "propertySMEToIntegrate": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": 1,
+                                            "valueId": null,
+                                            "valueType": "string",
+                                            "idShort": "propertySMEToIntegrate",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "level2",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "ordered": false,
+                                    "allowDuplicates": false,
+                                    "idShort": "level2",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    }
+                                },
+                                "propertySMEFixedLvl2": {
+                                    "modelType": {
+                                        "name": "Property"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": "This is the value at level 2 i.e. Fixed Value",
+                                    "valueType": "string",
+                                    "idShort": "propertySMEFixedLvl2",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    }
+                                }
+                            },
+                            "ordered": false,
+                            "allowDuplicates": false,
+                            "idShort": "level1",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            }
+                        },
+                        "propertySMEFixedLvl1": {
+                            "modelType": {
+                                "name": "Property"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": "This is the value at level 1 i.e. Fixed Value",
+                            "valueType": "string",
+                            "idShort": "propertySMEFixedLvl1",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            }
+                        }
+                    },
+                    "ordered": false,
+                    "allowDuplicates": false,
+                    "idShort": "level0",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                }
+            },
+            "semanticId": {
+                "keys": []
+            },
+            "qualifiers": [],
+            "parent": {
+                "keys": [
+                    {
+                        "type": "AssetAdministrationShell",
+                        "local": false,
+                        "value": "163834",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ]
+}

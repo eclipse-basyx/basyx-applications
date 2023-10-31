@@ -1,0 +1,63 @@
+{
+    "modelType": {
+        "name": "AssetAdministrationShell"
+    },
+    "idShort": "SimpleAAS",
+    "identification": {
+        "idType": "IRI",
+        "id": "163834"
+    },
+    "dataSpecification": [],
+    "embeddedDataSpecifications": [],
+    "submodels": [
+        {
+            "keys": [
+                {
+                    "type": "Submodel",
+                    "local": true,
+                    "value": "calibrationPlan",
+                    "idType": "Custom"
+                }
+            ]
+        }
+    ],
+    "asset": {
+        "keys": [
+            {
+                "type": "Asset",
+                "local": true,
+                "value": "AFDGTYHY",
+                "idType": "IRDI"
+            }
+        ],
+        "modelType": {
+            "name": "Asset"
+        },
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "idShort": "",
+        "identification": {
+            "idType": "IRDI",
+            "id": ""
+        },
+        "kind": "Instance"
+    },
+    "views": [],
+    "conceptDictionary": [],
+    "administration": {
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "version": "1.0",
+        "revision": "120"
+    },
+    "assetRef": {
+        "keys": [
+            {
+                "type": "Asset",
+                "local": true,
+                "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                "idType": "IRI"
+            }
+        ]
+    }
+}
