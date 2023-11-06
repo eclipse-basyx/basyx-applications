@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
-
+    name: 'RequestHandling',
     data() {
         return {
             navigationStore: useNavigationStore(), // NavigationStore Object
@@ -12,12 +12,14 @@ export default defineComponent({
     methods: {
 
         // Function to send get Request which returns a Promise
-        getRequest(path: string, context: string, disableMessage: boolean): any {
-            return fetch(path, { method: 'GET' })
+        getRequest(path: string, context: string, disableMessage: boolean, headers: Record<string, string> = {}): any {
+            return fetch(path, { method: 'GET', headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json();  // Return the response as JSON
+                    } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/asset-administration-shell-package+xml' && response.headers.get('Content-Length') !== '0') {
+                        return response.blob();  // Return the response as Blob
                     } else if (!response.ok) {
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);

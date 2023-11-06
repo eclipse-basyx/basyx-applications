@@ -8,7 +8,7 @@
                 <v-card v-if="submodelElementData && Object.keys(submodelElementData).length > 0">
                     <v-list nav>
                         <!-- SubmodelELement Identification -->
-                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType"></IdentificationElement>
+                        <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType" :idType="'Identification (ID)'" :nameType="'idShort'"></IdentificationElement>
                         <v-divider v-if="submodelElementData.description && submodelElementData.description.length > 0" class="mt-2"></v-divider>
                         <!-- SubmodelELement Description -->
                         <DescriptionElement v-if="submodelElementData.description && submodelElementData.description.length > 0" :descriptionObject="submodelElementData.description" :descriptionTitle="'Description'" :small="false"></DescriptionElement>
@@ -17,17 +17,22 @@
                         <SemanticID v-if="submodelElementData.semanticId && submodelElementData.semanticId.keys && submodelElementData.semanticId.keys.length > 0" :semanticIdObject="submodelElementData.semanticId" :semanticTitle="'SemanticID'"></SemanticID>
                     </v-list>
                     <v-divider></v-divider>
-                    <v-list nav class="px-4 pt-0 pb-0"><!-- SubmodelELement Representation for different modelTypes -->
-                        <Submodel                   v-if="submodelElementData.modelType      === 'Submodel'"                    :submodelObject="submodelElementData"></Submodel>
-                        <SubmodelElementCollection  v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"   :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
-                        <SubmodelElementList        v-else-if="submodelElementData.modelType === 'SubmodelElementList'"         :submodelElementListObject="submodelElementData"></SubmodelElementList>
-                        <Property                   v-else-if="submodelElementData.modelType === 'Property'"                    :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
-                        <MultyLanguageProperty      v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"       :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
-                        <Operation                  v-else-if="submodelElementData.modelType === 'Operation'"                   :operationObject="submodelElementData"></Operation>
-                        <File                       v-else-if="submodelElementData.modelType === 'File'"                        :fileObject="submodelElementData" @updatePath="initializeView()"></File>
-                        <Blob                       v-else-if="submodelElementData.modelType === 'Blob'"                        :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
-                        <ReferenceElement           v-else-if="submodelElementData.modelType === 'ReferenceElement'"            :referenceElementObject="submodelElementData"></ReferenceElement>
-                        <InvalidElement             v-else                                                                      :invalidElementObject="submodelElementData"></InvalidElement>
+                    <v-list nav class="px-4 pt-0 pb-0">
+                        <!-- SubmodelELement Representation for different modelTypes -->
+                        <Submodel                       v-if="submodelElementData.modelType      === 'Submodel'"                        :submodelObject="submodelElementData"></Submodel>
+                        <SubmodelElementCollection      v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"       :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
+                        <SubmodelElementList            v-else-if="submodelElementData.modelType === 'SubmodelElementList'"             :submodelElementListObject="submodelElementData"></SubmodelElementList>
+                        <Property                       v-else-if="submodelElementData.modelType === 'Property'"                        :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
+                        <MultyLanguageProperty          v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"           :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
+                        <Operation                      v-else-if="submodelElementData.modelType === 'Operation'"                       :operationObject="submodelElementData"></Operation>
+                        <File                           v-else-if="submodelElementData.modelType === 'File'"                            :fileObject="submodelElementData" @updatePath="initializeView()"></File>
+                        <Blob                           v-else-if="submodelElementData.modelType === 'Blob'"                            :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
+                        <ReferenceElement               v-else-if="submodelElementData.modelType === 'ReferenceElement'"                :referenceElementObject="submodelElementData"></ReferenceElement>
+                        <Range                          v-else-if="submodelElementData.modelType === 'Range'"                           :rangeObject="submodelElementData"></Range>
+                        <Entity                         v-else-if="submodelElementData.modelType === 'Entity'"                          :entityObject="submodelElementData"></Entity>
+                        <RelationshipElement            v-else-if="submodelElementData.modelType === 'RelationshipElement'"             :relationshipElementObject="submodelElementData"></RelationshipElement>
+                        <AnnotatedRelationshipElement   v-else-if="submodelElementData.modelType === 'AnnotatedRelationshipElement'"    :annotatedRelationshipElementObject="submodelElementData"></AnnotatedRelationshipElement>
+                        <InvalidElement                 v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
                     <v-divider v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" class="mt-5"></v-divider>
@@ -57,6 +62,7 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import { useEnvStore } from '@/store/EnvironmentStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
@@ -74,6 +80,10 @@ import Operation                    from './SubmodelElements/Operation.vue';
 import File                         from './SubmodelElements/File.vue';
 import Blob                         from './SubmodelElements/Blob.vue';
 import ReferenceElement             from './SubmodelElements/ReferenceElement.vue';
+import Range                        from './SubmodelElements/Range.vue';
+import Entity                       from './SubmodelElements/Entity.vue';
+import RelationshipElement          from './SubmodelElements/RelationshipElement.vue';
+import AnnotatedRelationshipElement from './SubmodelElements/AnnotatedRelationshipElement.vue';
 import InvalidElement               from './SubmodelElements/InvalidElement.vue';
 
 export default defineComponent({
@@ -96,6 +106,10 @@ export default defineComponent({
         File,
         Blob,
         ReferenceElement,
+        Range,
+        Entity,
+        RelationshipElement,
+        AnnotatedRelationshipElement,
         InvalidElement,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
@@ -103,16 +117,19 @@ export default defineComponent({
     setup() {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const envStore = useEnvStore()
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            envStore, // EnvironmentStore Object
         }
     },
 
     data() {
         return {
             submodelElementData: {} as any, // SubmodelElement Data
+            conceptDescription: {} as any, // ConceptDescription Data
             requestInterval: null as any, // interval to send requests to the AAS
         }
     },
@@ -126,7 +143,7 @@ export default defineComponent({
                 }
             }, this.autoSync.interval);
         } else {
-            this.initializeView();
+            this.initializeView(true);
         }
     },
 
@@ -157,7 +174,7 @@ export default defineComponent({
             handler() {
                 // clear old submodelElementData
                 this.submodelElementData = {};
-                this.initializeView(); // initialize list
+                this.initializeView(true); // initialize list
             }
         },
 
@@ -200,11 +217,16 @@ export default defineComponent({
         autoSync() {
             return this.navigationStore.getAutoSync;
         },
+
+        // Get the Concept Description Repository URL from the Store
+        conceptDescriptionRepoURL() {
+            return this.navigationStore.getConceptDescriptionRepoURL;
+        },
     },
 
     methods: {
         // Initialize the Component
-        initializeView() {
+        initializeView(withConceptDescription = false) {
             // console.log('Selected Node: ', this.SelectedNode);
             // Check if a Node is selected
             if (Object.keys(this.SelectedNode).length == 0) {
@@ -216,6 +238,8 @@ export default defineComponent({
             let context = 'retrieving SubmodelElement';
             let disableMessage = true;
             this.getRequest(path, context, disableMessage).then((response: any) => {
+                // save embeddedDataSpecifications (ConceptDescription) before overwriting the SubmodelElement Data
+                let embeddedDataSpecifications = this.submodelElementData.embeddedDataSpecifications;
                 if (response.success) { // execute if the Request was successful
                     response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
                     response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
@@ -233,9 +257,44 @@ export default defineComponent({
                     this.submodelElementData.timestamp = 'no sync';
                     this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
+                if (withConceptDescription) {
+                    this.getConceptDescription(); // fetch ConceptDescriptions for the SubmodelElement
+                } else {
+                    this.submodelElementData.embeddedDataSpecifications = embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
+                }
                 // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
                 this.aasStore.dispatchRealTimeObject(this.submodelElementData);
+            });
+        },
+
+        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        getConceptDescription() {
+            // Check if a Node is selected
+            if (Object.keys(this.SelectedNode).length == 0 || !this.SelectedNode.semanticId || !this.SelectedNode.semanticId.keys || this.SelectedNode.semanticId.keys.length == 0) {
+                this.conceptDescription = {}; // Reset the SubmodelElement Data when no Node is selected
+                return;
+            }
+            let conceptDescriptionRepoURL = '';
+            // console.log('SemanticID: ', this.SelectedNode.semanticId.keys[0].value);
+            if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
+                conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
+            } else {
+                return;
+            }
+            // console.log('ConceptDescription Repo URL: ', conceptDescriptionRepoURL);
+            // Request the ConceptDescriptions for the SubmodelElement
+            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(this.SelectedNode.semanticId.keys[0].value);
+            let context = 'retrieving ConceptDescription';
+            let disableMessage = true;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) { // execute if the Request was successful
+                    // console.log('ConceptDescription Data: ', response.data.embeddedDataSpecifications)
+                    this.conceptDescription = response.data;
+                    this.submodelElementData.embeddedDataSpecifications = response.data.embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
+                } else { // execute if the Request failed
+                    this.conceptDescription = {}; // Reset the ConceptDescription Data when content couldn't be retrieved
+                }
             });
         },
     },

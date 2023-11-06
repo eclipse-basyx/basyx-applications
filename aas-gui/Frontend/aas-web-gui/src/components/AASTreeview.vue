@@ -24,6 +24,7 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import { useEnvStore } from '@/store/EnvironmentStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
 
@@ -41,10 +42,12 @@ export default defineComponent({
     setup () {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const envStore = useEnvStore()
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            envStore, // EnvironmentStore Object
         }
     },
 
@@ -53,6 +56,7 @@ export default defineComponent({
             submodelData: [] as Array<any>, // Treeview Data
             initialUpdate: false, // Flag to check if the initial update of the Treeview is needed and/or done
             initialNode: {} as any, // Initial Node to set the Treeview to
+            // SMPath: '', // Path of the selected SubmodelElement (used for the initial load of the Treeview when the app is started with a path Query)
         }
     },
 
@@ -107,9 +111,9 @@ export default defineComponent({
             return this.navigationStore.getRegistryURL;
         },
 
-        // Get the Submodel Repository URL from the Store
-        submodelRepoURL() {
-            return this.navigationStore.getSubmodelRepoURL;
+        // Get the Env Variable for the Submodel Repo URL from the store
+        EnvSubmodelRepoPath() {
+            return this.envStore.getEnvSubmodelRepoPath;
         },
 
         // get the updated Treeview Node from Store
@@ -129,7 +133,6 @@ export default defineComponent({
             // return if no endpoints are available
             if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].protocolInformation || !this.SelectedAAS.endpoints[0].protocolInformation.href) {
                 // TODO: this seems to get executed on reload with a selected AAS
-                console.warn('AAS with no (valid) Endpoint selected!');
                 this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
                 return;
             }
@@ -144,11 +147,6 @@ export default defineComponent({
                 this.aasStore.dispatchLoadingState(false); // set loading state to false
                 if (response.success) { // execute if the Request was successful
                     try {
-                        // show an error message when the Submodel Repository URL is not set
-                        if(!this.submodelRepoURL) {
-                            this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Submodel Repository URL not set!' });
-                            return;
-                        }
                         // request submodels from the retrieved AAS (top layer of the Treeview)
                         let submodelData = await this.requestSubmodels(response.data.result);
                         // set the isActive prop of the initialNode if it exists and the initialUpdate flag is set
@@ -163,8 +161,12 @@ export default defineComponent({
                             this.submodelData = submodelData; // set the Treeview Data
                             // console.log('Treeview Data: ', this.submodelData)
                         }
-                    } catch (error) {
-                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Error while parsing the Submodel References!', baseError: JSON.stringify(error) });
+                    } catch (error: any) {
+                        // console.error('Error while parsing the Submodel References: ', error);
+                        const errorMessage = error.message;
+                        const errorStack = error.stack;
+                        const errorLocation = errorStack ? errorStack.split('\n')[1] : '';
+                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', baseError: 'Error while parsing the Submodel References!', extendedError: `Error: ${errorMessage}\nLocation: ${errorLocation.trim()}` });
                     }
                 } else { // execute if the Request failed
                     this.submodelData = [];
@@ -176,8 +178,21 @@ export default defineComponent({
         async requestSubmodels(submodelRefs: any) {
             // console.log('SubmodelRefs: ', submodelRefs);
             let submodelPromises = submodelRefs.map((submodelRef: any) => {
+                // extract the submodelRepoURL from the Environment Variables or the Browsers LocalStorage
+                let submodelRepoURL = '';
+                if (this.EnvSubmodelRepoPath && this.EnvSubmodelRepoPath != '') {
+                    submodelRepoURL = this.EnvSubmodelRepoPath;
+                }
+                let submodelRepoURLFromLocalStorage = window.localStorage.getItem('SubmodelRepoURL');
+                if (submodelRepoURLFromLocalStorage && submodelRepoURLFromLocalStorage != '') {
+                    submodelRepoURL = submodelRepoURLFromLocalStorage;
+                }
+                if (!submodelRepoURL || submodelRepoURL == '') {
+                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Submodel URL can not be resolved!' });
+                    return;
+                }
                 // retrieve Submodel from endpoint
-                let path = this.submodelRepoURL + '/' + this.URLEncode(submodelRef.keys[0].value);
+                let path = submodelRepoURL + '/' + this.URLEncode(submodelRef.keys[0].value); // use the Submodel Repository URL if it is set, otherwise use the SMEPath (from the path Query)
                 let context = 'retrieving Submodel Data';
                 let disableMessage = true;
                 return this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -209,7 +224,7 @@ export default defineComponent({
         // Function to prepare the Datastructure for the Treeview
         prepareTreeviewData(SubmodelElements: any, parent: any) {
             // console.log('SubmodeElements: ', SubmodelElements);
-            // iterate over all elements in the current level of the tree (SubmodelElements [e.g. SubmodelElementCollections, SubmodelElementLists, Properties, ...])
+            // iterate over all elements in the current level of the tree (SubmodelElements [e.g. SubmodelElementCollections, SubmodelElementLists, Entities, Properties, ...])
             SubmodelElements.forEach((element: any, index: number) => {
                 // give the Element a unique ID
                 element.id = this.UUID();
@@ -234,6 +249,11 @@ export default defineComponent({
                     // if the Element has Children, call the Function again with the Children as Data
                     element.children = this.prepareTreeviewData(element.value, element);
                     element.showChildren = false; // set showChildren to false (for the Treeview Component)
+                } else if(element.statements && Array.isArray(element.statements) && element.statements.length > 0 && element.modelType == 'Entity') { // check for Statements (Entities)
+                    // if the Element has Children, call the Function again with the Children as Data
+                    element.children = this.prepareTreeviewData(element.statements, element);
+                    element.showChildren = false; // set showChildren to false (for the Treeview Component
+
                 }
             });
             return SubmodelElements;
@@ -333,6 +353,7 @@ export default defineComponent({
             const searchParams = new URL(window.location.href).searchParams;
             const aasEndpoint = searchParams.get('aas');
             const path = searchParams.get('path');
+
             if (aasEndpoint && path) {
                 // console.log('AAS and Path Queris are set: ', aasEndpoint, path);
                 let node = {} as any;

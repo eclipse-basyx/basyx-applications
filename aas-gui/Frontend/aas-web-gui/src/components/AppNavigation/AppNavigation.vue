@@ -80,7 +80,7 @@
                 <v-card-title class="text-subtitle-2">{{ Snackbar.baseError }}</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text style="max-height: 200px; overflow-y: auto; max-width: 590px">
-                    <div class="text-subtitleText text-caption">{{ Snackbar.extendedError }}</div>
+                    <pre class="text-subtitleText text-caption">{{ Snackbar.extendedError }}</pre>
                 </v-card-text>
             </v-card>
             <span v-else class="text-buttonText">{{ Snackbar.text }}</span>
@@ -371,7 +371,7 @@ export default defineComponent({
             // console.log('connect to ' + RepoType + ' Repository: ' + (this as any)[RepoType + 'RepoURL']);
             if ((this as any)[RepoType + 'RepoURL'] != '') {
                 (this as any)['loading' + RepoType + 'Repo'] = true;
-                let path = (this as any)[RepoType + 'RepoURL'];
+                let path = (this as any)[RepoType + 'RepoURL'] + '?limit=1' + (RepoType == 'Submodel' ? '&level=core' : '');
                 let context = 'connecting to ' + RepoType + ' Repository'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {

@@ -55,10 +55,10 @@ As of now, not all new SubmodelElements of the AAS V3 are supported. Additional 
 - Blob
 - Operation
 - ReferenceElement
-
-### Concept Description Repository
-
-Data from the Concept Description Repository is currently **not** being used in the AAS Web UI. A future update will implement Concept Descriptions in the UI.
+- Range
+- Entity
+- RelationshipElement
+- AnnotatedRelationshipElement
 
 ## Getting Started
 
@@ -81,7 +81,7 @@ A Demo-Plugin can be found here:
 
 [HelloWorldPlugin.vue](./Frontend/aas-web-gui/src/components/SubmodelPlugins/HelloWorldPlugin.vue)
 
-The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Operation`.
+The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Blob`, `Operation`, `ReferenceElement`, `Range`, `RelationshipElement` or `AnnotatedRelationshipElement`.
 SubmodelElementCollections are not supported in this Plugin!
 The SemanticID of the Submodel is:
 
@@ -232,7 +232,7 @@ To be able to access the BaSyx AAS data from the Web UI, you need to add a wildc
 
 #### Docker with nginx
 
-The [nginx](./nginx) folder includes an example Docker Compose project which shows how to use the UI with nginx and configure a base path so that the UI can be hosted under
+The [basyx-java-server-sdk](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/examples/BaSyxNGINX) Repository includes an example Docker Compose project which shows how to use the UI with nginx and configure a base path so that the UI can be hosted under
 
 ```bash
 http(s)://your-url/base-path

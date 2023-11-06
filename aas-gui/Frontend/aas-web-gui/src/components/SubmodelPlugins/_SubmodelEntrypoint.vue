@@ -8,10 +8,10 @@
             <!-- Plugins added by the user are dynamically registered here -->
             <component v-for="(plugin, i) in filteredPlugins" :key="i" :is="plugin.name" :submodelElementData="submodelElementData"></component>
         </template>
-        <!-- List of all File/Blob-Plugins matched by their mimeType -->
+        <!-- List of all File/Blob-Plugins matched by their contentType -->
         <template v-if="SelectedNode && Object.keys(SelectedNode).length > 0 && Object.keys(submodelElementData).length > 0 && (submodelElementData.modelType == 'File' || submodelElementData.modelType == 'Blob')">
-            <ImagePreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('image')" :submodelElementData="submodelElementData"></ImagePreview>
-            <PDFPreview v-if="submodelElementData.mimeType && submodelElementData.mimeType.includes('pdf')" :submodelElementData="submodelElementData"></PDFPreview>
+            <ImagePreview v-if="submodelElementData.contentType && submodelElementData.contentType.includes('image')" :submodelElementData="submodelElementData"></ImagePreview>
+            <PDFPreview v-if="submodelElementData.contentType && submodelElementData.contentType.includes('pdf')" :submodelElementData="submodelElementData"></PDFPreview>
         </template>
     </v-container>
 </template>

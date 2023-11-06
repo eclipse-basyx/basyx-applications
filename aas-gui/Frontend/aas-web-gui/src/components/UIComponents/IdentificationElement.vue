@@ -3,13 +3,13 @@
         <v-list-item>
             <!-- Tooltip with idShort and identification id -->
             <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
-                <div v-if="identificationObject.idShort" class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ identificationObject['idShort'] }}</div>
-                <div v-if="identificationObject && identificationObject.id" class="text-caption">{{ identificationObject['id'] }}</div>
+                <div v-if="identificationObject.idShort" class="text-caption"><span class="font-weight-bold">{{ nameType + ': ' }}</span>{{ identificationObject['idShort'] }}</div>
+                <div v-if="identificationObject && identificationObject.id" class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ identificationObject['id'] }}</div>
             </v-tooltip>
             <!-- idShort -->
             <template v-slot:title>
                 <div v-html="identificationObject.idShort ? identificationObject.idShort : ''" class="text-primary text-subtitle-1"></div>
-                <div v-if="identificationObject.id">{{ 'Identification (ID):' }}</div>
+                <div v-if="identificationObject.id">{{ idType + ':' }}</div>
             </template>
             <!-- identification id -->
             <template v-slot:subtitle>
@@ -28,6 +28,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'IdentificationElement',
-    props: ['identificationObject', 'modelType'],
+    props: ['identificationObject', 'modelType', 'idType', 'nameType'],
 });
 </script>

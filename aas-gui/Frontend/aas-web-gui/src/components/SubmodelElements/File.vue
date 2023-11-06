@@ -10,7 +10,7 @@
                     <!-- mimeType -->
                     <v-list-item-title>
                         <span class="text-caption">{{ 'Mime Type: ' }}</span>
-                        <v-chip label size="x-small" border color="primary">{{ fileObject.mimeType ? fileObject.mimeType : 'no-mime' }}</v-chip>
+                        <v-chip label size="x-small" border color="primary">{{ fileObject.contentType ? fileObject.contentType : 'no-mime' }}</v-chip>
                     </v-list-item-title>
                     <!-- Donwload File Button -->
                     <template v-slot:append>

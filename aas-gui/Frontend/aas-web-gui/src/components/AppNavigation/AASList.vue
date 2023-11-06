@@ -56,6 +56,8 @@
                             <v-badge :model-value="AAS['status'] && AAS['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
                             <!-- Information Button -->
                             <v-btn @click.stop="showAASDetails(AAS)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
+                            <!-- Download AAS -->
+                            <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(AAS)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                             <!-- Remove from Registry Button -->
                             <v-btn @click.stop="removeFromRegistry(AAS)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                         </template>
@@ -242,6 +244,11 @@ export default defineComponent({
         triggerAASListReload() {
             return this.navigationStore.getTriggerAASListReload;
         },
+
+        // Get the AAS Repository URL from the Store
+        aasRepoURL() {
+            return this.navigationStore.getAASRepoURL;
+        },
     },
 
     methods: {
@@ -348,6 +355,40 @@ export default defineComponent({
             }
             // dispatch the selected AAS to the Store
             this.aasStore.dispatchSelectedAAS(AAS);
+        },
+
+        // Function to download the AAS
+        downloadAAS(AAS: any) {
+            // console.log('Download AAS: ', AAS);
+            // request the Submodel references for the AAS
+            let path = AAS.endpoints[0].protocolInformation.href + '/submodel-refs';
+            let context = 'retrieving Submodel References';
+            let disableMessage = false;
+            this.getRequest(path, context, disableMessage).then(async (response: any) => {
+                if (response.success) { // execute if the Request was successful
+                    const submodelRefs = response.data.result;
+                    const aasIds = this.URLEncode(AAS.id);
+                    // extract all references in an Array calles submodelIds from each keys[0].value
+                    let submodelIds = [] as any;
+                    submodelRefs.forEach((submodelRef: any) => {
+                        submodelIds.push(this.URLEncode(submodelRef.keys[0].value));
+                    });
+                    // console.log('aasIds: ', aasIds, ' submodelIds: ', submodelIds);
+                    // strip the everything after the last slash from the getAASRepoURL (http://localhost:1500/shells -> http://localhost:1500)
+                    let path = this.aasRepoURL.substring(0, this.aasRepoURL.lastIndexOf('/'));
+                    // add the aasIds and submodelIds to the path (example: http://localhost:1500/serialization?aasIds=abc&submodelIds=def&submodelIds=ghi&includeConceptDescriptions=true)
+                    path += '/serialization?aasIds=' + aasIds + '&submodelIds=' + submodelIds.join('&submodelIds=') + '&includeConceptDescriptions=true';
+                    let context = 'retrieving AAS serialization';
+                    let disableMessage = false;
+                    let headers = { 'Accept': 'application/asset-administration-shell-package+xml'}
+                    this.getRequest(path, context, disableMessage, headers).then(async (response: any) => {
+                        if (response.success) { // execute if the Request was successful
+                            let aasSerialization = response.data;
+                            this.downloadFile(AAS.idShort + '.aasx', aasSerialization, 'application/asset-administration-shell-package+xml');
+                        }
+                    });
+                }
+            });
         },
 
         // checks if the AAS is selected

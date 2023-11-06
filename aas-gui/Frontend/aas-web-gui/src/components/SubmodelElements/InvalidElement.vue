@@ -63,6 +63,10 @@ export default defineComponent({
                 'Blob',
                 'Operation',
                 'ReferenceElement',
+                'Range',
+                'Entity',
+                'RelationshipElement',
+                'AnnotatedRelationshipElement',
             ] as string[],
         }
     },
