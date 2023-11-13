@@ -1,0 +1,747 @@
+{
+    "idShort": "9_CAL",
+    "identification": {
+        "idType": "IRI",
+        "id": "141589_CAL"
+    },
+    "dataSpecification": [],
+    "embeddedDataSpecifications": [],
+    "modelType": {
+        "name": "Submodel"
+    },
+    "kind": "Template",
+    "submodelElements": [
+        {
+            "modelType": {
+                "name": "SubmodelElementCollection"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "kind": "Instance",
+            "value": [
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "4x10",
+                    "valueType": "anySimpleType",
+                    "idShort": "nom_val_nom_val1",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal0",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "cylindrical knob weight",
+                    "valueType": "anySimpleType",
+                    "idShort": "shape_shp1",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal0",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "stainless steel, highly polished",
+                    "valueType": "anySimpleType",
+                    "idShort": "mater_mater1",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal0",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "7950 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "density_dens1",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal0",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "140 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "uncer_density_unc_dens1",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal0",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "ordered": false,
+            "allowDuplicates": false,
+            "idShort": "cal_col_cal0",
+            "category": "VARIABLE",
+            "semanticId": {
+                "keys": []
+            },
+            "parent": {
+                "keys": [
+                    {
+                        "type": "Submodel",
+                        "local": true,
+                        "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        },
+        {
+            "modelType": {
+                "name": "SubmodelElementCollection"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "kind": "Instance",
+            "value": [
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "4x18",
+                    "valueType": "anySimpleType",
+                    "idShort": "nom_val_nom_val2",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal1",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "circular",
+                    "valueType": "anySimpleType",
+                    "idShort": "shape_shp2",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal1",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "aluminium",
+                    "valueType": "anySimpleType",
+                    "idShort": "mater_mater2",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal1",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "4523 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "density_dens2",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal1",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "139 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "uncer_density_unc_dens2",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal1",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "ordered": false,
+            "allowDuplicates": false,
+            "idShort": "cal_col_cal1",
+            "category": "VARIABLE",
+            "semanticId": {
+                "keys": []
+            },
+            "parent": {
+                "keys": [
+                    {
+                        "type": "Submodel",
+                        "local": true,
+                        "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        },
+        {
+            "modelType": {
+                "name": "SubmodelElementCollection"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "kind": "Instance",
+            "value": [
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "5x10",
+                    "valueType": "anySimpleType",
+                    "idShort": "nom_val_nom_val3",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal2",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "cone",
+                    "valueType": "anySimpleType",
+                    "idShort": "shape_shp3",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal2",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "plastick",
+                    "valueType": "anySimpleType",
+                    "idShort": "mater_mater3",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal2",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "7654 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "density_dens3",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal2",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "134 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "uncer_density_unc_dens3",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal2",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "ordered": false,
+            "allowDuplicates": false,
+            "idShort": "cal_col_cal2",
+            "category": "VARIABLE",
+            "semanticId": {
+                "keys": []
+            },
+            "parent": {
+                "keys": [
+                    {
+                        "type": "Submodel",
+                        "local": true,
+                        "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        },
+        {
+            "modelType": {
+                "name": "SubmodelElementCollection"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "kind": "Instance",
+            "value": [
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "6x6",
+                    "valueType": "anySimpleType",
+                    "idShort": "nom_val_nom_val4",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal3",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "rectangular",
+                    "valueType": "anySimpleType",
+                    "idShort": "shape_shp4",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal3",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "brass",
+                    "valueType": "anySimpleType",
+                    "idShort": "mater_mater4",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal3",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "8723 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "density_dens4",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal3",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "154 kg/m^3",
+                    "valueType": "anySimpleType",
+                    "idShort": "uncer_density_unc_dens4",
+                    "category": "VARIABLE",
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "SubmodelElementCollection",
+                                "local": true,
+                                "value": "cal_col_cal3",
+                                "idType": "IdShort"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "ordered": false,
+            "allowDuplicates": false,
+            "idShort": "cal_col_cal3",
+            "category": "VARIABLE",
+            "semanticId": {
+                "keys": []
+            },
+            "parent": {
+                "keys": [
+                    {
+                        "type": "Submodel",
+                        "local": true,
+                        "value": "https://example.com/ids/sm/6224_7130_5032_8347",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ],
+    "category": "VARIABLE",
+    "semanticId": {
+        "keys": []
+    }
+}

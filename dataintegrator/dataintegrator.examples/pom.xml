@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.digitaltwin.basyx</groupId>
+		<artifactId>dataintegrator.parent</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>dataintegrator.examples</artifactId>
+	<packaging>pom</packaging>
+	<name>DataIntegrator Examples</name>
+
+	<modules>
+		<module>dataintegrator.examples.cal-cert-sm-cal-plan-diaas</module>
+		<module>dataintegrator.examples.http-rest-api-sample-diaas</module>
+		<module>dataintegrator.examples.http-and-sql-readers-diaas</module>
+		<module>dataintegrator.examples.cal-cert-two-sm-diaas</module>
+		<module>dataintegrator.examples.di-aas-evaluation</module>
+		<module>dataintegrator.examples.basic-executable</module>
+	</modules>
+</project>

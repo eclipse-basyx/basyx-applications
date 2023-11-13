@@ -1,0 +1,21 @@
+[
+	{
+		"uniqueId": "reader1job1",
+		"dataSourcePath": "/usr/share/config/sqldatasource.json",
+		"rowMapper" : "Value",
+		"columnNames": [
+			"serial_number"
+		],
+		"sqlQuery": "SELECT DISTINCT serial_number FROM calibration"
+	},
+	{
+		"uniqueId": "reader2job1",
+		"dataSourcePath": "/usr/share/config/sqldatasource.json",
+		"rowMapper" : "Custom",
+		"columnNames": [
+			"serial_number",
+			"ambient_condition_id"
+		],
+		"sqlQuery": "SELECT DISTINCT calibration.serial_number, report.report_id FROM calibration INNER JOIN report ON calibration.serial_number = report.serial_number"
+	}
+]

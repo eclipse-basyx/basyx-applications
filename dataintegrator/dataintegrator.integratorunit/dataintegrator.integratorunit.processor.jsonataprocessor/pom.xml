@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.digitaltwin.basyx</groupId>
+		<artifactId>dataintegrator.integratorunit</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>dataintegrator.integratorunit.processor.jsonataprocessor</artifactId>
+	<name>JSONata Data Processor</name>
+
+	<description>JSONata processor unit of DataIntegrator</description>
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.digitaltwin.basyx</groupId>
+			<artifactId>dataintegrator.common.core</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.ibm.jsonata4java/JSONata4Java -->
+		<dependency>
+			<groupId>com.ibm.jsonata4java</groupId>
+			<artifactId>JSONata4Java</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>
