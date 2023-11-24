@@ -27,7 +27,7 @@
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<revision>0.0.3-SNAPSHOT</revision>
+		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
 	<build>
 		<plugins>
@@ -180,13 +180,13 @@
 			<dependency>
 				<groupId>org.eclipse.basyx</groupId>
 				<artifactId>basyx.sdk</artifactId>
-				<version>1.5.0-SNAPSHOT</version>
+				<version>1.5.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.eclipse.basyx</groupId>
 				<artifactId>basyx.components.AASServer</artifactId>
-				<version>1.5.0-SNAPSHOT</version>
+				<version>1.5.0</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.eclipse.basyx/basyx.components.registry -->

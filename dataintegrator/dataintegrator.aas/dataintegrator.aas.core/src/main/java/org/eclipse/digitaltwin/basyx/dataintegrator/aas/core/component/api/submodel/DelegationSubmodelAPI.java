@@ -36,7 +36,7 @@ public class DelegationSubmodelAPI extends VABSubmodelAPI {
 	}
 
 	@Override
-	public ISubmodel getSubmodel() {
+	public Submodel getSubmodel() {
 		if (this.submodel != null)
 			return submodel;
 		
@@ -47,7 +47,7 @@ public class DelegationSubmodelAPI extends VABSubmodelAPI {
 		if (submodel.isEmpty())
 			throw new ResourceNotFoundException("The submodel " + submodelId + " could not be found.");
 		
-		return submodel.get();
+		return (Submodel) submodel.get();
 	}
 
 	@Override
