@@ -1,14 +1,14 @@
 version: '3.8'
 services:
   di-aas:
-    image: eclipsebasyx/dataintegrator-aas:0.0.1_SNAPSHOT
+    image: eclipsebasyx/dataintegrator-aas:0.0.1-SNAPSHOT
     ports:
         - 4001:4001
     depends_on:
       - di-registry
       
   di-registry:
-    image: eclipsebasyx/dataintegrator-registry:0.0.1_SNAPSHOT
+    image: eclipsebasyx/dataintegrator-registry:0.0.1-SNAPSHOT
     ports:
         - 4002:4002
     
