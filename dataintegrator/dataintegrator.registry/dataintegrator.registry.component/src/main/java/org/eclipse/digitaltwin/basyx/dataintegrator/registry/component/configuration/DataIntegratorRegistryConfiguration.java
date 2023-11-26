@@ -7,9 +7,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServlet;
 
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
-import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
-import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
-import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.registry.servlet.RegistryServlet;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
 import org.eclipse.digitaltwin.basyx.dataintegrator.core.configuration.cors.CorsFilter;
@@ -39,6 +36,9 @@ public class DataIntegratorRegistryConfiguration {
 	
 	@Value("${accessControlAllowOrigin:*}")
 	private String accessControlAllowOrigin;
+	
+	@Value("${contextPath:}")
+	private String contextPath;
 
 	@Autowired
 	private JobRunner jobRunner;
@@ -84,25 +84,9 @@ public class DataIntegratorRegistryConfiguration {
 	}
 
 	@Bean
-	public BaSyxContextConfiguration getContextConfiguration() {
-		BaSyxContextConfiguration contextConfiguration = new BaSyxContextConfiguration();
-		contextConfiguration.loadFromResource("application.properties");
-
-		return contextConfiguration;
-	}
-
-	@Bean
-	public BaSyxRegistryConfiguration getRegistryConfiguration() {
-		BaSyxRegistryConfiguration registryConfiguration = new BaSyxRegistryConfiguration();
-		registryConfiguration.loadFromResource("application.properties");
-
-		return registryConfiguration;
-	}
-
-	@Bean
 	public ServletRegistrationBean<HttpServlet> exampleServletBean() {
 		ServletRegistrationBean<HttpServlet> bean = new ServletRegistrationBean<>(createRegistryServlet(),
-				"/registry" + "/*");
+				contextPath + "/*");
 		bean.setLoadOnStartup(1);
 		return bean;
 	}
@@ -117,23 +101,12 @@ public class DataIntegratorRegistryConfiguration {
     }
 
 	private HttpServlet createRegistryServlet() {
-		IAASRegistry registryBackend = createRegistryBackend();
-//		IAASRegistry decoratedRegistry = decorate(registryBackend);
+		IAASRegistry registryBackend = createInMemoryRegistryBackend();
+		
 		return new RegistryServlet(registryBackend);
 	}
 
-	private IAASRegistry createRegistryBackend() {
-		final RegistryBackend backendType = getRegistryConfiguration().getRegistryBackend();
-
-		if (backendType.equals(RegistryBackend.INMEMORY)) {
-			return createInMemoryRegistryBackend();
-		}
-
-		throw new RuntimeException("backend type " + backendType + " not supported");
-	}
-
 	private IAASRegistry createInMemoryRegistryBackend() {
-//		logger.info("Creating InMemoryRegistry");
 		return new InMemoryDIRegistry(this.jobRunner);
 	}
 	
