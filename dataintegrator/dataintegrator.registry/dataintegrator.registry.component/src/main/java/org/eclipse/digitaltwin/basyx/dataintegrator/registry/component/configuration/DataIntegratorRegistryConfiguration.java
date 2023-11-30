@@ -39,6 +39,9 @@ public class DataIntegratorRegistryConfiguration {
 	
 	@Value("${contextPath:}")
 	private String contextPath;
+	
+	@Value("${chunkSize:2}")
+	private int chunkSize;
 
 	@Autowired
 	private JobRunner jobRunner;
@@ -80,7 +83,7 @@ public class DataIntegratorRegistryConfiguration {
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public int chunk() {
-		return 2;
+		return chunkSize;
 	}
 
 	@Bean

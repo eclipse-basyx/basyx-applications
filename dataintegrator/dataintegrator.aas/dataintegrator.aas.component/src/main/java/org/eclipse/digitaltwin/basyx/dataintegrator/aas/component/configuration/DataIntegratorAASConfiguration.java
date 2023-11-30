@@ -40,6 +40,9 @@ public class DataIntegratorAASConfiguration {
 	
 	@Value("${contextPath:}")
 	private String contextPath;
+	
+	@Value("${chunkSize:2}")
+	private int chunkSize;
 
 	@Autowired
 	private JobRunner jobRunner;
@@ -81,7 +84,7 @@ public class DataIntegratorAASConfiguration {
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public int chunk() {
-		return 100;
+		return chunkSize;
 	}
 
 	@Bean
