@@ -27,7 +27,7 @@
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<revision>0.0.2-SNAPSHOT</revision>
+		<revision>0.0.1-SNAPSHOT</revision>
 	</properties>
 	<build>
 		<plugins>
