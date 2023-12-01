@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 
 import org.eclipse.basyx.aas.aggregator.api.IAASAggregator;
 import org.eclipse.basyx.components.aas.servlet.AASAggregatorServlet;
-import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
-import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
 import org.eclipse.digitaltwin.basyx.dataintegrator.aas.core.component.DelegationAasServerComponentFactory;
 import org.eclipse.digitaltwin.basyx.dataintegrator.aas.core.runner.JobRunner;
@@ -39,6 +37,12 @@ public class DataIntegratorAASConfiguration {
 	
 	@Value("${accessControlAllowOrigin:*}")
 	private String accessControlAllowOrigin;
+	
+	@Value("${contextPath:}")
+	private String contextPath;
+	
+	@Value("${chunkSize:2}")
+	private int chunkSize;
 
 	@Autowired
 	private JobRunner jobRunner;
@@ -80,29 +84,13 @@ public class DataIntegratorAASConfiguration {
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public int chunk() {
-		return 100;
-	}
-
-	@Bean
-	public BaSyxContextConfiguration getContextConfiguration() {
-		BaSyxContextConfiguration contextConfiguration = new BaSyxContextConfiguration();
-		contextConfiguration.loadFromResource("application.properties");
-
-		return contextConfiguration;
-	}
-
-	@Bean
-	public BaSyxRegistryConfiguration getRegistryConfiguration() {
-		BaSyxRegistryConfiguration registryConfiguration = new BaSyxRegistryConfiguration();
-		registryConfiguration.loadFromResource("application.properties");
-
-		return registryConfiguration;
+		return chunkSize;
 	}
 
 	@Bean
 	public ServletRegistrationBean<HttpServlet> exampleServletBean() {
 		ServletRegistrationBean<HttpServlet> bean = new ServletRegistrationBean<>(createAggregatorServlet(),
-				"/aasServer" + "/*");
+				contextPath + "/*");
 		bean.setLoadOnStartup(1);
 		return bean;
 	}

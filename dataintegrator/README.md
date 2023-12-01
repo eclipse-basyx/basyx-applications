@@ -89,11 +89,7 @@ Data from SQL server database is integrated with the AAS in this example as show
 
 The executable example is kept inside **dataintegrator.examples** with module name **dataintegrator.examples.basic-executable**. This example contains a docker-compose.yml file which has the required services to execute this example.
 
-> :warning: **Note**: The docker-compose.yml contains services for DataIntegrator AAS Component and DataIntegrator Registry Component. So, it is required to build an image of **dataintegrator.aas.component** and **dataintegrator.registry.component**. The Dockerfile is already present inside both components. The image can be build using below command: :warning:
-
-```
-docker build -t eclipsebasyx/<component-name>:<component-version> .
-```
+> :warning: **Note**: The docker-compose.yml contains services for DataIntegrator AAS Component and DataIntegrator Registry Component. So, it is required to build an image of **dataintegrator.aas.component** and **dataintegrator.registry.component**. The Dockerfile is already present inside both components. Alternatively, the latest docker images can also be used as explained [here](#docker) :warning:
 
 To achieve this integration goal, the DataIntegrator pipeline needs to be configured as illustrated below:
 
@@ -272,6 +268,31 @@ The Submodel Element can be accessed on below endpoint:
 ```
 http://localhost:4001/aasServer/shells/ProductAAS/aas/submodels/Inventory/submodel/submodelElements/ProductCollection
 ```
+
+## Docker
+
+The latest version is available on Dockerhub for [DataIntegrator-AAS](https://hub.docker.com/r/eclipsebasyx/dataintegrator-aas/tags) and [DataIntegrator-Registry](https://hub.docker.com/r/eclipsebasyx/dataintegrator-aas/tags).
+
+To run the container use below command:
+
+```
+docker run -p 4002:4002 eclipsebasyx/dataintegrator-aas:0.0.1-SNAPSHOT
+```
+
+```
+docker run -p 4002:4002 eclipsebasyx/dataintegrator-registry:0.0.1-SNAPSHOT
+```
+
+To build the images use below command:
+
+```
+docker build basyx-applications/dataintegrator/dataintegrator.aas/dataintegrator.aas.component -t eclipsebasyx/dataintegrator-aas:<component-version>
+```
+
+```
+docker build basyx-applications/dataintegrator/dataintegrator.aas/dataintegrator.registry.component -t eclipsebasyx/dataintegrator-registry:<component-version>
+```
+
 
 ## Contribute your code to this repo
 
