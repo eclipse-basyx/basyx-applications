@@ -1,0 +1,14 @@
+[
+	{
+		"uniqueId": "job123",
+		"jobName": "JobTest",
+		"readers": [
+			"reader1job1",
+			"reader2job1"
+		],
+		"processors": [
+			"processor1job1"
+		],
+		"writer": "registryWriter"
+	}
+]

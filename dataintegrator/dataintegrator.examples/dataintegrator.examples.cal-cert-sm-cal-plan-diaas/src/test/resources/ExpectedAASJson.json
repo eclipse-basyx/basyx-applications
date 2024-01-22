@@ -1,0 +1,1156 @@
+{
+    "assetAdministrationShells": [
+        {
+            "modelType": {
+                "name": "AssetAdministrationShell"
+            },
+            "idShort": "SimpleAAS",
+            "identification": {
+                "idType": "IRI",
+                "id": "163834"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "submodels": [
+                {
+                    "keys": [
+                        {
+                            "type": "AssetAdministrationShell",
+                            "local": false,
+                            "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                            "idType": "IRI"
+                        },
+                        {
+                            "type": "Submodel",
+                            "local": true,
+                            "value": "calibrationPlan",
+                            "idType": "Custom"
+                        }
+                    ]
+                }
+            ],
+            "asset": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ],
+                "modelType": {
+                    "name": "Asset"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "idShort": "SimpleAsset",
+                "identification": {
+                    "idType": "IRI",
+                    "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+                },
+                "kind": "Instance"
+            },
+            "views": [],
+            "conceptDictionary": [],
+            "administration": {
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "version": "1.0",
+                "revision": "120"
+            },
+            "assetRef": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ],
+    "assets": [
+        {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                    "idType": "IRI"
+                }
+            ],
+            "modelType": {
+                "name": "Asset"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "idShort": "SimpleAsset",
+            "identification": {
+                "idType": "IRI",
+                "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+            },
+            "kind": "Instance"
+        }
+    ],
+    "conceptDescriptions": [],
+    "submodels": [
+        {
+            "idShort": "calibrationPlan",
+            "identification": {
+                "idType": "Custom",
+                "id": "calibrationPlan"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "modelType": {
+                "name": "Submodel"
+            },
+            "kind": "Instance",
+            "submodelElements": {
+                "calibrationNumber": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "115168",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationNumber",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "usedSoftware": {
+                    "modelType": {
+                        "name": "SubmodelElementCollection"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": {
+                        "sw_name": {
+                            "modelType": {
+                                "name": "Property"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": "ScalesNet-M, V6.0.75",
+                            "valueId": null,
+                            "valueType": "anySimpleType",
+                            "idShort": "sw_name",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "usedSoftware",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        },
+                        "version": {
+                            "modelType": {
+                                "name": "Property"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": "6.75",
+                            "valueId": null,
+                            "valueType": "anySimpleType",
+                            "idShort": "version",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "usedSoftware",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "ordered": false,
+                    "allowDuplicates": false,
+                    "idShort": "usedSoftware",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "calibrationId": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "163834",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationId",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "administrativeMetadata": {
+                    "modelType": {
+                        "name": "SubmodelElementCollection"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": {
+                        "calibrationLaboratory": {
+                            "modelType": {
+                                "name": "SubmodelElementCollection"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": {
+                                "cal_lab_id": {
+                                    "modelType": {
+                                        "name": "Property"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": 1,
+                                    "valueId": null,
+                                    "valueType": "anySimpleType",
+                                    "idShort": "cal_lab_id",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "calibrationLaboratory",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "extId": {
+                                    "modelType": {
+                                        "name": "Property"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": 118,
+                                    "valueId": null,
+                                    "valueType": "anySimpleType",
+                                    "idShort": "extId",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "calibrationLaboratory",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "lab_name": {
+                                    "modelType": {
+                                        "name": "Property"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": "Häfner Gewichte GmbH",
+                                    "valueId": null,
+                                    "valueType": "anySimpleType",
+                                    "idShort": "lab_name",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "calibrationLaboratory",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "eMail": {
+                                    "modelType": {
+                                        "name": "Property"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": "info@haefner.de",
+                                    "valueId": null,
+                                    "valueType": "anySimpleType",
+                                    "idShort": "eMail",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "calibrationLaboratory",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "location": {
+                                    "modelType": {
+                                        "name": "SubmodelElementCollection"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": {
+                                        "city": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "Oberrot",
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "city",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "countryCode": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "DE",
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "countryCode",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "postCode": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "74420",
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "postCode",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "street": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "Hohenhardtsweiler Str. 4",
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "street",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "streetNo": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": 37,
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "streetNo",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "further": {
+                                            "modelType": {
+                                                "name": "Property"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": "KLLG",
+                                            "valueId": null,
+                                            "valueType": "anySimpleType",
+                                            "idShort": "further",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "location",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "ordered": false,
+                                    "allowDuplicates": false,
+                                    "idShort": "location",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "calibrationLaboratory",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "ordered": false,
+                            "allowDuplicates": false,
+                            "idShort": "calibrationLaboratory",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "administrativeMetadata",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        },
+                        "respPersons": {
+                            "modelType": {
+                                "name": "SubmodelElementCollection"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": {
+                                "person_list": {
+                                    "modelType": {
+                                        "name": "SubmodelElementCollection"
+                                    },
+                                    "dataSpecification": [],
+                                    "embeddedDataSpecifications": [],
+                                    "kind": "Instance",
+                                    "value": {
+                                        "respPerson_158": {
+                                            "modelType": {
+                                                "name": "SubmodelElementCollection"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": {
+                                                "mainSigner": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "True",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "mainSigner",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_158",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eMail158": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "eMail158",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_158",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "id_person1": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": 158,
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "id_person1",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_158",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "name_person1": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "G. Widmer",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "name_person1",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_158",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "ordered": false,
+                                            "allowDuplicates": false,
+                                            "idShort": "respPerson_158",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "person_list",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "respPerson_152": {
+                                            "modelType": {
+                                                "name": "SubmodelElementCollection"
+                                            },
+                                            "dataSpecification": [],
+                                            "embeddedDataSpecifications": [],
+                                            "kind": "Instance",
+                                            "value": {
+                                                "mainSigner": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "False",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "mainSigner",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_152",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eMail152": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "eMail152",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_152",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "id_person2": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": 152,
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "id_person2",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_152",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "name_person2": {
+                                                    "modelType": {
+                                                        "name": "Property"
+                                                    },
+                                                    "dataSpecification": [],
+                                                    "embeddedDataSpecifications": [],
+                                                    "kind": "Instance",
+                                                    "value": "A. Ansorge",
+                                                    "valueId": null,
+                                                    "valueType": "anySimpleType",
+                                                    "idShort": "name_person2",
+                                                    "qualifiers": [],
+                                                    "semanticId": {
+                                                        "keys": []
+                                                    },
+                                                    "parent": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "SubmodelElementCollection",
+                                                                "local": true,
+                                                                "value": "respPerson_152",
+                                                                "idType": "IdShort"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "ordered": false,
+                                            "allowDuplicates": false,
+                                            "idShort": "respPerson_152",
+                                            "qualifiers": [],
+                                            "semanticId": {
+                                                "keys": []
+                                            },
+                                            "parent": {
+                                                "keys": [
+                                                    {
+                                                        "type": "SubmodelElementCollection",
+                                                        "local": true,
+                                                        "value": "person_list",
+                                                        "idType": "IdShort"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "ordered": false,
+                                    "allowDuplicates": false,
+                                    "idShort": "person_list",
+                                    "qualifiers": [],
+                                    "semanticId": {
+                                        "keys": []
+                                    },
+                                    "parent": {
+                                        "keys": [
+                                            {
+                                                "type": "SubmodelElementCollection",
+                                                "local": true,
+                                                "value": "respPersons",
+                                                "idType": "IdShort"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "ordered": false,
+                            "allowDuplicates": false,
+                            "idShort": "respPersons",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "administrativeMetadata",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        },
+                        "calibrationStartDate": {
+                            "modelType": {
+                                "name": "Property"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": "2020-02-26 12:41:26.0",
+                            "valueId": null,
+                            "valueType": "anySimpleType",
+                            "idShort": "calibrationStartDate",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "administrativeMetadata",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        },
+                        "calibrationEndDate": {
+                            "modelType": {
+                                "name": "Property"
+                            },
+                            "dataSpecification": [],
+                            "embeddedDataSpecifications": [],
+                            "kind": "Instance",
+                            "value": "2020-03-02 12:25:27.0",
+                            "valueId": null,
+                            "valueType": "anySimpleType",
+                            "idShort": "calibrationEndDate",
+                            "qualifiers": [],
+                            "semanticId": {
+                                "keys": []
+                            },
+                            "parent": {
+                                "keys": [
+                                    {
+                                        "type": "Submodel",
+                                        "local": true,
+                                        "value": "calibrationPlan",
+                                        "idType": "Custom"
+                                    },
+                                    {
+                                        "type": "SubmodelElementCollection",
+                                        "local": true,
+                                        "value": "administrativeMetadata",
+                                        "idType": "IdShort"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "ordered": false,
+                    "allowDuplicates": false,
+                    "idShort": "administrativeMetadata",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "calibrationUID": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "1151681709592020-02-12 05:23:21.0000000",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationUID",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "calibrationLanguage": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "DE",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationLanguage",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "normals": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "--- - GS 11 - ---;--- - GS 13 - ---",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "normals",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "calibrationDate": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "2020-03-02 12:25:27.0",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationDate",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                }
+            },
+            "semanticId": {
+                "keys": []
+            },
+            "qualifiers": [],
+            "parent": {
+                "keys": [
+                    {
+                        "type": "AssetAdministrationShell",
+                        "local": false,
+                        "value": "163834",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ]
+}

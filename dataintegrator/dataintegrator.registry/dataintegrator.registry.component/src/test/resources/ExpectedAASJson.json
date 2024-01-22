@@ -1,0 +1,36 @@
+[
+	{
+		"modelType": {
+			"name": "AssetAdministrationShellDescriptor"
+		},
+		"idShort": "SimpleAAS",
+		"identification": {
+			"idType": "Custom",
+			"id": "163834"
+		},
+		"endpoints": [
+			{
+				"type": "http",
+				"address": "http://localhost:4001/aasServer/shells/163834/aas"
+			}
+		],
+		"submodels": [
+			{
+				"modelType": {
+					"name": "SubmodelDescriptor"
+				},
+				"idShort": "calibrationPlan",
+				"identification": {
+					"idType": "Custom",
+					"id": "calibrationPlan"
+				},
+				"endpoints": [
+					{
+						"type": "http",
+						"address": "http://localhost:4001/aasServer/shells/163834/aas/submodels/calibrationPlan/submodel"
+					}
+				]
+			}
+		]
+	}
+]

@@ -1,0 +1,192 @@
+{
+    "assetAdministrationShells": [
+        {
+            "modelType": {
+                "name": "AssetAdministrationShell"
+            },
+            "idShort": "SimpleAAS",
+            "identification": {
+                "idType": "IRI",
+                "id": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "submodels": [
+                {
+                    "keys": [
+                        {
+                            "type": "AssetAdministrationShell",
+                            "local": false,
+                            "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                            "idType": "IRI"
+                        },
+                        {
+                            "type": "Submodel",
+                            "local": true,
+                            "value": "calibrationPlan",
+                            "idType": "Custom"
+                        }
+                    ]
+                }
+            ],
+            "asset": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ],
+                "modelType": {
+                    "name": "Asset"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "idShort": "SimpleAsset",
+                "identification": {
+                    "idType": "IRI",
+                    "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+                },
+                "kind": "Instance"
+            },
+            "views": [],
+            "conceptDictionary": [],
+            "administration": {
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "version": "1.0",
+                "revision": "120"
+            },
+            "assetRef": {
+                "keys": [
+                    {
+                        "type": "Asset",
+                        "local": true,
+                        "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ],
+    "assets": [
+        {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1",
+                    "idType": "IRI"
+                }
+            ],
+            "modelType": {
+                "name": "Asset"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "idShort": "SimpleAsset",
+            "identification": {
+                "idType": "IRI",
+                "id": "http://basys40.de/assets/SimpleAsset/dd6df30f-8025-487b-915c-ed8bcfe58be1"
+            },
+            "kind": "Instance"
+        }
+    ],
+    "conceptDescriptions": [],
+    "submodels": [
+        {
+            "idShort": "calibrationPlan",
+            "identification": {
+                "idType": "Custom",
+                "id": "calibrationPlan"
+            },
+            "dataSpecification": [],
+            "embeddedDataSpecifications": [],
+            "modelType": {
+                "name": "Submodel"
+            },
+            "kind": "Instance",
+            "submodelElements": {
+                "calibrationName": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "ORB INTELLIGENCE, INC",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationName",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                },
+                "calibrationId": {
+                    "modelType": {
+                        "name": "Property"
+                    },
+                    "dataSpecification": [],
+                    "embeddedDataSpecifications": [],
+                    "kind": "Instance",
+                    "value": "64819790",
+                    "valueId": null,
+                    "valueType": "anySimpleType",
+                    "idShort": "calibrationId",
+                    "qualifiers": [],
+                    "semanticId": {
+                        "keys": []
+                    },
+                    "parent": {
+                        "keys": [
+                            {
+                                "type": "AssetAdministrationShell",
+                                "local": false,
+                                "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                                "idType": "IRI"
+                            },
+                            {
+                                "type": "Submodel",
+                                "local": true,
+                                "value": "calibrationPlan",
+                                "idType": "Custom"
+                            }
+                        ]
+                    }
+                }
+            },
+            "semanticId": {
+                "keys": []
+            },
+            "qualifiers": [],
+            "parent": {
+                "keys": [
+                    {
+                        "type": "AssetAdministrationShell",
+                        "local": false,
+                        "value": "http://basys40.de/shells/SimpleAAS/d1678dba-cd3c-4c68-aee7-86b0f47c5635",
+                        "idType": "IRI"
+                    }
+                ]
+            }
+        }
+    ]
+}

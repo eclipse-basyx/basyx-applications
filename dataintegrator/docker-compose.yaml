@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  di-aas:
+    image: eclipsebasyx/dataintegrator-aas:0.0.1-SNAPSHOT
+    ports:
+        - 4001:4001
+    depends_on:
+      - di-registry
+      
+  di-registry:
+    image: eclipsebasyx/dataintegrator-registry:0.0.1-SNAPSHOT
+    ports:
+        - 4002:4002
+    
+  gui: 
+    image: eclipsebasyx/aas-gui:v230221
+    container_name: aasGui-device-integration 
+    ports:
+        - 3000:3000
+    environment:
+        - VITE_REGISTRY_PATH="http://host.docker.internal:4002/registry"

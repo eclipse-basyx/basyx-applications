@@ -1,0 +1,285 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.11</version>
+		<relativePath />
+	</parent>
+	<groupId>org.eclipse.digitaltwin.basyx</groupId>
+	<artifactId>dataintegrator.parent</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>dataintegrator.common</module>
+		<module>dataintegrator.integratorunit</module>
+		<module>dataintegrator.aas</module>
+		<module>dataintegrator.registry</module>
+		<module>dataintegrator.examples</module>
+	</modules>
+	<name>DataIntegrator Parent</name>
+	<description>Parent POM for DataIntegrator</description>
+	<url>https://www.eclipse.org/basyx/</url>
+
+	<properties>
+		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<revision>0.0.1-SNAPSHOT</revision>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration></configuration>
+				<executions>
+					<!-- enable flattening -->
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<!-- ensure proper cleanup -->
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/logback.xml</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<phase>package</phase>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.11.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>1.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.10.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.7.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.ibm.jsonata4java/JSONata4Java -->
+			<dependency>
+				<groupId>com.ibm.jsonata4java</groupId>
+				<artifactId>JSONata4Java</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.mock-server/mockserver-netty -->
+			<dependency>
+				<groupId>org.mock-server</groupId>
+				<artifactId>mockserver-netty</artifactId>
+				<version>5.15.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.mock-server/mockserver-client-java -->
+			<dependency>
+				<groupId>org.mock-server</groupId>
+				<artifactId>mockserver-client-java</artifactId>
+				<version>5.15.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-integration -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-integration</artifactId>
+			</dependency>
+
+			<!-- Moquette MQTT broker for testing MQTT events -->
+			<dependency>
+				<groupId>io.moquette</groupId>
+				<artifactId>moquette-broker</artifactId>
+				<version>0.16</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.eclipse.basyx/basyx.sdk -->
+			<dependency>
+				<groupId>org.eclipse.basyx</groupId>
+				<artifactId>basyx.sdk</artifactId>
+				<version>1.5.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.eclipse.basyx</groupId>
+				<artifactId>basyx.components.AASServer</artifactId>
+				<version>1.5.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.eclipse.basyx/basyx.components.registry -->
+			<dependency>
+				<groupId>org.eclipse.basyx</groupId>
+				<artifactId>basyx.components.registry</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+
+			<!-- common -->
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.common.core</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.common.mqtt</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.common.configuration</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<!-- registry -->
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.registry.core</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.registry.component</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<!-- aas -->
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.aas.core</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.aas.component</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<!-- integrator-units -->
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.common</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.sqldatasource</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.reader.sqlcursorreader</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.reader.httprestapireader</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.processor.typeprocessor</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.processor.jsonataprocessor</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.writer.aaswriter</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.digitaltwin.basyx</groupId>
+				<artifactId>dataintegrator.integratorunit.writer.aasdescriptorwriter</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+
+		</dependencies>
+	</dependencyManagement>
+</project>

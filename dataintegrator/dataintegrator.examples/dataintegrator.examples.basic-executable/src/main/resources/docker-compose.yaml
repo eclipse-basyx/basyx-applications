@@ -1,0 +1,134 @@
+version: '3.8'
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=TestPassword@1
+      - MSSQL_PID=Developer
+    ports:
+      - 1435:1433
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P TestPassword@1 -Q 'SELECT 1' || exit 1"
+        ]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+  sqlserver.configurator:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    volumes:
+      - ./config/sql-scripts:/docker-entrypoint-initdb.d
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P TestPassword@1 -d master -i docker-entrypoint-initdb.d/product.sql; echo "All done!"; '
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P TestPassword@1 -Q 'SELECT 1' || exit 1"
+        ]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+
+  di-aas:
+    image: eclipsebasyx/dataintegrator-aas:0.0.1-SNAPSHOT
+    volumes:
+      - ./config/diaas:/usr/share/config
+    ports:
+        - 4001:4001
+    depends_on:
+      configaas:
+        condition: service_healthy
+      mqtt:
+        condition: service_healthy
+      
+  di-registry:
+    image: eclipsebasyx/dataintegrator-registry:0.0.1-SNAPSHOT
+    volumes:
+      - ./config/diregistry:/usr/share/config
+    ports:
+        - 4003:4003
+    depends_on:
+      configaas:
+        condition: service_healthy
+      mqtt:
+        condition: service_healthy
+    
+  gui: 
+    image: eclipsebasyx/aas-gui:v230703
+    container_name: aasGui-di-registry 
+    ports:
+        - 3000:3000
+    environment:
+        - VITE_REGISTRY_PATH="http://host.docker.internal:4003/registry"
+
+  configregistry:
+    image: eclipsebasyx/aas-registry:1.4.0
+    volumes:
+      - ./config/registryconfig:/usr/share/config
+    ports:
+        - 4000:4000
+    environment:
+        - basyxregistry_registry_backend=InMemory
+        - basyxcontext_contextpath=/registry
+        - basyxcontext_contextport=4000
+        - basyxregistry_registry_events=MQTTV2
+        - basyxregistry_registry_id=config-registry-repo
+        - basyxcontext_accesscontrolalloworigin=*
+    container_name: registry-config
+    depends_on:
+        mqtt:
+          condition: service_healthy
+
+  configaas:
+    image: eclipsebasyx/aas-server:1.5.0
+    container_name: aas-config
+    volumes:
+      - ./config/aasconfig:/usr/share/config
+    ports:
+        - 4002:4002
+    environment:
+        - basyxaas_registry_path=http://host.docker.internal:4000/registry/
+        - basyxaas_aas_backend=InMemory
+        - basyxcontext_contextpath=/aasServer
+        - basyxcontext_contextport=4002
+        - basyxcontext_contexthostname=configaas
+        - basyxaas_aas_source=["/usr/share/config/Registry.aasx","/usr/share/config/ProductInventory.aasx"]
+#        - basyxaas_aas_source=/usr/share/config/ProductInventory.aasx
+        - waiting_for=[{"host":"host.docker.internal","port":"4000"}]
+        - basyxcontext_accesscontrolalloworigin=*
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider configaas:4002/health || exit 1
+      interval: 10s
+      retries: 3
+      start_period: 1s
+      timeout: 30s
+    depends_on:
+        mqtt:
+          condition: service_healthy
+
+  mqtt:
+    image: eclipse-mosquitto:2.0.15
+    ports:
+      - 1884:1884
+    volumes:
+      - ./config/mosquitto:/mosquitto/config
+    healthcheck:
+      test: ["CMD-SHELL", mosquitto_sub -p 1884 -t 'topic' -C 1 -E -i probe -W 3]
+      interval: 20s
+      retries: 3
+      start_period: 10s
+      timeout: 30s
+    # depends_on:
+    #   sqlserver.configurator:
+    #     condition: service_healthy

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.eclipse.digitaltwin.basyx</groupId>
+		<artifactId>dataintegrator.parent</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>dataintegrator.integratorunit</artifactId>
+
+	<name>DataIntegrator Integrator Unit</name>
+	<description>DataIntegrator units required for the Integrator pipeline</description>
+
+	<modules>
+		<module>dataintegrator.integratorunit.sqldatasource</module>
+		<module>dataintegrator.integratorunit.reader.sqlcursorreader</module>
+		<module>dataintegrator.integratorunit.reader.httprestapireader</module>
+		<module>dataintegrator.integratorunit.processor.typeprocessor</module>
+		<module>dataintegrator.integratorunit.processor.jsonataprocessor</module>
+		<module>dataintegrator.integratorunit.writer.aaswriter</module>
+		<module>dataintegrator.integratorunit.writer.aasdescriptorwriter</module>
+		<module>dataintegrator.integratorunit.common</module>
+	</modules>
+
+	<packaging>pom</packaging>
+
+</project>
