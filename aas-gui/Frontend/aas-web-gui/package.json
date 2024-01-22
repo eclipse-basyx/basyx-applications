@@ -26,7 +26,7 @@
     "@types/md5": "^2.3.2",
     "@types/node": "^18.11.9",
     "@types/uuid": "^9.0.0",
-    "@types/webfontloader": "^1.6.35",
+    "@types/webfontloader": "^1.6.38",
     "@vitejs/plugin-vue": "^4.3.4",
     "typescript": "^4.0.0",
     "vite": "^4.4.9",
