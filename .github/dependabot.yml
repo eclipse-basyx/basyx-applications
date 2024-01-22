@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/aas-gui/Frontend/aas-web-gui"
+    schedule:
+      interval: "weekly"  
