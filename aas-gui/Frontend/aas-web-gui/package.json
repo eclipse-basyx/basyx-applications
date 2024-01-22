@@ -12,7 +12,7 @@
     "@mdi/font": "^7.4.47",
     "apexcharts": "^3.36.3",
     "md5": "^2.3.0",
-    "pinia": "^2.1.6",
+    "pinia": "^2.1.7",
     "roboto-fontface": "*",
     "uuid": "^9.0.0",
     "vue": "^3.4.15",
