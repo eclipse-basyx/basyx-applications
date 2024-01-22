@@ -15,7 +15,7 @@
     "pinia": "^2.1.6",
     "roboto-fontface": "*",
     "uuid": "^9.0.0",
-    "vue": "^3.3.4",
+    "vue": "^3.4.15",
     "vue-pdf-embed": "^1.1.5",
     "vue-router": "^4.1.6",
     "vue3-apexcharts": "^1.4.1",
