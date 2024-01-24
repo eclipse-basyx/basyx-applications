@@ -58,8 +58,8 @@
                             <v-btn @click.stop="showAASDetails(AAS)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
                             <!-- Download AAS -->
                             <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(AAS)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
-                            <!-- Remove from Registry Button -->
-                            <v-btn @click.stop="removeFromRegistry(AAS)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                            <!-- Remove from AAS Registry Button -->
+                            <v-btn @click.stop="removeFromAASRegistry(AAS)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                         </template>
                         <v-overlay :model-value="isSelected(AAS)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
                     </v-list-item>
@@ -130,8 +130,8 @@ export default defineComponent({
     },
 
     mounted() {
-        // Load the AAS List on Startup if the Registry URL is set
-        if(this.registryURL !== '') {
+        // Load the AAS List on Startup if the AAS Registry URL is set
+        if(this.aasRegistryURL !== '') {
             this.getAASData();
         }
 
@@ -159,9 +159,9 @@ export default defineComponent({
     },
 
     watch: {
-        // Watch the Registry URL for changes and reload the AAS List if the URL changes
-        registryURL() {
-            if(this.registryURL !== '') {
+        // Watch the AAS Registry URL for changes and reload the AAS List if the URL changes
+        aasRegistryURL() {
+            if(this.aasRegistryURL !== '') {
                 this.reloadList();
                 if (this.statusCheck) {
                     this.addConnectionInterval();
@@ -210,9 +210,9 @@ export default defineComponent({
         drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
             return this.navigationStore.getDrawerState;
         },
-        // get Registry URL from Store
-        registryURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryURL() {
+            return this.navigationStore.getAASRegistryURL;
         },
 
         // get the selected AAS from Store
@@ -264,11 +264,11 @@ export default defineComponent({
         // Function to get the AAS Data from the Registry Server
         getAASData() {
             this.listLoading = true;
-            let path = this.registryURL + '/shell-descriptors';
+            let path = this.aasRegistryURL + '/shell-descriptors';
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
-                if (response.success) { // execute if the Registry Server is found
+                if (response.success) { // execute if the AAS Registry is found
                     // sort data by idetification id (ascending) and store it in the AASData variable
                     let registerredAAS = response.data.result;
                     let sortedData = registerredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
@@ -282,18 +282,18 @@ export default defineComponent({
                     if (this.statusCheck) {
                         this.checkAASStatus(); // check the AAS Status
                     }
-                } else { // execute if the Registry Server is not found
-                    this.navigationStore.dispatchRegistryURL(''); // clear the URL in the NavigationStore
+                } else { // execute if the AAS Registry Server is not found
+                    this.navigationStore.dispatchAASRegistryURL(''); // clear the URL in the NavigationStore
                 }
                 this.listLoading = false;
             });
         },
 
-        // Function which adds an Interval to check if the Shells in the Registry Server are still available
+        // Function which adds an Interval to check if the Shells in the AAS Registry are still available
         addConnectionInterval() {
-            // check if the Registry URL is set
-            if(this.registryURL !== '') {
-                // add an Interval to check if the Shells in the Registry Server are still available
+            // check if the AAS Registry URL is set
+            if(this.aasRegistryURL !== '') {
+                // add an Interval to check if the Shells in the AAS Registry are still available
                 setInterval(() => {
                     // Check if the AAS is online
                     this.checkAASStatus();
@@ -310,9 +310,9 @@ export default defineComponent({
                 let context = 'evaluating AAS Status';
                 let disableMessage = true;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
-                    if (response.success) { // execute if the Registry Server is found
+                    if (response.success) { // execute if the AAS Registry is found
                         AAS.status = 'online';
-                    } else { // execute if the Registry Server is not found
+                    } else { // execute if the AAS Registry is not found
                         AAS.status = 'offline';
                     }
                 });
@@ -406,8 +406,8 @@ export default defineComponent({
             if(AAS) this.showDetailsCard = true;
         },
 
-        // Function to remove the AAS from the Registry Server
-        removeFromRegistry(AAS: any) {
+        // Function to remove the AAS from the AAS Registry
+        removeFromAASRegistry(AAS: any) {
             // console.log('Remove AAS: ', AAS);
             // return if loading state is true -> prevents multiple requests
             if(this.loading) {
@@ -415,10 +415,10 @@ export default defineComponent({
                 return;
             }
             // show a confirmation Dialog to delete the AAS
-            if(confirm('Are you sure you want to delete the AAS from the Registry?')) {
+            if(confirm('Are you sure you want to delete the AAS from the AAS Registry?')) {
                 // execute if the user confirms the removal
-                let path = this.registryURL + '/shell-descriptors/' + this.URLEncode(AAS.id);
-                let context = 'removing AAS from Registry';
+                let path = this.aasRegistryURL + '/shell-descriptors/' + this.URLEncode(AAS.id);
+                let context = 'removing AAS from AAS Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {
                     if (response.success) { // execute if deletion was successful

@@ -22,7 +22,7 @@ import RequestHandling from '../../mixins/RequestHandling';
 export default defineComponent({
     name: 'DisplayField',
     components: {
-        RequestHandling, // Mixin to handle the requests to the Registry Server
+        RequestHandling,
     },
     mixins: [RequestHandling],
 

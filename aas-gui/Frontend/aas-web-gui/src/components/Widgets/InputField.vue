@@ -32,7 +32,7 @@ import RequestHandling from '../../mixins/RequestHandling';
 export default defineComponent({
     name: 'InputField',
     components: {
-        RequestHandling, // Mixin to handle the requests to the Registry Server
+        RequestHandling,
     },
     mixins: [RequestHandling],
 

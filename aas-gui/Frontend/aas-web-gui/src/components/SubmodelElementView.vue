@@ -152,9 +152,18 @@ export default defineComponent({
     },
 
     watch: {
-        // Resets the SubmodelElementView when the Registry Server changes
+        // Resets the SubmodelElementView when the AAS Registry changes
         registryServerURL() {
-            if (!this.registryServerURL) {
+            if (!this.aasRegistryServerURL) {
+                this.submodelElementData = {};
+                // also reset the realTimeObject in the store
+                this.aasStore.dispatchRealTimeObject(this.submodelElementData);
+            }
+        },
+
+        // Resets the SubmodelElementView when the Submodel Registry changes
+        submodelRegistryServerURL() {
+            if (!this.submodelRegistryServerURL) {
                 this.submodelElementData = {};
                 // also reset the realTimeObject in the store
                 this.aasStore.dispatchRealTimeObject(this.submodelElementData);
@@ -198,9 +207,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryServerURL() {
+            return this.navigationStore.getAASRegistryURL;
+        },
+
+        // get the Submodel Registry URL from Store
+        submodelRegistryServerURL() {
+            return this.navigationStore.getSubmodelRegistryURL;
         },
 
         // get selected AAS from Store
@@ -258,7 +272,7 @@ export default defineComponent({
                     this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
                 if (withConceptDescription) {
-                    this.getConceptDescription(); // fetch ConceptDescriptions for the SubmodelElement
+                    this.getCD(); // fetch ConceptDescriptions for the SubmodelElement
                 } else {
                     this.submodelElementData.embeddedDataSpecifications = embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
                 }
@@ -269,31 +283,19 @@ export default defineComponent({
         },
 
         // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
-        getConceptDescription() {
+        getCD() {
             // Check if a Node is selected
             if (Object.keys(this.SelectedNode).length == 0 || !this.SelectedNode.semanticId || !this.SelectedNode.semanticId.keys || this.SelectedNode.semanticId.keys.length == 0) {
                 this.conceptDescription = {}; // Reset the SubmodelElement Data when no Node is selected
                 return;
             }
-            let conceptDescriptionRepoURL = '';
-            // console.log('SemanticID: ', this.SelectedNode.semanticId.keys[0].value);
-            if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
-                conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
-            } else {
-                return;
-            }
-            // console.log('ConceptDescription Repo URL: ', conceptDescriptionRepoURL);
-            // Request the ConceptDescriptions for the SubmodelElement
-            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(this.SelectedNode.semanticId.keys[0].value);
-            let context = 'retrieving ConceptDescription';
-            let disableMessage = true;
-            this.getRequest(path, context, disableMessage).then((response: any) => {
-                if (response.success) { // execute if the Request was successful
-                    // console.log('ConceptDescription Data: ', response.data.embeddedDataSpecifications)
-                    this.conceptDescription = response.data;
-                    this.submodelElementData.embeddedDataSpecifications = response.data.embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
-                } else { // execute if the Request failed
-                    this.conceptDescription = {}; // Reset the ConceptDescription Data when content couldn't be retrieved
+            // call mixin to request concept description from the CD Repo
+            this.getConceptDescription(this.SelectedNode).then((response: any) => {
+                // console.log('ConceptDescription: ', response)
+                this.conceptDescription = response;
+                // add ConceptDescription to the SubmodelElement Data
+                if (response && response.embeddedDataSpecifications && response.embeddedDataSpecifications.length > 0) {
+                    this.submodelElementData.embeddedDataSpecifications = response.embeddedDataSpecifications;
                 }
             });
         },

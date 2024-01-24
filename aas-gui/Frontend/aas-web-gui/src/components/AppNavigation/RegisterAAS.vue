@@ -1,11 +1,11 @@
 <template>
     <v-btn variant="plain">
         <v-icon size="x-large">mdi-plus</v-icon>
-        <v-tooltip activator="parent" open-delay="600" location="bottom">Add existing AAS to Registry</v-tooltip>
+        <v-tooltip activator="parent" open-delay="600" location="bottom">Add existing AAS to AAS Registry</v-tooltip>
         <v-dialog activator="parent" v-model="RegisterAASDialog" width="600">
             <v-card>
                 <v-card-title>
-                    <span class="text-subtile-1">Add existing AAS to Registry</span>
+                    <span class="text-subtile-1">Add existing AAS to AAS Registry</span>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
@@ -76,14 +76,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry URL from Store
-        registryURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryURL() {
+            return this.navigationStore.getAASRegistryURL;
         },
     },
 
     methods: {
-        // Function to add a new AAS to the Registry
+        // Function to add a new AAS to the AAS Registry
         addAAS() {
             this.registrationLoading = true;
             let path = this.aasEndpoint;
@@ -115,7 +115,7 @@ export default defineComponent({
                     // remove administration key
                     delete registrationContent['administration'];
 
-                    let path = this.registryURL + '/shell-descriptors';
+                    let path = this.aasRegistryURL + '/shell-descriptors';
                     let content = JSON.stringify(registrationContent);
                     let headers = { 'Content-Type': 'application/json' };
                     let context = 'registering AAS';

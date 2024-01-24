@@ -11,7 +11,7 @@
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                                 <template v-slot:append>
-                                    <v-badge :content="SubmodelElement.value.length" inline></v-badge>
+                                    <v-badge :content="SubmodelElement.value ? SubmodelElement.value.length : 0" inline></v-badge>
                                 </template>
                             </v-alert>
                             <!-- SubmodelElementList -->
@@ -20,7 +20,7 @@
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
                                 <template v-slot:append>
-                                    <v-badge :content="SubmodelElement.value.length" inline></v-badge>
+                                    <v-badge :content="SubmodelElement.value ? SubmodelElement.value.length : 0" inline></v-badge>
                                 </template>
                             </v-alert>
                             <!-- Entity -->

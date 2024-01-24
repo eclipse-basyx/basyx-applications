@@ -1,23 +1,23 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-list-item class="px-1 pb-1 pt-0">
+        <v-list-item v-if="!IsOperationVariable" class="px-1 pb-1 pt-0">
             <v-list-item-title class="text-subtitle-2 mt-2">{{ 'Value: ' }}</v-list-item-title>
         </v-list-item>
         <v-card color="elevatedCard" v-if="propertyObject">
             <!-- Value of the Property -->
-            <v-list nav class="bg-elevatedCard pt-0">
+            <v-list nav class="pt-0" :class="IsOperationVariable ? '': 'bg-elevatedCard'">
                 <!-- valueType -->
-                <v-list-item class="pb-0">
+                <v-list-item v-if="!IsOperationVariable" class="pb-0">
                     <v-list-item-title>
                         <span class="text-caption">{{ 'Value Type: ' }}</span>
                         <v-chip label size="x-small" border color="primary">{{ propertyObject.valueType }}</v-chip>
                     </v-list-item-title>
                 </v-list-item>
                 <!-- Value Representation depending on the valueType -->
-                <NumberType v-if="isNumber(propertyObject.valueType)" :numberValue="propertyObject" @updateValue="updateValue"></NumberType>
-                <BooleanType v-else-if="propertyObject.valueType == 'boolean'" :booleanValue="propertyObject" @updateValue="updateValue"></BooleanType>
-                <DateTimeStampType v-else-if="propertyObject.valueType == 'dateTimeStamp'" :dateTimeStampValue="propertyObject" @updateValue="updateValue"></DateTimeStampType>
-                <StringType v-else="propertyObject.valueType == 'string'" :stringValue="propertyObject" @updateValue="updateValue"></StringType>
+                <NumberType v-if="isNumber(propertyObject.valueType)" :numberValue="propertyObject" :isOperationVariable="isOperationVariable" :variableType="variableType" @updateValue="updateValue"></NumberType>
+                <BooleanType v-else-if="propertyObject.valueType == 'xs:boolean'" :booleanValue="propertyObject" :isOperationVariable="isOperationVariable" :variableType="variableType" @updateValue="updateValue"></BooleanType>
+                <DateTimeStampType v-else-if="propertyObject.valueType == 'xs:dateTime'" :dateTimeStampValue="propertyObject" :isOperationVariable="isOperationVariable" :variableType="variableType" @updateValue="updateValue"></DateTimeStampType>
+                <StringType v-else :stringValue="propertyObject" :isOperationVariable="isOperationVariable" :variableType="variableType" @updateValue="updateValue"></StringType>
             </v-list>
         </v-card>
     </v-container>
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import StringType from './ValueTypes/StringType.vue';
@@ -47,7 +47,7 @@ export default defineComponent({
         DateTimeStampType,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
-    props: ['propertyObject'],
+    props: ['propertyObject', 'isOperationVariable', 'variableType'],
 
     setup() {
         const aasStore = useAASStore()
@@ -66,6 +66,16 @@ export default defineComponent({
         // get selected AAS from Store
         SelectedAAS() {
             return this.aasStore.getSelectedAAS;
+        },
+
+        // Check if the Property is an Operation Variable
+        IsOperationVariable() {
+            // check if isOperationVariable is not undefined
+            if (this.isOperationVariable != undefined) {
+                return this.isOperationVariable;
+            } else {
+                return false;
+            }
         },
     },
 

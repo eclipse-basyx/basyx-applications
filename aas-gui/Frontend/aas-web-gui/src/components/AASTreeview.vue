@@ -73,9 +73,16 @@ export default defineComponent({
             }
         },
 
-        // Resets the Treeview when the Registry Server changes
-        registryServerURL() {
-            if(!this.registryServerURL) {
+        // Resets the Treeview when the AAS Registry changes
+        aasRegistryServerURL() {
+            if(!this.aasRegistryServerURL) {
+                this.submodelData = [];
+            }
+        },
+
+        // Resets the Treeview when the Submodel Registry changes
+        submodelRegistryServerURL() {
+            if(!this.submodelRegistryServerURL) {
                 this.submodelData = [];
             }
         },
@@ -106,14 +113,14 @@ export default defineComponent({
             return this.aasStore.getLoadingState;
         },
 
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryServerURL() {
+            return this.navigationStore.getAASRegistryURL;
         },
 
-        // Get the Env Variable for the Submodel Repo URL from the store
-        EnvSubmodelRepoPath() {
-            return this.envStore.getEnvSubmodelRepoPath;
+        // get Submodel Registry URL from Store
+        submodelRegistryServerURL() {
+            return this.navigationStore.getSubmodelRegistryURL;
         },
 
         // get the updated Treeview Node from Store
@@ -174,46 +181,43 @@ export default defineComponent({
             });
         },
 
-        // Function to request all Submodels from the selected AAS
+        // Function to request all Submodels for the selected AAS
         async requestSubmodels(submodelRefs: any) {
             // console.log('SubmodelRefs: ', submodelRefs);
             let submodelPromises = submodelRefs.map((submodelRef: any) => {
-                // extract the submodelRepoURL from the Environment Variables or the Browsers LocalStorage
-                let submodelRepoURL = '';
-                if (this.EnvSubmodelRepoPath && this.EnvSubmodelRepoPath != '') {
-                    submodelRepoURL = this.EnvSubmodelRepoPath;
-                }
-                let submodelRepoURLFromLocalStorage = window.localStorage.getItem('SubmodelRepoURL');
-                if (submodelRepoURLFromLocalStorage && submodelRepoURLFromLocalStorage != '') {
-                    submodelRepoURL = submodelRepoURLFromLocalStorage;
-                }
-                if (!submodelRepoURL || submodelRepoURL == '') {
-                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Submodel URL can not be resolved!' });
-                    return;
-                }
-                // retrieve Submodel from endpoint
-                let path = submodelRepoURL + '/' + this.URLEncode(submodelRef.keys[0].value); // use the Submodel Repository URL if it is set, otherwise use the SMEPath (from the path Query)
-                let context = 'retrieving Submodel Data';
-                let disableMessage = true;
+                // retrieve endpoint for submodel from submodel registry
+                // console.log('SubmodelRef: ', submodelRef, ' Submodel Registry: ', this.submodelRegistryServerURL);
+                let path = this.submodelRegistryServerURL + '/submodel-descriptors/' + this.URLEncode(submodelRef.keys[0].value);
+                let context = 'retrieving Submodel Endpoint';
+                let disableMessage = false;
                 return this.getRequest(path, context, disableMessage).then((response: any) => {
                     if (response.success) { // execute if the Request was successful
-                        let submodel = response.data;
-                        // give the Submodel a unique ID
-                        submodel.id = this.UUID();
-                        // set the active State of the Submodel
-                        submodel.isActive = false;
-                        // set the Path of the Submodel
-                        submodel.path = path;
-                        // check if submodel has SubmodelElements
-                        if(submodel.submodelElements || submodel.submodelElements.length > 0) {
-                            // recursively create treestructure for contained submodelElements
-                            let submodelElements = this.prepareTreeviewData(submodel.submodelElements, submodel);
-                            // add the SubmodelElements to the Submodel
-                            submodel.children = submodelElements;
-                            // set showChildren to false (for the Treeview Component)
-                            submodel.showChildren = false;
-                        }
-                        return submodel;
+                        let submodelEndpoint = response.data;
+                        // console.log('SubmodelEndpoint: ', submodelEndpoint);
+                        let path = submodelEndpoint.endpoints[0].protocolInformation.href;
+                        let context = 'retrieving Submodel Data';
+                        let disableMessage = true;
+                        return this.getRequest(path, context, disableMessage).then((response: any) => {
+                            if (response.success) { // execute if the Request was successful
+                                let submodel = response.data;
+                                // give the Submodel a unique ID
+                                submodel.id = this.UUID();
+                                // set the active State of the Submodel
+                                submodel.isActive = false;
+                                // set the Path of the Submodel
+                                submodel.path = path;
+                                // check if submodel has SubmodelElements
+                                if(submodel.submodelElements && submodel.submodelElements.length > 0) {
+                                    // recursively create treestructure for contained submodelElements
+                                    let submodelElements = this.prepareTreeviewData(submodel.submodelElements, submodel);
+                                    // add the SubmodelElements to the Submodel
+                                    submodel.children = submodelElements;
+                                    // set showChildren to false (for the Treeview Component)
+                                    submodel.showChildren = false;
+                                }
+                                return submodel;
+                            }
+                        });
                     }
                 });
             });

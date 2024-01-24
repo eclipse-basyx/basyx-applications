@@ -82,12 +82,12 @@ export default defineComponent({
             mlpValue: {} as any,
             languages: [
                 { id: 1, text: 'Deutsch', short: 'de' },
-                { id: 1, text: 'English', short: 'en' },
-                { id: 1, text: 'Français', short: 'fr' },
-                { id: 1, text: 'Español', short: 'es' },
-                { id: 1, text: 'Italiano', short: 'it' },
-                { id: 1, text: 'Kanton Zürich', short: 'zh' },
-                { id: 1, text: '한국인', short: 'kr' },
+                { id: 2, text: 'English', short: 'en' },
+                { id: 3, text: 'Français', short: 'fr' },
+                { id: 4, text: 'Español', short: 'es' },
+                { id: 5, text: 'Italiano', short: 'it' },
+                { id: 6, text: 'Kanton Zürich', short: 'zh' },
+                { id: 7, text: '한국인', short: 'kr' },
             ] as any,
         }
     },

@@ -6,7 +6,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/eclipse-basyx/basyx-applications)
 
 # Fraunhofer AAS GUI
-Vue.js Webapplication to select and visualize Asset Administration Shells, Submodels and Properties.
+Vue.js Webapplication to select and visualize Asset Administration Shells, Submodels and Concept Descriptions.
 
 ![alt text](Docs/Figs/GUI_2_0.png "AAS GUI")
 
@@ -173,9 +173,11 @@ docker build basyx-applications/aas-gui/Frontend/aas-web-gui -t eclipsebasyx/aas
 docker run -p 3000:3000 eclipsebasyx/aas-gui
 ```
 
-3. You can also predefine the Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
+3. You can also predefine the AAS- and Submodel Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
 
-`-e VITE_REGISTRY_PATH=<registry_path>`
+`-e VITE_AAS_REGISTRY_PATH=<aas_registry_path>`
+
+`-e VITE_SUBMODEL_REGISTRY_PATH=<submodel_registry_path>`
 
 `-e VITE_AAS_REPO_PATH: <aas_repo_path>`
 
@@ -215,7 +217,8 @@ aas-web-gui:
         - "3000:3000"
     environment:
         CHOKIDAR_USEPOLLING: "true"
-        VITE_REGISTRY_PATH: "<registry_path>"
+        VITE_AAS_REGISTRY_PATH: "<aas_registry_path>"
+        VITE_SUBMODEL_REGISTRY_PATH: "<submodel_registry_path>"
         VITE_AAS_REPO_PATH: "aas_repo_path"
         VITE_SUBMODEL_REPO_PATH: "submodel_repo_path"
         VITE_CD_REPO_PATH: "concept_description_repo_path"
@@ -228,7 +231,8 @@ aas-web-gui:
 
 #### CORS configuration of the Registry and Repositories
 
-To be able to access the BaSyx AAS data from the Web UI, you need to add a wildcard to cross-origin resource sharing on the Registry- and AAS-, Submodel- and Concept Description Repository (AAS Environment). An example on how to do this is shown in the [aas-config](./UsageExample/aas-config) folder.
+To be able to access the BaSyx AAS data from the Web UI, you need to add a wildcard to cross-origin resource sharing on the Registry- and AAS-, Submodel- and Concept Description Repository (AAS Environment). An example on how to do this is shown in the examples folder in the [basyx-java-server-sdk](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/examples
+) Repository.
 
 #### Docker with nginx
 

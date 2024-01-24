@@ -9,7 +9,7 @@
         <span class="text-primary">{{ (autoSyncStatus ? 'On' : 'Off') }}</span>
         <v-icon :style="{ 'margin-left': autoSyncStatus ? '12.5px' : '6px' }">mdi-chevron-down</v-icon>
         <v-menu activator="parent" :close-on-content-click="false" width="300px">
-            <v-list nav class="py-0 bg-card">
+            <v-list nav class="py-0 bg-navigationMenu" style="border-style: solid; border-width: 1px">
                 <!-- Switch to activate/deactive auto-sync -->
                 <v-list-item class="py-0">
                     <v-switch label="Auto Sync" color="primary" class="mx-3" hide-details v-model="autoSyncStatus" @change="updateAutoSync()">

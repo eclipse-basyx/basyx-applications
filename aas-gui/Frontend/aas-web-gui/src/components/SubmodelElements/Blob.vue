@@ -159,7 +159,7 @@ export default defineComponent({
                 contentJSON.value = value;
                 let content = JSON.stringify(contentJSON);
                 // console.log("Content: ", content);
-                let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path;
+                let path = this.blobObject.path + '/$value';
                 let headers = { 'Content-Type': 'application/json' };
                 let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
                 let disableMessage = false;

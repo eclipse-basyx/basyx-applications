@@ -1,20 +1,20 @@
 <template>
     <v-list-item class="pt-0">
-        <v-list-item-title>
-            <v-text-field type="text" variant="outlined" density="compact" clearable @keydown.native.enter="updateValue()" v-model="newDateTimeStampValue" :color="dateTimeStampValue.value == newDateTimeStampValue ? '' : 'warning'" persistent-hint :hint="dateTimeStampValue.value == newDateTimeStampValue ? '' : 'Current Value not yet saved.'">
+        <v-list-item-title :class="IsOperationVariable ? 'pt-2' : ''">
+            <v-text-field type="text" variant="outlined" density="compact" clearable @keydown.native.enter="updateValue()" v-model="newDateTimeStampValue" :color="dateTimeStampValue.value == newDateTimeStampValue ? '' : 'warning'" :persistent-hint="!IsOperationVariable" :hint="dateTimeStampValue.value == newDateTimeStampValue ? '' : 'Current Value not yet saved.'" @click:clear="clearDateTimeStamp" @update:focused="setFocus" :hide-details="IsOperationVariable ? true : false">
                 <!-- Update Value Button -->
                 <template v-slot:append-inner>
                     <span class="text-subtitleText">{{ unitSuffix(dateTimeStampValue) }}</span>
-                    <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
+                    <v-btn v-if="!IsOperationVariable" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
                         <v-icon>mdi-upload</v-icon>
                     </v-btn>
                 </template>
             </v-text-field>
         </v-list-item-title>
-        <v-row class="mt-0">
+        <v-row v-if="!IsOutputVariable" class="mt-0">
             <!-- Date Picker -->
             <v-col cols="auto">
-                <v-date-picker color="primary" @update:modelValue="applyDate" @click:cancel="revertDate()" elevation="1"></v-date-picker>
+                <v-date-picker color="primary" @update:modelValue="applyDate" elevation="1"></v-date-picker>
             </v-col>
             <!-- Time Picker -->
             <v-col cols="auto">
@@ -28,20 +28,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 
-import { VDatePicker } from 'vuetify/labs/VDatePicker';
-import { useDate } from 'vuetify/labs/date';
+import { useDate } from 'vuetify';
 
 export default defineComponent({
     name: 'DateTimeStampType',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
-
-        VDatePicker,
     },
     mixins: [RequestHandling],
-    props: ['dateTimeStampValue'],
+    props: ['dateTimeStampValue', 'isOperationVariable', 'variableType'],
 
     setup() {
         const aasStore = useAASStore()
@@ -62,7 +59,7 @@ export default defineComponent({
 
     mounted() {
         if (!this.dateTimeStampValue.value || this.dateTimeStampValue.value == '') {
-            this.newDateTimeStampValue = this.createXSDDateString();
+            this.newDateTimeStampValue = '';
         } else {
             this.newDateTimeStampValue = this.dateTimeStampValue.value;
         }
@@ -84,7 +81,7 @@ export default defineComponent({
             deep: true,
             handler() {
                 if (!this.dateTimeStampValue.value || this.dateTimeStampValue.value == '') {
-                    this.newDateTimeStampValue = this.createXSDDateString();
+                    this.newDateTimeStampValue = '';
                 } else {
                     this.newDateTimeStampValue = this.dateTimeStampValue.value;
                 }
@@ -102,11 +99,35 @@ export default defineComponent({
         SelectedNode() {
             return this.aasStore.getSelectedNode;
         },
+        
+        // Check if the Property is an Operation Variable
+        IsOperationVariable() {
+            // check if isOperationVariable is not undefined
+            if (this.isOperationVariable != undefined) {
+                return this.isOperationVariable;
+            } else {
+                return false;
+            }
+        },
+
+        // Check if the Property is an Output Operation Variable
+        IsOutputVariable() {
+            // check if isOperationVariable is not undefined
+            if (this.isOperationVariable != undefined) {
+                return this.variableType == 'outputVariables';
+            } else {
+                return false;
+            }
+        },
     },
 
     methods: {
         // Function to update the value of the property
         updateValue() {
+            if (this.IsOperationVariable) {
+                this.$emit('updateValue', this.newDateTimeStampValue);
+                return;
+            }
             // console.log("Update Value: " + this.newPropertyValue);
             let path = this.dateTimeStampValue.path + '/$value';
             let content = JSON.stringify(this.newDateTimeStampValue);
@@ -158,6 +179,7 @@ export default defineComponent({
 
         // Function to create a new Date Object from the given string
         createDateObject(dateString: string) {
+            // console.log('createDateObject: ', dateString)
             let cleanedTimestamp = dateString.split('[')[0];
             return new Date(cleanedTimestamp);
         },
@@ -167,28 +189,33 @@ export default defineComponent({
             let hours = date.getHours().toString().padStart(2, '0');
             let minutes = date.getMinutes().toString().padStart(2, '0');
             let seconds = date.getSeconds().toString().padStart(2, '0');
+            // check if any of the values is NaN
+            if (isNaN(Number(hours)) || isNaN(Number(minutes)) || isNaN(Number(seconds))) return '';
             return hours + ':' + minutes + ':' + seconds;
         },
 
         // Function to apply the selected date to the newDateTimeStampValue
         applyDate(date: any) {
+            // console.log('applyDate: ', date);
             if(!date) return;
-            let singleDate = date[0];
             // convert date to string (format: YYYY-MM-DD)
-            let year = singleDate.getFullYear();
-            let month = (1 + singleDate.getMonth()).toString().padStart(2, '0'); // Months are zero indexed, hence the +1. padStart will add a 0 in front if it's a single digit
-            let day = singleDate.getDate().toString().padStart(2, '0'); // padStart will add a 0 in front if it's a single digit
+            let year = date.getFullYear();
+            let month = (1 + date.getMonth()).toString().padStart(2, '0'); // Months are zero indexed, hence the +1. padStart will add a 0 in front if it's a single digit
+            let day = date.getDate().toString().padStart(2, '0'); // padStart will add a 0 in front if it's a single digit
             let dateString = year + '-' + month + '-' + day;
             // console.log('dateString: ', dateString);
             // replace the date in the newDateTimeStampValue
             let tempDateTimeStampValue = this.newDateTimeStampValue.split('T')[1];
+            // if the time is not set, set it to the current time including the timezone
+            if (!tempDateTimeStampValue) {
+                let time = this.createXSDDateString().split('T')[1];
+                tempDateTimeStampValue = time;
+                this.time = time.split('.')[0];
+            }
             this.newDateTimeStampValue = dateString + 'T' + tempDateTimeStampValue;
-        },
-
-        // Function to revert the dateObject to the previous value
-        revertDate() {
-            // console.log('revertDate: ', this.dateTimeStampValue.value);
-            this.newDateTimeStampValue = this.dateTimeStampValue.value;
+            if (this.IsOperationVariable) {
+                this.updateValue();
+            }
         },
 
         // Function to apply the selected time to the newDateTimeStampValue
@@ -197,7 +224,27 @@ export default defineComponent({
             // replace the time in the newDateTimeStampValue
             let tempDateTimeStampValue = this.newDateTimeStampValue.split('T')[0];
             let tempStampEnd = this.newDateTimeStampValue.split('.')[1];
-            this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + '.' + tempStampEnd;
+            if (!tempStampEnd) {
+                this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + 'Z'
+            } else {
+                this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + '.' + tempStampEnd;
+            }
+            if (this.IsOperationVariable) {
+                this.updateValue();
+            }
+        },
+
+        // clear the DateTimeStamp
+        clearDateTimeStamp() {
+            this.newDateTimeStampValue = '';
+            this.time = '';
+        },
+
+        // Function to set the focus on the input field
+        setFocus(e: boolean) {
+            if (this.IsOperationVariable && !e) {
+                this.updateValue();
+            }
         },
     },
 });
