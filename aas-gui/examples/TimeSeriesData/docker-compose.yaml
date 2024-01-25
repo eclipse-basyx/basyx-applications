@@ -1,0 +1,108 @@
+version: '3'
+services:
+  # Time Series Database
+  influxdb:
+    image: influxdb:2.7.4
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb/data:/var/lib/influxdb2
+      - ./influxdb/config:/etc/influxdb2
+    # environment:
+    #   - DOCKER_INFLUXDB_INIT_MODE=setup
+    #   - DOCKER_INFLUXDB_INIT_USERNAME=admin
+    #   - DOCKER_INFLUXDB_INIT_PASSWORD=test
+    #   - DOCKER_INFLUXDB_INIT_ORG=htw-berlin
+    #   - DOCKER_INFLUXDB_INIT_BUCKET=aas-demo
+    #   - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=EgwWdfOqhpfeU3fMann4xjAR3uGxbdGDD_EcmlLlVb3TN7m4RNGQtfwooQrerjPGiIcSxwwl7M7F2bWZWDiVBw==
+    restart: always
+
+  # Metrics Collector
+  telegraf:
+    image: telegraf:1.29.1
+    container_name: telegraf
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    restart: always
+
+  # MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto
+    ports:
+      - 1883:1883
+    volumes:
+      - ./mosquitto:/mosquitto
+    healthcheck:
+      test: ["CMD-SHELL", mosquitto_sub -p 1883 -t 'topic' -C 1 -E -i probe -W 3]
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s  
+    restart: always
+
+  # MQTT Publisher (for testing)
+  mqtt-publisher:
+    build: ./mqtt-publisher
+    container_name: mqtt-publisher
+    depends_on:
+      - mosquitto
+    restart: always
+
+  # AAS Environment
+  aas-environment:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: aas-environment
+    ports:
+      - 8081:8081
+    volumes:
+      - ./basyx/aas-env.properties:/application/application.properties
+      - ./aas:/application/aas
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      aas-registry:
+        condition: service_healthy
+      sm-registry:
+        condition: service_healthy
+    restart: always
+
+  # AAS Registry
+  aas-registry:
+    image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
+    container_name: aas-registry
+    ports:
+      - 8082:8080
+    volumes:
+      - ./basyx/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # Submodel Registry
+  sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mem:2.0.0-SNAPSHOT
+    container_name: sm-registry
+    ports:
+      - 8083:8080
+    volumes:
+      - ./basyx/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # AAS Web UI
+  aas-ui:
+    image: aaronzi/basyx-aas-ui:SNAPSHOT_06
+    container_name: aas-ui
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_REGISTRY_PATH: "http://localhost:8082/api/v3.0"
+      VITE_AAS_REPO_PATH: "http://localhost:8081/shells"
+      VITE_SUBMODEL_REPO_PATH: "http://localhost:8081/submodels"
+      VITE_CD_REPO_PATH: "http://localhost:8081/concept-descriptions"
+      VITE_PRIMARY_COLOR: "#76b900"
+    volumes:
+      - ./logo:/app/src/assets/Logo
+    restart: always
+
