@@ -9,13 +9,6 @@ services:
     volumes:
       - ./influxdb/data:/var/lib/influxdb2
       - ./influxdb/config:/etc/influxdb2
-    # environment:
-    #   - DOCKER_INFLUXDB_INIT_MODE=setup
-    #   - DOCKER_INFLUXDB_INIT_USERNAME=admin
-    #   - DOCKER_INFLUXDB_INIT_PASSWORD=test
-    #   - DOCKER_INFLUXDB_INIT_ORG=htw-berlin
-    #   - DOCKER_INFLUXDB_INIT_BUCKET=aas-demo
-    #   - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=EgwWdfOqhpfeU3fMann4xjAR3uGxbdGDD_EcmlLlVb3TN7m4RNGQtfwooQrerjPGiIcSxwwl7M7F2bWZWDiVBw==
     restart: always
 
   # Metrics Collector
@@ -92,12 +85,13 @@ services:
 
   # AAS Web UI
   aas-ui:
-    image: aaronzi/basyx-aas-ui:SNAPSHOT_06
+    image: eclipsebasyx/aas-gui:v2-240125
     container_name: aas-ui
     ports:
       - "3000:3000"
     environment:
-      VITE_REGISTRY_PATH: "http://localhost:8082/api/v3.0"
+      VITE_AAS_REGISTRY_PATH: "http://localhost:8082"
+      VITE_SUBMODEL_REGISTRY_PATH: "http://localhost:8083"
       VITE_AAS_REPO_PATH: "http://localhost:8081/shells"
       VITE_SUBMODEL_REPO_PATH: "http://localhost:8081/submodels"
       VITE_CD_REPO_PATH: "http://localhost:8081/concept-descriptions"
