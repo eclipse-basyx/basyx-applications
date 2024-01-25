@@ -21,7 +21,7 @@ import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling'; // Mixin to handle the requests to the AAS
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling'; // Mixin to handle typical SubmodelElement-Actions
 
-import SubmodelElementWrapper from '../components/UIComponents/SubmodelElementWrapper.vue';
+import SubmodelElementWrapper from '@/components/UIComponents/SubmodelElementWrapper.vue';
 
 export default defineComponent({
     name: 'PluginJSONArray',

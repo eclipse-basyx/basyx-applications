@@ -42,11 +42,11 @@ export const useNavigationStore = defineStore({
 
     state: () => ({
         drawerState: false as boolean,
-        registryURL: '' as string,
+        AASRegistryURL: '' as string,
+        SubmodelRegistryURL: '' as string,
         AASRepoURL: '' as string,
         SubmodelRepoURL: '' as string,
         ConceptDescriptionRepoURL: '' as string,
-        widgetApiURL: '' as string,
         Snackbar: {} as SnackbarType,
         AutoSync: {} as AutoSyncType,
         StatusCheck: false as boolean,
@@ -58,11 +58,11 @@ export const useNavigationStore = defineStore({
 
     getters: {
         getDrawerState: (state) => state.drawerState,
-        getRegistryURL: (state) => state.registryURL,
+        getAASRegistryURL: (state) => state.AASRegistryURL,
+        getSubmodelRegistryURL: (state) => state.SubmodelRegistryURL,
         getAASRepoURL: (state) => state.AASRepoURL,
         getSubmodelRepoURL: (state) => state.SubmodelRepoURL,
         getConceptDescriptionRepoURL: (state) => state.ConceptDescriptionRepoURL,
-        getWidgetApiURL: (state) => state.widgetApiURL,
         getSnackbar: (state) => state.Snackbar,
         getAutoSync: (state) => state.AutoSync,
         getStatusCheck: (state) => state.StatusCheck,
@@ -76,8 +76,12 @@ export const useNavigationStore = defineStore({
         dispatchDrawerState(drawerState: boolean) {
             this.drawerState = drawerState;
         },
-        dispatchRegistryURL(url: string) {
-            this.registryURL = url;
+        dispatchAASRegistryURL(url: string) {
+            this.AASRegistryURL = url;
+            useAASStore().dispatchSelectedNode({});
+        },
+        dispatchSubmodelRegistryURL(url: string) {
+            this.SubmodelRegistryURL = url;
             useAASStore().dispatchSelectedNode({});
         },
         dispatchRepoURL(type: string, url: string) {
@@ -92,9 +96,6 @@ export const useNavigationStore = defineStore({
                     this.ConceptDescriptionRepoURL = url;
                     break;
             }
-        },
-        dispatchWidgetApiURL(url: string) {
-            this.widgetApiURL = url;
         },
         dispatchSnackbar(snackbarObj: SnackbarType) {
             this.Snackbar = snackbarObj;

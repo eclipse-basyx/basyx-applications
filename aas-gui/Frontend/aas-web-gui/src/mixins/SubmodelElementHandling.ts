@@ -27,14 +27,19 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry URL from Store
-        registryURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryURL() {
+            return this.navigationStore.getAASRegistryURL;
         },
 
         // Get the Submodel Repository URL from the Store
         submodelRepoURL() {
             return this.navigationStore.getSubmodelRepoURL;
+        },
+
+        // Get the Concept Description Repository URL from the Store
+        conceptDescriptionRepoURL() {
+            return this.navigationStore.getConceptDescriptionRepoURL;
         },
     },
 
@@ -99,6 +104,7 @@ export default defineComponent({
 
         // Function to check if the valueType is a number
         isNumber(valueType: any) {
+            if (!valueType) return false;
             // List of all number types
             let numberTypes = [
                 'double',
@@ -157,7 +163,7 @@ export default defineComponent({
         // Function to check if the referenced Element exists
         async checkReference(referenceValue: Array<any>): Promise<{ success: boolean, aas?: object, submodel?: object }> {
             // console.log('Reference Value: ', referenceValue);
-            let path = this.registryURL + '/shell-descriptors';
+            let path = this.aasRegistryURL + '/shell-descriptors';
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             try {
@@ -181,13 +187,20 @@ export default defineComponent({
 
         // Function to check if the referenced AAS exists
         async checkReferenceAAS(aasList: Array<any>, referenceValue: Array<any>): Promise<{ success: boolean, aas?: object, submodel?: object }> {
-            aasList.forEach((aas: any) => {
-                // check if the referenced AAS is in the current AAS
-                if (aas.id == referenceValue[0].value) {
-                    // console.log('AAS found. AAS: ', aas);
-                    return { success: true, aas: aas, submodel: {} };
+            try {
+                aasList.forEach((aas: any) => {
+                    if (aas.id == referenceValue[0].value) {
+                        // console.log('AAS found. AAS: ', { success: true, aas: aas, submodel: {} });
+                        throw { success: true, aas: aas, submodel: {} };
+                    }
+                });
+            } catch (result: any) {
+                if (result.success) {
+                    return result;
+                } else {
+                    throw result; // re-throw if it's an actual error
                 }
-            });
+            }
             return { success: false, aas: {}, submodel: {} };
         },
 
@@ -304,6 +317,29 @@ export default defineComponent({
                 // dispatch the AAS set by the ReferenceElement to the store
                 this.aasStore.dispatchSelectedAAS(referencedAAS);
             }
+        },
+
+        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        getConceptDescription(SelectedNode: any) {
+            let conceptDescriptionRepoURL = '';
+            if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
+                conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
+            } else {
+                return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
+            }
+            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(SelectedNode.semanticId.keys[0].value);
+            let context = 'retrieving ConceptDescription';
+            let disableMessage = true;
+
+            // Return the promise from getRequest
+            return this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) {
+                    // console.log('ConceptDescription Data: ', response.data.embeddedDataSpecifications);
+                    return response.data;
+                } else {
+                    return {};
+                }
+            });
         },
     },
 })

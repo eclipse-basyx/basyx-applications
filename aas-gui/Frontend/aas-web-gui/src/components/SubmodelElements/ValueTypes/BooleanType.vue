@@ -1,14 +1,14 @@
 <template>
     <v-list-item class="pt-0">
         <template v-slot:title>
-            <v-switch inset density="compact" v-model="newBooleanValue" color="primary" messages="greyed out value on the right shows the current value in the AAS">
+            <v-switch inset density="compact" v-model="newBooleanValue" :readonly="IsOutputVariable" color="primary" :messages="isOperationVariable ? '' : 'greyed out value on the right shows the current value in the AAS'" :hide-details="IsOperationVariable ? true : false" @update:model-value="changeState">
                 <template v-slot:label>
                     <span style="display: inline; white-space: nowrap">{{ booleanValue.value }}</span>
                 </template>
             </v-switch>
         </template>
         <template v-slot:append>
-            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
+            <v-btn v-if="!IsOperationVariable" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
                 <v-icon>mdi-upload</v-icon>
             </v-btn>
         </template>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 
 export default defineComponent({
     name: 'BooleanType',
@@ -26,7 +26,7 @@ export default defineComponent({
         RequestHandling, // Mixin to handle the requests to the AAS
     },
     mixins: [RequestHandling],
-    props: ['booleanValue'],
+    props: ['booleanValue', 'isOperationVariable', 'variableType'],
 
     setup() {
         const aasStore = useAASStore()
@@ -38,13 +38,18 @@ export default defineComponent({
 
     data() {
         return {
-            newBooleanValue: '', // new value of the property
-            isFocused: false,   // boolean to check if the input field is focused
+            newBooleanValue: false as boolean, // new value of the property
         }
     },
 
     mounted() {
-        this.newBooleanValue = this.booleanValue.value;
+        // check if this.booleanValue.value is of type string
+        if (typeof this.booleanValue.value === 'string') {
+            // convert string to boolean
+            this.booleanValue.value = this.booleanValue.value === "true";
+        } else {
+            this.newBooleanValue = this.booleanValue.value;
+        }
     },
 
     watch: {
@@ -52,7 +57,7 @@ export default defineComponent({
         SelectedNode: {
             deep: true,
             handler() {
-                this.newBooleanValue = '';
+                this.newBooleanValue = false;
             }
         },
 
@@ -60,7 +65,11 @@ export default defineComponent({
         booleanValue: {
             deep: true,
             handler() {
-                if (!this.isFocused) {
+                // check if this.booleanValue.value is of type string
+                if (typeof this.booleanValue.value === 'string') {
+                    // convert string to boolean
+                    this.booleanValue.value = this.booleanValue.value === "true";
+                } else {
                     this.newBooleanValue = this.booleanValue.value;
                 }
             }
@@ -77,14 +86,38 @@ export default defineComponent({
         SelectedNode() {
             return this.aasStore.getSelectedNode;
         },
+
+        // Check if the Property is an Operation Variable
+        IsOperationVariable() {
+            // check if isOperationVariable is not undefined
+            if (this.isOperationVariable != undefined) {
+                return this.isOperationVariable;
+            } else {
+                return false;
+            }
+        },
+
+        // Check if the Property is an Output Operation Variable
+        IsOutputVariable() {
+            // check if isOperationVariable is not undefined
+            if (this.isOperationVariable != undefined) {
+                return this.variableType == 'outputVariables';
+            } else {
+                return false;
+            }
+        },
     },
 
     methods: {
         // Function to update the value of the property
         updateValue() {
-            // console.log("Update Value: " + this.newPropertyValue);
+            if (this.IsOperationVariable) {
+                this.$emit('updateValue', this.newBooleanValue);
+                return;
+            }
+            // console.log("Update Value: ", this.newBooleanValue);
             let path = this.booleanValue.path + '/$value';
-            let content = JSON.stringify(this.newBooleanValue);
+            let content = JSON.stringify(this.newBooleanValue.toString());
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.booleanValue.modelType + ' "' + this.booleanValue.idShort + '"';
             let disableMessage = false;
@@ -99,20 +132,11 @@ export default defineComponent({
             });
         },
 
-        // Function to set the focus on the input field
-        setFocus(e: boolean) {
-            this.isFocused = e;
-            if (!e) this.newBooleanValue = this.booleanValue.value; // set input to current value in the AAS if the input field is not focused
-        },
-
-        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
-        unitSuffix(prop: any) {
-            if (prop.embeddedDataSpecifications && prop.embeddedDataSpecifications.length > 0 && prop.embeddedDataSpecifications[0].dataSpecificationContent && prop.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                return prop.embeddedDataSpecifications[0].dataSpecificationContent.unit;
-            } else {
-                return '';
+        changeState() {
+            if (this.IsOperationVariable) {
+                this.updateValue();
             }
-        },
+        }
     },
 });
 </script>

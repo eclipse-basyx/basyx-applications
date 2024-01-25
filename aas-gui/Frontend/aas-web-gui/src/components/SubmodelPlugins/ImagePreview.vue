@@ -59,11 +59,6 @@ export default defineComponent({
     },
 
     computed: {
-        // get selected AAS from Store
-        SelectedAAS() {
-            return this.aasStore.getSelectedAAS;
-        },
-
         // Get the selected Treeview Node (SubmodelElement) from the store
         SelectedNode() {
             return this.aasStore.getSelectedNode;
@@ -76,7 +71,8 @@ export default defineComponent({
             if (!path) return '';
             // check if Link starts with '/'
             if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
+                // console.log('Image Path: ', this.SelectedNode.path + '/attachment');
+                path = this.SelectedNode.path + '/attachment';
             }
             return path;
         }

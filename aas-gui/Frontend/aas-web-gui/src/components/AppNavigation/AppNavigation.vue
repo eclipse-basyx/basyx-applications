@@ -5,7 +5,7 @@
             <v-row class="mx-0" align="center">
                 <v-tooltip location="bottom" :open-delay="600">
                     <template v-slot:activator="{ props }">
-                        <v-card @click="openDashboard()" flat v-bind="props" color="appBar">
+                        <v-card flat v-bind="props" color="appBar">
                             <v-row align="center">
                                 <v-col class="ml-1 my-1">
                                     <!-- Logo in the App Bar -->
@@ -18,7 +18,6 @@
                             </v-row>
                         </v-card>
                     </template>
-                    <span v-if="WidgetFeatureActive">{{ 'Dashboard' }}</span>
                 </v-tooltip>
                 <!-- Menu Toggle (Desktop) -->
                 <v-menu v-if="!isMobile" :close-on-content-click="false" v-model="mainMenu">
@@ -130,7 +129,6 @@ import { defineComponent } from 'vue';
 import { mergeProps } from 'vue'
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
-import { useWidgetsStore } from '@/store/WidgetsStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASList  from './AASList.vue';
@@ -142,7 +140,7 @@ import Settings from './Settings.vue';
 export default defineComponent({
     name: 'AppNavigation', // Name of the Component
     components: {
-        RequestHandling, // Mixin to handle the requests to the Registry Server
+        RequestHandling,
 
         AASList,    // Component to display the AAS List
         AutoSync,   // Component to display the Auto-Sync Settings
@@ -155,21 +153,21 @@ export default defineComponent({
     setup () {
         const theme = useTheme()
         const navigationStore = useNavigationStore()
-        const widgetsStore = useWidgetsStore()
         const envStore = useEnvStore()
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
-            widgetsStore, // WidgetsStore Object
             envStore, // EnvironmentStore Object
         }
     },
     
     data() {
         return {
-            loading: false,                 // Variable to show the loading animation on the Connect Button
-            registryURL: '',                // Variable to store the Registry Server URL
+            loadingAASRegistry: false,      // Variable to show the loading animation on the Connect Button for the AAS Registry
+            loadingSubmodelRegistry: false, // Variable to show the loading animation on the Connect Button for the Submodel Registry
+            aasRegistryURL: '',             // Variable to store the AAS Registry URL
+            submodelRegistryURL: '',        // Variable to store the Submodel Registry URL
             AASRepoURL: '',                 // Variable to store the AAS Repository URL
             SubmodelRepoURL: '',            // Variable to store the Submodel Repository URL
             ConceptDescriptionRepoURL: '',  // Variable to store the Concept Description Repository URL
@@ -207,16 +205,29 @@ export default defineComponent({
             }
         }
 
-        // auto connect to registry server that was saved in local storage
-        let RegistryURL = window.localStorage.getItem('registryURL');
-        if(RegistryURL) {
-            this.registryURL = RegistryURL;
-            this.connectToRegistry();
+        // auto connect to aas registry that was saved in local storage
+        let aasRegistryURL = window.localStorage.getItem('aasRegistryURL');
+        if(aasRegistryURL) {
+            this.aasRegistryURL = aasRegistryURL;
+            this.connectToAASRegistry();
             // console.log('RegistryURL was found in local storage', RegistryURL);
         } else { // if no registry server was saved in local storage, check if an environment variable is set
-            if (this.EnvRegistryPath && this.EnvRegistryPath != '') {
-                this.registryURL = this.EnvRegistryPath;
-                this.connectToRegistry();
+            if (this.EnvAASRegistryPath && this.EnvAASRegistryPath != '') {
+                this.aasRegistryURL = this.EnvAASRegistryPath;
+                this.connectToAASRegistry();
+            }
+        }
+
+        // auto connect to submodel registry that was saved in local storage
+        let submodelRegistryURL = window.localStorage.getItem('submodelRegistryURL');
+        if(submodelRegistryURL) {
+            this.submodelRegistryURL = submodelRegistryURL;
+            this.connectToSubmodelRegistry();
+            // console.log('SubmodelRegistryURL was found in local storage', SubmodelRegistryURL);
+        } else { // if no submodel registry server was saved in local storage, check if an environment variable is set
+            if (this.EnvSubmodelRegistryPath && this.EnvSubmodelRegistryPath != '') {
+                this.submodelRegistryURL = this.EnvSubmodelRegistryPath;
+                this.connectToSubmodelRegistry();
             }
         }
 
@@ -301,14 +312,14 @@ export default defineComponent({
             return this.$route.name == 'MainWindow' ? true : false;
         },
 
-        // Get the Activation Status of the Widget Feature
-        WidgetFeatureActive() {
-            return this.widgetsStore.getWidgetFeatureActive;
+        // Get the Env Variable for the AAS Registry URL from the store
+        EnvAASRegistryPath() {
+            return this.envStore.getEnvAASRegistryPath;
         },
 
-        // Get the Env Variable for the Registry Server URL from the store
-        EnvRegistryPath() {
-            return this.envStore.getEnvRegistryPath;
+        // Get the Env Variable for the Submodel Registry URL from the store
+        EnvSubmodelRegistryPath() {
+            return this.envStore.getEnvSubmodelRegistryPath;
         },
 
         // Get the Env Variable for the AAS Repo URL from the store
@@ -344,23 +355,43 @@ export default defineComponent({
     methods: {
         mergeProps,
 
-        // Function to connect to the Registry
-        connectToRegistry() {
-            // console.log('connect to registry: ' + this.registryURL);
-            if(this.registryURL != '') {
-                this.loading = true;
-                let path = this.registryURL + '/shell-descriptors';
-                let context = 'connecting to Registry Server'
+         // Function to connect to the AAS Registry
+        connectToAASRegistry() {
+            // console.log('connect to aas registry: ' + this.aasRegistryURL);
+            if (this.aasRegistryURL != '') {
+                this.loadingAASRegistry = true;
+                let path = this.aasRegistryURL + '/shell-descriptors';
+                let context = 'connecting to AAS Registry'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
-                    this.loading = false;
+                    this.loadingAASRegistry = false;
                     if (response.success) {
-                        this.navigationStore.dispatchRegistryURL(this.registryURL); // save the URL in the NavigationStore
-                        window.localStorage.setItem('registryURL', this.registryURL); // save the URL in the local storage
-                        this.checkWidgetApi(); // check if the Widget API is available
+                        this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL); // save the URL in the NavigationStore
+                        window.localStorage.setItem('aasRegistryURL', this.aasRegistryURL); // save the URL in the local storage
                     } else {
-                        this.navigationStore.dispatchRegistryURL(''); // clear the URL in the NavigationStore
-                        window.localStorage.removeItem('registryURL'); // remove the URL from the local storage
+                        this.navigationStore.dispatchAASRegistryURL(''); // clear the AAS Registry URL in the NavigationStore
+                        window.localStorage.removeItem('aasRegistryURL'); // remove the URL from the local storage
+                    }
+                });
+            }
+        },
+
+        // Function to connect to the Submodel Registry
+        connectToSubmodelRegistry() {
+            // console.log('connect to submodel registry: ' + this.submodelRegistryURL);
+            if (this.submodelRegistryURL != '') {
+                this.loadingSubmodelRegistry = true;
+                let path = this.submodelRegistryURL + '/submodel-descriptors';
+                let context = 'connecting to Submodel Registry'
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    this.loadingSubmodelRegistry = false;
+                    if (response.success) {
+                        this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL); // save the URL in the NavigationStore
+                        window.localStorage.setItem('submodelRegistryURL', this.submodelRegistryURL); // save the URL in the local storage
+                    } else {
+                        this.navigationStore.dispatchSubmodelRegistryURL(''); // clear the Submodel Registry URL in the NavigationStore
+                        window.localStorage.removeItem('submodelRegistryURL'); // remove the URL from the local storage
                     }
                 });
             }
@@ -387,36 +418,9 @@ export default defineComponent({
             }
         },
 
-        // Function to check if Widget API is available and set the Widget Feature Activation Status in the store
-        checkWidgetApi() {
-            let WidgetApiURL = this.registryURL.split(':') as any;
-            WidgetApiURL[2] = '4000';
-            // join the array to a string
-            WidgetApiURL = WidgetApiURL.join(':');
-            // check if the Widget API is available
-            let path = WidgetApiURL + '/api/getallwidgets';
-            let context = 'trying to connect to Widget API';
-            let disableMessage = true;
-            // Send Request to get all Widgets
-            this.getRequest(path, context, disableMessage).then((response: any) => {
-                if (response.success) {
-                    this.navigationStore.dispatchWidgetApiURL(WidgetApiURL); // save the Widget API URL in the NavigationStore
-                    this.widgetsStore.dispatchWidgetFeatureActive(true); // set the Widget Feature Activation Status to true
-                } else {
-                    this.navigationStore.dispatchWidgetApiURL(''); // clear the Widget API URL in the NavigationStore
-                    this.widgetsStore.dispatchWidgetFeatureActive(false); // set the Widget Feature Activation Status to false
-                }
-            });
-        },
-
         // Function to close the Snackbar
         closeSnackbar() {
             this.navigationStore.dispatchSnackbar({ status: false });
-        },
-
-        // Function to open the Dashboard
-        openDashboard() {
-            if(this.$route.name != 'Dashboard' && this.WidgetFeatureActive) this.$router.push({ name: 'Dashboard' });
         },
 
         // Function to open the clicked mobile menu entry

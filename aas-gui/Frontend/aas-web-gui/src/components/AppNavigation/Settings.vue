@@ -3,8 +3,8 @@
         <template v-slot:activator="{ props }">
             <v-btn v-bind="props" icon="mdi-cog" class="ml-3"></v-btn>
         </template>
-        <v-card min-width="300px">
-            <v-list nav class="pt-0 pb-2 bg-card">
+        <v-card min-width="300px" :color="isMobile ? 'card' : 'navigationMenu'" :style="{ 'border-style': isMobile ? '' : 'solid', 'border-width': isMobile ? '' : '1px' }">
+            <v-list nav class="pt-0 pb-2" :class="isMobile ? 'bg-card' : 'bg-navigationMenu'">
                 <!-- Switch to change the app theme -->
                 <ThemeSwitch></ThemeSwitch>
             </v-list>
@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useNavigationStore } from '@/store/NavigationStore';
 
 import ThemeSwitch from './Settings/ThemeSwitch.vue';
 
@@ -21,6 +22,26 @@ export default defineComponent({
     name: 'Settings',
     components: {
         ThemeSwitch,
+    },
+
+    setup() {
+        const navigationStore = useNavigationStore()
+
+        return {
+            navigationStore, // NavigationStore Object
+        }
+    },
+
+    computed: {
+        // Check if the current Platform is Mobile
+        isMobile() {
+            return this.platform.android || this.platform.ios ? true : false;
+        },
+
+        // get Platform from store
+        platform() {
+            return this.navigationStore.getPlatform;
+        },
     },
 });
 </script>

@@ -129,13 +129,13 @@ export default defineComponent({
         // Function to update the Path of the File Element
         updatePath() {
             // console.log("Update Path: " + this.newPathValue);
-            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/value';
-            let content = "'" + this.newPathValue + "'";
+            let path = this.fileObject.path + '/$value';
+            let content = JSON.stringify(this.newPathValue);
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the path of the file element
-            this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+            this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     this.$emit('updatePath'); // emit event to update the path in the parent component
                 }
@@ -192,7 +192,7 @@ export default defineComponent({
             if(!path) return '';
             // check if Link starts with '/'
             if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
+                path = this.SelectedNode.path + '/attachment';
             }
             return path;
         }

@@ -7,16 +7,10 @@
                         <div>Visualization</div>
                     </v-col>
                     <v-spacer></v-spacer>
-                    <!-- Configurator for Widgets (add new Widgets) -->
-                    <v-col cols="auto" class="py-0">
-                        <WidgetConfigurator v-if="WidgetFeatureActive && SelectedNode && Object.keys(SelectedNode).length > 0" :submodelElementData="submodelElementData"></WidgetConfigurator>
-                    </v-col>
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text v-if="submodelElementData && Object.keys(submodelElementData).length > 0" style="overflow-y: auto; height: calc(100vh - 170px)">
-                <!-- Add Widgets matched an DB Entries here -->
-                <WidgetEntrypoint v-if="WidgetFeatureActive" :submodelElementData="submodelElementData" :selectedNode="SelectedNodeToTransfer"></WidgetEntrypoint>
                 <!-- Add Plugins matched on SemanticId's inside the SubmodelEntrypoint -->
                 <SubmodelEntrypoint :submodelElementData="submodelElementData" :selectedNode="SelectedNodeToTransfer"></SubmodelEntrypoint>
             </v-card-text>
@@ -28,14 +22,10 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
-import { useWidgetsStore } from '@/store/WidgetsStore';
 import RequestHandling from '../mixins/RequestHandling';
 import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
 
 import SubmodelEntrypoint from './SubmodelPlugins/_SubmodelEntrypoint.vue';
-import WidgetEntrypoint from './Widgets/_WidgetEntrypoint.vue';
-
-import WidgetConfigurator from './Widgets/WidgetConfigurator.vue';
 
 export default defineComponent({
     name: 'ComponentVisualization',
@@ -44,21 +34,16 @@ export default defineComponent({
         SubmodelElementHandling, // Mixin to handle the SubmodelElements
 
         SubmodelEntrypoint, // Submodel Plugin Entrypoint Component
-        WidgetEntrypoint, // Visualization Widgets Entrypoint Component
-
-        WidgetConfigurator, // Widget Configurator Component
     },
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
-        const widgetsStore = useWidgetsStore()
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
-            widgetsStore, // WidgetsStore Object
         }
     },
 
@@ -81,9 +66,16 @@ export default defineComponent({
     },
 
     watch: {
-        // Resets the submodelElementData when the Registry Server changes
-        registryServerURL() {
-            if (!this.registryServerURL) {
+        // Resets the submodelElementData when the AAS Registry changes
+        aasRegistryServerURL() {
+            if (!this.aasRegistryServerURL) {
+                this.submodelElementData = {};
+            }
+        },
+
+        // Resets the submodelElementData when the Submodel Registry changes
+        submodelRegistryServerURL() {
+            if (!this.submodelRegistryServerURL) {
                 this.submodelElementData = {};
             }
         },
@@ -115,9 +107,14 @@ export default defineComponent({
     },
 
     computed: {
-        // get Registry Server URL from Store
-        registryServerURL() {
-            return this.navigationStore.getRegistryURL;
+        // get AAS Registry URL from Store
+        aasRegistryServerURL() {
+            return this.navigationStore.getAASRegistryURL;
+        },
+
+        // get the Submodel Registry URL from Store
+        submodelRegistryServerURL() {
+            return this.navigationStore.getSubmodelRegistryURL;
         },
 
         // get selected AAS from Store
@@ -144,11 +141,6 @@ export default defineComponent({
         // Get the real-time object from the store
         RealTimeObject() {
             return this.aasStore.getRealTimeObject;
-        },
-
-        // Get the Activation Status of the Widget Feature
-        WidgetFeatureActive() {
-            return this.widgetsStore.getWidgetFeatureActive;
         },
 
         // Check if the current Platform is Mobile

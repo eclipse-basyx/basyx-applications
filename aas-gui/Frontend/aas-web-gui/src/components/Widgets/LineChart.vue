@@ -1,16 +1,34 @@
 <template>
     <v-container fluid class="pa-0">
-        <apexchart ref="linechart" height="350" :options="chartOptions" :series="chartSeries"></apexchart>
+        <!-- Options -->
+        <v-list nav class="pa-0" style="margin-left: -8px; margin-top: -14px">
+            <v-list-item class="pb-0">
+                <template v-slot:title>
+                    <div class="text-subtitle-2">{{ "Options: " }}</div>
+                </template>
+            </v-list-item>
+        </v-list>
+        <v-row align="center">
+            <v-col cols="auto">
+                <v-text-field type="number" hide-details density="compact" v-model="range" label="Range" variant="outlined" suffix="ms" @blur="changeRange()" @keydown.native.enter="changeRange()"></v-text-field>
+            </v-col>
+            <v-col cols="auto">
+                <v-select hide-details density="compact" :items="interpolationOptions" v-model="interpolation" label="Interpolation" variant="outlined" @update:model-value="changeInterpolation()"></v-select>
+            </v-col>
+        </v-row>
+        <apexchart ref="linechart" type="line" height="350" :options="chartOptions" :series="chartSeries"></apexchart>
     </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
+import WidgetHandling from '@/mixins/WidgetHandling';
 
 export default defineComponent({
     name: 'LineChart',
-    props: ['submodelElementData', 'widgetSettings'],
+    props: ['chartData', 'timeVariable', 'yVariables'],
+    mixins: [WidgetHandling],
 
     setup() {
         const theme = useTheme()
@@ -22,25 +40,22 @@ export default defineComponent({
 
     data() {
         return {
-            chartSeries: [] as Array<any>,
+            chartSeries: [
+                {
+                    name: 'Value',
+                    data: []
+                }
+            ] as Array<any>,
             chartOptions: {
                 chart: {
-                    id: 'realtime',
+                    id: 'line',
+                    type: 'line',
+                    height: 350,
                     background: '#ffffff00',
-                    redrawOnParentResize: true,
-                    redrawOnWindowResize: true,
-                    animations: {
-                        enabled: true,
-                        easing: 'linear',
-                        dynamicAnimation: {
-                            speed: 1000,
-                        },
-                    },
                 },
                 xaxis: {
                     type: 'datetime',
                     range: 60000,
-                    tickAmount: 10,
                     labels: {
                         datetimeFormatter: {
                             year: 'yyyy',
@@ -52,10 +67,7 @@ export default defineComponent({
                     tickPlacement: 'on',
                 },
                 yaxis: {
-                    decimalsInFloat: 2,
-                    title: {
-                        text: ''
-                    },
+                    decimalsInFloat: 2
                 },
                 stroke: {
                     curve: 'smooth',
@@ -64,21 +76,33 @@ export default defineComponent({
                 grid: {
                     xaxis: {
                         lines: {
-                            show: false
+                            show: true
                         }
+                    },
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd MMM yyyy HH:mm:ss'
                     },
                 },
                 theme: {
                     mode: 'dark'
                 },
-            },
+            } as any,
+            range: 60000,
+            interpolationOptions: [
+                'smooth',
+                'straight',
+                'stepline',
+            ],
+            interpolation: 'smooth',
         }
     },
 
     mounted() {
         this.$nextTick(() => {
             const chart = (this.$refs.linechart as any).chart
-            if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
+            if (chart) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
                 this.applyTheme();
@@ -90,9 +114,9 @@ export default defineComponent({
 
     watch: {
         // appendData to the chart if the submodelElementData changed
-        submodelElementData: {
+        chartData: {
             handler() {
-                this.updateView();
+                this.initializeSeries();
             },
             deep: true,
         },
@@ -113,134 +137,45 @@ export default defineComponent({
     methods: {
         // Function to initialize the chart (by appending the series)
         initializeSeries() {
-            // check if the submodelElementData is a collection or a property
-            if (this.widgetSettings.idShorts && this.widgetSettings.idShorts.length > 0) { // Collection
-                // Filter submodelElementData by idShorts from widgetSettings
-                let collectionValues = [] as Array<any>;
-                this.widgetSettings.idShorts.forEach((element: any) => {
-                    this.submodelElementData.value.forEach((el: any) => {
-                        if (element == el.idShort) {
-                            collectionValues.push(el)
-                        }
-                    });
-                });
-                // console.log('collectionValues: ', collectionValues, 'widgetSettings: ', this.widgetSettings);
-                collectionValues.forEach((element: any, index: number) => {
-                    // seriesName is updated with set value for Displayed Name
-                    // if value to display is a boolean, convert true to 1 and false to 0
-                    if(typeof element.value === "boolean"){
-                        element.value ? 1 : 0;
-                    }
-                    let seriesName = this.widgetSettings.chartNamesUnits[index].name + ' [' + this.widgetSettings.chartNamesUnits[index].unit + ']';
-                    let chartValues = [{ x: this.submodelElementData.timestamp, y: element.value }];
-                    let chartSeries = {
-                        name: seriesName,
-                        data: chartValues
-                    } as any;
-                    let chartOptions = {
-                        xaxis: {
-                            type: 'datetime',
-                            range: this.widgetSettings.chartRange,
-                            tickAmount: 10,
-                            labels: {
-                                datetimeFormatter: {
-                                    year: 'yyyy',
-                                    month: 'MMM \'yy',
-                                    day: 'dd MMM',
-                                    hour: 'HH:mm',
-                                },
-                            },
-                            tickPlacement: 'on',
-                        },
-                    } as any;
-                    // update the chartOptions
-                    // console.log('chartOptions: ', chartOptions);
-                    (this.$refs.linechart as any).updateOptions(chartOptions);
-                    // append the series to the chart
-                    (this.$refs.linechart as any).appendSeries(chartSeries);
-                });
-            } else { // Property
-                // add seriesName as y-Axis title
-                let chartOptions = {
-                    xaxis: {
-                        type: 'datetime',
-                        range: this.widgetSettings.chartRange,
-                        tickAmount: 10,
-                        labels: {
-                            datetimeFormatter: {
-                                year: 'yyyy',
-                                month: 'MMM \'yy',
-                                day: 'dd MMM',
-                                hour: 'HH:mm',
-                            },
-                        },
-                        tickPlacement: 'on',
-                    },
-                    yaxis: {
-                        decimalsInFloat: 2,
-                        title: {
-                            text: this.widgetSettings.chartNamesUnits[0].name + ' [' + this.widgetSettings.chartNamesUnits[0].unit + ']'
-                        }
-                    }
-                } as any;
-                // if value to display is a boolean, convert true to 1 and false to 0
-                if(typeof this.submodelElementData.value === "boolean"){
-                    chartOptions.xaxis.stroke = "straight";
-                    this.submodelElementData.value ? 1 : 0;
-                } else {
-                    chartOptions.xaxis.stroke = "smooth"
+            // console.log('initializeSeries: ', this.chartData, this.timeVariable, this.yVariables);
+            // Prepare new series values
+            let newSeries = this.prepareSeriesValues(this.chartData, this.yVariables);
+            // prepare the tooltip for the y-axis
+            let tooltip_y = this.prepareYValueTooltip(this.chartData, this.yVariables);
+            // console.log('newSeries: ', newSeries);
+            // update the series
+            (this.$refs.linechart as any).updateSeries(newSeries);
+            // console.log('tooltip y: ', tooltip_y);
+            // update the tooltip
+            (this.$refs.linechart as any).updateOptions({
+                tooltip: {
+                    y: tooltip_y
                 }
-                // update the chartOptions
-                // console.log('chartOptions: ', chartOptions);
-                (this.$refs.linechart as any).updateOptions(chartOptions);
-                // append the series to the chart
-                (this.$refs.linechart as any).appendSeries({
-                    name: this.widgetSettings.chartNamesUnits[0].name,
-                    data: [{ x: this.submodelElementData.timestamp, y: this.submodelElementData.value }]
-                });
-            }
+            });
         },
 
-        // Function to appendData to the chart
-        updateView() {
-            // console.log('updateView: ', this.submodelElementData);
-            if(!this.submodelElementData || Object.keys(this.submodelElementData).length === 0) {
+        changeRange() {
+            let range = Number(this.range);
+            if (!range) {
+                this.range = 60000;
                 return;
             }
-            // check if the submodelElementData is a collection or a property
-            if (this.widgetSettings.idShorts && this.widgetSettings.idShorts.length > 0) { // Collection
-                // Filter submodelElementData by idShorts from widgetSettings
-                let collectionValues = [] as Array<any>;
-                this.widgetSettings.idShorts.forEach((element: any) => {
-                    this.submodelElementData.value.forEach((el: any) => {
-                        if (element == el.idShort) {
-                            collectionValues.push(el)
-                        }
-                    });
-                });
-                // create a new array in the form [{ data: [{ x, y }] }, { data: [{ x, y }] }]
-                let chartValues = [] as Array<any>;
-                collectionValues.forEach((element: any) => {
-                    // if value to display is a boolean, convert true to 1 and false to 0
-                    if(typeof element.value === "boolean"){
-                        element.value ? 1 : 0;
-                    }
-                    let chartValue = { x: this.submodelElementData.timestamp, y: element.value };
-                    chartValues.push({ data: [chartValue] });
-                });
-                // append the new chartValues to the chart
-                (this.$refs.linechart as any).appendData(chartValues);
-            } else { // Property
-                // if value to display is a boolean, convert true to 1 and false to 0
-                if(typeof this.submodelElementData.value === "boolean"){
-                    this.submodelElementData.value ? 1 : 0;
-                }
-                const x = this.submodelElementData.timestamp;
-                const y = this.submodelElementData.value;
-                (this.$refs.linechart as any).appendData([{ 
-                    data: [{ x, y }] 
-                }])
+            if (range <= 0) {
+                return;
             }
+            (this.$refs.linechart as any).updateOptions({
+                xaxis: {
+                    range: this.range
+                }
+            });
+        },
+
+        changeInterpolation() {
+            (this.$refs.linechart as any).updateOptions({
+                stroke: {
+                    curve: this.interpolation
+                }
+            });
         },
 
         // Function to apply the selected theme to the chart

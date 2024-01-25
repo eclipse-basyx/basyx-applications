@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 export const useEnvStore = defineStore({
     id: 'envStore',
     state: () => ({
-        registryPath: import.meta.env.VITE_REGISTRY_PATH as string,
+        aasRegistryPath: import.meta.env.VITE_AAS_REGISTRY_PATH as string,
+        submodelRegistryPath: import.meta.env.VITE_SUBMODEL_REGISTRY_PATH as string,
         aasRepoPath: import.meta.env.VITE_AAS_REPO_PATH as string,
         submodelRepoPath: import.meta.env.VITE_SUBMODEL_REPO_PATH as string,
         conceptDescriptionRepoPath: import.meta.env.VITE_CD_REPO_PATH as string,
@@ -11,8 +12,11 @@ export const useEnvStore = defineStore({
         basePath: import.meta.env.VITE_BASE_PATH as string,
     }),
     getters: {
-        getEnvRegistryPath(state) {
-            return state.registryPath;
+        getEnvAASRegistryPath(state) {
+            return state.aasRegistryPath;
+        },
+        getEnvSubmodelRegistryPath(state) {
+            return state.submodelRegistryPath;
         },
         getEnvAASRepoPath(state) {
             return state.aasRepoPath;
