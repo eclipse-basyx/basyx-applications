@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@types/md5": "^2.3.2",
-    "@types/node": "^18.11.9",
+    "@types/node": "^20.11.16",
     "@types/uuid": "^9.0.0",
     "@types/webfontloader": "^1.6.38",
     "@vitejs/plugin-vue": "^4.6.2",
