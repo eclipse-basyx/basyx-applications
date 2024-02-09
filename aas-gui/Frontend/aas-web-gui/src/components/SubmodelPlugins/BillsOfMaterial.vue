@@ -1,0 +1,218 @@
+<template>
+    <v-container fluid class="pa-0">
+        <!-- Header -->
+        <v-card class="mb-4">
+            <v-card-title>
+                <div class="text-subtitle-1">{{ "Bills of Material:" }}</div>
+            </v-card-title>
+        </v-card>
+        <!-- BoM Graph -->
+        <v-card>
+            <v-card-text id="BoMCard">
+                <!-- Archetype -->
+                <v-list-item class="px-2 pb-3">
+                    <v-list-item-title>
+                        <span class="text-subtitle-2 mr-2">{{ 'Archetype: ' }}</span>
+                        <v-chip label size="x-small" border color="primary" style="margin-top: -3px">{{ archetype }}</v-chip>
+                    </v-list-item-title>
+                </v-list-item>
+                <div id="BoMDiagram" style="position: relative; max-width: 100%"></div>
+            </v-card-text>
+        </v-card>
+    </v-container>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import mermaid from 'mermaid';
+import { useTheme } from 'vuetify';
+import { useAASStore } from '@/store/AASDataStore';
+import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+
+export default defineComponent({
+    name: 'BillsOfMaterial',
+    components: {
+        RequestHandling, // Mixin to handle the requests to the AAS
+    },
+    mixins: [RequestHandling, SubmodelElementHandling],
+    props: ['submodelElementData'],
+
+    setup() {
+        const theme = useTheme()
+        const aasStore = useAASStore()
+
+        return {
+            theme, // Theme Object
+            aasStore, // AASStore Object
+        }
+    },
+
+    data() {
+        return {
+            archetype: '', // Archetype of the BoM
+            customDefaultThemeColors: {
+                nodeBorder: '#000', // change the color of the node borders
+                lineColor: '#000', // change the color of the arrow lines
+                mainBkg: '#fff', // change the background color of the nodes
+            },
+            customDarkThemeColors: {
+                nodeBorder: '#fff', // change the color of the node borders
+                lineColor: '#fff', // change the color of the arrow lines
+                mainBkg: '#000', // change the background color of the nodes
+            },
+        }
+    },
+
+    mounted() {
+        this.initializeBoM(); // initialize BoM Plugin
+    },
+
+    watch: {
+        // watch for changes in the vuetify theme and update the chart options
+        isDark() {
+            this.applyTheme();
+        },
+    },
+
+    computed: {
+        // Check if the current Theme is dark
+        isDark() {
+            return this.theme.global.current.value.dark
+        },
+
+        // get the vuetify primary color
+        primaryColor() {
+            return this.theme.current.value.colors.primary;
+        },
+    },
+
+    methods: {
+        initializeBoM() {
+            // console.log('Initialize BoM Plugin:', this.submodelElementData);
+            // apply the primary color to the mermaid settings
+            this.customDefaultThemeColors.nodeBorder = this.primaryColor;
+            this.customDefaultThemeColors.mainBkg = this.primaryColor + '0A';
+            this.customDarkThemeColors.nodeBorder = this.primaryColor;
+            this.customDarkThemeColors.mainBkg = this.primaryColor + '0A';
+            // get the archetype of the BoM
+            this.archetype = this.getArchetype();
+            // initialize mermaid
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: this.isDark ? 'dark' : 'default',
+                themeVariables: this.isDark ? this.customDarkThemeColors : this.customDefaultThemeColors,
+            });
+            // render mermaid graph
+            this.drawDiagram();
+        },
+
+        async drawDiagram() {
+            try {
+                let element = document.querySelector('#BoMDiagram');
+                // create the graphDefinition
+                const graphDefinition = this.createGraphDefinition();
+                const { svg } = await mermaid.render('BoMDiagram', graphDefinition);
+                if (element) {
+                    element.innerHTML = svg;
+                    // add the element to the card
+                    let card = document.querySelector('#BoMCard');
+                    if (card) {
+                        card.appendChild(element);
+                    }
+                }
+            } catch (error) {
+                console.error("Error rendering Mermaid diagram:", error);
+            }
+        },
+
+        createGraphDefinition(): string {
+            let graphDefinition = 'graph LR\n';
+            let entryNode = this.submodelElementData.submodelElements.find((element: any) => {
+                return element.semanticId.keys[0].value === "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0";
+            });
+            if (!entryNode) return graphDefinition;
+            // console.log('Entry Node:', entryNode);
+
+            if (!entryNode.statements) return graphDefinition;
+            const hasChildren = entryNode.statements.some((element: any) => {
+                return element.modelType === 'Entity';
+            });
+            if (!hasChildren) return graphDefinition;
+
+            graphDefinition = this.addChildrenToGraph(entryNode, graphDefinition); // Update the graphDefinition
+
+            // console.log('Graph Definition:\n', graphDefinition);
+            return graphDefinition;
+        },
+
+        addChildrenToGraph(parentNode: any, graphDefinition: string): string {
+            // get all children of the parentNode
+            let children = parentNode.statements.filter((element: any) => {
+                return element.modelType === 'Entity';
+            });
+            // console.log('Children:', children);
+            // get all RelationShipElements of the parentNode
+            let relationships = parentNode.statements.filter((element: any) => {
+                return element.modelType === 'RelationshipElement';
+            });
+            // extract the semanticId of the relationships (result should be relationships = [semanticId1, semanticId2, ...])
+            relationships = relationships.map((element: any) => {
+                return element.semanticId.keys[0].value;
+            });
+            // console.log('Relationships:', relationships);
+            // check if all relationships are the same
+            const allEqual = relationships.every((element: any) => {
+                return element === relationships[0];
+            });
+            if (!allEqual) this.navigationStore.dispatchSnackbar({ status: true, timeout: 10000, color: 'warning', btnColor: 'buttonText', text: 'Only one type of relationship is allowed!' });
+            // extract the first relationship
+            let relationship = relationships[0];
+            // translate the relationship semanticId to a readable string
+            if (relationship === "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0") {
+                relationship = 'HasPart';
+            } else if (relationship === "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0") {
+                relationship = 'IsPartOf';
+            } else {
+                relationship = '';
+            }
+
+            children.forEach((child: any) => {
+                graphDefinition += parentNode.idShort + '(' + parentNode.idShort + ') -->|' + relationship + '| ' + child.idShort + '(' + child.idShort + ')\n';
+                if (child.statements) {
+                    const hasChildren = child.statements.some((element: any) => {
+                        return element.modelType === 'Entity';
+                    });
+                    if (hasChildren) {
+                        graphDefinition = this.addChildrenToGraph(child, graphDefinition); // Update graphDefinition with returned value
+                    }
+                }
+            });
+
+            return graphDefinition; // Return the updated string
+        },
+
+        getArchetype(): string {
+            // find a submodelElement in the this.submodelElementData.submodelElements array whichs semanticId is equal to "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"
+            let archetypeElement = this.submodelElementData.submodelElements.find((element: any) => {
+                return element.semanticId.keys[0].value === "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0";
+            });
+            // console.log('Archetype Element:', archetypeElement);
+            if (archetypeElement) {
+                return archetypeElement.value;
+            }
+            return "no archetype found";
+        },
+
+        // apply the theme to the mermaid graph
+        applyTheme() {
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: this.isDark ? 'dark' : 'default',
+                themeVariables: this.isDark ? this.customDarkThemeColors : this.customDefaultThemeColors,
+            });
+            this.drawDiagram();
+        },
+    },
+});
+</script>

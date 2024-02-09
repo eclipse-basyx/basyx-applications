@@ -38,10 +38,11 @@ import { defineStore } from 'pinia';
 import { useAASStore } from './AASDataStore';
 
 export const useNavigationStore = defineStore({
-    id: 'navigation',
+    id: 'navigationStore',
 
     state: () => ({
         drawerState: false as boolean,
+        AASDiscoveryURL: '' as string,
         AASRegistryURL: '' as string,
         SubmodelRegistryURL: '' as string,
         AASRepoURL: '' as string,
@@ -58,6 +59,7 @@ export const useNavigationStore = defineStore({
 
     getters: {
         getDrawerState: (state) => state.drawerState,
+        getAASDiscoveryURL: (state) => state.AASDiscoveryURL,
         getAASRegistryURL: (state) => state.AASRegistryURL,
         getSubmodelRegistryURL: (state) => state.SubmodelRegistryURL,
         getAASRepoURL: (state) => state.AASRepoURL,
@@ -75,6 +77,9 @@ export const useNavigationStore = defineStore({
     actions: {
         dispatchDrawerState(drawerState: boolean) {
             this.drawerState = drawerState;
+        },
+        dispatchAASDiscoveryURL(url: string) {
+            this.AASDiscoveryURL = url;
         },
         dispatchAASRegistryURL(url: string) {
             this.AASRegistryURL = url;

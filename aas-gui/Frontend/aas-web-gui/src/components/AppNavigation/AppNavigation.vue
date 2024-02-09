@@ -3,22 +3,10 @@
         <!-- Main App Bar -->
         <v-app-bar class="px-3" color="appBar">
             <v-row class="mx-0" align="center">
-                <v-tooltip location="bottom" :open-delay="600">
-                    <template v-slot:activator="{ props }">
-                        <v-card flat v-bind="props" color="appBar">
-                            <v-row align="center">
-                                <v-col class="ml-1 my-1">
-                                    <!-- Logo in the App Bar -->
-                                    <img :src="imagePath" style="min-height: 42px; max-height: 42px; margin-top: 8px">
-                                </v-col>
-                                <v-col class="mr-3">
-                                    <!-- App Bar Title -->
-                                    <v-app-bar-title class="text-primary" style="font-weight: bold">AAS Web UI</v-app-bar-title>
-                                </v-col>
-                            </v-row>
-                        </v-card>
-                    </template>
-                </v-tooltip>
+                <v-card flat color="appBar" class="ml-2">
+                    <!-- Logo in the App Bar -->
+                    <img :src="imagePath" style="min-height: 42px; max-height: 42px">
+                </v-card>
                 <!-- Menu Toggle (Desktop) -->
                 <v-menu v-if="!isMobile" :close-on-content-click="false" v-model="mainMenu">
                     <template v-slot:activator="{ props: menu }">
@@ -94,7 +82,7 @@
         <v-footer app class="bg-appBar text-center d-flex flex-column py-0">
             <v-list-item class="px-1">
                 <v-list-item-title>
-                    <div>{{ new Date().getFullYear() }} — <strong>HTW Berlin ©</strong> - <span style="font-size: 12px">developed by Aaron Zielstorff, MIT License</span></div>
+                    <div>{{ new Date().getFullYear() }} — <strong>Eclipse BaSyx™ ©</strong></div>
                 </v-list-item-title>
             </v-list-item>
         </v-footer>
@@ -164,8 +152,10 @@ export default defineComponent({
     
     data() {
         return {
+            loadingAASDiscovery: false,     // Variable to show the loading animation on the Connect Button for the AAS Discovery
             loadingAASRegistry: false,      // Variable to show the loading animation on the Connect Button for the AAS Registry
             loadingSubmodelRegistry: false, // Variable to show the loading animation on the Connect Button for the Submodel Registry
+            aasDiscoveryURL: '',            // Variable to store the AAS Discovery URL
             aasRegistryURL: '',             // Variable to store the AAS Registry URL
             submodelRegistryURL: '',        // Variable to store the Submodel Registry URL
             AASRepoURL: '',                 // Variable to store the AAS Repository URL
@@ -202,6 +192,19 @@ export default defineComponent({
                 this.theme.global.name.value = 'dark';
             } else {
                 this.theme.global.name.value = 'light';
+            }
+        }
+
+        // auto connect to aas discovery that was saved in local storage
+        let aasDiscoveryURL = window.localStorage.getItem('aasDiscoveryURL');
+        if(aasDiscoveryURL) {
+            this.aasDiscoveryURL = aasDiscoveryURL;
+            this.connectToAASDiscovery();
+            // console.log('DiscoveryURL was found in local storage', DiscoveryURL);
+        } else { // if no discovery server was saved in local storage, check if an environment variable is set
+            if (this.EnvAASDiscoveryPath && this.EnvAASDiscoveryPath != '') {
+                this.aasDiscoveryURL = this.EnvAASDiscoveryPath;
+                this.connectToAASDiscovery();
             }
         }
 
@@ -312,6 +315,11 @@ export default defineComponent({
             return this.$route.name == 'MainWindow' ? true : false;
         },
 
+        // Get the Env Variable for the AAS Discovery URL from the store
+        EnvAASDiscoveryPath() {
+            return this.envStore.getEnvAASDiscoveryPath;
+        },
+
         // Get the Env Variable for the AAS Registry URL from the store
         EnvAASRegistryPath() {
             return this.envStore.getEnvAASRegistryPath;
@@ -355,7 +363,28 @@ export default defineComponent({
     methods: {
         mergeProps,
 
-         // Function to connect to the AAS Registry
+        // Function to connect to the AAS Discovery
+        connectToAASDiscovery() {
+            // console.log('connect to aas discovery: ' + this.aasDiscoveryURL);
+            if (this.aasDiscoveryURL != '') {
+                this.loadingAASDiscovery = true;
+                let path = this.aasDiscoveryURL + '/lookup/shells';
+                let context = 'connecting to AAS Discovery'
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    this.loadingAASDiscovery = false;
+                    if (response.success) {
+                        this.navigationStore.dispatchAASDiscoveryURL(this.aasDiscoveryURL); // save the URL in the NavigationStore
+                        window.localStorage.setItem('aasDiscoveryURL', this.aasDiscoveryURL); // save the URL in the local storage
+                    } else {
+                        this.navigationStore.dispatchAASDiscoveryURL(''); // clear the AAS Discovery URL in the NavigationStore
+                        window.localStorage.removeItem('aasDiscoveryURL'); // remove the URL from the local storage
+                    }
+                });
+            }
+        },
+
+        // Function to connect to the AAS Registry
         connectToAASRegistry() {
             // console.log('connect to aas registry: ' + this.aasRegistryURL);
             if (this.aasRegistryURL != '') {

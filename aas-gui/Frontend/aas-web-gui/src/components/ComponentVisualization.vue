@@ -22,8 +22,8 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../mixins/RequestHandling';
-import SubmodelElementHandling from '../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import SubmodelEntrypoint from './SubmodelPlugins/_SubmodelEntrypoint.vue';
 
