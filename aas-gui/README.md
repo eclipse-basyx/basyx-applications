@@ -191,7 +191,7 @@ docker run -p 3000:3000 eclipsebasyx/aas-gui
 
 `-e VITE_BASE_PATH=<base_path>`
 
-1. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command:
+4. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command:
 
 `-v <local_path_to_logo>:/app/src/assets/Logo`
 
