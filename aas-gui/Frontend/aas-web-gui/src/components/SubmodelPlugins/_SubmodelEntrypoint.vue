@@ -5,6 +5,7 @@
             <HTWFuehrungskomponente v-if="checkSemanticId('http://htw-berlin.de/smc_statemachine')" :submodelElementData="submodelElementData" :selectedNode="selectedNode"></HTWFuehrungskomponente>
             <DigitalNameplate v-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/Nameplate')" :submodelElementData="submodelElementData"></DigitalNameplate>
             <TimeSeriesData v-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="submodelElementData"></TimeSeriesData>
+            <BillsOfMaterial v-if="checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
             <JSONArrayProperty v-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')" :submodelElementData="submodelElementData"></JSONArrayProperty>
             <!-- Plugins added by the user are dynamically registered here -->
             <component v-for="(plugin, i) in filteredPlugins" :key="i" :is="plugin.name" :submodelElementData="submodelElementData"></component>
@@ -25,6 +26,7 @@ import { useAASStore } from '@/store/AASDataStore';
 import HTWFuehrungskomponente from './HTWFuehrungskomponente.vue';
 import DigitalNameplate from './DigitalNameplate.vue';
 import TimeSeriesData from './TimeSeriesData.vue';
+import BillsOfMaterial from './BillsOfMaterial.vue';
 import JSONArrayProperty from './JSONArrayProperty.vue';
 
 import ImagePreview from './ImagePreview.vue';
@@ -36,6 +38,7 @@ export default defineComponent({
         HTWFuehrungskomponente,
         DigitalNameplate,
         TimeSeriesData,
+        BillsOfMaterial,
         JSONArrayProperty,
         ImagePreview,
         PDFPreview,

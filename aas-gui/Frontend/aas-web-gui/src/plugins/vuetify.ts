@@ -15,7 +15,7 @@ import { createVuetify } from 'vuetify';
 let primaryColor = import.meta.env.VITE_PRIMARY_COLOR;
 // check if primary color is set
 if (!primaryColor) {
-  primaryColor = '#1e8567';
+  primaryColor = '#0cb2f0';
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -33,8 +33,10 @@ export default createVuetify({
   theme: {
     themes: {
       light: {
+        dark: false,
         colors: {
           primary: primaryColor,
+          background: '#FFFFFF',
           appBar: '#F5F5F5',
           navigationMenu: '#FFFFFF',
           navigationMenuSecondary: '#FAFAFA',
@@ -54,8 +56,10 @@ export default createVuetify({
         },
       },
       dark: {
+        dark: true,
         colors: {
           primary: primaryColor,
+          background: '#121212',
           appBar: '#1E1E1E',
           navigationMenu: '#1E1E1E',
           navigationMenuSecondary: '#121212',

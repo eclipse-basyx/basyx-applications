@@ -4,6 +4,7 @@ import AASList                            from './components/AppNavigation/AASLi
 import AASTreeview                        from './components/AASTreeview.vue';
 import SubmodelElementView                from './components/SubmodelElementView.vue';
 import ComponentVisualization             from './components/ComponentVisualization.vue';
+import Impressum                          from './components/Impressum.vue';
 
 const routes = [
     { path: '/',                        name: 'MainWindow',             component: MainWindow },
@@ -11,6 +12,7 @@ const routes = [
     { path: '/aastreeview',             name: 'AASTreeview',            component: AASTreeview },
     { path: '/submodelelementview',     name: 'SubmodelElementView',    component: SubmodelElementView },
     { path: '/componentvisualization',  name: 'ComponentVisualization', component: ComponentVisualization },
+    { path: '/impressum',               name: 'Impressum',              component: Impressum },
     { path: '/:pathMatch(.*)*',         name: 'NotFound',               component: MainWindow }
 ];
 

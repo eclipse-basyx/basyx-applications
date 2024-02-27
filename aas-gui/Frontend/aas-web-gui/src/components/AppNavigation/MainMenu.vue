@@ -22,11 +22,20 @@
                             <v-list-item :to="isMobile ? '/aaslist' : '/'" @click="closeMenu()">
                                 <v-list-item-title>AAS View</v-list-item-title>
                             </v-list-item>
+                            <v-list-item to="/impressum" @click="closeMenu()">
+                                <v-list-item-title>Impressum</v-list-item-title>
+                            </v-list-item>
                         </v-list>
                     </v-card>
                 </v-col>
                 <v-divider v-if="isMobile" style="margin-left: -12px"></v-divider>
                 <v-col :cols="isMobile ? 12 : 8" :class="isMobile ? 'pt-0 mb-2 px-6 bg-card' : 'pt-4 bg-navigationMenu'">
+                    <!-- Configure AAS Discovery URL -->
+                    <v-text-field variant="outlined" density="compact" hide-details class="my-3" :class="isMobile ? '' : 'mr-3'" label="AAS Discovery URL" v-model="aasDiscoveryURL" @keydown.native.enter="connectToAASDiscovery()">
+                        <template v-slot:append-inner>
+                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToAASDiscovery()" :loading="loadingAASDiscovery">Connect</v-btn>
+                        </template>
+                    </v-text-field>
                     <!-- Configure AAS Registry URL -->
                     <v-text-field variant="outlined" density="compact" hide-details class="my-3" :class="isMobile ? '' : 'mr-3'" label="AAS Registry URL" v-model="aasRegistryURL" @keydown.native.enter="connectToAASRegistry()">
                         <template v-slot:append-inner>
@@ -106,11 +115,13 @@ export default defineComponent({
 
     data() {
         return {
+            aasDiscoveryURL: '',                    // AAS Discovery Service URL
             aasRegistryURL: '',                     // AAS Registry URL
             submodelRegistryURL: '',                // Submodel Registry URL
             AASRepoURL: '',                         // AAS Repository URL
             SubmodelRepoURL: '',                    // Submodel Repository URL
             ConceptDescriptionRepoURL: '',          // Concept Description Repository URL
+            loadingAASDiscovery: false,             // Loading State of the AAS Discovery Service Connection
             loadingAASRegistry: false,              // Loading State of the AAS Registry Connection
             loadingSubmodelRegistry: false,         // Loading State of the Submodel Registry Connection
             loadingAASRepo: false,                  // Loading State of the AAS Repository Connection
@@ -121,6 +132,7 @@ export default defineComponent({
     },
 
     mounted() {
+        this.aasDiscoveryURL = this.aasDiscoveryServerURL;
         this.aasRegistryURL = this.aasRegistryServerURL;
         this.submodelRegistryURL = this.submodelRegistryServerURL;
         this.AASRepoURL = this.aasRepoURL;
@@ -137,6 +149,11 @@ export default defineComponent({
         // get Platform from store
         platform() {
             return this.navigationStore.getPlatform;
+        },
+
+        // get AAS Discovery URL from Store
+        aasDiscoveryServerURL() {
+            return this.navigationStore.getAASDiscoveryURL;
         },
 
         // get AAS Registry URL from Store
@@ -171,6 +188,27 @@ export default defineComponent({
     },
 
     methods: {
+        // Function to connect to the AAS Discovery Service
+        connectToAASDiscovery() {
+            // console.log('connect to aas discovery service: ' + this.aasDiscoveryServiceURL);
+            if (this.aasDiscoveryURL != '') {
+                this.loadingAASDiscovery = true;
+                let path = this.aasDiscoveryURL + '/lookup/shells';
+                let context = 'connecting to AAS Discovery Service'
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    this.loadingAASDiscovery = false;
+                    if (response.success) {
+                        this.navigationStore.dispatchAASDiscoveryURL(this.aasDiscoveryURL); // save the URL in the NavigationStore
+                        window.localStorage.setItem('aasDiscoveryURL', this.aasDiscoveryURL); // save the URL in the local storage
+                    } else {
+                        this.navigationStore.dispatchAASDiscoveryURL(''); // clear the AAS Discovery Service URL in the NavigationStore
+                        window.localStorage.removeItem('aasDiscoveryURL'); // remove the URL from the local storage
+                    }
+                });
+            }
+        },
+
         // Function to connect to the AAS Registry
         connectToAASRegistry() {
             // console.log('connect to aas registry: ' + this.aasRegistryURL);

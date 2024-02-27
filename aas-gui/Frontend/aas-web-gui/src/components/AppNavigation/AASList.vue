@@ -93,8 +93,8 @@ import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import AASListDetails from './AASListDetails.vue';
 import RegisterAAS from './RegisterAAS.vue';
 

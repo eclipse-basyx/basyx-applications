@@ -2,8 +2,8 @@ import { defineComponent } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
 
-import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import { useNavigationStore } from '@/store/NavigationStore';
 
 import RequestHandling from '@/mixins/RequestHandling';
 
@@ -12,21 +12,21 @@ export default defineComponent({
     mixins: [RequestHandling],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
+        const navigationStore = useNavigationStore();
 
         return {
-            navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
-        }
-    },
-
-    data() {
-        return {
+            navigationStore, // NavigationStore Object
         }
     },
 
     computed: {
+        // get AAS Discovery URL from Store
+        aasDiscoveryURL() {
+            return this.navigationStore.getAASDiscoveryURL;
+        },
+
         // get AAS Registry URL from Store
         aasRegistryURL() {
             return this.navigationStore.getAASRegistryURL;
@@ -41,6 +41,11 @@ export default defineComponent({
         conceptDescriptionRepoURL() {
             return this.navigationStore.getConceptDescriptionRepoURL;
         },
+
+        // Get the Selected AAS from the Store
+        selectedAAS() {
+            return this.aasStore.getSelectedAAS;
+        },
     },
 
     methods: {
@@ -50,6 +55,7 @@ export default defineComponent({
             const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
             return urlSafeBase64Id;
         },
+
         // generate a unique ID (UUID)
         UUID() {
             return uuidv4();
@@ -234,88 +240,131 @@ export default defineComponent({
 
         // Function to jump to a referenced Element
         jumpToReferencedElement(referencedAAS: any, referenceValue: Array<any>, referencedSubmodel?: any) {
-            // console.log('jumpToReferencedElement. AAS: ', this.referencedAAS, 'Submodel: ', this.referencedSubmodel);
-            let aas = referencedAAS.endpoints[0].protocolInformation.href;
+            // console.log('jumpToReferencedElement. AAS: ', referencedAAS, 'Submodel: ', referencedSubmodel);
+            let endpoint = referencedAAS.endpoints[0].protocolInformation.href;
             if (referencedSubmodel && Object.keys(referencedSubmodel).length > 0) { // if the referenced Element is a Submodel or SubmodelElement
-                let path = this.submodelRepoURL + '/' + this.URLEncode(referencedSubmodel.keys[0].value);
-                if (referenceValue.length > 1) { // this is the layer directly under the Submodel
-                    path += '/submodel-elements/' + referenceValue[1].value;
-                }
-                let promise; // Promise to wait for the SubmodelElementList to be requested (if it exists)
-                if (referenceValue.length > 2) { // this is the layer under either a SubmodelElementCollection or SubmodelElementList
-                    promise = new Promise<void>((resolve, reject) => {
-                        referenceValue.forEach((SubmodelElement: any, index: number) => {
-                            if (index > 1) {
-                                // check if the type of the SubmodelElement with index - 1 is a SubmodelElementList
-                                if (referenceValue[index - 1].type == 'SubmodelElementList') {
-                                    // console.log('SubmodelElementList: ', this.referenceValue[index - 1])
-                                    // check in which position of the list the element is (list needs to be requested to get the position)
-                                    let listPath = path
-                                    let context = 'retrieving SubmodelElementList';
-                                    let disableMessage = false;
-                                    this.getRequest(listPath, context, disableMessage).then((response: any) => {
-                                        if (response.success) { // execute if the Request was successful
-                                            let list = response.data;
-                                            list.value.forEach((element: any, i: number) => {
-                                                if (element.idShort == SubmodelElement.value) {
-                                                    path += encodeURIComponent('[') + i + encodeURIComponent(']');
-                                                }
-                                            });
-                                            resolve();
-                                        }
-                                    }).catch((error: any) => {
-                                        // console.error('Error with getRequest:', error);
-                                        reject(error);
-                                    });
-                                } else {
-                                    path += '.' + SubmodelElement.value;
-                                }
-                            }
-                        });
-                        if (referenceValue.every((SubmodelElement: any, index: number) => index <= 1 || referenceValue[index - 1].type != 'SubmodelElementList')) {
-                            resolve();  // Resolve immediately if none of the elements are SubmodelElementList
-                        }
-                    });
-                } else {
-                    promise = Promise.resolve();
-                }
-
-                promise.then(() => {
-                    // set the AAS Endpoint and SubmodelElement path in the aas and path query parameters using the router
-                    this.$router.push({ query: { aas: aas, path: path } });
-                    // dispatch the AAS set by the ReferenceElement to the store
-                    this.aasStore.dispatchSelectedAAS(referencedAAS);
-                    // Request the referenced SubmodelElement
-                    let elementPath = path;
-                    let context = 'retrieving SubmodelElement';
-                    let disableMessage = true;
-                    this.getRequest(elementPath, context, disableMessage).then((response: any) => {
-                        if (response.success) { // execute if the Request was successful
-                            response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
-                            response.data.path = path; // add the path to the SubmodelElement Data
-                            response.data.isActive = true; // add the isActive Property to the SubmodelElement Data
-                            // console.log('SubmodelElement Data: ', response.data)
-                            // dispatch the SubmodelElementPath set by the URL to the store
-                            this.aasStore.dispatchNode(response.data); // set the updatedNode in the AASStore
-                            this.aasStore.dispatchInitTreeByReferenceElement(true); // set the initTreeByReferenceElement in the AASStore to true to init + expand the Treeview on the referenced Element
-                        } else { // execute if the Request failed
-                            if (Object.keys(response.data).length == 0) {
-                                // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
-                                this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
-                                return;
-                            }
-                            this.aasStore.dispatchNode({});
-                        }
-                    });
-                }).catch(error => {
-                    console.error('Error:', error);
-                    // Handle error as needed
-                });
+                this.jumpToSubmodelElement(referencedSubmodel, referenceValue, referencedAAS, endpoint);
             } else { // if the referenced Element is an AAS
-                // set the AAS Endpoint in the aas query parameter using the router
-                this.$router.push({ query: { aas: aas } });
+                this.jumpToAAS(referencedAAS, endpoint);
+            }
+        },
+
+        jumpToSubmodelElement(referencedSubmodel: any, referenceValue: Array<any>, referencedAAS: any, endpoint: string) {
+            let path = this.submodelRepoURL + '/' + this.URLEncode(referencedSubmodel.keys[0].value);
+            if (referenceValue.length > 1) { // this is the layer directly under the Submodel
+                path += '/submodel-elements/' + referenceValue[1].value;
+            }
+            let promise; // Promise to wait for the SubmodelElementList to be requested (if it exists)
+            if (referenceValue.length > 2) { // this is the layer under either a SubmodelElementCollection or SubmodelElementList
+                promise = new Promise<void>((resolve, reject) => {
+                    referenceValue.forEach((SubmodelElement: any, index: number) => {
+                        if (index > 1) {
+                            // check if the type of the SubmodelElement with index - 1 is a SubmodelElementList
+                            if (referenceValue[index - 1].type == 'SubmodelElementList') {
+                                // console.log('SubmodelElementList: ', this.referenceValue[index - 1])
+                                // check in which position of the list the element is (list needs to be requested to get the position)
+                                let listPath = path
+                                let context = 'retrieving SubmodelElementList';
+                                let disableMessage = false;
+                                this.getRequest(listPath, context, disableMessage).then((response: any) => {
+                                    if (response.success) { // execute if the Request was successful
+                                        let list = response.data;
+                                        list.value.forEach((element: any, i: number) => {
+                                            if (element.idShort == SubmodelElement.value) {
+                                                path += encodeURIComponent('[') + i + encodeURIComponent(']');
+                                            }
+                                        });
+                                        resolve();
+                                    }
+                                }).catch((error: any) => {
+                                    // console.error('Error with getRequest:', error);
+                                    reject(error);
+                                });
+                            } else {
+                                path += '.' + SubmodelElement.value;
+                            }
+                        }
+                    });
+                    if (referenceValue.every((SubmodelElement: any, index: number) => index <= 1 || referenceValue[index - 1].type != 'SubmodelElementList')) {
+                        resolve();  // Resolve immediately if none of the elements are SubmodelElementList
+                    }
+                });
+            } else {
+                promise = Promise.resolve();
+            }
+
+            promise.then(() => {
+                // set the AAS Endpoint and SubmodelElement path in the aas and path query parameters using the router
+                this.$router.push({ query: { aas: endpoint, path: path } });
                 // dispatch the AAS set by the ReferenceElement to the store
                 this.aasStore.dispatchSelectedAAS(referencedAAS);
+                // Request the referenced SubmodelElement
+                let elementPath = path;
+                let context = 'retrieving SubmodelElement';
+                let disableMessage = true;
+                this.getRequest(elementPath, context, disableMessage).then((response: any) => {
+                    if (response.success) { // execute if the Request was successful
+                        response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
+                        response.data.path = path; // add the path to the SubmodelElement Data
+                        response.data.isActive = true; // add the isActive Property to the SubmodelElement Data
+                        // console.log('SubmodelElement Data: ', response.data)
+                        // dispatch the SubmodelElementPath set by the URL to the store
+                        this.aasStore.dispatchNode(response.data); // set the updatedNode in the AASStore
+                        this.aasStore.dispatchInitTreeByReferenceElement(true); // set the initTreeByReferenceElement in the AASStore to true to init + expand the Treeview on the referenced Element
+                    } else { // execute if the Request failed
+                        if (Object.keys(response.data).length == 0) {
+                            // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
+                            this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
+                            return;
+                        }
+                        this.aasStore.dispatchNode({});
+                    }
+                });
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        },
+
+        jumpToAAS(aas: any, endpoint: string) {
+            // set the AAS Endpoint in the aas query parameter using the router
+            this.$router.push({ query: { aas: endpoint } });
+            // dispatch the AAS set by the ReferenceElement to the store
+            // console.log('AAS:', aas, 'Endpoint:', endpoint);
+            this.aasStore.dispatchSelectedAAS(aas);
+            this.aasStore.dispatchNode({});
+        },
+
+        // Function to check if the assetId can be found in the AAS Discovery Service (and if it exists in the AAS Registry)
+        async checkAssetId(assetId: string): Promise<{ success: boolean, aas?: object, submodel?: object }> {
+            const failResponse = { success: false, aas: {}, submodel: {} }; // Define once for reuse
+            const path = `${this.aasDiscoveryURL}/lookup/shells?assetIds=${this.URLEncode(assetId)}`; // Use template literal and encodeURIComponent
+            const context = 'retrieving AASID by AssetID';
+            const disableMessage = true;
+            try {
+                const discoveryResponse = await this.getRequest(path, context, disableMessage);
+                // console.log('Discovery Response:', discoveryResponse);
+                if (discoveryResponse.success && discoveryResponse.data.result?.length > 0) {
+                    const aasIds = discoveryResponse.data.result;
+                    // take the first aasId from the list and check if it exists in the AAS Registry
+                    const aasId = aasIds[0];
+                    // console.log('AAS ID:', aasId);
+                    const registryPath = `${this.aasRegistryURL}/shell-descriptors/${this.URLEncode(aasId)}`;
+                    const registryContext = 'retrieving AAS Data';
+                    try {
+                        const aasRegistryResponse = await this.getRequest(registryPath, registryContext, disableMessage);
+                        if (aasRegistryResponse.success) {
+                            const aas = aasRegistryResponse.data;
+                            // console.log('AAS:', aas);
+                            return { success: true, aas: aas, submodel: {} };
+                        }
+                        return failResponse;
+                    } catch {
+                        return failResponse;
+                    }
+                }
+                return failResponse;
+            } catch {
+                return failResponse;
             }
         },
 
