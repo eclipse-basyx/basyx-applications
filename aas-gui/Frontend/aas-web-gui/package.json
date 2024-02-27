@@ -10,7 +10,7 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
     "@mdi/font": "^7.4.47",
-    "apexcharts": "^3.45.2",
+    "apexcharts": "^3.46.0",
     "md5": "^2.3.0",
     "mermaid": "^10.8.0",
     "pinia": "^2.1.7",
