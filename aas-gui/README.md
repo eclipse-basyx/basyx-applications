@@ -173,7 +173,9 @@ docker build basyx-applications/aas-gui/Frontend/aas-web-gui -t eclipsebasyx/aas
 docker run -p 3000:3000 eclipsebasyx/aas-gui
 ```
 
-3. You can also predefine the AAS- and Submodel Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
+3. You can also predefine the AAS Discovery Service Path, AAS- and Submodel Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
+
+`-e VITE_AAS_DISCOVERY_PATH=<aas_discovery_path>`
 
 `-e VITE_AAS_REGISTRY_PATH=<aas_registry_path>`
 
@@ -217,6 +219,7 @@ aas-web-gui:
         - "3000:3000"
     environment:
         CHOKIDAR_USEPOLLING: "true"
+        VITE_AAS_DISCOVERY_PATH: "<aas_discovery_path>"
         VITE_AAS_REGISTRY_PATH: "<aas_registry_path>"
         VITE_SUBMODEL_REGISTRY_PATH: "<submodel_registry_path>"
         VITE_AAS_REPO_PATH: "aas_repo_path"
