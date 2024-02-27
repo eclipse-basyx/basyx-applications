@@ -175,6 +175,8 @@ docker run -p 3000:3000 eclipsebasyx/aas-gui
 
 3. You can also predefine the AAS- and Submodel Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
 
+`-e VITE_AAS_DISCOVERY_PATH=<aas_registry_path>`
+
 `-e VITE_AAS_REGISTRY_PATH=<aas_registry_path>`
 
 `-e VITE_SUBMODEL_REGISTRY_PATH=<submodel_registry_path>`
@@ -189,7 +191,7 @@ docker run -p 3000:3000 eclipsebasyx/aas-gui
 
 `-e VITE_BASE_PATH=<base_path>`
 
-4. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command:
+1. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command:
 
 `-v <local_path_to_logo>:/app/src/assets/Logo`
 
@@ -217,6 +219,7 @@ aas-web-gui:
         - "3000:3000"
     environment:
         CHOKIDAR_USEPOLLING: "true"
+        VITE_AAS_DISCOVERY_PATH: "<aas_discovery_path>"
         VITE_AAS_REGISTRY_PATH: "<aas_registry_path>"
         VITE_SUBMODEL_REGISTRY_PATH: "<submodel_registry_path>"
         VITE_AAS_REPO_PATH: "aas_repo_path"
