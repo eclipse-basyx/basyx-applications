@@ -1852,10 +1852,10 @@ vue@^3.4.15:
     "@vue/server-renderer" "3.4.15"
     "@vue/shared" "3.4.15"
 
-vuetify@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.2.tgz#269772066dc0aafdab8f10424ee3f1bea5ea6d3b"
-  integrity sha512-H/g9+8Loykt50qe9mruHkwWsAIgfQ8gO+SPTAV2uaCFmfYPSFRfu0aGcZ42iWu4bZ9ZkgswIIDaVsfnKINd8yg==
+vuetify@^3.5.8:
+  version "3.5.8"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.8.tgz#bc8f08dfd3314640e7b5d43b50138a26d650cbbf"
+  integrity sha512-8nGS+lKejZkev55HFwIfsRt+9fOqbeDQNmXxfmLKAlnUT8FtynVwbjAwHMtX/OQAQ3ZwRaR1ptqQQmx3OgxzbQ==
 
 web-worker@^1.2.0:
   version "1.3.0"
