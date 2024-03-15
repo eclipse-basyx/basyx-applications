@@ -7,7 +7,7 @@
         <AASTreeview />
       </div>
       <!-- Divider between AASTreeview and PropertyView -->
-      <div style="position: realtive; height: calc(100vh - 106px); z-index: 1">
+      <div style="position: relative; height: calc(100vh - 106px); z-index: 1">
         <v-icon style="position: absolute; top: -3px; left: -16.5px;">mdi-pan-left</v-icon>
         <v-divider vertical style="position: absolute; height: calc(100vh - 106px); z-index: 1"></v-divider>
         <v-icon style="position: absolute; top: -3px; right: -16.5px;">mdi-pan-right</v-icon>
@@ -17,7 +17,7 @@
         <SubmodelElementView />
       </div>
       <!-- Divider between PropertyView and ComponentVisualization -->
-      <div style="position: realtive; height: calc(100vh - 106px); z-index: 1">
+      <div style="position: relative; height: calc(100vh - 106px); z-index: 1">
         <v-icon style="position: absolute; top: -3px; left: -16.5px;">mdi-pan-left</v-icon>
         <v-divider vertical style="position: absolute; height: calc(100vh - 106px); z-index: 1"></v-divider>
         <v-icon style="position: absolute; top: -3px; right: -16.5px;">mdi-pan-right</v-icon>
