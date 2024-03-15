@@ -23,7 +23,7 @@
                         <SubmodelElementCollection      v-else-if="submodelElementData.modelType === 'SubmodelElementCollection'"       :submodelElementCollectionObject="submodelElementData"></SubmodelElementCollection>
                         <SubmodelElementList            v-else-if="submodelElementData.modelType === 'SubmodelElementList'"             :submodelElementListObject="submodelElementData"></SubmodelElementList>
                         <Property                       v-else-if="submodelElementData.modelType === 'Property'"                        :propertyObject="submodelElementData" @updateValue="initializeView()"></Property>
-                        <MultyLanguageProperty          v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"           :multiLanguagePropertyObject="submodelElementData"></MultyLanguageProperty>
+                        <MultiLanguageProperty          v-else-if="submodelElementData.modelType === 'MultiLanguageProperty'"           :multiLanguagePropertyObject="submodelElementData"></MultiLanguageProperty>
                         <Operation                      v-else-if="submodelElementData.modelType === 'Operation'"                       :operationObject="submodelElementData"></Operation>
                         <File                           v-else-if="submodelElementData.modelType === 'File'"                            :fileObject="submodelElementData" @updatePath="initializeView()"></File>
                         <Blob                           v-else-if="submodelElementData.modelType === 'Blob'"                            :blobObject="submodelElementData" @updateBlob="initializeView"></Blob>
@@ -75,7 +75,7 @@ import Submodel                     from './SubmodelElements/Submodel.vue';
 import SubmodelElementCollection    from './SubmodelElements/SubmodelElementCollection.vue';
 import SubmodelElementList          from './SubmodelElements/SubmodelElementList.vue';
 import Property                     from './SubmodelElements/Property.vue';
-import MultyLanguageProperty        from './SubmodelElements/MultiLanguageProperty.vue';
+import MultiLanguageProperty        from './SubmodelElements/MultiLanguageProperty.vue';
 import Operation                    from './SubmodelElements/Operation.vue';
 import File                         from './SubmodelElements/File.vue';
 import Blob                         from './SubmodelElements/Blob.vue';
@@ -101,7 +101,7 @@ export default defineComponent({
         SubmodelElementCollection,
         SubmodelElementList,
         Property,
-        MultyLanguageProperty,
+        MultiLanguageProperty,
         Operation,
         File,
         Blob,
