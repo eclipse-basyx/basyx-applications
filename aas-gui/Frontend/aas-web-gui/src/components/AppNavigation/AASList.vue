@@ -44,8 +44,8 @@
                         </template>
                         <!-- idShort of the AAS -->
                         <template v-if="!drawerState" v-slot:title>
-                            <div v-if="AAS['displayName'] && AAS['displayName'].find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); })" class="text-primary" style="z-index: 9999">
-                                {{ AAS['displayName'].find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
+                            <div v-if="AAS['displayName'] && AAS['displayName'].find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })" class="text-primary" style="z-index: 9999">
+                                {{ AAS['displayName'].find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
                             </div>
                             <div v-else class="text-primary" style="z-index: 9999">{{ AAS['idShort'] }}</div>
                         </template>
