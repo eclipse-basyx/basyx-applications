@@ -3,8 +3,8 @@
         <!-- List Item with a Submodel / SubmodelelementCollection / submodelElement (like Property) -->
         <!-- TODO: Fix weird Ripple effect on isActive change to false -->
         <v-list-item @click="toggleNode()" :style="{ 'padding-left': depth * 22 + 'px' }" density="compact" class="py-0" nav color="primary" :active="item.isActive">
-            <v-list-item-title v-if="item.displayName && item.displayName.find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); })">
-                {{ item.displayName.find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
+            <v-list-item-title v-if="item.displayName && item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })">
+                {{ item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
             </v-list-item-title>
             <v-list-item-title v-else>{{ (item.idShort ? item.idShort : '') }}</v-list-item-title>
             <template v-slot:prepend>
