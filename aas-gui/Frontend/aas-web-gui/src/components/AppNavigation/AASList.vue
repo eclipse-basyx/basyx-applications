@@ -44,10 +44,7 @@
                         </template>
                         <!-- idShort of the AAS -->
                         <template v-if="!drawerState" v-slot:title>
-                            <div v-if="AAS.displayName && AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })" class="text-primary" style="z-index: 9999">
-                                {{ AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
-                            </div>
-                            <div e-else class="text-primary" style="z-index: 9999">{{ AAS['idShort'] }}</div>
+                            <div v-html="aasNameToDisplay(AAS)" class="text-primary" style="z-index: 9999"></div>
                         </template>
                         <!-- id of the AAS -->
                         <template v-if="!drawerState" v-slot:subtitle>
@@ -255,6 +252,13 @@ export default defineComponent({
     },
 
     methods: {
+        // Function to determine the name of the aas to be displayed
+        aasNameToDisplay(AAS: any) {
+            if (AAS.displayName && AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })) {
+                return AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text
+            }
+            return (AAS.idShort ? AAS.idShort : '');
+        },
         // Function to collapse the Sidebar
         collapseSidebar() {
             this.showExtended = false;
@@ -272,9 +276,9 @@ export default defineComponent({
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) { // execute if the AAS Registry is found
-                    // sort data by idetification id (ascending) and store it in the AASData variable
-                    let registerredAAS = response.data.result;
-                    let sortedData = registerredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
+                    // sort data by identification id (ascending) and store it in the AASData variable
+                    let registeredAAS = response.data.result;
+                    let sortedData = registeredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
 
                     // add status online to the AAS Data
                     sortedData.forEach((AAS: any) => {

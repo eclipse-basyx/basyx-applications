@@ -9,10 +9,7 @@
                 </v-tooltip>
                 <!-- idShort -->
                 <template v-slot:title>
-                    <div v-if="identificationObject.displayName && identificationObject.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })" class="text-primary text-subtitle-1">
-                        {{ identificationObject.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
-                    </div>
-                    <div v-else v-html="identificationObject.idShort ? identificationObject.idShort : ''" class="text-primary text-subtitle-1"></div>
+                    <div v-html="nameToDisplay" class="text-primary text-subtitle-1"></div>
                     <div v-if="identificationObject.id">{{ idType + ':' }}</div>
                 </template>
                 <!-- identification id -->
@@ -51,6 +48,16 @@ export default defineComponent({
         return {
             copyIcon: 'mdi-clipboard-file-outline',
         }
+    },
+
+    computed: {
+        // Name of the identificationObject to be displayed
+        nameToDisplay() {
+            if (this.identificationObject.displayName && this.identificationObject.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })) {
+                return this.identificationObject.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text
+            }
+            return (this.identificationObject.idShort ? this.identificationObject.idShort : '');
+        },
     },
 
     methods: {

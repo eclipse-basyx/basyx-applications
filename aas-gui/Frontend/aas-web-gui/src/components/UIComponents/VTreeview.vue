@@ -3,10 +3,7 @@
         <!-- List Item with a Submodel / SubmodelelementCollection / submodelElement (like Property) -->
         <!-- TODO: Fix weird Ripple effect on isActive change to false -->
         <v-list-item @click="toggleNode()" :style="{ 'padding-left': depth * 22 + 'px' }" density="compact" class="py-0" nav color="primary" :active="item.isActive">
-            <v-list-item-title v-if="item.displayName && item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })">
-                {{ item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
-            </v-list-item-title>
-            <v-list-item-title v-else>{{ (item.idShort ? item.idShort : '') }}</v-list-item-title>
+            <v-list-item-title v-html="nameToDisplay"></v-list-item-title>
             <template v-slot:prepend>
                 <!-- Button to show/hide children -->
                 <v-btn v-if="item.children" size="small" variant="plain" @click.stop="toggleChildren()" :icon="showChildren ? 'mdi-menu-down' : 'mdi-menu-right'" :ripple="false"></v-btn>
@@ -103,6 +100,13 @@ export default defineComponent({
         SelectedAAS() {
             return this.aasStore.getSelectedAAS;
         },
+        // Name of the item to be displayed
+        nameToDisplay() {
+            if (this.item.displayName && this.item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })) {
+                return this.item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text
+            }
+            return (this.item.idShort ? this.item.idShort : '');
+        },
     },
 
     methods: {
@@ -114,7 +118,7 @@ export default defineComponent({
         // Function to toggle a Node
         toggleNode() {
             // console.log('Selected Prop: ', this.item);
-            // dublicate the selected Node Object
+            // duplicate the selected Node Object
             let localItem = {...this.item};
             // invert the isActive Property
             localItem.isActive = !localItem.isActive;
