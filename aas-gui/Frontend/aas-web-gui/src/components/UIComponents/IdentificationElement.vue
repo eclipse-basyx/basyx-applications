@@ -9,7 +9,10 @@
                 </v-tooltip>
                 <!-- idShort -->
                 <template v-slot:title>
-                    <div v-html="identificationObject.idShort ? identificationObject.idShort : ''" class="text-primary text-subtitle-1"></div>
+                    <div v-if="identificationObject.displayName && identificationObject.displayName.find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); })" class="text-primary text-subtitle-1">
+                        {{ identificationObject.displayName.find(displayName => { return (displayName.language === 'en' && displayName.text !== ''); }).text }}
+                    </div>
+                    <div v-else v-html="identificationObject.idShort ? identificationObject.idShort : ''" class="text-primary text-subtitle-1"></div>
                     <div v-if="identificationObject.id">{{ idType + ':' }}</div>
                 </template>
                 <!-- identification id -->
