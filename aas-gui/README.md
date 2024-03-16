@@ -8,7 +8,7 @@
 # Fraunhofer AAS GUI
 Vue.js Webapplication to select and visualize Asset Administration Shells, Submodels and Concept Descriptions.
 
-![alt text](Docs/Figs/GUI_2_0.png "AAS GUI")
+![alt text](Docs/Figs/AAS_Web_UI.png "AAS GUI")
 
 ## Project Structure
 
@@ -16,8 +16,7 @@ Vue.js Webapplication to select and visualize Asset Administration Shells, Submo
     flowchart LR
     subgraph Project Example
         root --> Frontend
-        root --> nginx
-        root --> UsageExample
+        root --> examples
         root --> Docs
         root --> README.md
         root --> LICENSE
@@ -73,25 +72,15 @@ The BaSyx-UI includes a Feature to develop your own Plugins. They can be used to
 
 Plugins will be displayed in the `Visualization`-Part of the UI. In order for Plugins to be shown, a Submodel(Element) has to have a SemanticID which matches with the configured SemanticID of the desired Plugin.
 
-This wiki has a short guide how to mount your own plugins:
+To include your own Plugin, you have to create a Vue.js Component and add it to the `UserPlugins`-Folder in the `Frontend/aas-web-gui/src`-Directory. The Plugin will then be automatically loaded and displayed in the UI. 
 
-[Plugin Mechanism Wiki](https://wiki.eclipse.org/BaSyx_/_Documentation_/_Components_/_AAS_Web_UI_/_Features_/_Plugin_Mechanism)
+> If you plan on including your own plugins, keep in mind that you have to build the Docker Image yourself!
 
 A Demo-Plugin can be found here:
 
 [HelloWorldPlugin.vue](./Frontend/aas-web-gui/src/components/SubmodelPlugins/HelloWorldPlugin.vue)
 
-The HelloWorld Plugin can visualize a Submodel containing any number of SubmodelElements aslong as they are of the modeltype `Property`, `MultiLanguageProperty`, `File`, `Blob`, `Operation`, `ReferenceElement`, `Range`, `RelationshipElement` or `AnnotatedRelationshipElement`.
-SubmodelElementCollections are not supported in this Plugin!
-The SemanticID of the Submodel is:
-
-```bash
-http://hello.world.de/plugin_submodel
-```
-
-![alt text](Docs/Figs/Plugin.png "Submodel Plugin")
-
-### MacOS:
+### How to develop on MacOS:
 
 1. Install Node and NPM ([Node installation Tutorial for Mac](https://treehouse.github.io/installation-guides/mac/node-mac.html))
 2. Install yarn
@@ -113,7 +102,7 @@ cd basyx-applications/aas-gui
 6. On initial installation answer first question with **y** (Yes) otherwise **n** (No)
 7. Answer second question with **n** (No)
 
-### Linux:
+### How to develop on Linux:
 
 1. Install Node and NPM ([Node installation Tutorial for Linux](https://nodejs.org/en/download/package-manager/))
 2. Install yarn
@@ -135,7 +124,7 @@ cd basyx-applications/aas-gui
 6. On initial installation answer first question with **y** (Yes) otherwise **n** (No)
 7. Answer second question with **n** (No)
 
-### Windows:
+### How to develop on Windows:
 
 1. Install WSL 2 ([WSL installation Tutorial](https://docs.microsoft.com/en-us/windows/wsl/install))
 2. Open IDE (e.g. VSCode: [WSL in VSCode](https://code.visualstudio.com/docs/remote/wsl))
@@ -159,9 +148,9 @@ cd basyx-applications/aas-gui
 8. On initial installation answer first question with **y** (Yes) otherwise **n** (No)
 9. Answer second question with **n** (No)
 
-### Docker:
+### Building your own Docker Image:
 
-The latest version is available on [DockerHub](https://hub.docker.com/r/eclipsebasyx/aas-gui/tags).
+The latest Off-the-Shelf version is available on [DockerHub](https://hub.docker.com/r/eclipsebasyx/aas-gui/tags).
 
 1. Build the image by executing
 ```bash
@@ -175,33 +164,29 @@ docker run -p 3000:3000 eclipsebasyx/aas-gui
 
 3. You can also predefine the AAS Discovery Service Path, AAS- and Submodel Registry Path, AAS-, Submodel- and Concept Description Repository Path, the Apllications primary color and the Base Path by adding the following arguments to the run command:
 
-`-e VITE_AAS_DISCOVERY_PATH=<aas_discovery_path>`
+`-e AAS_DISCOVERY_PATH=<aas_discovery_path>`
 
-`-e VITE_AAS_REGISTRY_PATH=<aas_registry_path>`
+`-e AAS_REGISTRY_PATH=<aas_registry_path>`
 
-`-e VITE_SUBMODEL_REGISTRY_PATH=<submodel_registry_path>`
+`-e SUBMODEL_REGISTRY_PATH=<submodel_registry_path>`
 
-`-e VITE_AAS_REPO_PATH: <aas_repo_path>`
+`-e AAS_REPO_PATH: <aas_repo_path>`
 
-`-e VITE_SUBMODEL_REPO_PATH: <submodel_repo_path>`
+`-e SUBMODEL_REPO_PATH: <submodel_repo_path>`
 
-`-e VITE_CD_REPO_PATH: <concept_description_repo_path>`
+`-e CD_REPO_PATH: <concept_description_repo_path>`
 
-`-e VITE_PRIMARY_COLOR=<primary_color>`
+`-e PRIMARY_COLOR=<primary_color>`
 
-`-e VITE_BASE_PATH=<base_path>`
+`-e LOGO_PATH=<logo_path>`
 
-4. You can also mount a local folder for the Application Logo and a folder for the Submodel/SubmodelElement-Plugins by adding the following arguments to the run command:
+`-e BASE_PATH=<base_path>`
 
-`-v <local_path_to_logo>:/app/src/assets/Logo`
+4. If you want to use a custom logo, you can mount a folder containing the logo and the favicon.ico to the container by adding the following argument to the run command:
 
-`-v <local_path_to_plugins>:/app/src/UserPlugins`
+`-v <local_path_to_logo_folder>:/usr/src/app/dist/Logo`
 
-5. If you execute step 4, please also add the following arguments to the run command:
-
-`-e CHOCKIDAR_USEPOLLING=true`
-
-6. The GUI is now available at:
+5. The GUI is now available at:
 
 ```bash
 http://localhost:3000/<base_path>
@@ -213,23 +198,22 @@ If you want to use the AAS Web UI as part of a Docker Compose project you can us
 
 ```
 aas-web-gui:
-    image: eclipsebasyx/aas-gui
+    image: eclipsebasyx/aas-gui:<tag>
     container_name: aas-web-gui
     ports:
         - "3000:3000"
     environment:
-        CHOKIDAR_USEPOLLING: "true"
-        VITE_AAS_DISCOVERY_PATH: "<aas_discovery_path>"
-        VITE_AAS_REGISTRY_PATH: "<aas_registry_path>"
-        VITE_SUBMODEL_REGISTRY_PATH: "<submodel_registry_path>"
-        VITE_AAS_REPO_PATH: "aas_repo_path"
-        VITE_SUBMODEL_REPO_PATH: "submodel_repo_path"
-        VITE_CD_REPO_PATH: "concept_description_repo_path"
-        VITE_PRIMARY_COLOR: "<primary_color>"
+        AAS_DISCOVERY_PATH: "<aas_discovery_path>"
+        AAS_REGISTRY_PATH: "<aas_registry_path>"
+        SUBMODEL_REGISTRY_PATH: "<submodel_registry_path>"
+        AAS_REPO_PATH: "aas_repo_path"
+        SUBMODEL_REPO_PATH: "submodel_repo_path"
+        CD_REPO_PATH: "concept_description_repo_path"
+        PRIMARY_COLOR: "<primary_color>"
+        LOGO_PATH: "<logo_path>"
         VITE_BASE_PATH: "<base_path>"
     volumes:
-        - <local_path_to_logo>:/app/src/assets/Logo
-        - <local_path_to_plugins>:/app/src/UserPlugins
+        - <local_path_to_logo_folder>:/usr/src/app/dist/Logo
 ```
 
 #### CORS configuration of the Registry and Repositories
@@ -286,13 +270,3 @@ As a prerequesite you need to sign the [Eclipse Contributor Agreement](https://w
 After you signed the ECA you can create Pull Requests to this Repository.
 
 > All PRs will be checked for compliance and functionality!
-
-### Dependencies
-
-- Node (+ npm)
-- Yarn
-- Vite
-- Vue CLI
-- Vuetify
-- Vue Router
-- pinia

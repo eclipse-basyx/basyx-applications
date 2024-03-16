@@ -60,13 +60,14 @@
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'File',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
     props: ['fileObject'],
 
     setup() {
@@ -88,7 +89,7 @@ export default defineComponent({
 
     mounted() {
         this.newPathValue = this.fileObject.value;
-        this.localPathValue = this.getLocalPath(this.fileObject.value);
+        this.localPathValue = this.getLocalPath(this.fileObject.value, this.SelectedNode);
     },
 
     watch: {
@@ -107,7 +108,7 @@ export default defineComponent({
             handler() {
                 if (!this.isFocused) {
                     this.newPathValue = this.fileObject.value;
-                    this.localPathValue = this.getLocalPath(this.fileObject.value);
+                    this.localPathValue = this.getLocalPath(this.fileObject.value, this.SelectedNode);
                 }
             }
         }
@@ -155,28 +156,15 @@ export default defineComponent({
             // let mimeType = this.newFile[0].type;
             let context = 'uploading ' + this.fileObject.modelType + '-SubmodelElement' + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
-            let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/upload';
+            let path = this.SelectedNode.path + '/attachment?fileName=' + this.newFile[0].name;
             var headers = new Headers();
             var formData = new FormData();
             formData.append("file", this.newFile[0]);
             // Send Request to upload the file
-            this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
+            this.putRequest(path, formData, headers, context, disableMessage).then((response: any) => {
                 // TODO: Add success response handling including updating the File SubmodelElement -> mimeType (+ value)
                 if (response.success) {
                     location.reload(); // reload the page to update the file preview
-                    // let context = 'updating mimeType of ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
-                    // let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path;
-                    // let contentJSON = { ...this.fileObject };
-                    // contentJSON.mimeType = mimeType;
-                    // let content = JSON.stringify(contentJSON);
-                    // let headers = { 'Content-Type': 'application/json' };
-                    // let disableMessage = false;
-                    // // Send Request to update the value of the property
-                    // this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
-                    //     if (response.success && (contentJSON.mimeType.includes('image') || contentJSON.mimeType.includes('pdf'))) {
-                    //         location.reload(); // reload the page to update the file preview
-                    //     }
-                    // });
                 }
             });
         },
@@ -186,16 +174,6 @@ export default defineComponent({
             this.isFocused = e;
             if (!e) this.newPathValue = this.fileObject.value; // set input to current value in the AAS if the input field is not focused
         },
-
-        // Function to prepare the Image Link for the Image Preview
-        getLocalPath(path: string): string {
-            if(!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                path = this.SelectedNode.path + '/attachment';
-            }
-            return path;
-        }
     },
 });
 </script>

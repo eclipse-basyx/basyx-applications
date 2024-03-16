@@ -82,7 +82,7 @@ export default defineComponent({
 
         // Resets the Treeview when the Submodel Registry changes
         submodelRegistryServerURL() {
-            if(!this.submodelRegistryServerURL) {
+            if (!this.submodelRegistryURL) {
                 this.submodelData = [];
             }
         },
@@ -119,7 +119,7 @@ export default defineComponent({
         },
 
         // get Submodel Registry URL from Store
-        submodelRegistryServerURL() {
+        submodelRegistryURL() {
             return this.navigationStore.getSubmodelRegistryURL;
         },
 
@@ -140,7 +140,7 @@ export default defineComponent({
             // return if no endpoints are available
             if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].protocolInformation || !this.SelectedAAS.endpoints[0].protocolInformation.href) {
                 // TODO: this seems to get executed on reload with a selected AAS
-                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
+                // this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
                 return;
             }
             if(this.loading) return; // return if loading state is true -> prevents multiple requests
@@ -187,7 +187,11 @@ export default defineComponent({
             let submodelPromises = submodelRefs.map((submodelRef: any) => {
                 // retrieve endpoint for submodel from submodel registry
                 // console.log('SubmodelRef: ', submodelRef, ' Submodel Registry: ', this.submodelRegistryServerURL);
-                let path = this.submodelRegistryServerURL + '/submodel-descriptors/' + this.URLEncode(submodelRef.keys[0].value);
+                // check if submodelRegistryURL includes "/submodel-descriptors" and add id if not (backward compatibility)
+                if (!this.submodelRegistryURL.includes('/submodel-descriptors')) {
+                    this.submodelRegistryURL += '/submodel-descriptors';
+                }
+                let path = this.submodelRegistryURL + '/' + this.URLEncode(submodelRef.keys[0].value);
                 let context = 'retrieving Submodel Endpoint';
                 let disableMessage = false;
                 return this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -257,7 +261,6 @@ export default defineComponent({
                     // if the Element has Children, call the Function again with the Children as Data
                     element.children = this.prepareTreeviewData(element.statements, element);
                     element.showChildren = false; // set showChildren to false (for the Treeview Component
-
                 }
             });
             return SubmodelElements;

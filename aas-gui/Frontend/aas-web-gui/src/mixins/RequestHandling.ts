@@ -75,6 +75,9 @@ export default defineComponent({
                     } else if (data) {
                         // Successful response from the server
                         return { success: true, data: data };
+                    } else if (data === null || data === undefined) {
+                        // in this case no content is expected
+                        return { success: true };
                     } else {
                         // Unexpected response format
                         throw new Error('Unexpected response format');
@@ -110,6 +113,9 @@ export default defineComponent({
                     } else if (data) {
                         // Successful response from the server
                         return { success: true, data: data };
+                    } else if (data === null || data === undefined) {
+                        // in this case no content is expected
+                        return { success: true };
                     } else {
                         // Unexpected response format
                         throw new Error('Unexpected response format');

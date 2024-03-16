@@ -11,6 +11,9 @@
                 <template v-slot:append>
                     <v-text-field v-model="range[1]" hide-details single-line variant="outlined" style="width: 90px" density="compact" readonly></v-text-field>
                 </template> -->
+                <template v-slot:thumb-label="{ modelValue }">
+                    {{ modelValue + unitSuffix(rangeObject) }}
+                </template>
             </v-range-slider>
         </v-card>
     </v-container>
@@ -77,6 +80,15 @@ export default defineComponent({
     },
 
     methods: {
+        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
+        unitSuffix(prop: any) {
+            // console.log('prop: ', prop);
+            if (prop.embeddedDataSpecifications && prop.embeddedDataSpecifications.length > 0 && prop.embeddedDataSpecifications[0].dataSpecificationContent && prop.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
+                return prop.embeddedDataSpecifications[0].dataSpecificationContent.unit;
+            } else {
+                return '';
+            }
+        },
     },
 });
 </script>

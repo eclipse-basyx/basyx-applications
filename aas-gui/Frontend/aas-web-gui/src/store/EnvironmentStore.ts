@@ -3,40 +3,44 @@ import { defineStore } from 'pinia';
 export const useEnvStore = defineStore({
     id: 'envStore',
     state: () => ({
-        aasDiscoveryPath: import.meta.env.VITE_AAS_DISCOVERY_PATH as string,
-        aasRegistryPath: import.meta.env.VITE_AAS_REGISTRY_PATH as string,
-        submodelRegistryPath: import.meta.env.VITE_SUBMODEL_REGISTRY_PATH as string,
-        aasRepoPath: import.meta.env.VITE_AAS_REPO_PATH as string,
-        submodelRepoPath: import.meta.env.VITE_SUBMODEL_REPO_PATH as string,
-        conceptDescriptionRepoPath: import.meta.env.VITE_CD_REPO_PATH as string,
-        primaryColor: import.meta.env.VITE_PRIMARY_COLOR as string,
-        basePath: import.meta.env.VITE_BASE_PATH as string,
+        logoPath: "",
+        aasDiscoveryPath: "",
+        aasRegistryPath: "",
+        submodelRegistryPath: "",
+        aasRepoPath: "",
+        submodelRepoPath: "",
+        conceptDescriptionRepoPath: "",
+        primaryColor: "",
+        basePath: "",
     }),
     getters: {
-        getEnvAASDiscoveryPath(state) {
-            return state.aasDiscoveryPath;
-        },
-        getEnvAASRegistryPath(state) {
-            return state.aasRegistryPath;
-        },
-        getEnvSubmodelRegistryPath(state) {
-            return state.submodelRegistryPath;
-        },
-        getEnvAASRepoPath(state) {
-            return state.aasRepoPath;
-        },
-        getEnvSubmodelRepoPath(state) {
-            return state.submodelRepoPath;
-        },
-        getEnvConceptDescriptionRepoPath(state) {
-            return state.conceptDescriptionRepoPath;
-        },
-        getEnvPrimaryColor(state) {
-            return state.primaryColor;
-        },
-        getEnvBasePath(state) {
-            return state.basePath;
+        getEnvLogoPath: (state) => state.logoPath,
+        getEnvAASDiscoveryPath: (state) => state.aasDiscoveryPath,
+        getEnvAASRegistryPath: (state) => state.aasRegistryPath,
+        getEnvSubmodelRegistryPath: (state) => state.submodelRegistryPath,
+        getEnvAASRepoPath: (state) => state.aasRepoPath,
+        getEnvSubmodelRepoPath: (state) => state.submodelRepoPath,
+        getEnvConceptDescriptionRepoPath: (state) => state.conceptDescriptionRepoPath,
+        getEnvPrimaryColor: (state) => state.primaryColor,
+        getEnvBasePath: (state) => state.basePath,
+    },
+    actions: {
+        async fetchConfig() {
+            try {
+                const configResponse = await fetch('/config.json');
+                const config = await configResponse.json();
+                this.logoPath = config.logoPath;
+                this.aasDiscoveryPath = config.aasDiscoveryPath;
+                this.aasRegistryPath = config.aasRegistryPath;
+                this.submodelRegistryPath = config.submodelRegistryPath;
+                this.aasRepoPath = config.aasRepoPath;
+                this.submodelRepoPath = config.submodelRepoPath;
+                this.conceptDescriptionRepoPath = config.cdRepoPath;
+                this.primaryColor = config.primaryColor;
+                this.basePath = config.basePath;
+            } catch (error) {
+                console.error('Error fetching config.json: ', error);
+            }
         },
     },
-    actions: {},
 });

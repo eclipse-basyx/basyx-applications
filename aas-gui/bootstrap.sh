@@ -4,13 +4,13 @@ Yellow='\033[1;33m'
 ColorOff='\033[0m'
 
 echo -e "${Yellow}Do a clean install?  (y/n) Default:n ${ColorOff}"
-read wirklich_loeschen
-if [ "$wirklich_loeschen" = "y" ]; then
+read clean_install
+if [ "$clean_install" = "y" ]; then
     FRESH_INSTALL='1'
 fi
 
-echo -e "${Yellow}Build for Production instead of starting dev-Server?  (y/n) Default:n ${ColorOff}"
-read just_build_no_devserver
+echo -e "${Yellow}Build Docker images instead of starting dev-Server?  (y/n) Default:n ${ColorOff}"
+read build_images
 cd $PRJ_ROOT/Frontend/aas-web-gui
 if [ "$FRESH_INSTALL" = "1" ]; then
     rm -rf node_modules
@@ -18,8 +18,15 @@ if [ "$FRESH_INSTALL" = "1" ]; then
 fi
 
 # Start Dev Server
-if [ "$just_build_no_devserver" = "y" ]; then
-    yarn run build
+if [ "$build_images" = "y" ]; then
+    # Get the current date in the format YYMMDD
+    DATE=$(date +%y%m%d)
+
+    # Create a new builder instance
+    docker buildx create --use --name basyx-builder
+
+    # Build and push the Docker images
+    docker buildx build --platform linux/amd64,linux/arm64 -t eclipsebasyx/aas-gui:v2-$DATE . --push
 else
     yarn dev --host
 fi

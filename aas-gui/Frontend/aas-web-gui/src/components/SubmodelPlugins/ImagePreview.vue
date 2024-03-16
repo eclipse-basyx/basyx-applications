@@ -15,10 +15,12 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'ImagePreview',
     props: ['submodelElementData'],
+    mixins: [SubmodelElementHandling],
 
     setup() {
         const theme = useTheme()
@@ -40,7 +42,8 @@ export default defineComponent({
 
     mounted() {
         if (this.submodelElementData.modelType == 'File') {
-            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+            // console.log('SubmodelElementData: ', this.submodelElementData);
+            this.localPathValue = this.getLocalPath(this.submodelElementData.value, this.submodelElementData)
         } else if (this.submodelElementData.modelType == 'Blob') {
             this.Base64Image =`data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
         }
@@ -50,7 +53,7 @@ export default defineComponent({
     watch: {
         submodelElementData() {
             if (this.submodelElementData.modelType == 'File') {
-                this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+                this.localPathValue = this.getLocalPath(this.submodelElementData.value, this.submodelElementData)
             } else if (this.submodelElementData.modelType == 'Blob') {
                 this.Base64Image = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
             }
@@ -63,19 +66,6 @@ export default defineComponent({
         SelectedNode() {
             return this.aasStore.getSelectedNode;
         },
-    },
-
-    methods: {
-        // Function to prepare the Image Link for the Image Preview
-        getLocalPath(path: string): string {
-            if (!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                // console.log('Image Path: ', this.SelectedNode.path + '/attachment');
-                path = this.SelectedNode.path + '/attachment';
-            }
-            return path;
-        }
     },
 });
 </script>
