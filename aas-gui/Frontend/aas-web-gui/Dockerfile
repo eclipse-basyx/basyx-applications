@@ -27,8 +27,10 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy the entrypoint script and make it executable
 COPY entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
-# Change the ownership of the /usr/src/app and /var/cache/nginx directories to the non-root user
+# Change the ownership of the /usr/src/app, /var/cache/nginx and /tmp directories to the non-root user
 RUN chown -R myuser:mygroup /usr/src/app /var/cache/nginx /tmp
+# Give the myuser/mygroup/other read/write/execute permissions to the /usr/src/app, /var/cache/nginx and /tmp directories
+RUN chmod -R 777 /usr/src/app /var/cache/nginx /tmp
 # Switch to the non-root user
 USER myuser
 # Set the entrypoint
