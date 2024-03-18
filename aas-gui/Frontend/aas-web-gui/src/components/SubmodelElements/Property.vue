@@ -9,14 +9,21 @@
                 <!-- valueId -->
                 <v-list-item v-if="!IsOperationVariable && propertyObject.valueId && propertyObject.valueId.keys && propertyObject.valueId.keys.length > 0" class="pb-0">
                     <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
-                        <div class="text-caption"><span class="font-weight-bold">{{ '(' + propertyObject.valueId.keys[0].type + ') ' }}</span>{{ propertyObject.valueId.keys[0].value }}</div>
+                        <div v-for="(valueId, i) in propertyObject.valueId.keys" :key="i" class="text-caption">
+                            <span class="font-weight-bold">{{ '(' + valueId.type + ') ' }}</span>
+                            {{ valueId.value }}
+                        </div>
                     </v-tooltip>
                     <template v-slot:title>
                         <span class="text-caption">{{ 'ValueId: ' }}</span>
                     </template>
                     <template v-slot:subtitle>
-                        <v-chip label size="x-small" border class="mr-2">{{ propertyObject.valueId.keys[0].type }}</v-chip>
-                        <span v-html="propertyObject.valueId.keys[0].value"></span>
+                        <v-list-item-subtitle v-for="(valueId, i) in propertyObject.valueId.keys" :key="i">
+                            <div class="pt-2">
+                                <v-chip label size="x-small" border class="mr-2">{{ valueId.type }}</v-chip>
+                                <span>{{ valueId.value }}</span>
+                            </div>
+                        </v-list-item-subtitle>
                     </template>
                 </v-list-item>
                 <!-- valueType -->
