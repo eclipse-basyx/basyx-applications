@@ -44,11 +44,11 @@
                         </template>
                         <!-- idShort of the AAS -->
                         <template v-if="!drawerState" v-slot:title>
-                            <div v-html="aasNameToDisplay(AAS)" class="text-primary" style="z-index: 9999"></div>
+                            <div class="text-primary" style="z-index: 9999">{{ aasNameToDisplay(AAS) }}</div>
                         </template>
                         <!-- id of the AAS -->
                         <template v-if="!drawerState" v-slot:subtitle>
-                            <div v-html="AAS['id']"></div>
+                            <div>{{ AAS['id'] }}</div>
                         </template>
                         <!-- open Details Button (with Status Badge) -->
                         <template v-if="!drawerState" v-slot:append>
@@ -254,8 +254,9 @@ export default defineComponent({
     methods: {
         // Function to determine the name of the aas to be displayed
         aasNameToDisplay(AAS: any) {
-            if (AAS.displayName && AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })) {
-                return AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text
+            if (AAS.displayName) {
+                let displayNameEn = AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
             }
             return (AAS.idShort ? AAS.idShort : '');
         },

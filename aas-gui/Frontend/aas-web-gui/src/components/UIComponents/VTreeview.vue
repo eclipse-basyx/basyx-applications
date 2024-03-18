@@ -3,7 +3,7 @@
         <!-- List Item with a Submodel / SubmodelelementCollection / submodelElement (like Property) -->
         <!-- TODO: Fix weird Ripple effect on isActive change to false -->
         <v-list-item @click="toggleNode()" :style="{ 'padding-left': depth * 22 + 'px' }" density="compact" class="py-0" nav color="primary" :active="item.isActive">
-            <v-list-item-title v-html="nameToDisplay"></v-list-item-title>
+            <v-list-item-title>{{ nameToDisplay }}</v-list-item-title>
             <template v-slot:prepend>
                 <!-- Button to show/hide children -->
                 <v-btn v-if="item.children" size="small" variant="plain" @click.stop="toggleChildren()" :icon="showChildren ? 'mdi-menu-down' : 'mdi-menu-right'" :ripple="false"></v-btn>
@@ -102,8 +102,9 @@ export default defineComponent({
         },
         // Name of the item to be displayed
         nameToDisplay() {
-            if (this.item.displayName && this.item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); })) {
-                return this.item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); }).text
+            if (this.item.displayName) {
+                let displayNameEn = this.item.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
             }
             return (this.item.idShort ? this.item.idShort : '');
         },

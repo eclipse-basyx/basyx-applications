@@ -7,13 +7,13 @@
             </v-tooltip>
             <!-- DisplayName Title -->
             <template v-slot:title>
-                <div v-html="displayNameTitle + ':'" class="mt-2" :class="small ? 'text-caption' : 'text-subtitle-2 '"></div>
+                <div class="mt-2" :class="small ? 'text-caption' : 'text-subtitle-2 '">{{ displayNameTitle + ':' }}</div>
             </template>
             <!-- DisplayNames List (different Languages) -->
             <v-list-item-subtitle v-for="(displayName, i) in displayNameObject" :key="i">
                 <div class="pt-2">
                     <v-chip label size="x-small" border class="mr-2">{{ displayName.language ? displayName.language : 'no-lang' }}</v-chip>
-                    <span v-html="displayName.text"></span>
+                    <span>{{ displayName.text }}</span>
                 </div>
             </v-list-item-subtitle>
         </v-list-item>
