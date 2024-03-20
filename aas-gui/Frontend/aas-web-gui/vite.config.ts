@@ -5,11 +5,6 @@ import vuetify from 'vite-plugin-vuetify'
 // Utilities
 import { defineConfig } from 'vite'
 import * as path from 'path'
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
-
-// Read and parse the config.json file
-const config = JSON.parse(readFileSync(resolve(__dirname, './public/config.json'), 'utf-8'));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,8 +15,7 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
-  // define: { 'process.env': {} },
-  base: `${config.basePath || ''}`,
+  base: '',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

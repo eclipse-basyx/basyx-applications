@@ -17,11 +17,13 @@ const routes = [
 ];
 
 export async function createAppRouter() {
-  const response = await fetch('/config.json');
-  const config = await response.json();
+
+  const configResponse = await fetch('config.json');
+  const config = await configResponse.json();
+  const base = config.basePath + '/';
 
   const router = createRouter({
-    history: createWebHistory(config.basePath || '/'),
+    history: createWebHistory(base || '/'),
     routes
   });
 
