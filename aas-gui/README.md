@@ -211,7 +211,7 @@ aas-web-gui:
         CD_REPO_PATH: "concept_description_repo_path"
         PRIMARY_COLOR: "<primary_color>"
         LOGO_PATH: "<logo_path>"
-        VITE_BASE_PATH: "<base_path>"
+        BASE_PATH: "<base_path>"
     volumes:
         - <local_path_to_logo_folder>:/usr/src/app/dist/Logo
 ```
