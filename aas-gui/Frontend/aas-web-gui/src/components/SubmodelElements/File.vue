@@ -130,8 +130,9 @@ export default defineComponent({
         // Function to update the Path of the File Element
         updatePath() {
             // console.log("Update Path: " + this.newPathValue);
+            let updateObject = { 'value': this.newPathValue, 'contentType': this.fileObject.contentType }
             let path = this.fileObject.path + '/$value';
-            let content = JSON.stringify(this.newPathValue);
+            let content = JSON.stringify(updateObject);
             let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
