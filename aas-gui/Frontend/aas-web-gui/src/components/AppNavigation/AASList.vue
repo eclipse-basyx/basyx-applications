@@ -46,11 +46,11 @@
                                 </template>
                                 <!-- idShort of the AAS -->
                                 <template v-if="!drawerState" v-slot:title>
-                                    <div class="text-primary" style="z-index: 9999">{{ aasNameToDisplay(AAS) }}</div>
+                                    <div class="text-primary" style="z-index: 9999">{{ aasNameToDisplay(item) }}</div>
                                 </template>
                                 <!-- id of the AAS -->
                                 <template v-if="!drawerState" v-slot:subtitle>
-                                    <div>{{ AAS['id'] }}</div>
+                                    <div>{{ item['id'] }}</div>
                                 </template>
                                 <!-- open Details Button (with Status Badge) -->
                                 <template v-if="!drawerState" v-slot:append>
