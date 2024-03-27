@@ -29,64 +29,64 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <!-- AAS List -->
-            <v-list nav class="bg-card pa-0">
-                <v-virtual-scroll :items="AASData" item-height="48" :height="isMobile ? 'calc(100vh - 170px)' : 'calc(100vh - 218px)'" class="pb-2">
-                    <template v-slot:default="{ item }">
-                        <!-- Single AAS -->
-                        <v-list-item @click="selectAAS(item)" class="bg-listItem mt-2 mx-2" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(item) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
-                            <!-- Tooltip with idShort and id -->
-                            <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
-                                <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ item['idShort'] }}</div>
-                                <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ item['id'] }}</div>
-                            </v-tooltip>
-                            <!-- Icon of the AAS -->
-                            <template v-if="drawerState" v-slot:prepend>
-                                <v-icon>mdi-robot-industrial</v-icon>
-                            </template>
-                            <!-- idShort of the AAS -->
-                            <template v-if="!drawerState" v-slot:title>
-                                <div class="text-primary" style="z-index: 9999">{{ item['idShort'] }}</div>
-                            </template>
-                            <!-- id of the AAS -->
-                            <template v-if="!drawerState" v-slot:subtitle>
-                                <div v-html="item['id']"></div>
-                            </template>
-                            <!-- open Details Button (with Status Badge) -->
-                            <template v-if="!drawerState" v-slot:append>
-                                <!-- Badge that show's the Status of the AAS -->
-                                <v-badge :model-value="item['status'] && item['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
-                                <!-- Information Button -->
-                                <v-btn @click.stop="showAASDetails(item)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
-                                <!-- Download AAS -->
-                                <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(item)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
-                                <!-- Remove from AAS Registry Button -->
-                                <v-btn @click.stop="removeFromAASRegistry(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
-                            </template>
-                            <v-overlay :model-value="isSelected(item)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
-                        </v-list-item>
-                    </template>
-                </v-virtual-scroll>
-            </v-list>
-            <!-- AAS Details (only visible if the Information Button is pressed on an AAS) -->
-            <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" :show-extended="showExtended" />
-            <!-- Collapse/extend Sidebar Button -->
-            <v-list v-if="!isMobile" nav style="width: 100%; z-index: 9000" class="bg-detailsCard pa-0">
-                <v-divider style="margin-left: -8px; margin-right: -8px"></v-divider>
-                <!-- Button to collapse the Sidebar -->
-                <v-list-item v-if="!drawerState" @click="collapseSidebar()" class="ma-0">
-                    <template v-slot:prepend>
-                        <v-icon class="ml-2">mdi-chevron-double-left</v-icon>
-                    </template>
-                    <v-list-item-title class="text-caption">Collapse Sidebar</v-list-item-title>
-                </v-list-item>
-                <!-- Button to extend the Sidebar -->
-                <v-list-item v-else @click="extendSidebar()" class="ma-0">
-                    <template v-slot:prepend>
-                        <v-icon class="ml-2">mdi-chevron-double-right</v-icon>
-                    </template>
-                </v-list-item>
-            </v-list>
+                <!-- AAS List -->
+                <v-list nav class="bg-card pa-0">
+                    <v-virtual-scroll :items="AASData" item-height="48" :height="isMobile ? 'calc(100vh - 170px)' : 'calc(100vh - 218px)'" class="pb-2">
+                        <template v-slot:default="{ item }">
+                            <!-- Single AAS -->
+                            <v-list-item @click="selectAAS(item)" class="bg-listItem mt-2 mx-2" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(item) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
+                                <!-- Tooltip with idShort and id -->
+                                <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
+                                    <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ item['idShort'] }}</div>
+                                    <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ item['id'] }}</div>
+                                </v-tooltip>
+                                <!-- Icon of the AAS -->
+                                <template v-if="drawerState" v-slot:prepend>
+                                    <v-icon>mdi-robot-industrial</v-icon>
+                                </template>
+                                <!-- idShort of the AAS -->
+                                <template v-if="!drawerState" v-slot:title>
+                                    <div class="text-primary" style="z-index: 9999">{{ aasNameToDisplay(AAS) }}</div>
+                                </template>
+                                <!-- id of the AAS -->
+                                <template v-if="!drawerState" v-slot:subtitle>
+                                    <div>{{ AAS['id'] }}</div>
+                                </template>
+                                <!-- open Details Button (with Status Badge) -->
+                                <template v-if="!drawerState" v-slot:append>
+                                    <!-- Badge that show's the Status of the AAS -->
+                                    <v-badge :model-value="item['status'] && item['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
+                                    <!-- Information Button -->
+                                    <v-btn @click.stop="showAASDetails(item)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
+                                    <!-- Download AAS -->
+                                    <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(item)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                                    <!-- Remove from AAS Registry Button -->
+                                    <v-btn @click.stop="removeFromAASRegistry(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                                </template>
+                                <v-overlay :model-value="isSelected(item)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
+                            </v-list-item>
+                        </template>
+                    </v-virtual-scroll>
+                </v-list>
+                <!-- AAS Details (only visible if the Information Button is pressed on an AAS) -->
+                <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" :show-extended="showExtended" />
+                <!-- Collapse/extend Sidebar Button -->
+                <v-list v-if="!isMobile" nav style="width: 100%; z-index: 9000" class="bg-detailsCard pa-0">
+                    <v-divider style="margin-left: -8px; margin-right: -8px"></v-divider>
+                    <!-- Button to collapse the Sidebar -->
+                    <v-list-item v-if="!drawerState" @click="collapseSidebar()" class="ma-0">
+                        <template v-slot:prepend>
+                            <v-icon class="ml-2">mdi-chevron-double-left</v-icon>
+                        </template>
+                        <v-list-item-title class="text-caption">Collapse Sidebar</v-list-item-title>
+                    </v-list-item>
+                    <!-- Button to extend the Sidebar -->
+                    <v-list-item v-else @click="extendSidebar()" class="ma-0">
+                        <template v-slot:prepend>
+                            <v-icon class="ml-2">mdi-chevron-double-right</v-icon>
+                        </template>
+                    </v-list-item>
+                </v-list>
         </v-card>
     </v-container>
 </template>
@@ -257,6 +257,14 @@ export default defineComponent({
     },
 
     methods: {
+        // Function to determine the name of the aas to be displayed
+        aasNameToDisplay(AAS: any) {
+            if (AAS.displayName) {
+                let displayNameEn = AAS.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
+            }
+            return (AAS.idShort ? AAS.idShort : '');
+        },
         // Function to collapse the Sidebar
         collapseSidebar() {
             this.showExtended = false;
@@ -278,9 +286,9 @@ export default defineComponent({
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) { // execute if the AAS Registry is found
-                    // sort data by idetification id (ascending) and store it in the AASData variable
-                    let registerredAAS = response.data.result;
-                    let sortedData = registerredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
+                    // sort data by identification id (ascending) and store it in the AASData variable
+                    let registeredAAS = response.data.result;
+                    let sortedData = registeredAAS.sort((a: { [x: string]: number }, b: { [x: string]: number }) => (a['id'] > b['id']) ? 1 : -1);
 
                     // add status online to the AAS Data
                     sortedData.forEach((AAS: any) => {
