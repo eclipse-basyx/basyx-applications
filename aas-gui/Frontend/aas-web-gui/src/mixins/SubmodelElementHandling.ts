@@ -6,6 +6,7 @@ import { useAASStore } from '@/store/AASDataStore';
 import { useNavigationStore } from '@/store/NavigationStore';
 
 import RequestHandling from '@/mixins/RequestHandling';
+import { element } from 'three/examples/jsm/nodes/shadernode/ShaderNode';
 
 export default defineComponent({
     name: 'SubmodelElementHandling',
@@ -169,7 +170,11 @@ export default defineComponent({
         // Function to check if the referenced Element exists
         async checkReference(referenceValue: Array<any>): Promise<{ success: boolean, aas?: object, submodel?: object }> {
             // console.log('Reference Value: ', referenceValue);
-            let path = this.aasRegistryURL + '/shell-descriptors';
+            // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+            if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                this.aasRegistryURL += '/shell-descriptors';
+            }
+            let path = this.aasRegistryURL;
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             try {
@@ -337,7 +342,11 @@ export default defineComponent({
         // Function to check if the assetId can be found in the AAS Discovery Service (and if it exists in the AAS Registry)
         async checkAssetId(assetId: string): Promise<{ success: boolean, aas?: object, submodel?: object }> {
             const failResponse = { success: false, aas: {}, submodel: {} }; // Define once for reuse
-            const path = `${this.aasDiscoveryURL}/lookup/shells?assetIds=${this.URLEncode(assetId)}`; // Use template literal and encodeURIComponent
+            // check if aasDiscoveryURL includes "/lookup/shells" and add id if not (backward compatibility)
+            if (!this.aasDiscoveryURL.includes('/lookup/shells')) {
+                this.aasDiscoveryURL += '/lookup/shells';
+            }
+            const path = `${this.aasDiscoveryURL}?assetIds=${this.URLEncode(assetId)}`; // Use template literal and encodeURIComponent
             const context = 'retrieving AASID by AssetID';
             const disableMessage = true;
             try {
@@ -348,7 +357,11 @@ export default defineComponent({
                     // take the first aasId from the list and check if it exists in the AAS Registry
                     const aasId = aasIds[0];
                     // console.log('AAS ID:', aasId);
-                    const registryPath = `${this.aasRegistryURL}/shell-descriptors/${this.URLEncode(aasId)}`;
+                    // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+                    if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                        this.aasRegistryURL += '/shell-descriptors';
+                    }
+                    const registryPath = `${this.aasRegistryURL}/${this.URLEncode(aasId)}`;
                     const registryContext = 'retrieving AAS Data';
                     try {
                         const aasRegistryResponse = await this.getRequest(registryPath, registryContext, disableMessage);
@@ -376,6 +389,10 @@ export default defineComponent({
             } else {
                 return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
             }
+            // return if no SemanticID is available
+            if (!SelectedNode.semanticId || !SelectedNode.semanticId.keys || SelectedNode.semanticId.keys.length == 0) {
+                return Promise.resolve({});
+            }
             let path = conceptDescriptionRepoURL + "/" + this.URLEncode(SelectedNode.semanticId.keys[0].value);
             let context = 'retrieving ConceptDescription';
             let disableMessage = true;
@@ -390,5 +407,47 @@ export default defineComponent({
                 }
             });
         },
+
+        // calculate the pathes of the SubmodelElements in a provided Submodel/SubmodelElement
+        calculateSubmodelElementPathes(parent: any, startPath: string): any {
+            // console.log('Parent: ', parent, 'StartPath: ', startPath);
+            parent.path = startPath;
+            parent.id = this.UUID();
+            // get the conceptDescription for the SubmodelElement
+            this.getConceptDescription(parent).then((response: any) => {
+                if (response && response.embeddedDataSpecifications && response.embeddedDataSpecifications.length > 0) {
+                    parent.embeddedDataSpecifications = response.embeddedDataSpecifications;
+                }
+            });
+            // check for children
+            if (parent.submodelElements && parent.submodelElements.length > 0) { // check for SubmodelElements
+                parent.submodelElements.forEach((element: any) => {
+                    element = this.calculateSubmodelElementPathes(element, startPath + '/submodel-elements/' + element.idShort);
+                });
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementCollection') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
+                parent.value.forEach((element: any) => {
+                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                });
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementList') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
+                parent.value.forEach((element: any, index: number) => {
+                    element = this.calculateSubmodelElementPathes(element, startPath + encodeURIComponent('[') + index + encodeURIComponent(']'));
+                });
+            } else if (parent.statements && Array.isArray(parent.statements) && parent.statements.length > 0 && parent.modelType == 'Entity') { // check for Statements (Entities)
+                parent.value.forEach((element: any) => {
+                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                });
+            }
+            return parent;
+        },
+
+        // Function to calculate the local path (used for files)
+        getLocalPath(path: string, selectedNode: any): string {
+            if (!path) return '';
+            // check if Link starts with '/'
+            if (path.startsWith('/')) {
+                path = selectedNode.path + '/attachment';
+            }
+            return path;
+        }
     },
 })

@@ -19,8 +19,11 @@
                         <span class="mx-3 text-primary">Switch to</span>
                         <!-- Select the view you want to use -->
                         <v-list nav class="pa-0" :class="isMobile ? 'mx-3 mt-3 bg-card' : 'ma-3 bg-navigationMenuSecondary'">
-                            <v-list-item :to="isMobile ? '/aaslist' : '/'" @click="closeMenu()">
-                                <v-list-item-title>AAS View</v-list-item-title>
+                            <v-list-item v-if="!isMobile" to="/" @click="closeMenu()">
+                                <v-list-item-title>AAS Editor</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item :to="isMobile ? '/aaslist' : '/aasviewer'" @click="closeMenu()">
+                                <v-list-item-title>AAS Viewer</v-list-item-title>
                             </v-list-item>
                             <v-list-item to="/impressum" @click="closeMenu()">
                                 <v-list-item-title>Impressum</v-list-item-title>
@@ -66,14 +69,6 @@
                             <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="connectToEnvironment('ConceptDescription')" :loading="loadingConceptDescriptionRepo">Connect</v-btn>
                         </template>
                     </v-text-field>
-                    <!-- TODO: Update AASX Upload -->
-                    <!-- <v-divider v-if="aasServerURL && aasServerURL != ''"></v-divider> -->
-                    <!-- AASX Upload to AAS Server -->
-                    <!-- <v-file-input v-if="aasServerURL && aasServerURL != ''" variant="outlined" density="compact" :multiple="false" v-model="aasxFile" clearable hide-details class="my-1 mt-3" label="AASX File Upload" accept=".aasx">
-                        <template v-slot:append-inner>
-                            <v-btn size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="uploadAASXFile()">Upload</v-btn>
-                        </template>
-                    </v-file-input> -->
                 </v-col>
             </v-row>
             <!-- Platform I 4.0 Logo -->
@@ -93,6 +88,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
+import { useAASStore } from '@/store/AASDataStore';
 import { useTheme } from 'vuetify';
 import RequestHandling from '../../mixins/RequestHandling';
 
@@ -106,10 +102,12 @@ export default defineComponent({
     setup() {
         const theme = useTheme()
         const navigationStore = useNavigationStore()
+        const aasStore = useAASStore()
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
+            aasStore, // AASStore Object
         }
     },
 
@@ -127,7 +125,6 @@ export default defineComponent({
             loadingAASRepo: false,                  // Loading State of the AAS Repository Connection
             loadingSubmodelRepo: false,             // Loading State of the Submodel Repository Connection
             loadingConceptDescriptionRepo: false,   // Loading State of the Concept Description Repository Connection
-            aasxFile: [] as any,                    // AASX File to upload
         }
     },
 
@@ -138,6 +135,13 @@ export default defineComponent({
         this.AASRepoURL = this.aasRepoURL;
         this.SubmodelRepoURL = this.submodelRepoURL;
         this.ConceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
+    },
+
+    watch: {
+        // watch for route changes (name) and reset selected AAS and selected Node
+        currentRoute() {
+            this.aasStore.dispatchSelectedAAS({});
+        }
     },
 
     computed: {
@@ -185,6 +189,11 @@ export default defineComponent({
         isDark() {
             return this.theme.global.current.value.dark;
         },
+
+        // get the current route name
+        currentRoute() {
+            return this.$route.name;
+        },
     },
 
     methods: {
@@ -193,7 +202,11 @@ export default defineComponent({
             // console.log('connect to aas discovery service: ' + this.aasDiscoveryServiceURL);
             if (this.aasDiscoveryURL != '') {
                 this.loadingAASDiscovery = true;
-                let path = this.aasDiscoveryURL + '/lookup/shells';
+                // check if aasDiscoveryURL includes "/lookup/shells" and add id if not (backward compatibility)
+                if (!this.aasDiscoveryURL.includes('/lookup/shells')) {
+                    this.aasDiscoveryURL += '/lookup/shells';
+                }
+                let path = this.aasDiscoveryURL;
                 let context = 'connecting to AAS Discovery Service'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -214,7 +227,11 @@ export default defineComponent({
             // console.log('connect to aas registry: ' + this.aasRegistryURL);
             if (this.aasRegistryURL != '') {
                 this.loadingAASRegistry = true;
-                let path = this.aasRegistryURL + '/shell-descriptors';
+                // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+                if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                    this.aasRegistryURL += '/shell-descriptors';
+                }
+                let path = this.aasRegistryURL;
                 let context = 'connecting to AAS Registry'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -235,7 +252,11 @@ export default defineComponent({
             // console.log('connect to submodel registry: ' + this.submodelRegistryURL);
             if (this.submodelRegistryURL != '') {
                 this.loadingSubmodelRegistry = true;
-                let path = this.submodelRegistryURL + '/submodel-descriptors';
+                // check if submodelRegistryURL includes "/submodel-descriptors" and add id if not (backward compatibility)
+                if (!this.submodelRegistryURL.includes('/submodel-descriptors')) {
+                    this.submodelRegistryURL += '/submodel-descriptors';
+                }
+                let path = this.submodelRegistryURL;
                 let context = 'connecting to Submodel Registry'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -271,29 +292,6 @@ export default defineComponent({
                 });
             }
         },
-
-        // // Function to upload the AASX File to the AAS-Server (TODO: Update AASX Upload to AAS V3 API when available)
-        // uploadAASXFile() {
-        //     // console.log('upload aasx file: ' + this.aasxFile);
-        //     // check if a file is selected
-        //     if (this.aasxFile.length == 0) return;
-
-        //     let context = 'uploading AASX File';
-        //     let disableMessage = false;
-        //     let path = this.serverURL + '/shells/aasx';
-        //     var headers = new Headers();
-        //     var formData = new FormData();
-        //     formData.append("file", this.aasxFile[0]);
-        //     // Send Request to upload the file
-        //     this.postRequest(path, formData, headers, context, disableMessage).then((response: any) => {
-        //         if (response.success) {
-        //             this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'success', btnColor: 'buttonText', text: 'AASX-File uploaded.' }); // Show Success Snackbar
-        //             this.aasxFile = []; // clear the AASX File
-        //             // reload the AAS list
-        //             this.navigationStore.dispatchTriggerAASListReload(true);
-        //         }
-        //     });
-        // },
 
         // Function to close the menu
         closeMenu() {

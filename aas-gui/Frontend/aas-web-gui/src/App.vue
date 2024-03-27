@@ -101,9 +101,8 @@ export default defineComponent({
       else if(aasEndpoint && !submodelElementPath) this.$router.push({ path: '/aaslist', query: { aas: aasEndpoint } });
       else this.$router.push({ path: '/aaslist' });
     } else { // change to MainWindow when the platform is not android or ios
-      if(aasEndpoint && submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint, path: submodelElementPath } });
-      else if(aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
-      else this.$router.push({ name: 'MainWindow' });
+      if(aasEndpoint && submodelElementPath) this.$router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
+      else if(aasEndpoint && !submodelElementPath) this.$router.push({ query: { aas: aasEndpoint } });
     }
   }
 });

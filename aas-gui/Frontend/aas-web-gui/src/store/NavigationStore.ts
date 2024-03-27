@@ -81,13 +81,13 @@ export const useNavigationStore = defineStore({
         dispatchAASDiscoveryURL(url: string) {
             this.AASDiscoveryURL = url;
         },
-        dispatchAASRegistryURL(url: string) {
+        dispatchAASRegistryURL(url: string, clearSelectedNode: boolean = true) {
             this.AASRegistryURL = url;
-            useAASStore().dispatchSelectedNode({});
+            if (clearSelectedNode) useAASStore().dispatchSelectedNode({});
         },
-        dispatchSubmodelRegistryURL(url: string) {
+        dispatchSubmodelRegistryURL(url: string, clearSelectedNode: boolean = true) {
             this.SubmodelRegistryURL = url;
-            useAASStore().dispatchSelectedNode({});
+            if (clearSelectedNode) useAASStore().dispatchSelectedNode({});
         },
         dispatchRepoURL(type: string, url: string) {
             switch (type) {
