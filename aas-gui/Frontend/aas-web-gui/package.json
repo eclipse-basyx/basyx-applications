@@ -13,7 +13,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@mdi/font": "^7.4.47",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
-    "apexcharts": "^3.47.0",
+    "apexcharts": "^3.48.0",
     "leaflet": "^1.9.4",
     "md5": "^2.3.0",
     "mermaid": "^10.8.0",
