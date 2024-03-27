@@ -9,6 +9,9 @@
                     <v-list nav>
                         <!-- SubmodelELement Identification -->
                         <IdentificationElement :identificationObject="submodelElementData" :modelType="submodelElementData.modelType" :idType="'Identification (ID)'" :nameType="'idShort'"></IdentificationElement>
+                        <v-divider v-if="submodelElementData.displayName && submodelElementData.displayName.length > 0" class="mt-2"></v-divider>
+                        <!-- SubmodelELement DisplayName -->
+                        <DisplayNameElement v-if="submodelElementData.displayName && submodelElementData.displayName.length > 0" :displayNameObject="submodelElementData.displayName" :displayNameTitle="'DisplayName'" :small="false"></DisplayNameElement>
                         <v-divider v-if="submodelElementData.description && submodelElementData.description.length > 0" class="mt-2"></v-divider>
                         <!-- SubmodelELement Description -->
                         <DescriptionElement v-if="submodelElementData.description && submodelElementData.description.length > 0" :descriptionObject="submodelElementData.description" :descriptionTitle="'Description'" :small="false"></DescriptionElement>
@@ -67,6 +70,7 @@ import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import IdentificationElement    from './UIComponents/IdentificationElement.vue';
+import DisplayNameElement       from './UIComponents/DisplayNameElement.vue';
 import DescriptionElement       from './UIComponents/DescriptionElement.vue';
 import SemanticID               from './UIComponents/SemanticID.vue';
 import ConceptDescription       from './UIComponents/ConceptDescription.vue';
@@ -93,6 +97,7 @@ export default defineComponent({
         SubmodelElementHandling, // Mixin to handle the SubmodelElements
 
         IdentificationElement,
+        DisplayNameElement,
         DescriptionElement,
         SemanticID,
         ConceptDescription,
