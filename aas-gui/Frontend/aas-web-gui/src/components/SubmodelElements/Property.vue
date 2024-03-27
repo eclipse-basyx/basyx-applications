@@ -6,6 +6,26 @@
         <v-card color="elevatedCard" v-if="propertyObject">
             <!-- Value of the Property -->
             <v-list nav class="pt-0" :class="IsOperationVariable ? '': 'bg-elevatedCard'">
+                <!-- valueId -->
+                <v-list-item v-if="!IsOperationVariable && propertyObject.valueId && propertyObject.valueId.keys && propertyObject.valueId.keys.length > 0" class="pb-0">
+                    <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
+                        <div v-for="(valueId, i) in propertyObject.valueId.keys" :key="i" class="text-caption">
+                            <span class="font-weight-bold">{{ '(' + valueId.type + ') ' }}</span>
+                            {{ valueId.value }}
+                        </div>
+                    </v-tooltip>
+                    <template v-slot:title>
+                        <span class="text-caption">{{ 'ValueId: ' }}</span>
+                    </template>
+                    <template v-slot:subtitle>
+                        <v-list-item-subtitle v-for="(valueId, i) in propertyObject.valueId.keys" :key="i">
+                            <div class="pt-2">
+                                <v-chip label size="x-small" border class="mr-2">{{ valueId.type }}</v-chip>
+                                <span>{{ valueId.value }}</span>
+                            </div>
+                        </v-list-item-subtitle>
+                    </template>
+                </v-list-item>
                 <!-- valueType -->
                 <v-list-item v-if="!IsOperationVariable" class="pb-0">
                     <v-list-item-title>
