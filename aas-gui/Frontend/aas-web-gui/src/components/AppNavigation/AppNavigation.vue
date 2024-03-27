@@ -5,7 +5,7 @@
             <v-row class="mx-0" align="center">
                 <v-card flat color="appBar" class="ml-2">
                     <!-- Logo in the App Bar -->
-                    <img :src="imagePath" style="min-height: 42px; max-height: 42px">
+                    <img :src="EnvLogoPath" style="min-height: 42px; max-height: 42px" alt="Logo">
                 </v-card>
                 <!-- Menu Toggle (Desktop) -->
                 <v-menu v-if="!isMobile" :close-on-content-click="false" v-model="mainMenu">
@@ -88,7 +88,7 @@
         </v-footer>
 
         <!-- left Side Menu with the AAS List -->
-        <v-navigation-drawer width="336" color="appNavigation" :rail="drawerState" class="leftMenu" v-if="mainWindowOpen && !isMobile">
+        <v-navigation-drawer width="336" color="appNavigation" :rail="drawerState" class="leftMenu" v-if="showAASList && !isMobile">
             <AASList />
         </v-navigation-drawer>
 
@@ -165,10 +165,9 @@ export default defineComponent({
             mobileMenu: false,              // Variable to show the Mobile Menu
             menuEntries: [
                 { name: 'AAS List',         icon: 'mdi-format-list-text',               route: '/aaslist',                  id: 1 },
-                { name: 'AAS Treeview',     icon: 'mdi-format-list-group',              route: '/aastreeview',              id: 2 },
-                { name: 'Element Details',  icon: 'mdi-cards-variant',                  route: '/submodelelementview',      id: 3 },
-                { name: 'Visualization',    icon: 'mdi-chart-timeline-variant-shimmer', route: '/componentvisualization',   id: 4 },
-            ]
+                { name: 'Submodel List',    icon: 'mdi-format-list-group',              route: '/submodellist',             id: 2 },
+                { name: 'Visualization',    icon: 'mdi-chart-timeline-variant-shimmer', route: '/componentvisualization',   id: 3 },
+            ],
         }
     },
 
@@ -311,8 +310,8 @@ export default defineComponent({
         },
 
         // to check if the MainWindow is the current Route
-        mainWindowOpen() {
-            return this.$route.name == 'MainWindow' ? true : false;
+        showAASList() {
+            return ['MainWindow', 'AASViewer'].includes(this.$route.name as string);
         },
 
         // Get the Env Variable for the AAS Discovery URL from the store
@@ -345,19 +344,10 @@ export default defineComponent({
             return this.envStore.getEnvConceptDescriptionRepoPath;
         },
 
-        imagePath() {
-            // get a list of files in the public directory with the filename "Logo" when the file extension is unknown not using any nodejs modules
-            let files = import.meta.glob('@/assets/Logo/Logo.*');
-            let filePaths = Object.keys(files); // get the paths to the files
-            // get the first file in the List
-            let filePath = filePaths[0];
-            // get the file extension
-            let fileExtension = filePath.split('.').pop();
-            // return the path to the file with the correct file extension
-            // console.log('src/assets/Logo/Logo.' + fileExtension);
-            let path = 'src/assets/Logo/Logo.' + fileExtension as string;
-            return path;
-        }
+        // Get the Env Variable for the logo path from the store
+        EnvLogoPath() {
+            return this.envStore.getEnvLogoPath;
+        },
     },
 
     methods: {
@@ -368,7 +358,11 @@ export default defineComponent({
             // console.log('connect to aas discovery: ' + this.aasDiscoveryURL);
             if (this.aasDiscoveryURL != '') {
                 this.loadingAASDiscovery = true;
-                let path = this.aasDiscoveryURL + '/lookup/shells';
+                // check if aasDiscoveryURL includes "/lookup/shells" and add id if not (backward compatibility)
+                if (!this.aasDiscoveryURL.includes('/lookup/shells')) {
+                    this.aasDiscoveryURL += '/lookup/shells';
+                }
+                let path = this.aasDiscoveryURL;
                 let context = 'connecting to AAS Discovery'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -389,16 +383,20 @@ export default defineComponent({
             // console.log('connect to aas registry: ' + this.aasRegistryURL);
             if (this.aasRegistryURL != '') {
                 this.loadingAASRegistry = true;
-                let path = this.aasRegistryURL + '/shell-descriptors';
+                // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+                if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                    this.aasRegistryURL += '/shell-descriptors';
+                }
+                let path = this.aasRegistryURL;
                 let context = 'connecting to AAS Registry'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingAASRegistry = false;
                     if (response.success) {
-                        this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL); // save the URL in the NavigationStore
+                        this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL, false); // save the URL in the NavigationStore
                         window.localStorage.setItem('aasRegistryURL', this.aasRegistryURL); // save the URL in the local storage
                     } else {
-                        this.navigationStore.dispatchAASRegistryURL(''); // clear the AAS Registry URL in the NavigationStore
+                        this.navigationStore.dispatchAASRegistryURL('', false); // clear the AAS Registry URL in the NavigationStore
                         window.localStorage.removeItem('aasRegistryURL'); // remove the URL from the local storage
                     }
                 });
@@ -410,16 +408,20 @@ export default defineComponent({
             // console.log('connect to submodel registry: ' + this.submodelRegistryURL);
             if (this.submodelRegistryURL != '') {
                 this.loadingSubmodelRegistry = true;
-                let path = this.submodelRegistryURL + '/submodel-descriptors';
+                // check if submodelRegistryURL includes "/submodel-descriptors" and add id if not (backward compatibility)
+                if (!this.submodelRegistryURL.includes('/submodel-descriptors')) {
+                    this.submodelRegistryURL += '/submodel-descriptors';
+                }
+                let path = this.submodelRegistryURL;
                 let context = 'connecting to Submodel Registry'
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingSubmodelRegistry = false;
                     if (response.success) {
-                        this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL); // save the URL in the NavigationStore
+                        this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL, false); // save the URL in the NavigationStore
                         window.localStorage.setItem('submodelRegistryURL', this.submodelRegistryURL); // save the URL in the local storage
                     } else {
-                        this.navigationStore.dispatchSubmodelRegistryURL(''); // clear the Submodel Registry URL in the NavigationStore
+                        this.navigationStore.dispatchSubmodelRegistryURL('', false); // clear the Submodel Registry URL in the NavigationStore
                         window.localStorage.removeItem('submodelRegistryURL'); // remove the URL from the local storage
                     }
                 });

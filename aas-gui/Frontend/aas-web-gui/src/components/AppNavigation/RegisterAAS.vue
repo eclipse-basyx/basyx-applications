@@ -114,8 +114,11 @@ export default defineComponent({
                     let registrationContent = createRegisterContent(aas);
                     // remove administration key
                     delete registrationContent['administration'];
-
-                    let path = this.aasRegistryURL + '/shell-descriptors';
+                    // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+                    if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                        this.aasRegistryURL += '/shell-descriptors';
+                    }
+                    let path = this.aasRegistryURL;
                     let content = JSON.stringify(registrationContent);
                     let headers = { 'Content-Type': 'application/json' };
                     let context = 'registering AAS';

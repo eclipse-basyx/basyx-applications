@@ -12,8 +12,9 @@ interface PluginType {
 
 // Components
 import App from './App.vue'
-import router from './router';
+import { createAppRouter } from './router';
 import { useNavigationStore } from './store/NavigationStore';
+import { useEnvStore } from './store/EnvironmentStore';
 
 import VueApexCharts from "vue3-apexcharts";
 
@@ -31,12 +32,17 @@ const pinia = createPinia()
 
 async function loadUserPlugins() {
 
+    const router = await createAppRouter();
+
     app.use(router);
     app.use(pinia);
 
     app.use(VueApexCharts);
+    
+    const envStore = useEnvStore();  // Get the store instance
+    await envStore.fetchConfig();  // make sure to await fetchConfig
 
-    registerPlugins(app)
+    await registerPlugins(app)
 
     // Load all components in the components folder
     const pluginFiles = import.meta.glob('./UserPlugins/*.vue');
@@ -54,8 +60,7 @@ async function loadUserPlugins() {
     const navigationStore = useNavigationStore();  // Get the store instance
     navigationStore.dispatchPlugins(plugins);  // Update the plugins state
 
-    app.mount('#app')
-
-    }
+    app.mount('#app');
+}
 
 loadUserPlugins()

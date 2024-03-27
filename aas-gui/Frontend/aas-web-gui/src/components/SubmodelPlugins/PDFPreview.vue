@@ -101,7 +101,7 @@ export default defineComponent({
             if (!path) return '';
             // check if Link starts with '/'
             if (path.startsWith('/')) {
-                path = this.SelectedNode.path + '/attachment';
+                path = this.submodelElementData.path + '/attachment';
             }
             // check if path has not .pdf at the end and instead /File
             if (!path.endsWith('.pdf') && path.endsWith('/File')) {

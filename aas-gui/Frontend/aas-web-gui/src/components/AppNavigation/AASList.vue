@@ -23,50 +23,53 @@
                     </v-col>
                     <!-- Add existing AAS -->
                     <v-col cols="auto" class="px-0" v-if="showExtended">
-                        <RegisterAAS></RegisterAAS>
+                        <!-- <RegisterAAS></RegisterAAS> -->
+                        <UploadAAS></UploadAAS>
                     </v-col>
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="pa-0" :class="isMobile ? 'mobileList' : 'desktopList'">
-                <!-- AAS List -->
-                <v-list nav class="bg-card">
-                    <!-- Single AAS -->
-                    <v-list-item v-for="(AAS, i) in AASData" :key="AAS['id']" @click="selectAAS(AAS)" class="bg-listItem" :class="i == AASData.length - 1 ? 'mb-0' : 'mb-2'" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(AAS) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
-                        <!-- Tooltip with idShort and id -->
-                        <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
-                            <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ AAS['idShort'] }}</div>
-                            <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ AAS['id'] }}</div>
-                        </v-tooltip>
-                        <!-- Icon of the AAS -->
-                        <template v-if="drawerState" v-slot:prepend>
-                            <v-icon>mdi-robot-industrial</v-icon>
-                        </template>
-                        <!-- idShort of the AAS -->
-                        <template v-if="!drawerState" v-slot:title>
-                            <div class="text-primary" style="z-index: 9999">{{ AAS['idShort'] }}</div>
-                        </template>
-                        <!-- id of the AAS -->
-                        <template v-if="!drawerState" v-slot:subtitle>
-                            <div v-html="AAS['id']"></div>
-                        </template>
-                        <!-- open Details Button (with Status Badge) -->
-                        <template v-if="!drawerState" v-slot:append>
-                            <!-- Badge that show's the Status of the AAS -->
-                            <v-badge :model-value="AAS['status'] && AAS['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
-                            <!-- Information Button -->
-                            <v-btn @click.stop="showAASDetails(AAS)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
-                            <!-- Download AAS -->
-                            <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(AAS)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
-                            <!-- Remove from AAS Registry Button -->
-                            <v-btn @click.stop="removeFromAASRegistry(AAS)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
-                        </template>
-                        <v-overlay :model-value="isSelected(AAS)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
-                    </v-list-item>
-                </v-list>
-                <!-- AAS Details (only visible if the Information Button is pressed on an AAS) -->
-                <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" :show-extended="showExtended"/>
-            </v-card-text>
+            <!-- AAS List -->
+            <v-list nav class="bg-card pa-0">
+                <v-virtual-scroll :items="AASData" item-height="48" :height="isMobile ? 'calc(100vh - 170px)' : 'calc(100vh - 218px)'" class="pb-2">
+                    <template v-slot:default="{ item }">
+                        <!-- Single AAS -->
+                        <v-list-item @click="selectAAS(item)" class="bg-listItem mt-2 mx-2" style="border-top: solid; border-right: solid; border-bottom: solid; border-width: 1px" :style="{ 'border-color': isSelected(item) ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
+                            <!-- Tooltip with idShort and id -->
+                            <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
+                                <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ item['idShort'] }}</div>
+                                <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ item['id'] }}</div>
+                            </v-tooltip>
+                            <!-- Icon of the AAS -->
+                            <template v-if="drawerState" v-slot:prepend>
+                                <v-icon>mdi-robot-industrial</v-icon>
+                            </template>
+                            <!-- idShort of the AAS -->
+                            <template v-if="!drawerState" v-slot:title>
+                                <div class="text-primary" style="z-index: 9999">{{ item['idShort'] }}</div>
+                            </template>
+                            <!-- id of the AAS -->
+                            <template v-if="!drawerState" v-slot:subtitle>
+                                <div v-html="item['id']"></div>
+                            </template>
+                            <!-- open Details Button (with Status Badge) -->
+                            <template v-if="!drawerState" v-slot:append>
+                                <!-- Badge that show's the Status of the AAS -->
+                                <v-badge :model-value="item['status'] && item['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
+                                <!-- Information Button -->
+                                <v-btn @click.stop="showAASDetails(item)" icon="mdi-information-outline" size="x-small" variant="plain" style="z-index: 9000"></v-btn>
+                                <!-- Download AAS -->
+                                <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(item)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                                <!-- Remove from AAS Registry Button -->
+                                <v-btn @click.stop="removeFromAASRegistry(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                            </template>
+                            <v-overlay :model-value="isSelected(item)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
+                        </v-list-item>
+                    </template>
+                </v-virtual-scroll>
+            </v-list>
+            <!-- AAS Details (only visible if the Information Button is pressed on an AAS) -->
+            <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" :show-extended="showExtended" />
             <!-- Collapse/extend Sidebar Button -->
             <v-list v-if="!isMobile" nav style="width: 100%; z-index: 9000" class="bg-detailsCard pa-0">
                 <v-divider style="margin-left: -8px; margin-right: -8px"></v-divider>
@@ -96,13 +99,15 @@ import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import AASListDetails from './AASListDetails.vue';
-import RegisterAAS from './RegisterAAS.vue';
+// import RegisterAAS from './RegisterAAS.vue';
+import UploadAAS from './UploadAAS.vue';
 
 export default defineComponent({
     name: 'AASList',
     components: {
         AASListDetails, // AAS Details Component
-        RegisterAAS,    // Register AAS Component
+        // RegisterAAS,    // Register AAS Component
+        UploadAAS,      // Upload AAS Component
     },
     mixins: [RequestHandling, SubmodelElementHandling],
 
@@ -264,7 +269,11 @@ export default defineComponent({
         // Function to get the AAS Data from the Registry Server
         getAASData() {
             this.listLoading = true;
-            let path = this.aasRegistryURL + '/shell-descriptors';
+            // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+            if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                this.aasRegistryURL += '/shell-descriptors';
+            }
+            let path = this.aasRegistryURL;
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -277,7 +286,7 @@ export default defineComponent({
                     sortedData.forEach((AAS: any) => {
                         AAS['status'] = 'check disabled';
                     });
-                    this.AASData = sortedData; // store the sorted data in the AASData variable
+                    this.AASData = Object.freeze(sortedData); // store the sorted data in the AASData variable
                     this.unfilteredAASData = sortedData; // make a copy of the sorted data and store it in the unfilteredAASData variable
                     if (this.statusCheck) {
                         this.checkAASStatus(); // check the AAS Status
@@ -348,7 +357,7 @@ export default defineComponent({
             
             if (this.isMobile) {
                 // Change to Treeview add AAS Endpoint as Query to the Router
-                this.$router.push({ path: '/aastreeview', query: { aas: AAS.endpoints[0].protocolInformation.href } });
+                this.$router.push({ path: '/submodellist', query: { aas: AAS.endpoints[0].protocolInformation.href } });
             } else {
                 // Add AAS Endpoint as Query to the Router
                 this.$router.push({ query: { aas: AAS.endpoints[0].protocolInformation.href } });
@@ -417,7 +426,11 @@ export default defineComponent({
             // show a confirmation Dialog to delete the AAS
             if(confirm('Are you sure you want to delete the AAS from the AAS Registry?')) {
                 // execute if the user confirms the removal
-                let path = this.aasRegistryURL + '/shell-descriptors/' + this.URLEncode(AAS.id);
+                // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
+                if (!this.aasRegistryURL.includes('/shell-descriptors')) {
+                    this.aasRegistryURL += '/shell-descriptors';
+                }
+                let path = this.aasRegistryURL + this.URLEncode(AAS.id);
                 let context = 'removing AAS from AAS Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {
@@ -432,16 +445,6 @@ export default defineComponent({
 </script>
 
 <style>
-.mobileList {
-    overflow-y: auto; 
-    height: calc(100vh - 170px);
-}
-
-.desktopList {
-    overflow-y: auto; 
-    height: calc(100vh - 218px);
-}
-
 .custom-loader {
     animation: loader 1s infinite;
     display: flex;
