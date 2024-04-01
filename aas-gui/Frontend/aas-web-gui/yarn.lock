@@ -2000,10 +2000,10 @@ vue-demi@>=0.14.5:
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.6.tgz"
   integrity sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==
 
-vue-pdf-embed@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/vue-pdf-embed/-/vue-pdf-embed-2.0.2.tgz"
-  integrity sha512-Zxzv3DaNRj1NwJKIA/CMjvcA/Q0mlA8ASDBUVzYQ62o/s2WgF/Au/ZC4jlMr/P8CLznlyL8tIY7kqXHD7HLcAg==
+vue-pdf-embed@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/vue-pdf-embed/-/vue-pdf-embed-2.0.3.tgz#1567cb488c8bb686a4a02d254c85103931d9b5bb"
+  integrity sha512-3kSBUBen/ZUezWtbby9J8FhmS8u3cgPoogeFZMge33keelJqZbUC3PvpJi5CDnrCLVuty/gtvSill+GQPnXDow==
   dependencies:
     pdfjs-dist "^3.11.174"
 
