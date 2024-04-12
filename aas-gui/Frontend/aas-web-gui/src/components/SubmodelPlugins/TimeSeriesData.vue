@@ -114,6 +114,7 @@ export default defineComponent({
             records: [] as Array<any>, // Array to store the records of the time series smt
             timeVariable: null as any, // Object to store the selected time variable of the time series smt
             yVariables: [] as Array<any>, // Array to store the selected y variables of the time series smt
+            yVariableTemplate: '{{y-value}}' as String, // String that is used to inject y-variable in linkedSeg Query
             apiToken: '', // API Token for the Time Series Database
             timeSeriesValues: [] as Array<any>, // Array to store the values of the time series smt
             chartTypes: [
@@ -272,7 +273,10 @@ export default defineComponent({
             // get the Endpoint from the selected Segment
             const endpoint = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Endpoint').value;
             // get the query from the selected Segment
-            const query = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Query').value;
+            let query = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Query').value;
+            if(this.yVariables.length > 0)
+              query = query.replace(this.yVariableTemplate, this.yVariables[0].idShort)
+
             // console.log('Endpoint: ', endpoint, ' Query: ', query);
             // construct the headers for the request
             let requestHeaders = new Headers();
