@@ -33,6 +33,25 @@
                 <span class="text-caption">Unit: </span>
                 <span class="text-primary">{{ dataSpecificationObject.unit }}</span>
             </v-list-item-title>
+            <v-list-item v-if="dataSpecificationObject.unitId" class="pb-0">
+                <v-tooltip activator="parent" open-delay="600" transition="slide-x-transition">
+                    <div v-for="(unitId, i) in dataSpecificationObject.unitId.keys" :key="i" class="text-caption">
+                        <span class="font-weight-bold">{{ '(' + unitId.type + ') ' }}</span>
+                        {{ unitId.value }}
+                    </div>
+                </v-tooltip>
+                <template v-slot:title>
+                    <span class="text-caption">{{ 'UnitId: ' }}</span>
+                </template>
+                <template v-slot:subtitle>
+                    <v-list-item-subtitle v-for="(unitId, i) in dataSpecificationObject.unitId.keys" :key="i">
+                            <div class="pt-1">
+                                <v-chip label size="x-small" border class="mr-2">{{ unitId.type }}</v-chip>
+                                <span>{{ unitId.value }}</span>
+                            </div>
+                        </v-list-item-subtitle>
+                </template>
+            </v-list-item>
             <v-divider class="mt-2" v-if="dataSpecificationObject.valueList && dataSpecificationObject.valueList.length > 0"></v-divider>
             <!-- valueList -->
             <!-- TODO: needs visual update -->
