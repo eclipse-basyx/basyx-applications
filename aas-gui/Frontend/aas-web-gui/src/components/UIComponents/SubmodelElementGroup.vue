@@ -6,7 +6,7 @@
                     <v-list-item class="pt-0">
                         <v-list-item-title class="pt-2">
                             <!-- SubmodelElementCollection -->
-                            <v-alert v-if="SubmodelElement.modelType == 'SubmodelElementCollection'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
+                            <v-alert v-if="SubmodelElement.modelType == 'SubmodelElementCollection'" :text="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" border="start">
                                 <template v-slot:prepend>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -15,7 +15,7 @@
                                 </template>
                             </v-alert>
                             <!-- SubmodelElementList -->
-                            <v-alert v-else-if="SubmodelElement.modelType == 'SubmodelElementList'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
+                            <v-alert v-else-if="SubmodelElement.modelType == 'SubmodelElementList'" :text="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" border="start">
                                 <template v-slot:prepend>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -24,7 +24,7 @@
                                 </template>
                             </v-alert>
                             <!-- Entity -->
-                            <v-alert v-else-if="SubmodelElement.modelType == 'Entity'" :text="SubmodelElement.idShort" density="compact" variant="outlined" border="start">
+                            <v-alert v-else-if="SubmodelElement.modelType == 'Entity'" :text="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" border="start">
                                 <template v-slot:prepend>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -33,16 +33,16 @@
                                 </template>
                             </v-alert>
                             <!-- Property -->
-                            <v-text-field v-else-if="SubmodelElement.modelType == 'Property'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'Property'" :label="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <!-- Current Value -->
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.valueType }}</v-chip>
                                 </template>
                             </v-text-field>
                             <!-- MultiLanguageProperty -->
-                            <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="SubmodelElement.idShort" :small="false" style="margin-top: -12px"></DescriptionElement>
+                            <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="nameToDisplay(SubmodelElement)" :small="false" style="margin-top: -12px"></DescriptionElement>
                             <!-- Operation -->
-                            <v-alert v-else-if="SubmodelElement.modelType == 'Operation'" :text="SubmodelElement.idShort" density="compact" variant="tonal" border="start">
+                            <v-alert v-else-if="SubmodelElement.modelType == 'Operation'" :text="nameToDisplay(SubmodelElement)" density="compact" variant="tonal" border="start">
                                 <template v-slot:prepend>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -51,7 +51,7 @@
                                 </template>
                             </v-alert>
                             <!-- File -->
-                            <v-text-field v-else-if="SubmodelElement.modelType == 'File'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'File'" :label="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -62,7 +62,7 @@
                                 </template>
                             </v-text-field>
                             <!-- Blob -->
-                            <v-text-field v-else-if="SubmodelElement.modelType == 'Blob'" :label="SubmodelElement.idShort" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
+                            <v-text-field v-else-if="SubmodelElement.modelType == 'Blob'" :label="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
@@ -72,18 +72,18 @@
                                 <v-list-item style="margin-top: -12px">
                                     <!-- Reference idShort -->
                                     <template v-slot:title>
-                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                        <div class="text-subtitle-2">{{ nameToDisplay(SubmodelElement) }}</div>
                                     </template>
                                 </v-list-item>
                                 <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.value.keys[SubmodelElement.value.keys.length - 1].type }}</v-chip>
-                                <span v-html="SubmodelElement.value.keys[0].value"></span>
+                                <span>{{ SubmodelElement.value.keys[0].value }}</span>
                             </div>
                             <!-- Range -->
                             <div v-else-if="SubmodelElement.modelType == 'Range'">
                                 <v-list-item style="margin-top: -12px">
                                     <!-- Range idShort -->
                                     <template v-slot:title>
-                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                        <div class="text-subtitle-2">{{ nameToDisplay(SubmodelElement) }}</div>
                                     </template>
                                 </v-list-item>
                                 <v-row>
@@ -100,18 +100,18 @@
                                 <v-list-item style="margin-top: -12px">
                                     <!-- Relationship idShort -->
                                     <template v-slot:title>
-                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                        <div class="text-subtitle-2">{{ nameToDisplay(SubmodelElement) }}</div>
                                     </template>
                                 </v-list-item>
                                 <div>
                                     <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
                                     <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
-                                    <span v-html="SubmodelElement.first.keys[0].value"></span>
+                                    <span>{{ SubmodelElement.first.keys[0].value }}</span>
                                 </div>
                                 <div class="mt-3">
                                     <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
                                     <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
-                                    <span v-html="SubmodelElement.second.keys[0].value"></span>
+                                    <span>{{ SubmodelElement.second.keys[0].value }}</span>
                                 </div>
                             </div>
                             <!-- AnnotatedRelationshipElement -->
@@ -119,18 +119,18 @@
                                 <v-list-item style="margin-top: -12px">
                                     <!-- Relationship idShort -->
                                     <template v-slot:title>
-                                        <div v-html="SubmodelElement.idShort" class="text-subtitle-2"></div>
+                                        <div class="text-subtitle-2">{{ nameToDisplay(SubmodelElement) }}</div>
                                     </template>
                                 </v-list-item>
                                 <div>
                                     <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
                                     <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
-                                    <span v-html="SubmodelElement.first.keys[0].value"></span>
+                                    <span>{{ SubmodelElement.first.keys[0].value }}</span>
                                 </div>
                                 <div class="mt-3">
                                     <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
                                     <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
-                                    <span v-html="SubmodelElement.second.keys[0].value"></span>
+                                    <span>{{ SubmodelElement.second.keys[0].value }}</span>
                                 </div>
                                 <div class="mt-3 ml-3">
                                     <span class="text-caption">{{ 'Annotations: ' }}</span>
@@ -183,6 +183,15 @@ export default defineComponent({
     },
 
     methods: {
+        // Name to be displayed
+        nameToDisplay(submodelElement: any) {
+            if (submodelElement.displayName) {
+                let displayNameEn = submodelElement.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
+            }
+            return (submodelElement.idShort ? submodelElement.idShort : '');
+        },
+
         // Function to download a file
         downloadFile(link: string) {
             // open new tab with file
