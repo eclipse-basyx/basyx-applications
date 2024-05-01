@@ -17,7 +17,7 @@ base_topic = "DemoValues/"
 static_topic = "StaticStringValue"
 
 # Connect to MQTT Broker
-client = mqtt.Client("Client")
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Client")
 client.on_message = on_message
 client.connect(broker_address, port)
 
@@ -30,7 +30,7 @@ client.loop_start()
 try:
     # Publish a test message to static topic
     client.publish(static_topic, "test")
-    
+
     while True:
         # Generate different types of dynamic data
         int_value = random.randint(0, 100)
@@ -39,8 +39,8 @@ try:
         string_value = random.choice(["Hello", "World", "Test", "MQTT"])
 
         # Publish dynamic data to respective subtopics
-        client.publish(base_topic + "intProp", int_value)
-        client.publish(base_topic + "doubleProp", double_value)
+        client.publish(base_topic + "temperature", int_value)
+        client.publish(base_topic + "speed", double_value)
         client.publish(base_topic + "boolProp", bool_value)
         client.publish(base_topic + "stringProp", string_value)
 
