@@ -11,7 +11,9 @@ export const useEnvStore = defineStore({
         aasRepoPath: "",
         submodelRepoPath: "",
         conceptDescriptionRepoPath: "",
+        dashboardServicePath: "",
         primaryColor: "",
+        influxdbToken: "",
     }),
     getters: {
         getEnvLogoPath: (state) => state.logoPath,
@@ -22,7 +24,9 @@ export const useEnvStore = defineStore({
         getEnvAASRepoPath: (state) => state.aasRepoPath,
         getEnvSubmodelRepoPath: (state) => state.submodelRepoPath,
         getEnvConceptDescriptionRepoPath: (state) => state.conceptDescriptionRepoPath,
+        getEnvDashboardServicePath: (state) => state.dashboardServicePath,
         getEnvPrimaryColor: (state) => state.primaryColor,
+        getEnvInfluxdbToken: (state) => state.influxdbToken,
     },
     actions: {
         async fetchConfig() {
@@ -37,7 +41,9 @@ export const useEnvStore = defineStore({
                 this.aasRepoPath = config.aasRepoPath;
                 this.submodelRepoPath = config.submodelRepoPath;
                 this.conceptDescriptionRepoPath = config.cdRepoPath;
+                this.dashboardServicePath = config.dashboardServicePath;
                 this.primaryColor = config.primaryColor;
+                this.influxdbToken = config.influxdbToken;
             } catch (error) {
                 console.error('Error fetching config.json: ', error);
             }

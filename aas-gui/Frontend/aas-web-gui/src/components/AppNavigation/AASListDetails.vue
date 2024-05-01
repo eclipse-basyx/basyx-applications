@@ -74,14 +74,9 @@ export default defineComponent({
     },
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+            return this.navigationStore.getIsMobile;
         },
     },
 

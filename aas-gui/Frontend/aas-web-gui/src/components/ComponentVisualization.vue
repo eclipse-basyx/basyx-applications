@@ -1,16 +1,24 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card color="rgba(0,0,0,0)" elevation="0">
-            <v-card-title style="padding: 15px 16px 16px">
-                <v-row justify="space-between" align="center">
-                    <v-col>
-                        <div>Visualization</div>
+        <v-card color="card" elevation="0">
+            <v-card-title v-if="!isMobile" style="padding: 15px 16px 16px">
+                Visualization
+            </v-card-title>
+            <v-card-title v-else style="padding: 15px 16px 16px">
+                <v-row align="center">
+                    <v-col cols="auto" class="pa-0">
+                        <v-btn class="ml-2" variant="plain" icon="mdi-chevron-left" @click="backToSubmodelList()"></v-btn>
                     </v-col>
-                    <v-spacer></v-spacer>
+                    <v-col cols="auto">
+                        <span>Visualization</span>
+                    </v-col>
+                    <v-col v-if="SelectedAAS?.idShort" cols="auto" class="pl-1">
+                        <v-chip size="x-small" color="primary" label border>{{ 'AAS: ' + SelectedAAS?.idShort }}</v-chip>
+                    </v-col>
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text v-if="submodelElementData && Object.keys(submodelElementData).length > 0" style="overflow-y: auto; height: calc(100vh - 170px)">
+            <v-card-text v-if="submodelElementData && Object.keys(submodelElementData).length > 0" style="overflow-y: auto; height: calc(100svh - 170px)">
                 <!-- Add Plugins matched on SemanticId's inside the SubmodelEntrypoint -->
                 <SubmodelEntrypoint :submodelElementData="submodelElementData" :selectedNode="SelectedNodeToTransfer"></SubmodelEntrypoint>
             </v-card-text>
@@ -143,14 +151,9 @@ export default defineComponent({
             return this.aasStore.getRealTimeObject;
         },
 
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+            return this.navigationStore.getIsMobile;
         },
     },
 
@@ -165,6 +168,10 @@ export default defineComponent({
             }
             this.submodelElementData = { ...this.RealTimeObject }; // create local copy of the SubmodelElement Object
             // console.log('SubmodelElement Data (ComponentVisualization): ', this.submodelElementData);
+        },
+
+        backToSubmodelList() {
+            this.$router.push({ name: 'SubmodelList', query: this.$route.query });
         },
     },
 });

@@ -4,7 +4,9 @@ import AASList from './components/AppNavigation/AASList.vue';
 import SubmodelList from './components/SubmodelList.vue';
 import ComponentVisualization from './components/ComponentVisualization.vue';
 import AASViewer from './components/AASViewer.vue';
-import Impressum from './components/Impressum.vue';
+import About from './components/About.vue';
+import Dashboard from './components/Dashboard/Dashboard.vue';
+import DashboardGroup from './components/Dashboard/DashboardGroup.vue';
 
 const routes = [
   { path: '/', name: 'MainWindow', component: MainWindow },
@@ -12,7 +14,9 @@ const routes = [
   { path: '/submodellist', name: 'SubmodelList', component: SubmodelList },
   { path: '/componentvisualization', name: 'ComponentVisualization', component: ComponentVisualization },
   { path: '/aasviewer', name: 'AASViewer', component: AASViewer },
-  { path: '/impressum', name: 'Impressum', component: Impressum },
+  { path: '/about', name: 'About', component: About },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard-group', name: 'DashboardGroup', component: DashboardGroup },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: MainWindow }
 ];
 

@@ -1,7 +1,7 @@
 <template>
     <v-btn variant="plain">
         <v-icon size="x-large">mdi-upload</v-icon>
-        <v-tooltip activator="parent" open-delay="600" location="bottom">Upload AAS File to Environment</v-tooltip>
+        <v-tooltip activator="parent" open-delay="600" location="bottom" :disabled="isMobile">Upload AAS File to Environment</v-tooltip>
         <v-dialog activator="parent" v-model="uploadAASDialog" width="600">
             <v-card>
                 <v-card-title>
@@ -52,6 +52,11 @@ export default defineComponent({
             let aasRepoURL = this.navigationStore.getAASRepoURL;
             // remove '/shells' from the URL
             return aasRepoURL.replace('/shells', '') + '/upload';
+        },
+
+        // Check if the current Device is a Mobile Device
+        isMobile() {
+            return this.navigationStore.getIsMobile;
         },
     },
 

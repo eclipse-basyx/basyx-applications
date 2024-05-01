@@ -6,29 +6,32 @@
                 <template v-slot:title>
                     <div class="text-subtitle-2">{{ "Options: " }}</div>
                 </template>
-            </v-list-item>
-        </v-list>
-        <v-row align="center">
-            <v-col cols="auto">
-                <v-text-field type="number" hide-details density="compact" v-model="numberOfCategories" @blur="initializeSeries()" @keydown.native.enter="initializeSeries()" label="Bins" variant="outlined"></v-text-field>
-            </v-col>
-            <v-col cols="auto">
-                <v-switch hide-details label="stacked" v-model="stacked" density="compact" @change="changeVariant()"></v-switch>
-            </v-col>
-        </v-row> -->
+</v-list-item>
+</v-list>
+<v-row align="center">
+    <v-col cols="auto">
+        <v-text-field type="number" hide-details density="compact" v-model="numberOfCategories" @blur="initializeSeries()" @keydown.native.enter="initializeSeries()" label="Bins" variant="outlined"></v-text-field>
+    </v-col>
+    <v-col cols="auto">
+        <v-switch hide-details label="stacked" v-model="stacked" density="compact" @change="changeVariant()"></v-switch>
+    </v-col>
+</v-row> -->
         <apexchart ref="gauge" height="350" :options="chartOptions" :series="chartSeries"></apexchart>
     </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from 'lodash';
 import { useTheme } from 'vuetify';
+import DashboardHandling from '@/mixins/DashboardHandling';
 
 import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
     name: 'Gauge',
-    props: ['chartData', 'timeVariable', 'yVariables'],
+    props: ['chartData', 'timeVariable', 'yVariables', 'chartOptionsExternal', 'editDialog'],
+    mixins: [DashboardHandling],
 
     setup() {
         const theme = useTheme()
@@ -82,6 +85,7 @@ export default defineComponent({
                     mode: 'dark'
                 },
             } as any,
+            localChartOptions: {} as any,
         }
     },
 
@@ -145,11 +149,17 @@ export default defineComponent({
             // console.log('chartValues: ', chartValues);
             // update the series
             (this.$refs.gauge as any).updateSeries(chartValues);
-
+            // initialize the chartOptions in the Dashboard
+            if (this.hideSettings) {
+                (this.$refs.gauge as any).updateOptions(this.chartOptionsExternal);
+                this.localChartOptions = { ...this.chartOptionsExternal };
+            }
             // update the labels
             (this.$refs.gauge as any).updateOptions({
                 labels: chartLabels
             });
+            // emit the chartOptions to the parent component
+            this.$emit("chartOptions", this.localChartOptions);
         },
 
         // Function to apply the selected theme to the chart

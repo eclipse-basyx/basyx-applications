@@ -22,11 +22,19 @@ export default defineComponent({
                         return response.blob();  // Return the response as Blob
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/csv' && response.headers.get('Content-Length') !== '0') {
                         return response.text();  // Return the response as text
+                    } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/plain' && response.headers.get('Content-Length') !== '0') {
+                        return response.text();  // Return the response as text
                     } else if (!response.ok) {
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);
+                    } else if (response.ok && response.status >= 200 && response.status < 300) {
+                        console.error(`Request was successful, but received unexpected content type or no content. 
+                                    Content-Type: ${response.headers.get('Content-Type')}, 
+                                    Content-Length: ${response.headers.get('Content-Length')}`);
+                        return { success: false };
                     } else {
-                        return; // Return without content
+                        // Unexpected HTTP status
+                        throw new Error('Unexpected HTTP status: ' + response.status);
                     }
                 })
                 .then(data => {

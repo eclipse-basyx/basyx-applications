@@ -1,15 +1,15 @@
 <template>
     <v-container fluid class="pa-0">
         <!-- Header -->
-        <v-card class="mb-4">
+        <v-card class="mb-4" v-if="!hideSettings">
             <v-card-title>
                 <div class="text-subtitle-1">{{ "Time Series Data:" }}</div>
             </v-card-title>
         </v-card>
         <!-- Data Preview Config -->
-        <v-card class="mb-4">
+        <v-card class="mb-4" v-if="!hideSettings || editDialog">
             <!-- Title -->
-            <v-list nav class="py-0">
+            <v-list nav class="py-0" v-if="!hideSettings || editDialog">
                 <v-list-item class="pb-0">
                     <template v-slot:title>
                         <div class="text-subtitle-2">{{ "Preview Configuration: " }}</div>
@@ -19,18 +19,18 @@
             <!-- Preview Config -->
             <v-card-text class="pt-1">
                 <!-- Segment Selection -->
-                <v-select variant="outlined" density="compact" clearable label="Segment" :items="segments" item-title="idShort" item-value="idShort" return-object v-model="selectedSegment"></v-select>
+                <v-select variant="outlined" density="compact" clearable label="Segment" :items="segments" item-title="idShort" item-value="idShort" return-object v-model="selectedSegment" @update:modelValue="emitSegment"></v-select>
                 <!-- Record Selection -->
                 <v-row>
                     <v-col cols="12" md="6">
-                        <v-select variant="outlined" density="compact" clearable label="time-value" :items="records" item-title="idShort" item-value="idShort" return-object v-model="timeVariable"></v-select>
+                        <v-select variant="outlined" density="compact" clearable label="time-value" :items="records" item-title="idShort" item-value="idShort" return-object v-model="timeVariable" @update:modelValue="emitTimeValue"></v-select>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-select variant="outlined" density="compact" clearable label="y-value(s)" :items="records" item-title="idShort" item-value="idShort" return-object multiple v-model="yVariables"></v-select>
+                        <v-select variant="outlined" density="compact" clearable label="y-value(s)" :items="records" item-title="idShort" item-value="idShort" return-object multiple v-model="yVariables" @update:modelValue="emitYValue"></v-select>
                     </v-col>
                 </v-row>
                 <!-- API Token -->
-                <v-text-field v-if="segmentType == 'LinkedSegment'" variant="outlined" density="compact" clearable label="API Token" hide-details v-model="apiToken"></v-text-field>
+                <v-text-field v-if="segmentType == 'LinkedSegment' && showTokenInput" variant="outlined" density="compact" clearable label="API Token" hide-details v-model="apiToken"></v-text-field>
             </v-card-text>
             <v-divider></v-divider>
             <v-list nav class="pr-2 pt-0">
@@ -44,24 +44,28 @@
             </v-list>
         </v-card>
         <!-- Data Preview Chart -->
-        <v-card>
+        <v-card :flat="hideSettings">
             <!-- Title -->
-            <v-list nav class="py-0">
-                <v-list-item class="pb-0">
+            <v-list nav class="py-0" v-if="!hideSettings || editDialog">
+                <v-list-item>
                     <template v-slot:title>
                         <div class="text-subtitle-2">{{ "Preview Chart: " }}</div>
+                    </template>
+                    <template v-slot:append>
+                        <v-btn v-if="selectedChartType && !hideSettings" color="primary" class="text-buttonText" size="small" variant="elevated" @click="createObject()" append-icon="mdi-plus">Dashboard</v-btn>
                     </template>
                 </v-list-item>
             </v-list>
             <v-card-text class="pt-1">
                 <!-- Chart Type Selection -->
-                <v-select variant="outlined" density="compact" clearable label="Chart Type" :items="chartTypes" item-title="name" item-value="name" return-object v-model="selectedChartType"></v-select>
+                <v-select v-if="!hideSettings || editDialog" variant="outlined" density="compact" clearable label="Chart Type" :items="chartTypes" item-title="name" item-value="name" return-object v-model="selectedChartType" @update:modelValue="clearChartOptions"></v-select>
                 <!-- Chart Preview -->
-                <LineChart v-if="selectedChartType && selectedChartType.id == 1" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></LineChart>
-                <AreaChart v-if="selectedChartType && selectedChartType.id == 2" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></AreaChart>
-                <ScatterChart v-if="selectedChartType && selectedChartType.id == 3" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></ScatterChart>
-                <Histogram v-if="selectedChartType && selectedChartType.id == 4" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></Histogram>
-                <Gauge v-if="selectedChartType && selectedChartType.id == 5" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></Gauge>
+                <LineChart v-if="selectedChartType && selectedChartType.id == 1" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables" :chartOptionsExternal="chartOptions" :editDialog="editDialog" @chartOptions="getChartOptions"></LineChart>
+                <AreaChart v-if="selectedChartType && selectedChartType.id == 2" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables" :chartOptionsExternal="chartOptions" :editDialog="editDialog" @chartOptions="getChartOptions"></AreaChart>
+                <ScatterChart v-if="selectedChartType && selectedChartType.id == 3" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables" :chartOptionsExternal="chartOptions" :editDialog="editDialog" @chartOptions="getChartOptions"></ScatterChart>
+                <Histogram v-if="selectedChartType && selectedChartType.id == 4" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables" :chartOptionsExternal="chartOptions" :editDialog="editDialog" @chartOptions="getChartOptions"></Histogram>
+                <Gauge v-if="selectedChartType && selectedChartType.id == 5" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables" :chartOptionsExternal="chartOptions" :editDialog="editDialog" @chartOptions="getChartOptions"></Gauge>
+                <DisplayField v-if="selectedChartType && selectedChartType.id == 6" :chartData="timeSeriesValues" :timeVariable="timeVariable" :yVariables="yVariables"></DisplayField>
             </v-card-text>
         </v-card>
     </v-container>
@@ -71,8 +75,10 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import { useEnvStore } from '@/store/EnvironmentStore';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
+import DashboardHandling from '@/mixins/DashboardHandling';
 
 // Widget imports
 import LineChart from '../Widgets/LineChart.vue';
@@ -80,11 +86,13 @@ import AreaChart from '../Widgets/AreaChart.vue';
 import ScatterChart from '../Widgets/ScatterChart.vue';
 import Histogram from '../Widgets/Histogram.vue';
 import Gauge from '../Widgets/Gauge.vue';
+import DisplayField from '../Widgets/DisplayField.vue';
 
 export default defineComponent({
     name: 'TimeSeriesData',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        DashboardHandling,
 
         // Widgets
         LineChart,
@@ -92,17 +100,21 @@ export default defineComponent({
         ScatterChart,
         Histogram,
         Gauge,
+        DisplayField,
     },
-    mixins: [RequestHandling, SubmodelElementHandling],
-    props: ['submodelElementData'],
+    mixins: [RequestHandling, SubmodelElementHandling, DashboardHandling],
+    props: ['submodelElementData', 'configData', 'editDialog', 'loadTrigger'],
+    emits: ['timeVal', 'YVal', 'newOptions'],
 
     setup() {
         const theme = useTheme()
         const aasStore = useAASStore()
+        const envStore = useEnvStore()
 
         return {
             theme, // Theme Object
             aasStore, // AASStore Object
+            envStore, // EnvironmentStore Object
         }
     },
 
@@ -116,6 +128,7 @@ export default defineComponent({
             yVariables: [] as Array<any>, // Array to store the selected y variables of the time series smt
             yVariableTemplate: '{{y-value}}' as String, // String that is used to inject y-variable in linkedSeg Query
             apiToken: '', // API Token for the Time Series Database
+            showTokenInput: true, // Boolean to show the API Token Input
             timeSeriesValues: [] as Array<any>, // Array to store the values of the time series smt
             chartTypes: [
                 { id: 1, name: 'Line Chart' },
@@ -123,13 +136,33 @@ export default defineComponent({
                 { id: 3, name: 'Scatter Chart' },
                 { id: 4, name: 'Histogram' },
                 { id: 5, name: 'Gauge' },
+                { id: 6, name: 'Display Field' },
             ] as Array<any>, // Array to store the chart types
             selectedChartType: null as any, // Object to store the selected chart type
+            chartOptions: {} as any, // Object to store the chart options
         }
     },
 
     mounted() {
         this.initializeTimeSeriesData(); // initialize TimeSeriesData Plugin
+        this.initDashboardTSD();
+        const influxDBToken = this.envStore.getEnvInfluxdbToken;
+        if (influxDBToken && influxDBToken !== '') {
+            this.apiToken = influxDBToken;
+            this.showTokenInput = false;
+        }
+    },
+
+    watch: {
+        loadTrigger() {
+            this.initializeTimeSeriesData();
+            this.initDashboardTSD();
+            const influxDBToken = this.envStore.getEnvInfluxdbToken;
+            if (influxDBToken && influxDBToken !== '') {
+                this.apiToken = influxDBToken;
+                this.showTokenInput = false;
+            }
+        }
     },
 
     computed: {
@@ -214,6 +247,26 @@ export default defineComponent({
             });
         },
 
+        initDashboardTSD() {
+            if (!this.hideSettings) return;
+            this.selectedChartType = this.configData.configObject.chartType;
+            // console.log(this.selectedChartType)
+            this.selectedSegment = this.configData.configObject.segment;
+            this.timeVariable = this.configData.configObject.timeVal;
+            // console.log(this.timeVariable)
+            this.yVariables = this.configData.configObject.yvals;
+            // add the chart type specific options to the chartOptions
+            this.chartOptions = this.configData.configObject.chartOptions;
+            // add the API Token to the API Token field if it is available
+            if (this.configData.configObject.apiToken && this.configData.configObject.apiToken !== '') {
+                this.apiToken = this.configData.configObject.apiToken;
+                this.showTokenInput = false;
+            }
+            if (this.selectedSegment.idShort == "LinkedSegment") this.fetchLinkedData();
+            if (this.selectedSegment.idShort == "InternalSegment") this.fetchInternalData();
+            if (this.selectedSegment.idShort == "ExternalSegment") this.fetchExternalData();
+        },
+
         fetchInternalData() {
             if (!this.selectedSegment) {
                 return;
@@ -274,8 +327,7 @@ export default defineComponent({
             const endpoint = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Endpoint').value;
             // get the query from the selected Segment
             let query = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Query').value;
-            if(this.yVariables.length > 0)
-              query = query.replace(this.yVariableTemplate, this.yVariables[0].idShort)
+            if (this.yVariables.length > 0) query = query.replace(this.yVariableTemplate, this.yVariables[0].idShort)
 
             // console.log('Endpoint: ', endpoint, ' Query: ', query);
             // construct the headers for the request
@@ -292,7 +344,7 @@ export default defineComponent({
             // send the request
             this.postRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Succesfully retrieved data!' });
+                    // this.navigationStore.dispatchSnackbar({ status: true, timeout: 2000, color: 'success', btnColor: 'buttonText', text: 'Succesfully retrieved data!' });
                     this.convertInfluxCSVtoArray(response.data);
 
                 }
@@ -301,51 +353,74 @@ export default defineComponent({
 
         convertInfluxCSVtoArray(csvData: any) {
             const lines = csvData.trim().split('\n');
-            const datasets = [];
+            const datasets = {} as any;
             let currentDataset = [] as Array<any>;
             let currentTable = null as any;
+            let headerLine = '';
 
             lines.forEach((line: any, index: number) => {
                 const columns = line.split(',');
 
+                // Skip the header line (because it's not including data)
                 if (columns[1] === 'result') {
-                    // get the next line by index
-                    const nextLine = lines[index + 1];
-                    const table = nextLine.split(',')[2];
-                    if (currentTable === null) {
-                        currentTable = table;
-                        // push the header line to the dataset
-                        currentDataset.push(line);
-                    } else if (table !== currentTable) {
-                        // New dataset detected, process the current dataset
-                        datasets.push(this.processDataset(currentDataset));
-                        currentDataset = [];
-                        currentTable = table;
-                        // push the header line to the dataset
-                        currentDataset.push(line);
-                    }
-                }
-
-                if (columns[1] !== '_result') {
-                    // Skip lines that don't contain data
+                    headerLine = line;
                     return;
                 }
 
-                currentDataset.push(line);
+                const table = columns[2];
+                if (currentTable === null) { // this handles the first line after the header
+                    currentTable = table;
+                    currentDataset.push(line);
+                } else if (table !== currentTable) { // this handles the first line of a new table
+                    const topic = this.extractTopic(currentDataset[0]);
+                    datasets[topic] = this.processDataset(headerLine, currentDataset);
+                    currentDataset = [line];
+                    currentTable = table;
+                } else { // this handles all other lines
+                    currentDataset.push(line);
+                }
             });
 
-            // Process the last dataset
-            if (currentDataset.length > 0) {
-                datasets.push(this.processDataset(currentDataset));
+            if (currentDataset.length > 0) { // this handles the last dataset
+                const topic = this.extractTopic(currentDataset[0]);
+                datasets[topic] = this.processDataset(headerLine, currentDataset);
             }
 
             // console.log('Datasets: ', datasets);
-            this.timeSeriesValues = datasets;
+
+            // remove the keys from the datasets based on the yVariables
+            const datasetsKeys = Object.keys(datasets);
+            const datasetsFiltered = datasetsKeys.filter(key => this.yVariables.some(yVar => key.includes(yVar.idShort)));
+
+            // Find yVariables that are not in the datasets
+            const missingYVars = this.yVariables.filter(yVar => !datasetsFiltered.some(key => key.includes(yVar.idShort)));
+
+            // If there are any missing yVariables, display a warning snackbar
+            if (missingYVars.length > 0) {
+                const missingYVarNames = missingYVars.map(yVar => yVar.idShort).join(', ');
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'warning', btnColor: 'buttonText', text: 'y-values "' + missingYVarNames + '" not available in LinkedSegment Data!' });
+            }
+
+            // Order the datasets based on the yVariables
+            const newDatasets = this.yVariables
+                .map(yVar => datasetsFiltered.find(key => key.includes(yVar.idShort)))
+                .filter(key => key !== undefined)
+                .map((key: any) => datasets[key]);
+
+            // console.log('Filtered and Ordered Datasets: ', newDatasets);
+            this.timeSeriesValues = newDatasets;
         },
 
-        processDataset(datasetLines: any) {
-            // console.log('Dataset Lines: ', datasetLines)
-            const headers = datasetLines[0].split(',');
+        extractTopic(headerLine: string) {
+            // Implement this method to extract the topic from the header line
+            // This is a placeholder implementation
+            const columns = headerLine.split(',');
+            return columns[columns.length - 1];
+        },
+
+        processDataset(headerLine: String, datasetLines: any) {
+            // console.log('Dataset Lines: ', datasetLines, ' Header Line: ', headerLine)
+            const headers = headerLine.split(',');
             const valueIndex = headers.indexOf('_value');
             const timeIndex = headers.indexOf('_time');
 
@@ -428,6 +503,61 @@ export default defineComponent({
             const data = lines.slice(1).filter(line => line).map(line => line.split(','));
             // console.log('Headers: ', headers, ' Data: ', data);
             return { headers, data };
+        },
+
+        createObject() {
+            let dashboardElement = {} as any;
+            dashboardElement.title = this.submodelElementData.idShort;
+            dashboardElement.segment = this.selectedSegment;
+            dashboardElement.timeValue = this.timeVariable;
+            dashboardElement.yValues = this.yVariables;
+            if (this.apiToken && this.apiToken !== '') dashboardElement.apiToken = this.apiToken;
+            dashboardElement.chartType = this.selectedChartType;
+            dashboardElement.chartOptions = this.chartOptions;
+            this.dashboardAdd(dashboardElement)
+        },
+
+        getChartOptions(options: any) {
+            // console.log('Chart Options: ', options);
+            this.chartOptions = options;
+            let chartOptionsObject = {
+                chartOptions: options,
+            }
+            // Emit the new chart options to the Edit Element Dialog
+            this.$emit("newOptions", chartOptionsObject)
+        },
+
+        clearChartOptions(event: any) {
+            this.chartOptions = {};
+            let chartType = {
+                chartType: event,
+            }
+            // Emit the new chart type to the Edit Element Dialog
+            this.$emit("newOptions", chartType)
+        },
+
+        emitSegment(event: any) {
+            let segmentObject = {
+                segment: event,
+            }
+            // Emit the new segment to the Edit Element Dialog
+            this.$emit("newOptions", segmentObject)
+        },
+
+        emitTimeValue(event: any) {
+            let timeValObject = {
+                timeVal: event,
+            }
+            // Emit the new time value to the Edit Element Dialog
+            this.$emit("newOptions", timeValObject)
+        },
+
+        emitYValue(event: any) {
+            let yValObject = {
+                yvals: event,
+            }
+            // Emit the new y values to the Edit Element Dialog
+            this.$emit("newOptions", yValObject)
         },
     },
 });

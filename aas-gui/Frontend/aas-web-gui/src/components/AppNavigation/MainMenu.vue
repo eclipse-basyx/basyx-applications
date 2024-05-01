@@ -1,12 +1,12 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card :min-width="isMobile ? 0 : 700" :flat="isMobile ? true : false" :color="isMobile ? 'card' : 'navigationMenu'" :style="{ 'border-style': isMobile? '' : 'solid', 'border-width': isMobile? '' : '1px'}">
+        <v-card :min-width="isMobile ? 0 : 700" :flat="isMobile ? true : false" :color="isMobile ? 'card' : 'navigationMenu'" :style="{ 'border-style': isMobile ? '' : 'solid', 'border-width': isMobile ? '' : '1px' }">
             <v-row>
                 <v-col :cols="isMobile ? 12 : 4" :class="isMobile ? 'bg-card' : 'bg-navigationMenuSecondary'">
-                    <v-card variant="flat" style="border-radius: 0px" class="pt-3" :color="isMobile? 'card' : 'navigationMenuSecondary'">
+                    <v-card variant="flat" style="border-radius: 0px" class="pt-3" :color="isMobile ? 'card' : 'navigationMenuSecondary'">
                         <template v-if="!isMobile">
                             <span class="mx-3 text-primary">General Settings</span>
-                            <v-list nav class="pa-0 mx-3 mt-3" :class="isMobile? 'bg-card' : 'bg-navigationMenuSecondary'">
+                            <v-list nav class="pa-0 mx-3 mt-3" :class="isMobile ? 'bg-card' : 'bg-navigationMenuSecondary'">
                                 <v-list-item>
                                     <v-list-item-title>Endpoints</v-list-item-title>
                                     <template v-slot:append>
@@ -16,22 +16,24 @@
                             </v-list>
                             <v-divider class="mb-3"></v-divider>
                         </template>
-                        <span class="mx-3 text-primary">Switch to</span>
+                        <span v-if="!isMobile" class="mx-3 text-primary">Switch to</span>
                         <!-- Select the view you want to use -->
-                        <v-list nav class="pa-0" :class="isMobile ? 'mx-3 mt-3 bg-card' : 'ma-3 bg-navigationMenuSecondary'">
-                            <v-list-item v-if="!isMobile" to="/" @click="closeMenu()">
+                        <v-list v-if="!isMobile" nav class=" pa-0 ma-3 bg-navigationMenuSecondary">
+                            <v-list-item to="/" @click="closeMenu()">
                                 <v-list-item-title>AAS Editor</v-list-item-title>
                             </v-list-item>
-                            <v-list-item :to="isMobile ? '/aaslist' : '/aasviewer'" @click="closeMenu()">
+                            <v-list-item to="/aasviewer" @click="closeMenu()">
                                 <v-list-item-title>AAS Viewer</v-list-item-title>
                             </v-list-item>
-                            <v-list-item to="/impressum" @click="closeMenu()">
-                                <v-list-item-title>Impressum</v-list-item-title>
+                            <v-list-item v-if="dashboardAvailable" to="/dashboard" @click="closeMenu()">
+                                <v-list-item-title>Dashboard</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item to="/about" @click="closeMenu()">
+                                <v-list-item-title>About</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-card>
                 </v-col>
-                <v-divider v-if="isMobile" style="margin-left: -12px"></v-divider>
                 <v-col :cols="isMobile ? 12 : 8" :class="isMobile ? 'pt-0 mb-2 px-6 bg-card' : 'pt-4 bg-navigationMenu'">
                     <!-- Configure AAS Discovery URL -->
                     <v-text-field variant="outlined" density="compact" hide-details class="my-3" :class="isMobile ? '' : 'mr-3'" label="AAS Discovery URL" v-model="aasDiscoveryURL" @keydown.native.enter="connectToAASDiscovery()">
@@ -89,25 +91,26 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import { useEnvStore } from '@/store/EnvironmentStore';
 import { useTheme } from 'vuetify';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import DashboardHandling from '@/mixins/DashboardHandling';
 
 export default defineComponent({
     name: 'MainMenu',
-    components: {
-        RequestHandling,
-    },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, DashboardHandling],
 
     setup() {
         const theme = useTheme()
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const envStore = useEnvStore()
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            envStore, // EnvironmentStore Object
         }
     },
 
@@ -125,6 +128,7 @@ export default defineComponent({
             loadingAASRepo: false,                  // Loading State of the AAS Repository Connection
             loadingSubmodelRepo: false,             // Loading State of the Submodel Repository Connection
             loadingConceptDescriptionRepo: false,   // Loading State of the Concept Description Repository Connection
+            dashboardAvailable: false,              // Dashboard Availability
         }
     },
 
@@ -135,6 +139,7 @@ export default defineComponent({
         this.AASRepoURL = this.aasRepoURL;
         this.SubmodelRepoURL = this.submodelRepoURL;
         this.ConceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
+        this.isDashboardAvailable();
     },
 
     watch: {
@@ -145,14 +150,9 @@ export default defineComponent({
     },
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+            return this.navigationStore.getIsMobile;
         },
 
         // get AAS Discovery URL from Store
@@ -296,6 +296,21 @@ export default defineComponent({
         // Function to close the menu
         closeMenu() {
             this.$emit('closeMenu');
+        },
+
+        isDashboardAvailable() {
+            if (!this.dashboardServicePath || this.dashboardServicePath == '') return;
+            // the path is this.dashboardServicePath but with /api/elements stripped and /test added
+            let path = this.dashboardServicePath.replace('/api/elements', '/test');
+            let context = 'checking if dashboard is available';
+            let disableMessage = true;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) {
+                    this.dashboardAvailable = true;
+                } else {
+                    this.dashboardAvailable = false;
+                }
+            });
         },
     },
 });

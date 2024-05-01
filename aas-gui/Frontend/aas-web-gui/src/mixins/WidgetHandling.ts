@@ -51,22 +51,32 @@ export default defineComponent({
         },
 
         prepareYValueTooltip(chartData: any, yVariables: any) {
-            let tooltip_y = chartData.map((series: any, index: number) => {
-                let unit = '';
-                // check if the yVariable exists
-                if (yVariables.length > index) {
-                    // check if the yVariable has an unit (embeddedDataSpecification) -> take the first one (TODO: make this more generic in the future)
-                    if (yVariables[index] && yVariables[index].embeddedDataSpecifications && yVariables[index].embeddedDataSpecifications[0] && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                        unit = yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit;
-                    }
-                }
+            return chartData.map((series: any, index: number) => {
+                // Use optional chaining and nullish coalescing to simplify the retrieval of the unit
+                const unit = yVariables[index]?.embeddedDataSpecifications?.[0]?.dataSpecificationContent?.unit || '';
+
                 return {
-                    formatter: (value: any) => {
-                        return value + ' ' + unit;
-                    }
+                    formatter: (value: any) => `${value} ${unit}`
                 };
             });
-            return tooltip_y;
+        },
+
+        prepareLegend(yVariables: any) {
+            return {
+                formatter: function (seriesName: any, opts: any) {
+                    let unit = '';
+                    const index = opts.seriesIndex;
+
+                    // check if the yVariable exists
+                    if (yVariables.length > index) {
+                        // check if the yVariable has an unit (embeddedDataSpecification) -> take the first one (TODO: make this more generic in the future)
+                        if (yVariables[index] && yVariables[index].embeddedDataSpecifications && yVariables[index].embeddedDataSpecifications[0] && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit) {
+                            unit = '[' + yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit + ']';
+                        }
+                    }
+                    return seriesName + ' ' + unit;
+                }
+            };
         },
 
         prepareHistogramData(chartData: any, numberOfCategories: any) {

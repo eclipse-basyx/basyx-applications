@@ -23,7 +23,7 @@
                         <!-- General Document Information (DocumentVersion) -->
                         <v-table>
                             <tbody>
-                                <tr v-for="(versionPropertie, index) in documentVersion.value" :key="versionPropertie.idShort" :class="index % 2 === 0 ? 'bg-tableEven' : 'bg-tableOdd'">
+                                <tr v-for="(versionPropertie, index) in documentVersion.meta" :key="versionPropertie.idShort" :class="index % 2 === 0 ? 'bg-tableEven' : 'bg-tableOdd'">
                                     <td>
                                         <div class="text-subtitleText text-caption">
                                             <span>{{ versionPropertie.idShort }}</span>
@@ -65,6 +65,11 @@
                                 <PDFPreview v-if="documentVersion.previewFile.contentType && documentVersion.previewFile.contentType.includes('pdf')" :submodelElementData="documentVersion.previewFile"></PDFPreview>
                                 <CADPreview v-if="documentVersion.previewFile.contentType && (documentVersion.previewFile.contentType.includes('sla') || documentVersion.previewFile.contentType.includes('stl') || documentVersion.previewFile.contentType.includes('model') || documentVersion.previewFile.contentType.includes('obj') || documentVersion.previewFile.contentType.includes('gltf'))" :submodelElementData="documentVersion.previewFile"></CADPreview>
                             </div>
+                            <!-- Download Button -->
+                            <v-btn class="mt-3" block color="primary" variant="tonal" @click="downloadFile(documentVersion.previewFile)" v-if="documentVersion.previewFile">
+                                <v-icon left>mdi-download</v-icon>
+                                <span>Download Preview File</span>
+                            </v-btn>
                             <v-alert v-else text="No preview file found!" class="mt-3" density="compact" type="warning" variant="outlined"></v-alert>
                         </template>
                         <!-- File Preview (DigitalFile) -->
@@ -74,6 +79,11 @@
                                 <PDFPreview v-if="documentVersion.digitalFile.contentType && documentVersion.digitalFile.contentType.includes('pdf')" :submodelElementData="documentVersion.digitalFile"></PDFPreview>
                                 <CADPreview v-if="documentVersion.digitalFile.contentType && (documentVersion.digitalFile.contentType.includes('sla') || documentVersion.digitalFile.contentType.includes('stl') || documentVersion.digitalFile.contentType.includes('model') || documentVersion.digitalFile.contentType.includes('obj') || documentVersion.digitalFile.contentType.includes('gltf'))" :submodelElementData="documentVersion.digitalFile"></CADPreview>
                             </div>
+                            <!-- Download Button -->
+                            <v-btn class="mt-3" block color="primary" variant="tonal" @click="downloadFile(documentVersion.digitalFile)" v-if="documentVersion.digitalFile">
+                                <v-icon left>mdi-download</v-icon>
+                                <span>Download Digital File</span>
+                            </v-btn>
                             <v-alert v-else text="No digital file found!" class="mt-3" density="compact" type="warning" variant="outlined"></v-alert>
                         </template>
                     </template>
@@ -211,7 +221,7 @@ export default defineComponent({
         extractDocumentVersions(document: any) {
             // create an array with every DocumentVersion SubmodelElementCollection
             document.documentVersions = document.value.filter((element: any) => {
-                return element.semanticId.keys[0].value.includes("0173-1#02-ABI503#001/0173-1#01-AHF582#001");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI503#001/0173-1#01-AHF582#001");
             });
             // prepare each DocumentVersion
             document.documentVersions.forEach((documentVersion: any) => {
@@ -224,7 +234,7 @@ export default defineComponent({
                     return element.idShort === "PreviewFile";
                 });
                 // filter for relevant versionProperties
-                documentVersion.value = documentVersion.value.filter((element: any) => {
+                documentVersion.meta = documentVersion.value.filter((element: any) => {
                     // return elements with the following idShorts: Language, Title, SubTitle, Summary, KeyWords
                     return element.idShort === "Language" || element.idShort === "Title" || element.idShort === "SubTitle" || element.idShort === "Summary" || element.idShort === "KeyWords";
                 });
@@ -234,14 +244,29 @@ export default defineComponent({
 
         extractDocumentIds(document: any) {
             document.documentIds = document.value.filter((element: any) => {
-                return element.semanticId.keys[0].value.includes("0173-1#02-ABI501#001/0173-1#01-AHF580#001");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI501#001/0173-1#01-AHF580#001");
             });
         },
 
         extractDocumentClassifications(document: any) {
             document.documentClassifications = document.value.filter((element: any) => {
-                return element.semanticId.keys[0].value.includes("0173-1#02-ABI502#001/0173-1#01-AHF581#001*02");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI502#001/0173-1#01-AHF581#001*02");
             });
+        },
+
+        downloadFile(file: any) {
+            // console.log('Download File: ', file);
+            const downloadUrl = this.getLocalPath(file.value, file.path);
+            window.open(downloadUrl, '_blank');
+        },
+
+        getLocalPath(value: string, path: string): string {
+            if (!value) return '';
+            // check if Link starts with '/'
+            if (value.startsWith('/')) {
+                path = path + '/attachment';
+            }
+            return path;
         },
     },
 });

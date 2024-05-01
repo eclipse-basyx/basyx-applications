@@ -140,7 +140,7 @@ export default defineComponent({
     name: 'DigitalNameplate',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
-        
+
         // UI Components
         IdentificationElement,
         DescriptionElement,
@@ -437,10 +437,23 @@ export default defineComponent({
 
         downloadVCard(vCard: string, filename: string) {
             let blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8;' });
-            let link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
+            const data = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = data;
             link.download = filename;
-            link.click();
+
+            // this part will prompt the user to view the VCard in a new tab on iOS
+            if (this.$vuetify.display.platform.ios || this.$vuetify.display.platform.mac) {
+                window.open(data, '_blank');
+            } else {
+                // For desktop browsers, download the vCard
+                link.click();
+            }
+
+            setTimeout(function () {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data);
+            }, 100);
         },
 
         // Function to set the Marker on the Map

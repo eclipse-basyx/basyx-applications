@@ -6,7 +6,6 @@ import { useAASStore } from '@/store/AASDataStore';
 import { useNavigationStore } from '@/store/NavigationStore';
 
 import RequestHandling from '@/mixins/RequestHandling';
-import { element } from 'three/examples/jsm/nodes/shadernode/ShaderNode';
 
 export default defineComponent({
     name: 'SubmodelElementHandling',
@@ -24,12 +23,12 @@ export default defineComponent({
 
     computed: {
         // get AAS Discovery URL from Store
-        aasDiscoveryURL() {
+        aasDiscoveryURLMixin() {
             return this.navigationStore.getAASDiscoveryURL;
         },
 
         // get AAS Registry URL from Store
-        aasRegistryURL() {
+        aasRegistryURLMixin() {
             return this.navigationStore.getAASRegistryURL;
         },
 
@@ -171,10 +170,10 @@ export default defineComponent({
         async checkReference(referenceValue: Array<any>): Promise<{ success: boolean, aas?: object, submodel?: object }> {
             // console.log('Reference Value: ', referenceValue);
             // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
-            if (!this.aasRegistryURL.includes('/shell-descriptors')) {
-                this.aasRegistryURL += '/shell-descriptors';
+            if (!this.aasRegistryURLMixin.includes('/shell-descriptors')) {
+                this.aasRegistryURLMixin += '/shell-descriptors';
             }
-            let path = this.aasRegistryURL;
+            let path = this.aasRegistryURLMixin;
             let context = 'retrieving AAS Data';
             let disableMessage = false;
             try {
@@ -299,10 +298,16 @@ export default defineComponent({
             }
 
             promise.then(() => {
-                // set the AAS Endpoint and SubmodelElement path in the aas and path query parameters using the router
-                this.$router.push({ query: { aas: endpoint, path: path } });
+                // check if mobile device
+                if (this.navigationStore.getIsMobile) {
+                    this.$router.push({ name: 'SubmodelList', query: { aas: endpoint, path: path } });
+                } else {
+                    // set the AAS Endpoint and SubmodelElement path in the aas and path query parameters using the router
+                    this.$router.push({ query: { aas: endpoint, path: path } });
+                }
                 // dispatch the AAS set by the ReferenceElement to the store
                 this.aasStore.dispatchSelectedAAS(referencedAAS);
+                this.navigationStore.dispatchTriggerAASSelected();
                 // Request the referenced SubmodelElement
                 let elementPath = path;
                 let context = 'retrieving SubmodelElement';
@@ -331,11 +336,17 @@ export default defineComponent({
         },
 
         jumpToAAS(aas: any, endpoint: string) {
-            // set the AAS Endpoint in the aas query parameter using the router
-            this.$router.push({ query: { aas: endpoint } });
+            // check if mobile device
+            if (this.navigationStore.getIsMobile) {
+                this.$router.push({ name: 'SubmodelList', query: { aas: endpoint } });
+            } else {
+                // set the AAS Endpoint in the aas query parameter using the router
+                this.$router.push({ query: { aas: endpoint } });
+            }
             // dispatch the AAS set by the ReferenceElement to the store
             // console.log('AAS:', aas, 'Endpoint:', endpoint);
             this.aasStore.dispatchSelectedAAS(aas);
+            this.navigationStore.dispatchTriggerAASSelected();
             this.aasStore.dispatchNode({});
         },
 
@@ -343,10 +354,12 @@ export default defineComponent({
         async checkAssetId(assetId: string): Promise<{ success: boolean, aas?: object, submodel?: object }> {
             const failResponse = { success: false, aas: {}, submodel: {} }; // Define once for reuse
             // check if aasDiscoveryURL includes "/lookup/shells" and add id if not (backward compatibility)
-            if (!this.aasDiscoveryURL.includes('/lookup/shells')) {
-                this.aasDiscoveryURL += '/lookup/shells';
+            if (!this.aasDiscoveryURLMixin.includes('/lookup/shells')) {
+                this.aasDiscoveryURLMixin += '/lookup/shells';
             }
-            const path = `${this.aasDiscoveryURL}?assetIds=${this.URLEncode(assetId)}`; // Use template literal and encodeURIComponent
+            // construct the assetId Object
+            const assetIdObject = JSON.stringify({ name: 'globalAssetId', value: assetId });
+            const path = `${this.aasDiscoveryURLMixin}?assetIds=${this.URLEncode(assetIdObject)}`; // Use template literal and encodeURIComponent
             const context = 'retrieving AASID by AssetID';
             const disableMessage = true;
             try {
@@ -358,10 +371,10 @@ export default defineComponent({
                     const aasId = aasIds[0];
                     // console.log('AAS ID:', aasId);
                     // check if aasRegistryURL includes "/shell-descriptors" and add id if not (backward compatibility)
-                    if (!this.aasRegistryURL.includes('/shell-descriptors')) {
-                        this.aasRegistryURL += '/shell-descriptors';
+                    if (!this.aasRegistryURLMixin.includes('/shell-descriptors')) {
+                        this.aasRegistryURLMixin += '/shell-descriptors';
                     }
-                    const registryPath = `${this.aasRegistryURL}/${this.URLEncode(aasId)}`;
+                    const registryPath = `${this.aasRegistryURLMixin}/${this.URLEncode(aasId)}`;
                     const registryContext = 'retrieving AAS Data';
                     try {
                         const aasRegistryResponse = await this.getRequest(registryPath, registryContext, disableMessage);

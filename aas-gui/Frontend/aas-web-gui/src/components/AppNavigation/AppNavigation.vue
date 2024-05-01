@@ -21,7 +21,7 @@
                 </v-menu>
                 <v-spacer></v-spacer>
                 <!-- Settings-Menu for Auto-Sync and Sync-Interval -->
-                <AutoSync></AutoSync>
+                <AutoSync v-if="showAutoSync"></AutoSync>
                 <!-- Platform I 4.0 Logo -->
                 <v-img v-if="!isMobile" src="I40.png" max-width="260px" :style="{filter: isDark ? 'invert(1)' : 'invert(0)'}">
                     <template #sources>
@@ -29,13 +29,9 @@
                     </template>
                 </v-img>
                 <!-- Menu Toggle (Mobile) -->
-                <v-dialog v-if="isMobile" fullscreen v-model="mainMenu" :z-index="9993">
-                    <template v-slot:activator="{ props: menu }">
-                        <v-tooltip text="Main Menu" location="bottom" :open-delay="600">
-                            <template v-slot:activator="{ props: tooltip }">
-                                <v-app-bar-nav-icon v-bind="mergeProps(menu, tooltip)"></v-app-bar-nav-icon>
-                            </template>
-                        </v-tooltip>
+                <v-dialog v-if="isMobile" fullscreen v-model="mainMenu" :z-index="9993" :transition="false">
+                    <template v-slot:activator="{ props }">
+                        <v-btn icon="mdi-cog" v-bind="props" variant="text"></v-btn>
                     </template>
                     <v-card color="card">
                         <v-toolbar color="appBar" elevation="3" class="mb-3">
@@ -93,17 +89,36 @@
         </v-navigation-drawer>
 
         <!-- Mobile Menu -->
-        <v-menu transition="slide-y-reverse-transition" v-model="mobileMenu" v-if="isMobile && !mainMenu" style="z-index: 9992">
+        <v-menu transition="slide-y-reverse-transition" v-model="mobileMenu" v-if="showMobileMenu" style="z-index: 9992">
             <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" :icon="mobileMenu ? 'mdi-close' : 'mdi-dots-vertical'" :color="mobileMenu ? '' : 'primary'" style="position: fixed; bottom: 50px; right: 10px; z-index: 9990"></v-btn>
+                <v-btn v-bind="props" :icon="mobileMenu ? 'mdi-close' : 'mdi-dots-vertical'" :color="mobileMenu ? 'invertedButton' : 'primary'" class="text-buttonText" style="position: fixed; bottom: 50px; right: 10px; z-index: 9990"></v-btn>
             </template>
             <div class="mr-1 mb-6">
-                <v-row v-for="menuEntry in menuEntries" :key="menuEntry.id" justify="end" align="center">
-                    <v-col cols="auto">
-                        <div>{{ menuEntry.name }}</div>
+                <!-- AAS Viewer -->
+                <v-row justify="end" align="center">
+                    <v-col cols="auto" class="pr-1">
+                        <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/aaslist">AAS Viewer</v-card>
                     </v-col>
                     <v-col cols="auto" class="py-1">
-                        <v-btn :icon="menuEntry.icon" @click="openWindow(menuEntry.route)" :active="menuEntry.route == $route.path" style="z-index: 9990" size="small"></v-btn>
+                        <v-btn icon="mdi-format-list-text" to="/aaslist" :active="$route.path === '/aaslist'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
+                    </v-col>
+                </v-row>
+                <!-- Dashboard -->
+                <v-row v-if="dashboardAvailable" justify="end" align="center">
+                    <v-col cols="auto" class="pr-1">
+                        <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/dashboard">Dashboard</v-card>
+                    </v-col>
+                    <v-col cols="auto" class="py-1">
+                        <v-btn icon="mdi-chart-timeline-variant-shimmer" to="/dashboard" :active="$route.path === '/dashboard'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
+                    </v-col>
+                </v-row>
+                <!-- About -->
+                <v-row justify="end" align="center">
+                    <v-col cols="auto" class="pr-1">
+                        <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/about">About</v-card>
+                    </v-col>
+                    <v-col cols="auto" class="py-1">
+                        <v-btn icon="mdi-format-list-group" to="/about" :active="$route.path === '/about'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
                     </v-col>
                 </v-row>
             </div>
@@ -163,15 +178,12 @@ export default defineComponent({
             ConceptDescriptionRepoURL: '',  // Variable to store the Concept Description Repository URL
             mainMenu: false,                // Variable to show the Main Menu
             mobileMenu: false,              // Variable to show the Mobile Menu
-            menuEntries: [
-                { name: 'AAS List',         icon: 'mdi-format-list-text',               route: '/aaslist',                  id: 1 },
-                { name: 'Submodel List',    icon: 'mdi-format-list-group',              route: '/submodellist',             id: 2 },
-                { name: 'Visualization',    icon: 'mdi-chart-timeline-variant-shimmer', route: '/componentvisualization',   id: 3 },
-            ],
+            dashboardAvailable: false,      // Dashboard Availability
         }
     },
 
     mounted() {
+        this.isDashboardAvailable();
         // check the local storage for a saved theme preference
         let theme = localStorage.getItem('theme');
         if (theme) {
@@ -284,14 +296,9 @@ export default defineComponent({
 
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-        
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+            return this.navigationStore.getIsMobile;
         },
 
         // get Drawer State from store
@@ -348,6 +355,28 @@ export default defineComponent({
         EnvLogoPath() {
             return this.envStore.getEnvLogoPath;
         },
+
+        dashboardServicePath() {
+            return this.envStore.getEnvDashboardServicePath;
+        },
+
+        // Determine if Mobile Menu should be shown
+        showMobileMenu() {
+            let showMenu = false;
+            if (this.isMobile && !this.mainMenu) {
+                showMenu = true;
+            }
+            return showMenu;
+        },
+
+        // Determine if Auto-Sync should be shown
+        showAutoSync() {
+            let showAutoSync = false;
+            if (this.$route.name === 'MainWindow' || this.$route.name === 'AASList' || this.$route.name === 'SubmodelList' || this.$route.name === 'ComponentVisualization' || this.$route.name === 'AASViewer') {
+                showAutoSync = true;
+            }
+            return showAutoSync;
+        },
     },
 
     methods: {
@@ -362,19 +391,24 @@ export default defineComponent({
                 if (!this.aasDiscoveryURL.includes('/lookup/shells')) {
                     this.aasDiscoveryURL += '/lookup/shells';
                 }
-                let path = this.aasDiscoveryURL;
-                let context = 'connecting to AAS Discovery'
-                let disableMessage = false;
-                this.getRequest(path, context, disableMessage).then((response: any) => {
-                    this.loadingAASDiscovery = false;
-                    if (response.success) {
-                        this.navigationStore.dispatchAASDiscoveryURL(this.aasDiscoveryURL); // save the URL in the NavigationStore
-                        window.localStorage.setItem('aasDiscoveryURL', this.aasDiscoveryURL); // save the URL in the local storage
-                    } else {
-                        this.navigationStore.dispatchAASDiscoveryURL(''); // clear the AAS Discovery URL in the NavigationStore
-                        window.localStorage.removeItem('aasDiscoveryURL'); // remove the URL from the local storage
-                    }
-                });
+
+                /* Check for automatic connection is disabled. Only user entered connections in the frontend will be tested from now on (signed off Aaron Zielstorff, 13.04.2024) */
+                // let path = this.aasDiscoveryURL;
+                // let context = 'connecting to AAS Discovery'
+                // let disableMessage = false;
+                // this.getRequest(path, context, disableMessage).then((response: any) => {
+                //     this.loadingAASDiscovery = false;
+                //     if (response.success) {
+                //         this.navigationStore.dispatchAASDiscoveryURL(this.aasDiscoveryURL); // save the URL in the NavigationStore
+                //         window.localStorage.setItem('aasDiscoveryURL', this.aasDiscoveryURL); // save the URL in the local storage
+                //     } else {
+                //         this.navigationStore.dispatchAASDiscoveryURL(''); // clear the AAS Discovery URL in the NavigationStore
+                //         window.localStorage.removeItem('aasDiscoveryURL'); // remove the URL from the local storage
+                //     }
+                // });
+
+                /* Connection will be set directly in the centralized store (even if it could potentially be false -> wrong Docker config or old config data in the browsers local storage) */
+                this.navigationStore.dispatchAASDiscoveryURL(this.aasDiscoveryURL); // save the URL in the NavigationStore
             }
         },
 
@@ -387,19 +421,24 @@ export default defineComponent({
                 if (!this.aasRegistryURL.includes('/shell-descriptors')) {
                     this.aasRegistryURL += '/shell-descriptors';
                 }
-                let path = this.aasRegistryURL;
-                let context = 'connecting to AAS Registry'
-                let disableMessage = false;
-                this.getRequest(path, context, disableMessage).then((response: any) => {
-                    this.loadingAASRegistry = false;
-                    if (response.success) {
-                        this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL, false); // save the URL in the NavigationStore
-                        window.localStorage.setItem('aasRegistryURL', this.aasRegistryURL); // save the URL in the local storage
-                    } else {
-                        this.navigationStore.dispatchAASRegistryURL('', false); // clear the AAS Registry URL in the NavigationStore
-                        window.localStorage.removeItem('aasRegistryURL'); // remove the URL from the local storage
-                    }
-                });
+
+                /* Check for automatic connection is disabled. Only user entered connections in the frontend will be tested from now on (signed off Aaron Zielstorff, 13.04.2024) */
+                // let path = this.aasRegistryURL;
+                // let context = 'connecting to AAS Registry'
+                // let disableMessage = false;
+                // this.getRequest(path, context, disableMessage).then((response: any) => {
+                //     this.loadingAASRegistry = false;
+                //     if (response.success) {
+                //         this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL, false); // save the URL in the NavigationStore
+                //         window.localStorage.setItem('aasRegistryURL', this.aasRegistryURL); // save the URL in the local storage
+                //     } else {
+                //         this.navigationStore.dispatchAASRegistryURL('', false); // clear the AAS Registry URL in the NavigationStore
+                //         window.localStorage.removeItem('aasRegistryURL'); // remove the URL from the local storage
+                //     }
+                // });
+
+                /* Connection will be set directly in the centralized store (even if it could potentially be false -> wrong Docker config or old config data in the browsers local storage) */
+                this.navigationStore.dispatchAASRegistryURL(this.aasRegistryURL, false); // save the URL in the NavigationStore
             }
         },
 
@@ -412,19 +451,24 @@ export default defineComponent({
                 if (!this.submodelRegistryURL.includes('/submodel-descriptors')) {
                     this.submodelRegistryURL += '/submodel-descriptors';
                 }
-                let path = this.submodelRegistryURL;
-                let context = 'connecting to Submodel Registry'
-                let disableMessage = false;
-                this.getRequest(path, context, disableMessage).then((response: any) => {
-                    this.loadingSubmodelRegistry = false;
-                    if (response.success) {
-                        this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL, false); // save the URL in the NavigationStore
-                        window.localStorage.setItem('submodelRegistryURL', this.submodelRegistryURL); // save the URL in the local storage
-                    } else {
-                        this.navigationStore.dispatchSubmodelRegistryURL('', false); // clear the Submodel Registry URL in the NavigationStore
-                        window.localStorage.removeItem('submodelRegistryURL'); // remove the URL from the local storage
-                    }
-                });
+
+                /* Check for automatic connection is disabled. Only user entered connections in the frontend will be tested from now on (signed off Aaron Zielstorff, 13.04.2024) */
+                // let path = this.submodelRegistryURL;
+                // let context = 'connecting to Submodel Registry'
+                // let disableMessage = false;
+                // this.getRequest(path, context, disableMessage).then((response: any) => {
+                //     this.loadingSubmodelRegistry = false;
+                //     if (response.success) {
+                //         this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL, false); // save the URL in the NavigationStore
+                //         window.localStorage.setItem('submodelRegistryURL', this.submodelRegistryURL); // save the URL in the local storage
+                //     } else {
+                //         this.navigationStore.dispatchSubmodelRegistryURL('', false); // clear the Submodel Registry URL in the NavigationStore
+                //         window.localStorage.removeItem('submodelRegistryURL'); // remove the URL from the local storage
+                //     }
+                // });
+
+                /* Connection will be set directly in the centralized store (even if it could potentially be false -> wrong Docker config or old config data in the browsers local storage) */
+                this.navigationStore.dispatchSubmodelRegistryURL(this.submodelRegistryURL, false); // save the URL in the NavigationStore
             }
         },
 
@@ -432,20 +476,25 @@ export default defineComponent({
         connectToEnvironment(RepoType: string) {
             // console.log('connect to ' + RepoType + ' Repository: ' + (this as any)[RepoType + 'RepoURL']);
             if ((this as any)[RepoType + 'RepoURL'] != '') {
+
+                /* Check for automatic connection is disabled. Only user entered connections in the frontend will be tested from now on (signed off Aaron Zielstorff, 13.04.2024) */
                 (this as any)['loading' + RepoType + 'Repo'] = true;
-                let path = (this as any)[RepoType + 'RepoURL'] + '?limit=1' + (RepoType == 'Submodel' ? '&level=core' : '');
-                let context = 'connecting to ' + RepoType + ' Repository'
-                let disableMessage = false;
-                this.getRequest(path, context, disableMessage).then((response: any) => {
-                    (this as any)['loading' + RepoType + 'Repo'] = false;
-                    if (response.success) {
-                        this.navigationStore.dispatchRepoURL(RepoType, (this as any)[RepoType + 'RepoURL']); // save the URL in the NavigationStore
-                        window.localStorage.setItem(RepoType + 'RepoURL', (this as any)[RepoType + 'RepoURL']); // save the URL in the local storage
-                    } else {
-                        this.navigationStore.dispatchRepoURL(RepoType, ''); // clear the URL in the NavigationStore
-                        window.localStorage.removeItem(RepoType + 'RepoURL'); // remove the URL from the local storage
-                    }
-                });
+                // let path = (this as any)[RepoType + 'RepoURL'] + '?limit=1' + (RepoType == 'Submodel' ? '&level=core' : '');
+                // let context = 'connecting to ' + RepoType + ' Repository'
+                // let disableMessage = false;
+                // this.getRequest(path, context, disableMessage).then((response: any) => {
+                //     (this as any)['loading' + RepoType + 'Repo'] = false;
+                //     if (response.success) {
+                //         this.navigationStore.dispatchRepoURL(RepoType, (this as any)[RepoType + 'RepoURL']); // save the URL in the NavigationStore
+                //         window.localStorage.setItem(RepoType + 'RepoURL', (this as any)[RepoType + 'RepoURL']); // save the URL in the local storage
+                //     } else {
+                //         this.navigationStore.dispatchRepoURL(RepoType, ''); // clear the URL in the NavigationStore
+                //         window.localStorage.removeItem(RepoType + 'RepoURL'); // remove the URL from the local storage
+                //     }
+                // });
+
+                /* Connection will be set directly in the centralized store (even if it could potentially be false -> wrong Docker config or old config data in the browsers local storage) */
+                this.navigationStore.dispatchRepoURL(RepoType, (this as any)[RepoType + 'RepoURL']); // save the URL in the NavigationStore
             }
         },
 
@@ -454,12 +503,19 @@ export default defineComponent({
             this.navigationStore.dispatchSnackbar({ status: false });
         },
 
-        // Function to open the clicked mobile menu entry
-        openWindow(route: string) {
-            // get the current query parameters
-            let query = this.$route.query;
-            // push the new route and include the query parameters
-            if(this.$route.path != route) this.$router.push({ path: route, query: query });
+        isDashboardAvailable() {
+            if (!this.dashboardServicePath || this.dashboardServicePath == '') return;
+            // the path is this.dashboardServicePath but with /api/elements stripped and /test added
+            let path = this.dashboardServicePath.replace('/api/elements', '/test');
+            let context = 'checking if dashboard is available';
+            let disableMessage = true;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) {
+                    this.dashboardAvailable = true;
+                } else {
+                    this.dashboardAvailable = false;
+                }
+            });
         },
     },
 });

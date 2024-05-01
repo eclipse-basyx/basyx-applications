@@ -30,6 +30,10 @@ import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
+declare global {
+    interface Window { callback: any; }
+}
+
 export default defineComponent({
     name: 'BillsOfMaterial',
     components: {
@@ -65,7 +69,12 @@ export default defineComponent({
     },
 
     mounted() {
+        window.callback = this.callback; // set the callback function
         this.initializeBoM(); // initialize BoM Plugin
+    },
+
+    beforeUnmount() {
+        window.callback = null; // remove the callback function
     },
 
     watch: {
@@ -102,6 +111,7 @@ export default defineComponent({
                 startOnLoad: false,
                 theme: this.isDark ? 'dark' : 'default',
                 themeVariables: this.isDark ? this.customDarkThemeColors : this.customDefaultThemeColors,
+                securityLevel: 'loose',
             });
             // render mermaid graph
             this.drawDiagram();
@@ -112,7 +122,7 @@ export default defineComponent({
                 let element = document.querySelector('#BoMDiagram');
                 // create the graphDefinition
                 const graphDefinition = this.createGraphDefinition();
-                const { svg } = await mermaid.render('BoMDiagram', graphDefinition);
+                const { svg, bindFunctions } = await mermaid.render('BoMDiagram', graphDefinition);
                 if (element) {
                     element.innerHTML = svg;
                     // add the element to the card
@@ -120,14 +130,33 @@ export default defineComponent({
                     if (card) {
                         card.appendChild(element);
                     }
+                    // bind the functions to the graph
+                    bindFunctions?.(element);
                 }
             } catch (error) {
                 console.error("Error rendering Mermaid diagram:", error);
             }
         },
 
+        callback(assetId: string) {
+            // console.log('AssetId:', assetId);
+            this.checkAssetId(assetId)
+                .then(({ success, aas }) => {
+                    if (success) {
+                        // console.log('AAS:', aas);
+                        this.jumpToReferencedElement(aas, []);
+                    } else {
+                        this.navigationStore.dispatchSnackbar({ status: true, timeout: 10000, color: 'error', btnColor: 'buttonText', text: 'Could not find matching AAS in the AAS Discovery Service' });
+                    }
+                })
+                .catch(() => {
+                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 10000, color: 'error', btnColor: 'buttonText', text: 'An error occured while trying to find linked AAS!' });
+                });
+        },
+
         createGraphDefinition(): string {
             let graphDefinition = 'graph LR\n';
+            let callBacks = '';
             let entryNode = this.submodelElementData.submodelElements.find((element: any) => {
                 return element.semanticId.keys[0].value === "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0";
             });
@@ -140,13 +169,17 @@ export default defineComponent({
             });
             if (!hasChildren) return graphDefinition;
 
-            graphDefinition = this.addChildrenToGraph(entryNode, graphDefinition); // Update the graphDefinition
+            [graphDefinition, callBacks] = this.addChildrenToGraph(entryNode, graphDefinition, callBacks); // Update the graphDefinition
+            graphDefinition += callBacks; // add the callbacks to the graphDefinition
+
+            // add classDefintions
+            graphDefinition += 'classDef FixFont padding-right:6px;';
 
             // console.log('Graph Definition:\n', graphDefinition);
             return graphDefinition;
         },
 
-        addChildrenToGraph(parentNode: any, graphDefinition: string): string {
+        addChildrenToGraph(parentNode: any, graphDefinition: string, callBacks: string): [string, string] {
             // get all children of the parentNode
             let children = parentNode.statements.filter((element: any) => {
                 return element.modelType === 'Entity';
@@ -178,18 +211,19 @@ export default defineComponent({
             }
 
             children.forEach((child: any) => {
-                graphDefinition += parentNode.idShort + '(' + parentNode.idShort + ') -->|' + relationship + '| ' + child.idShort + '(' + child.idShort + ')\n';
+                graphDefinition += parentNode.idShort + '(' + parentNode.idShort + '):::FixFont -->|' + relationship + '| ' + child.idShort + '(' + child.idShort + '):::FixFont\n'; // add the relationship to the graphDefinition
+                callBacks += 'click ' + child.idShort + ' call callback(' + child.globalAssetId + ')\n'; // add the callback to the callBacks
                 if (child.statements) {
                     const hasChildren = child.statements.some((element: any) => {
                         return element.modelType === 'Entity';
                     });
                     if (hasChildren) {
-                        graphDefinition = this.addChildrenToGraph(child, graphDefinition); // Update graphDefinition with returned value
+                        [graphDefinition, callBacks] = this.addChildrenToGraph(child, graphDefinition, callBacks); // Update graphDefinition with returned value
                     }
                 }
             });
 
-            return graphDefinition; // Return the updated string
+            return [graphDefinition, callBacks]; // Return the updated string
         },
 
         getArchetype(): string {

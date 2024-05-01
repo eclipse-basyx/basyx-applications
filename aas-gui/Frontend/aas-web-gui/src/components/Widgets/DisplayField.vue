@@ -1,89 +1,71 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-row v-for="element in outputElements" :key="element.idShort" align="center" justify="space-between">
-            <v-col cols="auto">
-                <div>{{ element.name }}</div>
-            </v-col>
-            <v-col cols="auto" class="text-right py-1">
-                <v-text-field v-if="element.name && element.unit" :value="element.value" readonly variant="outlined" density="compact" hide-details style="width: 140px">
-                    <template v-slot:append-inner>
-                        <span class="text-subtitleText">{{ element.unit }}</span>
-                    </template>
-                </v-text-field>
-            </v-col>
-        </v-row>
+        <div style="min-height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div v-for="displayElement in localChartData" :key="displayElement.idShort" style="text-align: center;" class="my-3">
+                <v-card-subtitle>{{ displayElement.idShort + ": " }}</v-card-subtitle>
+                <v-card-title>
+                    <span class="text-h5 text-primary">{{ formatValue(displayElement) }}</span>
+                    <span class="ml-2 text-h5">{{ unitSuffix(displayElement) }}</span>
+                </v-card-title>
+            </div>
+        </div>
     </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import RequestHandling from '../../mixins/RequestHandling';
 
 export default defineComponent({
     name: 'DisplayField',
-    components: {
-        RequestHandling,
-    },
-    mixins: [RequestHandling],
-
-    props: ['submodelElementData', 'widgetSettings'],
-
-    setup() {
-
-        return {
-        }
-    },
+    props: ['chartData', 'timeVariable', 'yVariables'],
 
     data() {
         return {
-            outputElements: [] as Array<any>,
+            localChartData: [] as Array<any>,
         }
     },
 
     mounted() {
-        this.initializeView(); // initialize list
+        this.initializeDisplay();
     },
 
     watch: {
-        // Watch for changes in the submodelElementData and (re-)initialize the Component
-        submodelElementData: {
-            deep: true,
+        chartData: {
             handler() {
-                this.initializeView(); // initialize switch
-            }
+                this.initializeDisplay();
+            },
+            deep: true,
         },
-    },
-
-    computed: {
     },
 
     methods: {
         // Initialize the Component
-        initializeView() {
-            // console.log('Switch Data: ', this.submodelElementData);
-            if (!this.widgetSettings || !this.submodelElementData || Object.keys(this.submodelElementData).length == 0) return;
-            let localSubmodelElementData = { ...this.submodelElementData };
-            // check if the submodelELelement is a Property or a SubmodelElementCollection
-            if (this.widgetSettings.idShorts && this.widgetSettings.idShorts.length > 0 && localSubmodelElementData && Object.keys(localSubmodelElementData).length > 0) { // Collection
-                // Filter submodelElementData by idShorts from widgetSettings
-                let collectionValues = [] as Array<any>;
-                this.widgetSettings.idShorts.forEach((element: any, i: number) => {
-                    localSubmodelElementData.value.forEach((el: any) => {
-                        if (element == el.idShort) {
-                            let elementToPush = { ...el };
-                            // console.log('WidgetSettings: ', this.widgetSettings.chartNamesUnits[i]);
-                            elementToPush.name = this.widgetSettings.chartNamesUnits[i].name;
-                            elementToPush.unit = this.widgetSettings.chartNamesUnits[i].unit;
-                            collectionValues.push(elementToPush)
-                        }
-                    });
-                });
-                // console.log('collectionValues: ', collectionValues);
-                this.outputElements = collectionValues;
-            } else { // Property
-                localSubmodelElementData.name = this.widgetSettings.chartNamesUnits[0].name;
-                localSubmodelElementData.unit = this.widgetSettings.chartNamesUnits[0].unit;
-                this.outputElements = [localSubmodelElementData];
+        initializeDisplay() {
+            // console.log('initializeDisplay: ', this.chartData, this.timeVariable, this.yVariables);
+            // Reduce each time series to its last element and join with yVariables
+            this.localChartData = this.chartData.map((timeSeries: any, index: number) => {
+                return { ...timeSeries[timeSeries.length - 1], ...this.yVariables[index] };
+            });
+            // console.log('localChartData: ', this.localChartData);
+        },
+
+        // Format the Value of the Property
+        formatValue(prop: any) {
+            if (prop.valueType === 'xs:long' || prop.valueType === 'xs:double' || prop.valueType === 'xs:float' || prop.valueType === 'xs:decimal') {
+                return prop.value.toFixed(2);
+            } else if (prop.valueType === 'xs:int' || prop.valueType === 'xs:integer' || prop.valueType === 'xs:short' || prop.valueType === 'xs:byte' || prop.valueType === 'xs:nonNegativeInteger' || prop.valueType === 'xs:positiveInteger' || prop.valueType === 'xs:unsignedLong' || prop.valueType === 'xs:unsignedInt' || prop.valueType === 'xs:unsignedShort' || prop.valueType === 'xs:unsignedByte') {
+                return prop.value.toFixed(0);
+            } else {
+                return prop.value;
+            }
+        },
+
+        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
+        unitSuffix(prop: any) {
+            if (prop.embeddedDataSpecifications && prop.embeddedDataSpecifications.length > 0 && prop.embeddedDataSpecifications[0].dataSpecificationContent && prop.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
+                return prop.embeddedDataSpecifications[0].dataSpecificationContent.unit;
+            } else {
+                return '';
             }
         },
     },

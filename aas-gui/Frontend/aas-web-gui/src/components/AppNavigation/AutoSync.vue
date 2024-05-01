@@ -82,14 +82,9 @@ export default defineComponent({
             return this.navigationStore.getAutoSync ? this.navigationStore.getAutoSync.state : false;
         },
 
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+            return this.navigationStore.getIsMobile;
         },
     },
 
