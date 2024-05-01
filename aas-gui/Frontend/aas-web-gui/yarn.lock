@@ -312,15 +312,15 @@
   resolved "https://registry.npmjs.org/@types/stats.js/-/stats.js-0.17.3.tgz"
   integrity sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==
 
-"@types/three@^0.162.0":
-  version "0.162.0"
-  resolved "https://registry.npmjs.org/@types/three/-/three-0.162.0.tgz"
-  integrity sha512-0j5yZcVukVIhrhSIC7+LmBPkkMoMuEJ1AfYBZfgNytdYqYREMuiyXWhYOMeZLBElTEAlJIZn7r2W3vqTIgjWlg==
+"@types/three@^0.163.0":
+  version "0.163.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.163.0.tgz#96f5440fcd39452d2c84dfe0c9b7a9cf0247b9e6"
+  integrity sha512-uIdDhsXRpQiBUkflBS/i1l3JX14fW6Ot9csed60nfbZNXHDTRsnV2xnTVwXcgbvTiboAR4IW+t+lTL5f1rqIqA==
   dependencies:
     "@tweenjs/tween.js" "~23.1.1"
     "@types/stats.js" "*"
     "@types/webxr" "*"
-    fflate "~0.6.10"
+    fflate "~0.8.2"
     meshoptimizer "~0.18.1"
 
 "@types/unist@^2", "@types/unist@^2.0.0":
@@ -343,10 +343,10 @@
   resolved "https://registry.npmjs.org/@types/webxr/-/webxr-0.5.14.tgz"
   integrity sha512-UEMMm/Xn3DtEa+gpzUrOcDj+SJS1tk5YodjwOxcqStNhCfPcwgyC5Srg2ToVKyg2Fhq16Ffpb0UWUQHqoT9AMA==
 
-"@vitejs/plugin-vue@^4.6.2":
-  version "4.6.2"
-  resolved "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-4.6.2.tgz"
-  integrity sha512-kqf7SGFoG+80aZG6Pf+gsZIVvGSCKE98JbiWqcCV9cThtg91Jav0yvYFC9Zb+jKetNGF6ZKeoaxgZfND21fWKw==
+"@vitejs/plugin-vue@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.0.4.tgz#508d6a0f2440f86945835d903fcc0d95d1bb8a37"
+  integrity sha512-WS3hevEszI6CEVEx28F8RjTX97k3KsrcY6kvTg7+Whm5y3oYvcqzVeGCU3hxSAn4uY2CLCkeokkGKpoctccilQ==
 
 "@volar/language-core@1.11.1", "@volar/language-core@~1.11.1":
   version "1.11.1"
@@ -1130,10 +1130,10 @@ estree-walker@^2.0.2:
   resolved "https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz"
   integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
 
-fflate@~0.6.10:
-  version "0.6.10"
-  resolved "https://registry.npmjs.org/fflate/-/fflate-0.6.10.tgz"
-  integrity sha512-IQrh3lEPM93wVCEczc9SaAOvkmcoQn/G8Bo1e8ZPlY3X3bnAxWaBdvTdvM1hP62iZp0BXWDy4vTAy4fF0+Dlpg==
+fflate@~0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.8.2.tgz#fc8631f5347812ad6028bbe4a2308b2792aa1dea"
+  integrity sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==
 
 fs-minipass@^2.0.0:
   version "2.1.0"
@@ -1936,10 +1936,10 @@ tar@^6.1.11:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
-three@^0.162.0:
-  version "0.162.0"
-  resolved "https://registry.npmjs.org/three/-/three-0.162.0.tgz"
-  integrity sha512-xfCYj4RnlozReCmUd+XQzj6/5OjDNHBy5nT6rVwrOKGENAvpXe2z1jL+DZYaMu4/9pNsjH/4Os/VvS9IrH7IOQ==
+three@^0.163.0:
+  version "0.163.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.163.0.tgz#cbfefbfd64a1353ab7cc8bf0fc396ddca1875a49"
+  integrity sha512-HlMgCb2TF/dTLRtknBnjUTsR8FsDqBY43itYop2+Zg822I+Kd0Ua2vs8CvfBVefXkBdNDrLMoRTGCIIpfCuDew==
 
 tr46@~0.0.3:
   version "0.0.3"
@@ -1951,10 +1951,10 @@ ts-dedent@^2.2.0:
   resolved "https://registry.npmjs.org/ts-dedent/-/ts-dedent-2.2.0.tgz"
   integrity sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==
 
-typescript@^5.3.3:
-  version "5.3.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
-  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
+typescript@^5.4.5:
+  version "5.4.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.5.tgz#42ccef2c571fdbd0f6718b1d1f5e6e5ef006f611"
+  integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 undici-types@~5.26.4:
   version "5.26.5"
@@ -2018,10 +2018,10 @@ vue-demi@>=0.14.5:
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.6.tgz"
   integrity sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==
 
-vue-pdf-embed@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/vue-pdf-embed/-/vue-pdf-embed-2.0.2.tgz"
-  integrity sha512-Zxzv3DaNRj1NwJKIA/CMjvcA/Q0mlA8ASDBUVzYQ62o/s2WgF/Au/ZC4jlMr/P8CLznlyL8tIY7kqXHD7HLcAg==
+vue-pdf-embed@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/vue-pdf-embed/-/vue-pdf-embed-2.0.3.tgz#1567cb488c8bb686a4a02d254c85103931d9b5bb"
+  integrity sha512-3kSBUBen/ZUezWtbby9J8FhmS8u3cgPoogeFZMge33keelJqZbUC3PvpJi5CDnrCLVuty/gtvSill+GQPnXDow==
   dependencies:
     pdfjs-dist "^3.11.174"
 
@@ -2076,10 +2076,10 @@ vue@^3.4.21:
     "@vue/server-renderer" "3.4.21"
     "@vue/shared" "3.4.21"
 
-vuetify@^3.5.12:
-  version "3.5.12"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.12.tgz#bd354b67458317b0f3a0014aa9839ca4762d7923"
-  integrity sha512-6Dv6hSQH4NpoIFSEn+GouexKZYMCgMhB1x/Bepp7vnDgnpy6xGj2OgNOp/eBTPiaNrsX9knMv310c2Y9FSEllw==
+vuetify@^3.6.0:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.1.tgz#bd26f1ee53c532a4f9880a5f376064f53efd9947"
+  integrity sha512-fzcY9LNuLZUwXG4XyklkGJwFv/ejQaERAgE5e+U5M9dtbF9ZRs56mGi2uqOhQOv6o+vbikpHZ/rfHfhb/XlO0g==
 
 web-worker@^1.2.0:
   version "1.3.0"
