@@ -20,7 +20,7 @@ The plugin supports the following segment types:
 2. Run `docker-compose up -d` in this directory
 
 You can now access the AAS Web UI (http://localhost:3000) and InfluxDB UI (http://localhost:8086) in your browser.
-The username and password for InfluxDB are `admin` and `testtest`.
+The username and password for InfluxDB are `admin` and `influxpassword`.
 
 ## Usage
 
@@ -48,16 +48,21 @@ The username and password for InfluxDB are `admin` and `testtest`.
 
 Prerequisites:
 
-Check if the query property of the `LinkedSegment` corrosponds to the data you want to fetch from the database. If not, change the query property to the desired query (see images below).
+1. Copy the Organization ID from the InfluxDB UI (http://localhost:8086) and edit the `Endpoint` Property of the `LinkedSegment` (see screenshots below). The Endpoint Property can be found here: http://localhost:3000/?aas=http://localhost:8081/shells/VGltZVNlcmllc0RlbW8x&path=http://localhost:8081/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1RpbWVTZXJpZXMvMS8x/submodel-elements/Segments.LinkedSegment.Endpoint
 
-![InfluxDB Data Explorer](../../Docs/Figs/InfluxDB.png)
-![AAS Web UI query property](../../Docs/Figs//AAS_UI_TimeSeriesConfig.png)
+![InfluxDB Organization ID](../../Docs/Figs/InfluxDBOrgID.png)
+![AAS Web UI Endpoint Property](../../Docs/Figs/AASWebUIEndpointProp.png)
+
+2. Check if the query property of the `LinkedSegment` corrosponds to the data you want to fetch from the database. If not, change the query property to the desired query (see images below).
+
+![InfluxDB Data Explorer](../../Docs/Figs/InfluxDBQuery.png)
+![AAS Web UI query property](../../Docs/Figs//AASWebUIQuery.png)
 
 1. Open the AAS Web UI in your browser (http://localhost:3000)
 2. Select the `TimeSeriesDemo` AAS and click on the `TimeSeriesTest` submodel in the treeview
 3. In the `Visualization`-window select the `LinkedSegment` in the Segment dropdown
 4. Select `time` as time-value and `speed` and `temperature` as y-values
-5. Enter the following API-Token for the InfluxDB: `noyBokO69-nLzsjhnE4gx53TVkRc7QzFe6IUPkvkNIk9ynjl2zMcoO_wKkeMda8FBVaMElHBnIz7BcPLu5lL3g==`
+5. If you see an input field for the InfluxDB Token, copy the token from the docker.compose.yml file
 6. Click on `Fetch Data`
 7. In the `Preview Chart`-window select a chart type
 8. You should now see a chart with the time series data

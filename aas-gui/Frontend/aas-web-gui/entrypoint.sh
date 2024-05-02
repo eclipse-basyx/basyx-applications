@@ -29,8 +29,16 @@ if [ -n "$CD_REPO_PATH" ]; then
     jq '.cdRepoPath = env.CD_REPO_PATH' /usr/src/app/dist/config.json > /tmp/config.json && mv /tmp/config.json /usr/src/app/dist/config.json
 fi
 
+if [ -n "$DASHBOARD_SERVICE_PATH" ]; then
+    jq '.dashboardServicePath = env.DASHBOARD_SERVICE_PATH' /usr/src/app/dist/config.json > /tmp/config.json && mv /tmp/config.json /usr/src/app/dist/config.json
+fi
+
 if [ -n "$PRIMARY_COLOR" ]; then
     jq '.primaryColor = env.PRIMARY_COLOR' /usr/src/app/dist/config.json > /tmp/config.json && mv /tmp/config.json /usr/src/app/dist/config.json
+fi
+
+if [ -n "$INFLUXDB_TOKEN" ]; then
+    jq '.influxdbToken = env.INFLUXDB_TOKEN' /usr/src/app/dist/config.json > /tmp/config.json && mv /tmp/config.json /usr/src/app/dist/config.json
 fi
 
 if [ -n "$BASE_PATH" ]; then

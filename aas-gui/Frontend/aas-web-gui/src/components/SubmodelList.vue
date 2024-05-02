@@ -1,11 +1,24 @@
 <template>
     <v-container fluid class="pa-0">
-        <v-card color="rgba(0,0,0,0)" elevation="0">
-            <v-card-title style="padding: 15px 16px 16px">
+        <v-card color="card" elevation="0">
+            <v-card-title v-if="!isMobile" style="padding: 15px 16px 16px">
                 Submodel List
             </v-card-title>
+            <v-card-title v-else style="padding: 15px 16px 16px">
+                <v-row align="center">
+                    <v-col cols="auto" class="pa-0">
+                        <v-btn class="ml-2" variant="plain" icon="mdi-chevron-left" @click="backToAASList()"></v-btn>
+                    </v-col>
+                    <v-col cols="auto">
+                        <span>Submodel List</span>
+                    </v-col>
+                    <v-col v-if="SelectedAAS?.idShort" cols="auto" class="pl-1">
+                        <v-chip size="x-small" color="primary" label border>{{ 'AAS: ' + SelectedAAS?.idShort }}</v-chip>
+                    </v-col>
+                </v-row>
+            </v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="overflow-y: auto; height: calc(100vh - 170px)">
+            <v-card-text style="overflow-y: auto; height: calc(100svh - 170px)" class="py-2 px-2">
                 <!-- Spinner for loading State -->
                 <v-row v-if="loading" justify="center" class="ma-3">
                     <v-col cols="auto">
@@ -13,8 +26,12 @@
                     </v-col>
                 </v-row>
                 <!-- List of Submodels -->
-                <v-list-item v-for="submodel in submodelData" :key="submodel.id" @click="toggleNode(submodel)" :active="submodel.isActive" color="primary" nav>
-                    <v-list-item-title>{{ submodel.idShort }}</v-list-item-title>
+                <v-list-item v-for="submodel in submodelData" :key="submodel.id" @click="toggleNode(submodel)" color="primary" nav class="bg-listItem mb-2" style="border-width: 1px" :style="{ 'border-color': submodel.isActive ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
+                    <template v-slot:prepend>
+                        <v-chip label border color="primary" size="x-small" class="mr-3">SM</v-chip>
+                    </template>
+                    <v-list-item-title :class="submodel.isActive ? 'text-primary' : ''">{{ submodel.idShort }}</v-list-item-title>
+                    <v-overlay :model-value="submodel.isActive" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
                 </v-list-item>
             </v-card-text>
         </v-card>
@@ -23,6 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
@@ -37,11 +55,13 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
+        const theme = useTheme()
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
         const envStore = useEnvStore()
 
         return {
+            theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
             envStore, // EnvironmentStore Object
@@ -106,14 +126,19 @@ export default defineComponent({
             return this.navigationStore.getSubmodelRegistryURL;
         },
 
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
+            return this.navigationStore.getIsMobile;
         },
 
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
+        // returns the primary color of the current theme
+        primaryColor() {
+            return this.$vuetify.theme.themes.light.colors.primary;
+        },
+
+        // Check if the current Theme is dark
+        isDark() {
+            return this.theme.global.current.value.dark
         },
     },
 
@@ -171,12 +196,13 @@ export default defineComponent({
             // console.log('SubmodelRefs: ', submodelRefs);
             let submodelPromises = submodelRefs.map((submodelRef: any) => {
                 // retrieve endpoint for submodel from submodel registry
-                // console.log('SubmodelRef: ', submodelRef, ' Submodel Registry: ', this.submodelRegistryServerURL);
+                // console.log('SubmodelRef: ', submodelRef, ' Submodel Registry: ', this.submodelRegistryURL);
                 // check if submodelRegistryURL includes "/submodel-descriptors" and add id if not (backward compatibility)
-                if (!this.submodelRegistryURL.includes('/submodel-descriptors')) {
-                    this.submodelRegistryURL += '/submodel-descriptors';
+                let submodelRegistryURL = this.submodelRegistryURL;
+                if (!submodelRegistryURL.includes('/submodel-descriptors')) {
+                    submodelRegistryURL += '/submodel-descriptors';
                 }
-                let path = this.submodelRegistryURL + '/' + this.URLEncode(submodelRef.keys[0].value);
+                let path = submodelRegistryURL + '/' + this.URLEncode(submodelRef.keys[0].value);
                 let context = 'retrieving Submodel Endpoint';
                 let disableMessage = false;
                 return this.getRequest(path, context, disableMessage).then((response: any) => {
@@ -210,8 +236,7 @@ export default defineComponent({
             // console.log('Selected Submodel: ', submodel);
             // dublicate the selected Node Object
             let localSubmodel = submodel;
-            // invert the isActive Property
-            localSubmodel.isActive = !localSubmodel.isActive;
+            localSubmodel.isActive = true;
             // set the isActive Property of all other Submodels to false
             this.submodelData.forEach((submodel: any) => {
                 if (submodel.id !== localSubmodel.id) {
@@ -261,6 +286,10 @@ export default defineComponent({
                 this.initialUpdate = true;
                 this.initialNode = node;
             }
+        },
+
+        backToAASList() {
+            this.$router.push({ name: 'AASList', query: this.$route.query });
         },
     },
 });

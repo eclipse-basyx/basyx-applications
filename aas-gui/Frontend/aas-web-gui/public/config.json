@@ -1,5 +1,5 @@
 {
-    "logoPath": "Logo/Logo.png",
+    "logoPath": "Logo/Logo.svg",
     "basePath": "",
     "aasDiscoveryPath": "",
     "aasRegistryPath": "",
@@ -7,5 +7,7 @@
     "aasRepoPath": "",
     "submodelRepoPath": "",
     "cdRepoPath": "",
-    "primaryColor": "#0cb2f0"
+    "dashboardServicePath": "",
+    "primaryColor": "#0cb2f0",
+    "influxdbToken": ""
 }

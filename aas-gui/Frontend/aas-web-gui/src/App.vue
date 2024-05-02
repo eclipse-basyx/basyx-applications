@@ -5,7 +5,7 @@
     <v-main style="padding-top: 33px">
       <!-- App Content (eg. MainWindow, etc.) -->
       <router-view v-slot="{ Component }">
-        <keep-alive :include="['AASList', 'AASTreeview', 'SubmodelElementView', 'ComponentVisualization']">
+        <keep-alive :include="['AASList', 'SubmodelList']">
           <component :is="Component" />
         </keep-alive>
       </router-view>
@@ -51,14 +51,55 @@ export default defineComponent({
   },
 
   mounted() {
-    // console.log(this.$vuetify.display.mobile)
-    this.navigationStore.dispatchIsMobile(this.$vuetify.display.mobile);
+    let mobile = this.$vuetify.display.mobile;
+    // include IPad as mobile device
+    if (this.$vuetify.display.platform.mac && this.$vuetify.display.platform.touch) {
+      mobile = true;
+    }
+    if (this.$vuetify.display.platform.ios) {
+      mobile = true;
+    }
+    if (this.$vuetify.display.platform.android) {
+      mobile = true;
+    }
+    // console.log('Mobile: ', mobile);
+    this.navigationStore.dispatchIsMobile(mobile);
     this.navigationStore.dispatchPlatform(this.$vuetify.display.platform);
 
     // check if the aas and path Queries are set in the URL and include them in the URL when switching to the mobile view
     const searchParams = new URL(window.location.href).searchParams;
     const aasEndpoint = searchParams.get('aas');
     const submodelElementPath = searchParams.get('path');
+
+    // check which platform is used and change the fitting view
+    if (mobile) {
+      if (this.$route.name === 'MainWindow') {
+        if (aasEndpoint && submodelElementPath) {
+          this.$router.push({ name: 'AASList', query: { aas: aasEndpoint, path: submodelElementPath } });
+        } else if (aasEndpoint && !submodelElementPath) {
+          this.$router.push({ name: 'AASList', query: { aas: aasEndpoint } });
+        } else {
+          this.$router.push({ name: 'AASList' });
+        }
+      } else if (this.$route.name === 'ComponentVisualization') {
+        if (aasEndpoint && submodelElementPath) {
+          this.$router.push({ name: 'SubmodelList', query: { aas: aasEndpoint, path: submodelElementPath } });
+        } else if (aasEndpoint && !submodelElementPath) {
+          this.$router.push({ name: 'SubmodelList', query: { aas: aasEndpoint } });
+        } else {
+          this.$router.push({ name: 'AASList' });
+        }
+      }
+    } else { // change to MainWindow when the platform is not android or ios
+      if (this.$route.name === 'AASList' || this.$route.name === 'SubmodelList' || this.$route.name === 'ComponentVisualization') {
+        if (aasEndpoint && submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint, path: submodelElementPath } });
+        else if (aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
+        else this.$router.push({ name: 'MainWindow' });
+      } else {
+        if (aasEndpoint && submodelElementPath) this.$router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
+        else if (aasEndpoint && !submodelElementPath) this.$router.push({ query: { aas: aasEndpoint } });
+      }
+    }
 
     if (aasEndpoint) {
       // console.log('AAS Query is set: ', aasEndpoint);
@@ -94,21 +135,16 @@ export default defineComponent({
         }
       });
     }
-
-    // check which platform is used and change the fitting view
-    if (this.$vuetify.display.platform.android || this.$vuetify.display.platform.ios) { // change to AASList when the platform is android or ios
-      if(aasEndpoint && submodelElementPath) this.$router.push({ path: '/aaslist', query: { aas: aasEndpoint, path: submodelElementPath } });
-      else if(aasEndpoint && !submodelElementPath) this.$router.push({ path: '/aaslist', query: { aas: aasEndpoint } });
-      else this.$router.push({ path: '/aaslist' });
-    } else { // change to MainWindow when the platform is not android or ios
-      if(aasEndpoint && submodelElementPath) this.$router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
-      else if(aasEndpoint && !submodelElementPath) this.$router.push({ query: { aas: aasEndpoint } });
-    }
-  }
+  },
 });
 </script>
 
 <style>
 @import '../node_modules/@fontsource/roboto/index.css';
-html { overflow-y: auto };
+
+html {
+  overflow-y: auto
+}
+
+;
 </style>

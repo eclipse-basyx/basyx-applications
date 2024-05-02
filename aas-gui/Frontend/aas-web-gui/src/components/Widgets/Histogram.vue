@@ -1,14 +1,14 @@
 <template>
     <v-container fluid class="pa-0">
         <!-- Options -->
-        <v-list nav class="pa-0" style="margin-left: -8px; margin-top: -14px">
+        <v-list v-if="!hideSettings || editDialog" nav class="pa-0" style="margin-left: -8px; margin-top: -14px">
             <v-list-item class="pb-0">
                 <template v-slot:title>
                     <div class="text-subtitle-2">{{ "Options: " }}</div>
                 </template>
             </v-list-item>
         </v-list>
-        <v-row align="center">
+        <v-row v-if="!hideSettings || editDialog" align="center">
             <v-col cols="auto">
                 <v-text-field type="number" hide-details density="compact" v-model="numberOfCategories" @blur="initializeSeries()" @keydown.native.enter="initializeSeries()" label="Bins" variant="outlined"></v-text-field>
             </v-col>
@@ -22,15 +22,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import _ from 'lodash';
 import { useTheme } from 'vuetify';
 import WidgetHandling from '@/mixins/WidgetHandling';
+import DashboardHandling from '@/mixins/DashboardHandling';
 
 import { useNavigationStore } from '@/store/NavigationStore';
 
 export default defineComponent({
     name: 'Histogram',
-    props: ['chartData', 'timeVariable', 'yVariables'],
-    mixins: [WidgetHandling],
+    props: ['chartData', 'timeVariable', 'yVariables', 'chartOptionsExternal', 'editDialog'],
+    mixins: [WidgetHandling, DashboardHandling],
 
     setup() {
         const theme = useTheme()
@@ -76,6 +78,7 @@ export default defineComponent({
                     mode: 'dark'
                 },
             } as any,
+            localChartOptions: {} as any,
             stacked: false,
             numberOfCategories: 20,
         }
@@ -123,6 +126,13 @@ export default defineComponent({
             if (!histograms || !categories || histograms.length === 0 || categories.length === 0) {
                 return;
             }
+            // initialize the chartOptions in the Dashboard
+            if (this.hideSettings) {
+                (this.$refs.histogram as any).updateOptions(this.chartOptionsExternal);
+                this.localChartOptions = { ...this.chartOptionsExternal };
+                let completeOptions = _.merge({}, this.chartOptions, this.chartOptionsExternal);
+                this.stacked = completeOptions.chart.stacked;
+            }
             let newSeries = histograms.map((histogram: any, index: number) => {
                 return {
                     name: 'Number of values in bin',
@@ -139,14 +149,24 @@ export default defineComponent({
             // update the series
             // console.log('chartSeries: ', newSeries);
             (this.$refs.histogram as any).updateSeries(newSeries);
+            // emit the chartOptions to the parent component
+            this.$emit("chartOptions", this.localChartOptions);
         },
 
         changeVariant() {
-            (this.$refs.histogram as any).updateOptions({
+            let newOptions = {
                 chart: {
                     stacked: this.stacked
                 }
-            });
+            };
+            // update the chart options
+            (this.$refs.histogram as any).updateOptions(newOptions);
+            // create a complete chartOptions object
+            let completeOptions = _.merge({}, this.localChartOptions, newOptions);
+            // emit the chartOptions to the parent component
+            this.$emit("chartOptions", completeOptions)
+            // update the local chartOptions
+            this.localChartOptions = completeOptions;
         },
 
         // Function to apply the selected theme to the chart

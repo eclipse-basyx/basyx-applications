@@ -109,31 +109,34 @@ export default defineComponent({
             contacts.forEach((contact: any) => {
                 contact.generalProperties = [] as Array<any>;
                 // create Contact Person Property
-                let name = '';
+                let nameParts = [];
                 // find property with the idShort "Title"
                 let title = contact.value.find((element: any) => element.idShort === 'Title');
                 if (title && title.value && title.value.length > 0) {
-                    name += title.value[0].text + ' ';
+                    nameParts.push(title.value[0].text);
                 }
                 // find property with the idShort "FirstName"
                 let firstName = contact.value.find((element: any) => element.idShort === 'FirstName');
                 if (firstName && firstName.value && firstName.value.length > 0) {
-                    name += firstName.value[0].text + ' ';
+                    nameParts.push(firstName.value[0].text);
                 }
                 // find property with the idShort "MiddleNames"
                 let middleNames = contact.value.find((element: any) => element.idShort === 'MiddleNames');
                 if (middleNames && middleNames.value && middleNames.value.length > 0) {
-                    name += middleNames.value[0].text + ' ';
+                    nameParts.push(middleNames.value[0].text);
                 }
                 // find property with the idShort "NameOfContact"
                 let nameOfContact = contact.value.find((element: any) => element.idShort === 'NameOfContact');
                 if (nameOfContact && nameOfContact.value && nameOfContact.value.length > 0) {
-                    name += nameOfContact.value[0].text;
+                    nameParts.push(nameOfContact.value[0].text);
                 }
+                // join all name parts with a space
+                let name = nameParts.filter(Boolean).join(' ');
                 // find property with the idShort "AcademicTitle"
                 let academicTitle = contact.value.find((element: any) => element.idShort === 'AcademicTitle');
                 if (academicTitle && academicTitle.value && academicTitle.value.length > 0) {
-                    name += ', ' + academicTitle.value[0].text;
+                    // add a comma before the academic title if the name is not empty
+                    name += (name ? ', ' : '') + academicTitle.value[0].text;
                 }
                 // add Contact Person Property to the generalProperties
                 if (name.length > 0) {
@@ -295,10 +298,23 @@ export default defineComponent({
 
         downloadVCard(vCard: string, filename: string) {
             let blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8;' });
-            let link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
+            const data = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = data;
             link.download = filename;
-            link.click();
+
+            // this part will prompt the user to view the VCard in a new tab on iOS
+            if (this.$vuetify.display.platform.ios || this.$vuetify.display.platform.mac) {
+                window.open(data, '_blank');
+            } else {
+                // For desktop browsers, download the vCard
+                link.click();
+            }
+
+            setTimeout(function () {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data);
+            }, 100);
         },
 
         // Function to translate the RoleOfContactPerson

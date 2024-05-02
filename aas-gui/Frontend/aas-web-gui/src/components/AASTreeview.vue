@@ -65,12 +65,9 @@ export default defineComponent({
     },
 
     watch: {
-        // initialize Treeview when AAS gets selected or changes
-        SelectedAAS: {
-            deep: true,
-            handler() {
-                this.initializeTree();
-            }
+        // initialize Treeview when AAS gets selected
+        triggerAAS() {
+            this.initializeTree();
         },
 
         // Resets the Treeview when the AAS Registry changes
@@ -108,6 +105,11 @@ export default defineComponent({
             return this.aasStore.getSelectedAAS;
         },
 
+        // get the trigger for AAS selection from Store
+        triggerAAS() {
+            return this.navigationStore.getTriggerAASSelected;
+        },
+
         // gets loading State from Store
         loading() {
             return this.aasStore.getLoadingState;
@@ -143,7 +145,7 @@ export default defineComponent({
                 // this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
                 return;
             }
-            if(this.loading) return; // return if loading state is true -> prevents multiple requests
+            if (this.loading && !this.initialUpdate) return; // return if loading state is true -> prevents multiple requests
             this.aasStore.dispatchLoadingState(true); // set loading state to true
             this.submodelData = []; // reset Treeview Data
             // retrieve AAS from endpoint
