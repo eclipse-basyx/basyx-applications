@@ -128,7 +128,7 @@ export default defineComponent({
                 if (submodelElement.modelType === 'SubmodelElementList') {
                     // add embeddedDataSpecifications to every value of the SubmodelElementList
                     submodelElement.value.forEach((value: any) => {
-                        value.embeddedDataSpecifications = submodelElement.embeddedDataSpecifications;
+                        value.embeddedDataSpecifications = submodelElement.conceptDescription.embeddedDataSpecifications;
                     });
                 }
             });

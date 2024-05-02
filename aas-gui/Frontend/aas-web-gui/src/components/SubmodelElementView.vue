@@ -38,12 +38,9 @@
                         <InvalidElement                 v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescription -->
-                    <v-divider v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" class="mt-5"></v-divider>
-                    <v-list v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" class="px-4 pt-0 pb-0">
-                        <v-list-item class="pa-1">
-                            <v-list-item-title class="text-subtitle-2 mt-2">{{ 'Concept Description: ' }}</v-list-item-title>
-                        </v-list-item>
-                        <ConceptDescription v-if="submodelElementData.embeddedDataSpecifications && submodelElementData.embeddedDataSpecifications.length > 0" :conceptDescriptionObject="submodelElementData.embeddedDataSpecifications"></ConceptDescription>
+                    <v-divider v-if="submodelElementData.conceptDescription" class="mt-5"></v-divider>
+                    <v-list nav v-if="submodelElementData.conceptDescription">
+                        <ConceptDescription :conceptDescriptionObject="submodelElementData.conceptDescription"></ConceptDescription>
                     </v-list>
                     <!-- Last Sync -->
                     <v-divider class="mt-5"></v-divider>
@@ -258,7 +255,7 @@ export default defineComponent({
             let disableMessage = true;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 // save embeddedDataSpecifications (ConceptDescription) before overwriting the SubmodelElement Data
-                let embeddedDataSpecifications = this.submodelElementData.embeddedDataSpecifications;
+                let conceptDescription = this.submodelElementData.conceptDescription;
                 if (response.success) { // execute if the Request was successful
                     response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
                     response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
@@ -279,7 +276,7 @@ export default defineComponent({
                 if (withConceptDescription) {
                     this.getCD(); // fetch ConceptDescriptions for the SubmodelElement
                 } else {
-                    this.submodelElementData.embeddedDataSpecifications = embeddedDataSpecifications; // add the ConceptDescription to the SubmodelElement Data
+                    this.submodelElementData.conceptDescription = conceptDescription; // add the ConceptDescription to the SubmodelElement Data
                 }
                 // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
@@ -299,8 +296,8 @@ export default defineComponent({
                 // console.log('ConceptDescription: ', response)
                 this.conceptDescription = response;
                 // add ConceptDescription to the SubmodelElement Data
-                if (response && response.embeddedDataSpecifications && response.embeddedDataSpecifications.length > 0) {
-                    this.submodelElementData.embeddedDataSpecifications = response.embeddedDataSpecifications;
+                if (response ) {
+                    this.submodelElementData.conceptDescription = response;
                 }
             });
         },

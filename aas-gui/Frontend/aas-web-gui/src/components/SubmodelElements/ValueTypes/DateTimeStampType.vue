@@ -147,8 +147,8 @@ export default defineComponent({
 
         // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
         unitSuffix(prop: any) {
-            if (prop.embeddedDataSpecifications && prop.embeddedDataSpecifications.length > 0 && prop.embeddedDataSpecifications[0].dataSpecificationContent && prop.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                return prop.embeddedDataSpecifications[0].dataSpecificationContent.unit;
+            if (prop.conceptDescription && prop.conceptDescription.embeddedDataSpecifications && prop.conceptDescription.embeddedDataSpecifications.length > 0 && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
+                return prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit;
             } else {
                 return '';
             }

@@ -400,8 +400,10 @@ export default defineComponent({
             // Return the promise from getRequest
             return this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    // console.log('ConceptDescription Data: ', response.data.embeddedDataSpecifications);
-                    return response.data;
+                    // console.log('ConceptDescription Data: ', response.data);
+                    let conceptDescription = response.data;
+                    conceptDescription.path = path;
+                    return conceptDescription;
                 } else {
                     return {};
                 }
@@ -415,8 +417,8 @@ export default defineComponent({
             parent.id = this.UUID();
             // get the conceptDescription for the SubmodelElement
             this.getConceptDescription(parent).then((response: any) => {
-                if (response && response.embeddedDataSpecifications && response.embeddedDataSpecifications.length > 0) {
-                    parent.embeddedDataSpecifications = response.embeddedDataSpecifications;
+                if (response) {
+                    parent.conceptDescription = response;
                 }
             });
             // check for children
