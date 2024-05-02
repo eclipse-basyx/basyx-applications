@@ -2076,10 +2076,10 @@ vue@^3.4.21:
     "@vue/server-renderer" "3.4.21"
     "@vue/shared" "3.4.21"
 
-vuetify@^3.6.0:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.1.tgz#bd26f1ee53c532a4f9880a5f376064f53efd9947"
-  integrity sha512-fzcY9LNuLZUwXG4XyklkGJwFv/ejQaERAgE5e+U5M9dtbF9ZRs56mGi2uqOhQOv6o+vbikpHZ/rfHfhb/XlO0g==
+vuetify@^3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.3.tgz#3818a9176198480302ec0aac359c47cb71a75f13"
+  integrity sha512-OBYYJYnNeUYA7kwrv8Rag1EBFbGWAQxJpp0s98U2KQ6SPU7MzzcrvNn7t69vcDbj7mR7Dcf9/jvFapfranXZvA==
 
 web-worker@^1.2.0:
   version "1.3.0"
