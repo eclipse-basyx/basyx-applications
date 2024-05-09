@@ -91,10 +91,13 @@ export default defineComponent({
         }
       }
     } else { // change to MainWindow when the platform is not android or ios
-      if (this.$route.name === 'AASList' || this.$route.name === 'SubmodelList' || this.$route.name === 'ComponentVisualization') {
+      if (this.$route.name === 'AASList' || this.$route.name === 'SubmodelList') {
         if (aasEndpoint && submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint, path: submodelElementPath } });
         else if (aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
         else this.$router.push({ name: 'MainWindow' });
+      } else if (this.$route.name === 'ComponentVisualization') {
+        if (aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
+        else if (!aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow' });
       } else {
         if (aasEndpoint && submodelElementPath) this.$router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
         else if (aasEndpoint && !submodelElementPath) this.$router.push({ query: { aas: aasEndpoint } });
