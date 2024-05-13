@@ -18,7 +18,7 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text v-if="submodelElementData && Object.keys(submodelElementData).length > 0" style="overflow-y: auto; height: calc(100vh - 170px)">
+            <v-card-text v-if="submodelElementData && Object.keys(submodelElementData).length > 0" style="overflow-y: auto; height: calc(100svh - 170px)">
                 <!-- Add Plugins matched on SemanticId's inside the SubmodelEntrypoint -->
                 <SubmodelEntrypoint :submodelElementData="submodelElementData" :selectedNode="SelectedNodeToTransfer"></SubmodelEntrypoint>
             </v-card-text>
