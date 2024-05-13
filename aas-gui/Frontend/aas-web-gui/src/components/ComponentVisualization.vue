@@ -63,9 +63,19 @@ export default defineComponent({
     },
 
     mounted() {
-        // initialize the Component if zhe component got mounted on mobile devices (needed there because it is rendered in a separate view)
         if (Object.keys(this.SelectedNode).length > 0 && this.isMobile) {
+            // initialize if component got mounted on mobile devices (needed there because it is rendered in a separate view)
             this.initializeView();
+        } else if (Object.keys(this.SelectedNode).length == 0 && this.$route.path == '/componentvisualization') {
+
+            const searchParams = new URL(window.location.href).searchParams;
+            const aasEndpoint = searchParams.get('aas');
+            const path = searchParams.get('path');
+
+            // check if the aas Query and the path Query are set in the URL and if so initialize
+            if (aasEndpoint && path) {
+                this.initializeViewWithRouteParams();
+            }
         }
     },
 
@@ -168,6 +178,46 @@ export default defineComponent({
             }
             this.submodelElementData = { ...this.RealTimeObject }; // create local copy of the SubmodelElement Object
             // console.log('SubmodelElement Data (ComponentVisualization): ', this.submodelElementData);
+        },
+
+        // Function to initialize with route params
+        initializeViewWithRouteParams() {
+
+            const searchParams = new URL(window.location.href).searchParams;
+            const aasEndpoint = searchParams.get('aas');
+            const path = searchParams.get('path');
+
+            if (aasEndpoint && path) {
+
+                // console.log('AAS and Path Queries are set: ', aasEndpoint, ' | ', path);
+                let aas = {} as any;
+                let endpoints = [];
+                endpoints.push({ protocolInformation: { href: aasEndpoint } });
+                aas.endpoints = endpoints;
+                // dispatch the AAS set by the URL to the store
+                this.aasStore.dispatchSelectedAAS(aas);
+
+                // Request the selected SubmodelElement
+                let context = 'retrieving SubmodelElement';
+                let disableMessage = true;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) { // execute if the Request was successful
+                        response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
+                        response.data.path = path; // add the path to the SubmodelElement Data
+                        response.data.isActive = true; // add the isActive Property to the SubmodelElement Data
+                        // console.log('SubmodelElement Data: ', response.data)
+                        // dispatch the SubmodelElementPath set by the URL to the store
+                        this.submodelElementData = response.data;
+                        this.aasStore.dispatchRealTimeObject(this.submodelElementData);
+                    } else { // execute if the Request failed
+                        if (Object.keys(response.data).length == 0) {
+                            // don't copy the static SubmodelElement Data if no Node is selected or Node is invalid
+                            this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'No valid SubmodelElement under the given Path' }); // Show Error Snackbar
+                            return;
+                        }
+                    }
+                });
+            }
         },
 
         backToSubmodelList() {
