@@ -24,7 +24,6 @@
     "three": "^0.163.0",
     "uuid": "^9.0.1",
     "vue": "^3.4.21",
-    "vue-pdf-embed": "^2.0.3",
     "vue-router": "^4.1.6",
     "vue3-apexcharts": "^1.5.2",
     "vuetify": "^3.6.0",

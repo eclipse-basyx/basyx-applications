@@ -3,9 +3,9 @@
         <v-card class="pdfCard" style="transform: translateY(0px)">
             <!-- PDF File Preview -->
             <iframe v-if="useIFrame && submodelElementData.modelType == 'File'" :src="localPathValue" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
-            <vue-pdf-embed ref="pdfPreview" v-if="pdfData && !useIFrame && submodelElementData.modelType == 'File'" :source="pdfData" />
+            <iframe v-if="!useIFrame && submodelElementData.modelType == 'File'" :src="pdfData" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
             <!-- PDF Blob Preview -->
-            <vue-pdf-embed ref="pdfPreview" v-if="submodelElementData.modelType == 'Blob'" :source="Base64PDF" />
+            <iframe v-if="Base64PDF && submodelElementData.modelType == 'Blob'" :src="Base64PDF" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
         </v-card>
     </v-container>
 </template>
@@ -16,13 +16,9 @@ import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
-import VuePdfEmbed from 'vue-pdf-embed'
 
 export default defineComponent({
     name: 'PDFPreview',
-    components: {
-        VuePdfEmbed,
-    },
     props: ['submodelElementData'],
     mixins: [RequestHandling],
 
@@ -53,28 +49,6 @@ export default defineComponent({
         } else if (this.submodelElementData.modelType == 'Blob') {
             this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
         }
-
-        let timeoutId: ReturnType<typeof setTimeout> | null = null;
-        let lastWidth = 0;
-        const pdfCard = document.querySelector('.pdfCard') as HTMLElement;
-        const observer = new ResizeObserver(entries => {
-            const { width, height } = entries[0].contentRect;
-            if (width !== lastWidth && height === pdfCard.clientHeight) {
-                lastWidth = width;
-                if (timeoutId !== null) {
-                    clearTimeout(timeoutId);
-                }
-                timeoutId = setTimeout(() => {
-                    // force render of vue-pdf-embed
-                    let pdfComponent = this.$refs.pdfPreview as any;
-                    if (pdfComponent) {
-                        // console.log('rendering pdf');
-                        pdfComponent.render();
-                    }
-                }, 1000);
-            }
-        });
-        observer.observe(pdfCard);
     },
 
     watch: {
@@ -113,7 +87,7 @@ export default defineComponent({
 
         // Function to fetch raw PDF data
         getPDFData() {
-            // console.log('getPDFData: ', this.submodelElementData.value);
+            console.log('getPDFData: ', this.submodelElementData.value);
             let path = this.submodelElementData.value;
             fetch(path, { method: 'GET', headers: { 'Content-Type': 'application/octet-stream' } })
                 .then(response => response.blob())
