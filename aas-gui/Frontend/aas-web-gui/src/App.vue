@@ -83,7 +83,7 @@ export default defineComponent({
         }
       } else if (this.$route.name === 'ComponentVisualization') {
         if (aasEndpoint && submodelElementPath) {
-          this.$router.push({ name: 'SubmodelList', query: { aas: aasEndpoint, path: submodelElementPath } });
+          this.$router.push({ name: 'ComponentVisualization', query: { aas: aasEndpoint, path: submodelElementPath } });
         } else if (aasEndpoint && !submodelElementPath) {
           this.$router.push({ name: 'SubmodelList', query: { aas: aasEndpoint } });
         } else {
