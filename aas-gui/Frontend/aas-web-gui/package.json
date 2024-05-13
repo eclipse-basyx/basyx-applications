@@ -26,7 +26,7 @@
     "vue": "^3.4.21",
     "vue-router": "^4.1.6",
     "vue3-apexcharts": "^1.5.2",
-    "vuetify": "^3.6.0",
+    "vuetify": "^3.6.5",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
