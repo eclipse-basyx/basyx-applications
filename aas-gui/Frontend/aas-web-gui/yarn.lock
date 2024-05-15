@@ -563,10 +563,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.4.21.tgz#de526a9059d0a599f0b429af7037cd0c3ed7d5a1"
   integrity sha512-PuJe7vDIi6VYSinuEbUIQgMIRZGgM8e4R+G+/dQTk0X1NEdvgvvgv7m+rfmDH1gZzyA1OjjoWskvHlfRNfQf3g==
 
-"@vuetify/loader-shared@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@vuetify/loader-shared/-/loader-shared-2.0.2.tgz#9b5aadee87402516ca7d332f1472e42cf476a411"
-  integrity sha512-91itRxkTRKUhEZhWR/ICfYml1WkVxC7/DIeJEyUzzzLQxRo9wpyk+rhFtwHUUJE2O8wL1VG9L6TkR5SIUswwKQ==
+"@vuetify/loader-shared@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@vuetify/loader-shared/-/loader-shared-2.0.3.tgz#11451c717e4a352ec311da52a79c857cd256c92f"
+  integrity sha512-Ss3GC7eJYkp2SF6xVzsT7FAruEmdihmn4OCk2+UocREerlXKWgOKKzTN5PN3ZVN5q05jHHrsNhTuWbhN61Bpdg==
   dependencies:
     upath "^2.0.1"
 
@@ -1621,12 +1621,12 @@ uvu@^0.5.0:
     kleur "^4.0.3"
     sade "^1.7.3"
 
-vite-plugin-vuetify@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-vuetify/-/vite-plugin-vuetify-2.0.2.tgz#0e764957ebae16c1b05189a67ddc185aa1ef3ff7"
-  integrity sha512-steZz+B3Fj06mzQ9RyV1ewwQ8yGIU+l/Pi3KQhKhyRJSMS5vKCh2jThglbUBLdJER5vv4jxl0FJujPuKJ41tJw==
+vite-plugin-vuetify@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/vite-plugin-vuetify/-/vite-plugin-vuetify-2.0.3.tgz#b65ee4e05cfc6bf2b478a32b6d58b42398519f1e"
+  integrity sha512-HbYajgGgb/noaVKNRhnnXIiQZrNXfNIeanUGAwXgOxL6h/KULS40Uf51Kyz8hNmdegF+DwjgXXI/8J1PNS83xw==
   dependencies:
-    "@vuetify/loader-shared" "^2.0.2"
+    "@vuetify/loader-shared" "^2.0.3"
     debug "^4.3.3"
     upath "^2.0.1"
 
