@@ -23,7 +23,7 @@
     "roboto-fontface": "*",
     "three": "^0.164.1",
     "uuid": "^9.0.1",
-    "vue": "^3.4.21",
+    "vue": "^3.4.27",
     "vue-router": "^4.1.6",
     "vue3-apexcharts": "^1.5.2",
     "vuetify": "^3.6.5",
