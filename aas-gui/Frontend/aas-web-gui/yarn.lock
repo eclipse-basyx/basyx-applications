@@ -575,10 +575,10 @@
   resolved "https://registry.npmjs.org/@yr/monotone-cubic-spline/-/monotone-cubic-spline-1.0.3.tgz"
   integrity sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==
 
-apexcharts@^3.47.0:
-  version "3.47.0"
-  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.47.0.tgz#887db702b7246119d3e9077a45bbe05f236fbe84"
-  integrity sha512-s/fgNCA69b8lJdhI3R7Z+/Df47RPplLyHwuvttecR+aaZ3/Pm6wHYPiAGjqDNbVsMGXhuA9mcOpIYU5ZWeSdeg==
+apexcharts@^3.49.1:
+  version "3.49.1"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.49.1.tgz#837d1d4fd80f2c092f0587e8fb6bbc31ad57a0f3"
+  integrity sha512-MqGtlq/KQuO8j0BBsUJYlRG8VBctKwYdwuBtajHgHTmSgUU3Oai+8oYN/rKCXwXzrUlYA+GiMgotAIbXY2BCGw==
   dependencies:
     "@yr/monotone-cubic-spline" "^1.0.3"
     svg.draggable.js "^2.2.2"
