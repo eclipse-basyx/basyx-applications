@@ -6,7 +6,8 @@
         <v-card min-width="300px" :color="isMobile ? 'card' : 'navigationMenu'" :style="{ 'border-style': isMobile ? '' : 'solid', 'border-width': isMobile ? '' : '1px' }">
             <v-list nav class="pt-0 pb-2" :class="isMobile ? 'bg-card' : 'bg-navigationMenu'">
                 <!-- Switch to change the app theme -->
-                <ThemeSwitch></ThemeSwitch>
+              <ThemeSwitch></ThemeSwitch>
+              <LdLogout></LdLogout>
             </v-list>
         </v-card>
     </v-menu>
@@ -17,10 +18,12 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 
 import ThemeSwitch from './Settings/ThemeSwitch.vue';
+import LdLogout from './Settings/LdLogout.vue';
 
 export default defineComponent({
     name: 'Settings',
     components: {
+        LdLogout,
         ThemeSwitch,
     },
 
