@@ -20,6 +20,7 @@
                     <MainMenu @closeMenu="mainMenu = false"></MainMenu>
                 </v-menu>
                 <v-spacer></v-spacer>
+                <LdUser></LdUser>
                 <!-- Settings-Menu for Auto-Sync and Sync-Interval -->
                 <AutoSync v-if="showAutoSync"></AutoSync>
                 <!-- Platform I 4.0 Logo -->
@@ -137,6 +138,7 @@ import RequestHandling from '../../mixins/RequestHandling';
 import AASList  from './AASList.vue';
 import AutoSync from './AutoSync.vue';
 import ThemeSwitch from './Settings/ThemeSwitch.vue';
+import LdUser from './LdUser.vue';
 import MainMenu from './MainMenu.vue';
 import Settings from './Settings.vue';
 
@@ -148,6 +150,7 @@ export default defineComponent({
         AASList,    // Component to display the AAS List
         AutoSync,   // Component to display the Auto-Sync Settings
         ThemeSwitch,// Component to display the Theme Switch
+        LdUser,     // Component to display the User Settings
         MainMenu,   // Component to display the Main Menu
         Settings,   // Component to display the Settings Menu
     },
@@ -164,7 +167,7 @@ export default defineComponent({
             envStore, // EnvironmentStore Object
         }
     },
-    
+
     data() {
         return {
             loadingAASDiscovery: false,     // Variable to show the loading animation on the Connect Button for the AAS Discovery
@@ -376,7 +379,7 @@ export default defineComponent({
                 showAutoSync = true;
             }
             return showAutoSync;
-        },
+        }
     },
 
     methods: {

@@ -19,6 +19,7 @@
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "mermaid": "^10.9.0",
+    "oidc-client-ts": "^3.0.1",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
     "three": "^0.164.1",
