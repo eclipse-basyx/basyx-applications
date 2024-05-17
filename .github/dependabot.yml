@@ -3,4 +3,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/aas-gui/Frontend/aas-web-gui"
     schedule:
-      interval: "weekly"  
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/starter-kit/basyx-starter-kit"
+    schedule:
+      interval: "weekly"
