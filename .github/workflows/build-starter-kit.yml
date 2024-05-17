@@ -1,0 +1,32 @@
+name: Build AAS Web UI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'starter-kit/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install Dependencies
+      run: |
+        cd starter-kit/basyx-starter-kit
+        yarn install
+
+    - name: Build
+      run: |
+        cd starter-kit/basyx-starter-kit
+        yarn build
