@@ -368,7 +368,7 @@ export default defineComponent({
         extractMarkings(digitalNameplateData: any) {
             let markings = digitalNameplateData.submodelElements.find((element: any) => element.idShort === 'Markings');
             let formattedMarkings = [] as Array<any>;
-            if (markings) {
+            if (markings?.value) {
                 markings.value.forEach((marking: any) => {
                     // find property with the idShort "MarkingFile"
                     let markingFile = marking.value.find((element: any) => element.idShort === 'MarkingFile');
