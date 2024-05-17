@@ -144,8 +144,6 @@ export default defineComponent({
 @import '../node_modules/@fontsource/roboto/index.css';
 
 html {
-  overflow-y: auto
+  overflow-y: auto;
 }
-
-;
 </style>
