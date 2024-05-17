@@ -129,7 +129,7 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
+// import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
 import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
@@ -146,7 +146,7 @@ export default defineComponent({
         DescriptionElement,
 
         // SubmodelElements
-        SubmodelElementWrapper,
+        // SubmodelElementWrapper,
         CollectionWrapper,
         GenericDataVisu,
 

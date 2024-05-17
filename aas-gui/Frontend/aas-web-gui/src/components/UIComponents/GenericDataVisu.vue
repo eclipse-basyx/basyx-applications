@@ -38,7 +38,7 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
+// import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
 import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
 
 import SubmodelElementList from '../SubmodelElements/SubmodelElementList.vue';
@@ -64,7 +64,7 @@ export default defineComponent({
         DescriptionElement,
 
         // SubmodelElements
-        SubmodelElementWrapper,
+        // SubmodelElementWrapper,
         CollectionWrapper,
 
         SubmodelElementList,
@@ -96,7 +96,7 @@ export default defineComponent({
     data() {
         return {
             localSubmodelElementData: [] as Array<any>, // SubmodelElement Data
-            conceptDescription: {}, // ConceptDescription Object
+            // conceptDescriptions: {}, // Data of Concept Descriptions
         }
     },
 
@@ -123,15 +123,15 @@ export default defineComponent({
             }
             let submodelElementData = [ ...this.submodelElementData ];
             // console.log('SubmodelElementData: ', submodelElementData)
-            submodelElementData.forEach((submodelElement: any) => {
-                // console.log('ModelType: ', submodelElement);
-                if (submodelElement.modelType === 'SubmodelElementList') {
-                    // add embeddedDataSpecifications to every value of the SubmodelElementList
-                    submodelElement.value.forEach((value: any) => {
-                        value.embeddedDataSpecifications = submodelElement.conceptDescription.embeddedDataSpecifications;
-                    });
-                }
-            });
+            // submodelElementData.forEach((submodelElement: any) => {
+            //     // console.log('ModelType: ', submodelElement);
+            //     if (submodelElement.modelType === 'SubmodelElementList') {
+            //         // add embeddedDataSpecifications to every value of the SubmodelElementList
+            //         submodelElement.value.forEach((value: any) => {
+            //             value.embeddedDataSpecifications = submodelElement.conceptDescription.embeddedDataSpecifications;
+            //         });
+            //     }
+            // });
             this.localSubmodelElementData = submodelElementData;
         },
         
