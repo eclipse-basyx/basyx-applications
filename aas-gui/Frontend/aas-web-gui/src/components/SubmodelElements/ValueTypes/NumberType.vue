@@ -137,10 +137,26 @@ export default defineComponent({
             if (!e) this.newNumberValue = this.numberValue.value; // set input to current value in the AAS if the input field is not focused
         },
 
-        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
+        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
         unitSuffix(prop: any) {
-            if (prop.conceptDescription && prop.conceptDescription.embeddedDataSpecifications && prop.conceptDescription.embeddedDataSpecifications.length > 0 && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                return prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit;
+            if (prop.conceptDescriptions) {
+
+                for (let i = 0; i < prop.conceptDescriptions.length; i++) {
+
+                    let conceptDescription = prop.conceptDescriptions[i];
+                    if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
+
+                        for (let j = 0; j < conceptDescription.embeddedDataSpecifications.length; j++) {
+
+                            let embeddedDataSpecification = conceptDescription.embeddedDataSpecifications[j];
+                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) return embeddedDataSpecification.dataSpecificationContent.unit;
+
+                        }
+
+                    }
+
+                }
+
             } else {
                 return '';
             }
