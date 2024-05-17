@@ -1,4 +1,4 @@
-name: Build AAS Web UI
+name: Build BaSyx Starter Kit
 
 on:
   pull_request:
