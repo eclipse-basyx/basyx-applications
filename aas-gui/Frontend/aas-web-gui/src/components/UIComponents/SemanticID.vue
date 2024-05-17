@@ -10,12 +10,12 @@
                 <div v-html="semanticTitle + ':'" class="text-subtitle-2 mt-2"></div>
             </template>
             <!-- SemanticId List -->
-            <template v-slot:subtitle>
-                <div v-for="(semanticId, i) in semanticIdObject.keys" :key="i" class="pt-2">
+            <v-list-item-subtitle v-for="(semanticId, i) in semanticIdObject.keys" :key="i">
+                <div class="pt-2">
                     <v-chip label size="x-small" border class="mr-2">{{ semanticId.type }}</v-chip>
                     <span v-html="semanticId.value"></span>
                 </div>
-            </template>
+            </v-list-item-subtitle>
         </v-list-item>
     </v-container>
 </template>
