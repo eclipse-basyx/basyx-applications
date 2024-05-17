@@ -127,7 +127,7 @@ export default defineComponent({
 
     mounted() {
         // console.log('ReferenceElement Mounted:', this.referenceElementObject);
-        this.referenceValue = this.referenceElementObject.value.keys;
+        this.referenceValue = this.referenceElementObject?.value?.keys;
         this.validateReference();
     },
 
@@ -144,7 +144,7 @@ export default defineComponent({
         referenceElementObject: {
             deep: true,
             handler() {
-                this.referenceValue = this.referenceElementObject.value.keys;
+                this.referenceValue = this.referenceElementObject?.value?.keys;
                 this.validateReference();
             }
         },
