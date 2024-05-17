@@ -394,33 +394,42 @@ export default defineComponent({
             }
         },
 
-        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
-        getConceptDescription(SelectedNode: any) {
+        // Get all ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        async requestConceptDescriptions(SelectedNode: any) {
             let conceptDescriptionRepoURL = '';
             if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
                 conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
             } else {
                 return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
             }
+
             // return if no SemanticID is available
             if (!SelectedNode.semanticId || !SelectedNode.semanticId.keys || SelectedNode.semanticId.keys.length == 0) {
                 return Promise.resolve({});
             }
-            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(SelectedNode.semanticId.keys[0].value);
-            let context = 'retrieving ConceptDescription';
-            let disableMessage = true;
 
-            // Return the promise from getRequest
-            return this.getRequest(path, context, disableMessage).then((response: any) => {
-                if (response.success) {
-                    // console.log('ConceptDescription Data: ', response.data);
-                    let conceptDescription = response.data;
-                    conceptDescription.path = path;
-                    return conceptDescription;
-                } else {
-                    return {};
-                }
+            let cdPromises = SelectedNode.semanticId.keys.map((key: any) => {
+
+                let path = conceptDescriptionRepoURL + "/" + this.URLEncode(key.value);
+                let context = 'retrieving ConceptDescriptions';
+                let disableMessage = true;
+
+                return this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) {
+                        // console.log('ConceptDescription Data: ', response.data);
+                        let conceptDescription = response.data;
+                        conceptDescription.path = path;
+                        return conceptDescription;
+                    } else {
+                        return {};
+                    }
+                });
+
             });
+
+            let conceptDescriptions = await Promise.all(cdPromises);
+            return conceptDescriptions;
+            
         },
 
         // calculate the pathes of the SubmodelElements in a provided Submodel/SubmodelElement
@@ -428,12 +437,8 @@ export default defineComponent({
             // console.log('Parent: ', parent, 'StartPath: ', startPath);
             parent.path = startPath;
             parent.id = this.UUID();
-            // get the conceptDescription for the SubmodelElement
-            this.getConceptDescription(parent).then((response: any) => {
-                if (response) {
-                    parent.conceptDescription = response;
-                }
-            });
+            // get the Concept Descriptions for the SubmodelElement
+            parent.conceptDescriptions = this.requestConceptDescriptions(parent)
             // check for children
             if (parent.submodelElements && parent.submodelElements.length > 0) { // check for SubmodelElements
                 parent.submodelElements.forEach((element: any) => {

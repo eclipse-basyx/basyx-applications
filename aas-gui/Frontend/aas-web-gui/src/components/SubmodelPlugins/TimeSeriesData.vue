@@ -229,9 +229,10 @@ export default defineComponent({
             // request the concept descriptions for the records (if they have semanticIds)
             // Create a list of promises
             let promises = records.map((record: any) => {
-                return this.getConceptDescription(record).then((response: any) => {
+                return this.requestConceptDescriptions(record).then((response: any) => {
                     // console.log('Response: ', response, ' Record: ', record)
                     // check if the response is not an empty object and if it contains embeddedDataSpecifications
+                    // TODO not tested, but it won't work that way
                     if (response && Object.keys(response).length !== 0 && response.embeddedDataSpecifications) {
                         // create new property embeddedDataSpecifications in the record
                         record.embeddedDataSpecifications = response.embeddedDataSpecifications;

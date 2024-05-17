@@ -37,10 +37,13 @@
                         <AnnotatedRelationshipElement   v-else-if="submodelElementData.modelType === 'AnnotatedRelationshipElement'"    :annotatedRelationshipElementObject="submodelElementData"></AnnotatedRelationshipElement>
                         <InvalidElement                 v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
-                    <!-- ConceptDescription -->
-                    <v-divider v-if="submodelElementData.conceptDescription" class="mt-5"></v-divider>
-                    <v-list nav v-if="submodelElementData.conceptDescription">
-                        <ConceptDescription :conceptDescriptionObject="submodelElementData.conceptDescription"></ConceptDescription>
+                    <!-- ConceptDescriptions -->
+                    <v-divider v-if="submodelElementData.conceptDescriptions" class="mt-5"></v-divider>
+                    <v-list nav v-if="submodelElementData.conceptDescriptions">
+                        <v-list-item v-for="(conceptDescription, i) in submodelElementData.conceptDescriptions" :key="i">
+                            <ConceptDescription :conceptDescriptionObject="conceptDescription"></ConceptDescription>
+                            <v-divider v-if="i != Object.keys(submodelElementData.conceptDescriptions).length - 1" class="mt-2"></v-divider>
+                        </v-list-item>
                     </v-list>
                     <!-- Last Sync -->
                     <v-divider class="mt-5"></v-divider>
@@ -131,7 +134,7 @@ export default defineComponent({
     data() {
         return {
             submodelElementData: {} as any, // SubmodelElement Data
-            conceptDescription: {} as any, // ConceptDescription Data
+            conceptDescriptions: {} as any, // Data of Concept Descriptions
             requestInterval: null as any, // interval to send requests to the AAS
         }
     },
@@ -242,7 +245,7 @@ export default defineComponent({
 
     methods: {
         // Initialize the Component
-        initializeView(withConceptDescription = false) {
+        initializeView(withConceptDescriptions = false) {
             // console.log('Selected Node: ', this.SelectedNode);
             // Check if a Node is selected
             if (Object.keys(this.SelectedNode).length == 0) {
@@ -254,8 +257,8 @@ export default defineComponent({
             let context = 'retrieving SubmodelElement';
             let disableMessage = true;
             this.getRequest(path, context, disableMessage).then((response: any) => {
-                // save embeddedDataSpecifications (ConceptDescription) before overwriting the SubmodelElement Data
-                let conceptDescription = this.submodelElementData.conceptDescription;
+                // save Concept Descriptions before overwriting the SubmodelElement Data
+                let conceptDescriptions = this.submodelElementData.conceptDescriptions;
                 if (response.success) { // execute if the Request was successful
                     response.data.timestamp = this.formatDate(new Date()); // add timestamp to the SubmodelElement Data
                     response.data.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
@@ -273,10 +276,10 @@ export default defineComponent({
                     this.submodelElementData.timestamp = 'no sync';
                     this.submodelElementData.path = this.SelectedNode.path; // add the path to the SubmodelElement Data
                 }
-                if (withConceptDescription) {
-                    this.getCD(); // fetch ConceptDescriptions for the SubmodelElement
+                if (withConceptDescriptions) {
+                    this.getCD(); // fetch Concept Descriptions for the SubmodelElement
                 } else {
-                    this.submodelElementData.conceptDescription = conceptDescription; // add the ConceptDescription to the SubmodelElement Data
+                    this.submodelElementData.conceptDescriptions = conceptDescriptions; // add Concept Descriptions to the SubmodelElement Data
                 }
                 // console.log('SubmodelElement Data (SubmodelElementView): ', this.submodelElementData)
                 // add SubmodelElement Data to the store (as RealTimeDataObject)
@@ -284,20 +287,20 @@ export default defineComponent({
             });
         },
 
-        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        // Get Concept Descriptions for the SubmodelElement from the ConceptDescription Repository
         getCD() {
             // Check if a Node is selected
             if (Object.keys(this.SelectedNode).length == 0 || !this.SelectedNode.semanticId || !this.SelectedNode.semanticId.keys || this.SelectedNode.semanticId.keys.length == 0) {
-                this.conceptDescription = {}; // Reset the SubmodelElement Data when no Node is selected
+                this.conceptDescriptions = {}; // Reset the SubmodelElement Data when no Node is selected
                 return;
             }
             // call mixin to request concept description from the CD Repo
-            this.getConceptDescription(this.SelectedNode).then((response: any) => {
+            this.requestConceptDescriptions(this.SelectedNode).then((response: any) => {
                 // console.log('ConceptDescription: ', response)
-                this.conceptDescription = response;
+                this.conceptDescriptions = response;
                 // add ConceptDescription to the SubmodelElement Data
                 if (response ) {
-                    this.submodelElementData.conceptDescription = response;
+                    this.submodelElementData.conceptDescriptions = response;
                 }
             });
         },
