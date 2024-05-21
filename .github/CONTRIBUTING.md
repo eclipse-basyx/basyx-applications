@@ -11,8 +11,6 @@
 
 * If possible, use the relevant bug report templates to create the issue.
 
-* For more detailed information on submitting a bug report and creating an issue, visit our [reporting guidelines]().
-
 #### **Did you write a patch that fixes a bug?**
 
 * Open a new GitHub pull request with the patch.
@@ -23,7 +21,7 @@
 
 #### **Did you fix whitespace, format code, or make a purely cosmetic patch?**
 
-Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of BaSyx will generally not be accepted (read more about [our rationales behind this decision]()).
+Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of BaSyx will generally not be accepted.
 
 #### **Do you intend to add a new feature or change an existing one?**
 
