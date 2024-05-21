@@ -193,17 +193,17 @@ export default defineComponent({
         },
 
         referenceKeyTypeToDisplay(keys: any): string {
-          if (keys?.length > 0) {
-            return keys[keys.length - 1].type;
-          }
-          return '';
+            if (keys?.length > 0) {
+                return keys[keys.length - 1].type;
+            }
+            return '';
         },
 
         referenceKeyValueToDisplay(keys: any): string {
-          if (keys?.length > 0) {
-            return keys[keys.length - 1].value;
-          }
-          return '';
+            if (keys?.length > 0) {
+                return keys[keys.length - 1].value;
+            }
+            return '';
         },
 
         // Function to download a file
