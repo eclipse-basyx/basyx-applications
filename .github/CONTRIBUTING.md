@@ -19,7 +19,7 @@
 
 * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 
-* Before submitting, please read the [Contributing to BaSyx]() guide to know more about coding conventions and benchmarks.
+* Before submitting, please read the [Contributing to BaSyx](https://github.com/eclipse-basyx/basyx-applications/blob/main/.github/CODING_CONVENTIONS.md) guide to know more about coding conventions.
 
 #### **Did you fix whitespace, format code, or make a purely cosmetic patch?**
 
@@ -27,9 +27,9 @@ Changes that are cosmetic in nature and do not add anything substantial to the s
 
 #### **Do you intend to add a new feature or change an existing one?**
 
-* Suggest your change in the [BaSyx Dev mailing list](mailto:basyx-dev@eclipse.org) and start writing code.
+* Suggest your change using the `feature request` template when opening a new issue.
 
-* Do not open an issue on GitHub until you have collected positive feedback about the change. GitHub issues are primarily intended for bug reports and fixes.
+* Do not open a pull request until you have collected positive feedback about the change.
 
 #### **Do you have questions about the source code?**
 
