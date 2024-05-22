@@ -82,27 +82,19 @@ export default defineComponent({
     methods: {
         // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
         unitSuffix(prop: any) {
+            let unit = '';
             if (prop.conceptDescriptions) {
-
-                for (let i = 0; i < prop.conceptDescriptions.length; i++) {
-
-                    let conceptDescription = prop.conceptDescriptions[i];
+                prop.conceptDescriptions.forEach((conceptDescription: any) => {
                     if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
-
-                        for (let j = 0; j < conceptDescription.embeddedDataSpecifications.length; j++) {
-
-                            let embeddedDataSpecification = conceptDescription.embeddedDataSpecifications[j];
-                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) return embeddedDataSpecification.dataSpecificationContent.unit;
-
-                        }
-
+                        conceptDescription.embeddedDataSpecifications.forEach((embeddedDataSpecification: any)=> {
+                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
+                                unit = embeddedDataSpecification.dataSpecificationContent.unit;
+                            }
+                        });
                     }
-
-                }
-
-            } else {
-                return '';
+                });
             }
+            return unit;
         },
     },
 });
