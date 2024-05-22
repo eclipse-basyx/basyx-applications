@@ -24,13 +24,15 @@
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'NumberType',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the Submodel Elements
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
     props: ['numberValue', 'isOperationVariable', 'variableType'],
 
     setup() {
@@ -135,23 +137,6 @@ export default defineComponent({
             }
             this.isFocused = e;
             if (!e) this.newNumberValue = this.numberValue.value; // set input to current value in the AAS if the input field is not focused
-        },
-
-        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
-        unitSuffix(prop: any) {
-            let unit = '';
-            if (prop.conceptDescriptions) {
-                prop.conceptDescriptions.forEach((conceptDescription: any) => {
-                    if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
-                        conceptDescription.embeddedDataSpecifications.forEach((embeddedDataSpecification: any)=> {
-                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
-                                unit = embeddedDataSpecification.dataSpecificationContent.unit;
-                            }
-                        });
-                    }
-                });
-            }
-            return unit;
         },
     },
 });

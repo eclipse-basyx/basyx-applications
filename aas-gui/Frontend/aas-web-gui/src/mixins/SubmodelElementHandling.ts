@@ -420,12 +420,10 @@ export default defineComponent({
                         let conceptDescription = response.data;
                         conceptDescription.path = path;
                         // Check if ConceptDescription has data to be displayed
-                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0)
-                                || (conceptDescription.description && conceptDescription. description.length > 0)
-                                || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
-                            return {};
+                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0) || (conceptDescription.description && conceptDescription. description.length > 0) || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
+                            return conceptDescription;
                         }
-                        return conceptDescription;
+                        return {};
                     } else {
                         return {};
                     }
@@ -436,7 +434,6 @@ export default defineComponent({
             let conceptDescriptions = await Promise.all(cdPromises);
             conceptDescriptions = conceptDescriptions.filter((conceptDescription: any) => Object.keys(conceptDescription).length !== 0); // Filter empty Objects
             return conceptDescriptions;
-            
         },
 
         // calculate the pathes of the SubmodelElements in a provided Submodel/SubmodelElement
@@ -475,6 +472,23 @@ export default defineComponent({
                 path = selectedNode.path + '/attachment';
             }
             return path;
-        }
+        },
+
+        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
+        unitSuffix(prop: any) {
+            let unit = '';
+            if (prop.conceptDescriptions) {
+                prop.conceptDescriptions.forEach((conceptDescription: any) => {
+                    if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
+                        conceptDescription.embeddedDataSpecifications.forEach((embeddedDataSpecification: any) => {
+                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
+                                unit = embeddedDataSpecification.dataSpecificationContent.unit;
+                            }
+                        });
+                    }
+                });
+            }
+            return unit;
+        },
     },
 })
