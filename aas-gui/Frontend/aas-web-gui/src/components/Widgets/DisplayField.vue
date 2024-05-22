@@ -14,10 +14,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'DisplayField',
     props: ['chartData', 'timeVariable', 'yVariables'],
+    components: {
+        SubmodelElementHandling,
+    },
+    mixins: [SubmodelElementHandling],
 
     data() {
         return {
@@ -58,23 +63,6 @@ export default defineComponent({
             } else {
                 return prop.value;
             }
-        },
-
-        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
-        unitSuffix(prop: any) {
-            let unit = '';
-            if (prop.conceptDescriptions) {
-                prop.conceptDescriptions.forEach((conceptDescription: any) => {
-                    if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
-                        conceptDescription.embeddedDataSpecifications.forEach((embeddedDataSpecification: any)=> {
-                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
-                                unit = embeddedDataSpecification.dataSpecificationContent.unit;
-                            }
-                        });
-                    }
-                });
-            }
-            return unit;
         },
     },
 });

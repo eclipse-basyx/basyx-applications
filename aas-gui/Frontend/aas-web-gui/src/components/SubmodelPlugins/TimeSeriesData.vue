@@ -231,11 +231,9 @@ export default defineComponent({
             let promises = records.map((record: any) => {
                 return this.getConceptDescriptions(record).then((response: any) => {
                     // console.log('Response: ', response, ' Record: ', record)
-                    // check if the response is not an empty object and if it contains embeddedDataSpecifications
-                    // TODO not tested, but it won't work that way
-                    if (response && Object.keys(response).length !== 0 && response.embeddedDataSpecifications) {
-                        // create new property embeddedDataSpecifications in the record
-                        record.embeddedDataSpecifications = response.embeddedDataSpecifications;
+                    // check if the response is not an empty array
+                    if (response.length > 0) {
+                        record.conceptDescriptions = response;
                     }
                     return record;
                 });

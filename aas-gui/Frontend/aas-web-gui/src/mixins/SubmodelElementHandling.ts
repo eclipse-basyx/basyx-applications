@@ -476,6 +476,7 @@ export default defineComponent({
 
         // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
         unitSuffix(prop: any) {
+            // Notice: if the concept descriptions array is very long, this function could be optimized
             let unit = '';
             if (prop.conceptDescriptions) {
                 prop.conceptDescriptions.forEach((conceptDescription: any) => {
