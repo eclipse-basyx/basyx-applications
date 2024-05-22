@@ -38,8 +38,8 @@
                         <InvalidElement                 v-else                                                                          :invalidElementObject="submodelElementData"></InvalidElement>
                     </v-list>
                     <!-- ConceptDescriptions -->
-                    <v-divider v-if="submodelElementData.conceptDescriptions" class="mt-5"></v-divider>
-                    <v-list nav v-if="submodelElementData.conceptDescriptions">
+                    <v-divider v-if="submodelElementData.conceptDescriptions && submodelElementData.conceptDescriptions.length > 0" class="mt-5"></v-divider>
+                    <v-list nav v-if="submodelElementData.conceptDescriptions && submodelElementData.conceptDescriptions.length > 0">
                         <v-list-item v-for="(conceptDescription, i) in submodelElementData.conceptDescriptions" :key="i">
                             <ConceptDescription :conceptDescriptionObject="conceptDescription"></ConceptDescription>
                             <v-divider v-if="i != Object.keys(submodelElementData.conceptDescriptions).length - 1" class="mt-2"></v-divider>

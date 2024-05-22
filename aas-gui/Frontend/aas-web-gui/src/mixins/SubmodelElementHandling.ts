@@ -419,6 +419,12 @@ export default defineComponent({
                         // console.log('ConceptDescription Data: ', response.data);
                         let conceptDescription = response.data;
                         conceptDescription.path = path;
+                        // Check if ConceptDescription has data to be displayed
+                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0)
+                                || (conceptDescription.description && conceptDescription. description.length > 0)
+                                || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
+                            return {};
+                        }
                         return conceptDescription;
                     } else {
                         return {};
@@ -428,6 +434,7 @@ export default defineComponent({
             });
 
             let conceptDescriptions = await Promise.all(cdPromises);
+            conceptDescriptions = conceptDescriptions.filter((conceptDescription: any) => Object.keys(conceptDescription).length !== 0); // Filter empty Objects
             return conceptDescriptions;
             
         },
