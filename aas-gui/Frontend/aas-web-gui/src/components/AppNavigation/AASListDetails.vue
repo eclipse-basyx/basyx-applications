@@ -99,7 +99,13 @@ export default defineComponent({
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // console.log('asset information: ', response.data);
-                    this.assetInformation = response.data;
+                    let assetInformation = response.data;
+                    if (assetInformation.defaultThumbnail && assetInformation.defaultThumbnail.path && !assetInformation.defaultThumbnail.path.startsWith('http')) {
+                        let assetInformationThumbnailEndpoint = assetInformationEndpoint + '/thumbnail';
+                        assetInformation.defaultThumbnail.path = assetInformationThumbnailEndpoint;
+                    }
+                    // console.log('asset information thumbnail: ', assetInformation.defaultThumbnail);
+                    this.assetInformation = assetInformation;
                 }
             });
         },
