@@ -295,7 +295,7 @@ export default defineComponent({
                 return;
             }
             // call mixin to request concept description from the CD Repo
-            this.requestConceptDescriptions(this.SelectedNode).then((response: any) => {
+            this.getConceptDescriptions(this.SelectedNode).then((response: any) => {
                 // console.log('ConceptDescription: ', response)
                 this.conceptDescriptions = response;
                 // add ConceptDescription to the SubmodelElement Data

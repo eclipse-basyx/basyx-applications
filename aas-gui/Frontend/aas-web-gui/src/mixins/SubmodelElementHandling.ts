@@ -395,7 +395,7 @@ export default defineComponent({
         },
 
         // Get all ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
-        async requestConceptDescriptions(SelectedNode: any) {
+        async getConceptDescriptions(SelectedNode: any) {
             let conceptDescriptionRepoURL = '';
             if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
                 conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
@@ -438,7 +438,7 @@ export default defineComponent({
             parent.path = startPath;
             parent.id = this.UUID();
             // get the Concept Descriptions for the SubmodelElement
-            parent.conceptDescriptions = this.requestConceptDescriptions(parent)
+            parent.conceptDescriptions = this.getConceptDescriptions(parent)
             // check for children
             if (parent.submodelElements && parent.submodelElements.length > 0) { // check for SubmodelElements
                 parent.submodelElements.forEach((element: any) => {
