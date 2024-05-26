@@ -230,9 +230,8 @@ export default defineComponent({
             // Create a list of promises
             let promises = records.map((record: any) => {
                 return this.getConceptDescriptions(record).then((response: any) => {
-                    // console.log('Response: ', response, ' Record: ', record)
-                    // check if the response is not an empty array
-                    if (response.length > 0) {
+                    // add ConceptDescription to the record
+                    if (response) {
                         record.conceptDescriptions = response;
                     }
                     return record;

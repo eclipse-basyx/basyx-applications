@@ -299,7 +299,7 @@ export default defineComponent({
                 // console.log('ConceptDescription: ', response)
                 this.conceptDescriptions = response;
                 // add ConceptDescription to the SubmodelElement Data
-                if (response ) {
+                if (response) {
                     this.submodelElementData.conceptDescriptions = response;
                 }
             });
