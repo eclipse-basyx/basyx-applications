@@ -122,7 +122,7 @@ export default defineComponent({
                 return;
             }
             let submodelElementData = [ ...this.submodelElementData ];
-            // console.log('SubmodelElementData: ', submodelElementData)
+            console.log('SubmodelElementData: ', submodelElementData)
             // submodelElementData.forEach((submodelElement: any) => {
             //     // console.log('ModelType: ', submodelElement);
             //     if (submodelElement.modelType === 'SubmodelElementList') {
@@ -132,6 +132,26 @@ export default defineComponent({
             //         });
             //     }
             // });
+
+
+
+            // let promises = submodelElementData.map((submodelElement: any) => {
+            //     return this.getConceptDescriptions(submodelElement).then((response: any) => {
+            //         // add ConceptDescription to the SubmodelElement
+            //         if (response) {
+            //             submodelElement.conceptDescriptions = response;
+            //         }
+            //         return submodelElement;
+            //     });
+            // });
+            // // Wait for all promises to resolve and then update this.records
+            // Promise.all(promises).then((updatedSubmodelElementData) => {
+            //     // console.log('Updated SubmodelElement: ', updatedSubmodelElementData)
+            //     this.localSubmodelElementData = updatedSubmodelElementData;
+            // });
+
+
+            
             this.localSubmodelElementData = submodelElementData;
         },
         
