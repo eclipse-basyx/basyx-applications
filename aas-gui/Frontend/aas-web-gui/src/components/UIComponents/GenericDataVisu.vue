@@ -122,36 +122,7 @@ export default defineComponent({
                 return;
             }
             let submodelElementData = [ ...this.submodelElementData ];
-            console.log('SubmodelElementData: ', submodelElementData)
-            // submodelElementData.forEach((submodelElement: any) => {
-            //     // console.log('ModelType: ', submodelElement);
-            //     if (submodelElement.modelType === 'SubmodelElementList') {
-            //         // add embeddedDataSpecifications to every value of the SubmodelElementList
-            //         submodelElement.value.forEach((value: any) => {
-            //             value.embeddedDataSpecifications = submodelElement.conceptDescription.embeddedDataSpecifications;
-            //         });
-            //     }
-            // });
-
-
-
-            // let promises = submodelElementData.map((submodelElement: any) => {
-            //     return this.getConceptDescriptions(submodelElement).then((response: any) => {
-            //         // add ConceptDescription to the SubmodelElement
-            //         if (response) {
-            //             submodelElement.conceptDescriptions = response;
-            //         }
-            //         return submodelElement;
-            //     });
-            // });
-            // // Wait for all promises to resolve and then update this.records
-            // Promise.all(promises).then((updatedSubmodelElementData) => {
-            //     // console.log('Updated SubmodelElement: ', updatedSubmodelElementData)
-            //     this.localSubmodelElementData = updatedSubmodelElementData;
-            // });
-
-
-            
+            // console.log('SubmodelElementData: ', submodelElementData);
             this.localSubmodelElementData = submodelElementData;
         },
         

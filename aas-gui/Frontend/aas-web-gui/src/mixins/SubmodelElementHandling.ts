@@ -400,12 +400,12 @@ export default defineComponent({
             if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
                 conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
             } else {
-                return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
+                return Promise.resolve([]); // Return an empty object wrapped in a resolved promise
             }
 
             // return if no SemanticID is available
             if (!SelectedNode.semanticId || !SelectedNode.semanticId.keys || SelectedNode.semanticId.keys.length == 0) {
-                return Promise.resolve({});
+                return Promise.resolve([]);
             }
 
             let cdPromises = SelectedNode.semanticId.keys.map((key: any) => {
@@ -437,30 +437,29 @@ export default defineComponent({
         },
 
         // calculate the pathes of the SubmodelElements in a provided Submodel/SubmodelElement
-        calculateSubmodelElementPathes(parent: any, startPath: string): any {
-            // console.log('Parent: ', parent, 'StartPath: ', startPath);
+        async calculateSubmodelElementPathes(parent: any, startPath: string): Promise<any> {
             parent.path = startPath;
             parent.id = this.UUID();
-            // get the Concept Descriptions for the SubmodelElement
-            parent.conceptDescriptions = this.getConceptDescriptions(parent)
-            // check for children
-            if (parent.submodelElements && parent.submodelElements.length > 0) { // check for SubmodelElements
-                parent.submodelElements.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '/submodel-elements/' + element.idShort);
-                });
-            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementCollection') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
-                parent.value.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
-                });
-            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementList') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
-                parent.value.forEach((element: any, index: number) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + encodeURIComponent('[') + index + encodeURIComponent(']'));
-                });
-            } else if (parent.statements && Array.isArray(parent.statements) && parent.statements.length > 0 && parent.modelType == 'Entity') { // check for Statements (Entities)
-                parent.value.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
-                });
+            parent.conceptDescriptions = await this.getConceptDescriptions(parent);
+
+            if (parent.submodelElements && parent.submodelElements.length > 0) {
+                for (const element of parent.submodelElements) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '/submodel-elements/' + element.idShort);
+                }
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementCollection') {
+                for (const element of parent.value) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                }
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementList') {
+                for (const [index, element] of parent.value.entries()) {
+                    await this.calculateSubmodelElementPathes(element, startPath + encodeURIComponent('[') + index + encodeURIComponent(']'));
+                }
+            } else if (parent.statements && Array.isArray(parent.statements) && parent.statements.length > 0 && parent.modelType == 'Entity') {
+                for (const element of parent.value) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                }
             }
+
             return parent;
         },
 
