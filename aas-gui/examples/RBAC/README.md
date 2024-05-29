@@ -1,0 +1,1 @@
+http://localhost:9095/realms/BaSyx/account/

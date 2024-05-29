@@ -15,6 +15,7 @@ import App from './App.vue'
 import { createAppRouter } from './router';
 import { useNavigationStore } from './store/NavigationStore';
 import { useEnvStore } from './store/EnvironmentStore';
+import { useAuthStore } from './store/AuthStore';
 
 import VueApexCharts from "vue3-apexcharts";
 
@@ -25,13 +26,24 @@ import { createPinia } from 'pinia'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import Keycloak from 'keycloak-js';
+import { KeycloakOnLoad } from 'keycloak-js';
+ 
+let initOptions = {
+    url: 'http://keycloak:9095',
+    realm: 'BaSyx',
+    clientId: 'basyx-client-api',
+    onLoad: 'login-required' as KeycloakOnLoad
+};
+
+let keycloak = new Keycloak(initOptions);
 
 const app = createApp(App)
 
 const pinia = createPinia()
 
 async function loadUserPlugins() {
-
+    console.info("Authenticated");   
     const router = await createAppRouter();
 
     app.use(router);
@@ -59,8 +71,32 @@ async function loadUserPlugins() {
 
     const navigationStore = useNavigationStore();  // Get the store instance
     navigationStore.dispatchPlugins(plugins);  // Update the plugins state
-
     app.mount('#app');
 }
 
-loadUserPlugins()
+keycloak.init({onLoad: initOptions.onLoad}).then(async (auth)=>{
+    if (!auth) {
+        window.location.reload();
+    } else {
+        loadUserPlugins().then(() => {
+            const authStore = useAuthStore();
+            authStore.setToken(keycloak.token);
+            authStore.setRefreshToken(keycloak.refreshToken);
+            setInterval(() => {
+                keycloak.updateToken(70).then((refreshed) => {
+                if (refreshed) { 
+                    console.log('Token refreshed');
+                    authStore.setToken(keycloak.token);
+                    authStore.setRefreshToken(keycloak.refreshToken);
+                } else {
+                    const exp = keycloak?.tokenParsed?.exp as number;
+                    const timeScew = keycloak?.timeSkew as number;
+                    console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
+                }
+                }).catch(() => {
+                console.log('Failed to refresh token');
+                });
+            }, 60000);
+        });
+    }
+});

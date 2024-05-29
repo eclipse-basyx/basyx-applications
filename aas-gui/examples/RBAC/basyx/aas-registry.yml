@@ -35,7 +35,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9095/realms/BaSyx
+          issuer-uri: http://keycloak:9095/realms/BaSyx
   profiles:
     active: logEvents,inMemoryStorage
 

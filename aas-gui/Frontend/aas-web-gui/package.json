@@ -15,6 +15,7 @@
     "@types/lodash": "^4.17.0",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "apexcharts": "^3.49.1",
+    "keycloak-js": "^24.0.4",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",

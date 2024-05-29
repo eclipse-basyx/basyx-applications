@@ -1,19 +1,25 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
+import { useAuthStore } from '@/store/AuthStore';
 
 export default defineComponent({
     name: 'RequestHandling',
     data() {
         return {
             navigationStore: useNavigationStore(), // NavigationStore Object
+            authStore: useAuthStore(), // AuthStore Object
         }
     },
 
     methods: {
-
+        addAuthorizationHeader(headers: Record<string, string>): Record<string, string> {
+            headers['Authorization'] = 'Bearer ' + this.authStore.getToken;  // Add the Authorization header
+            return headers;
+        },
         // Function to send get Request which returns a Promise
         getRequest(path: string, context: string, disableMessage: boolean, headers: Record<string, string> = {}): any {
-            return fetch(path, { method: 'GET', headers: headers })
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
+            return fetch(path, { method: 'GET', headers: headers }) 
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
@@ -60,6 +66,8 @@ export default defineComponent({
 
         // Function to send post Request which returns a Promise
         postRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
+            console.log(headers);
             return fetch(path, { method: 'POST', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -100,6 +108,7 @@ export default defineComponent({
 
         // Function to send put Request which returns a Promise
         putRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
             return fetch(path, { method: 'PUT', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -138,6 +147,7 @@ export default defineComponent({
 
         // Function to send patch Request which returns a Promise
         patchRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
             return fetch(path, { method: 'PATCH', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -176,7 +186,7 @@ export default defineComponent({
 
         // Function to send delete Request which returns a Promise
         deleteRequest(path: string, context: string, disableMessage: boolean): any {
-            return fetch(path, { method: 'DELETE' })
+            return fetch(path, { method: 'DELETE', headers: this.addAuthorizationHeader({}) })
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {

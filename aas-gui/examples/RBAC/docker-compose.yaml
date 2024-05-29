@@ -14,6 +14,8 @@ services:
         condition: service_healthy
       sm-registry:
         condition: service_healthy
+    networks:
+        - basyx-java-server-sdk
   aas-registry:
     image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
     container_name: aas-registry
@@ -23,6 +25,8 @@ services:
       - ./basyx/aas-registry.yml:/workspace/config/application.yml
       - ./basyx/rules/aas_registry_rbac_rules.json:/workspace/config/rbac_rules.json
     restart: always
+    networks:
+        - basyx-java-server-sdk
   sm-registry:
     image: eclipsebasyx/submodel-registry-log-mem:2.0.0-SNAPSHOT
     container_name: sm-registry
@@ -32,6 +36,8 @@ services:
       - ./basyx/sm-registry.yml:/workspace/config/application.yml
       - ./basyx/rules/sm_registry_rbac_rules.json:/workspace/config/rbac_rules.json
     restart: always
+    networks:
+        - basyx-java-server-sdk
   aas-discovery:
     image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
     container_name: aas-discovery
@@ -41,6 +47,8 @@ services:
     ports:
       - '8084:8081'
     restart: always
+    networks:
+        - basyx-java-server-sdk
   aas-web-ui:
     image: eclipsebasyx/aas-gui:v2-240515
     container_name: aas-ui
@@ -57,12 +65,22 @@ services:
     depends_on:
       aas-env:
         condition: service_healthy
+    networks:
+        - basyx-java-server-sdk
   keycloak:
       container_name: keycloak
       build:
         context: ./keycloak
       ports:
-        - 9095:8080
+        - 9095:9095
       environment:
         - KEYCLOAK_ADMIN=admin
         - KEYCLOAK_ADMIN_PASSWORD=admin
+        - KC_HTTP_PORT=9095
+        
+      networks:
+        - basyx-java-server-sdk
+networks:
+  basyx-java-server-sdk:
+    name: basyx-java-server-sdk
+    driver: bridge
