@@ -473,22 +473,22 @@ export default defineComponent({
             return path;
         },
 
-        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)
+        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)  
         unitSuffix(prop: any) {
-            // Notice: if the concept descriptions array is very long, this function could be optimized
-            let unit = '';
-            if (prop.conceptDescriptions) {
-                prop.conceptDescriptions.forEach((conceptDescription: any) => {
-                    if (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0) {
-                        conceptDescription.embeddedDataSpecifications.forEach((embeddedDataSpecification: any) => {
-                            if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
-                                unit = embeddedDataSpecification.dataSpecificationContent.unit;
-                            }
-                        });
-                    }
-                });
+            if (!prop.conceptDescriptions) {
+                return '';
             }
-            return unit;
+            for (const conceptDescription of prop.conceptDescriptions) {
+                if (!conceptDescription.embeddedDataSpecifications) {
+                    continue;
+                }
+                for (const embeddedDataSpecification of conceptDescription.embeddedDataSpecifications) {
+                    if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
+                        return embeddedDataSpecification.dataSpecificationContent.unit;
+                    }
+                }
+            }
+            return '';
         },
     },
 })

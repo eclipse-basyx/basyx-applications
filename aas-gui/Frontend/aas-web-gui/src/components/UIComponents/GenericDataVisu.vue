@@ -38,9 +38,6 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-// import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
-import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
-
 import SubmodelElementList from '../SubmodelElements/SubmodelElementList.vue';
 import Property from '../SubmodelElements/Property.vue';
 import MultyLanguageProperty from '../SubmodelElements/MultiLanguageProperty.vue';
@@ -64,9 +61,6 @@ export default defineComponent({
         DescriptionElement,
 
         // SubmodelElements
-        // SubmodelElementWrapper,
-        CollectionWrapper,
-
         SubmodelElementList,
         Property,
         MultyLanguageProperty,

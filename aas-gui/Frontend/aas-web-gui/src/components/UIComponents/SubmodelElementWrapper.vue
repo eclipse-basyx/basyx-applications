@@ -2,8 +2,6 @@
     <v-container fluid class="pa-0">
         <v-card :variant="cardStyle ? cardStyle : 'elevated'">
             <v-list nav class="pt-0">
-                <!-- <DescriptionElement             v-if="SubmodelElementObject.conceptDescription.embeddedDataSpecifications && SubmodelElementObject.conceptDescription.embeddedDataSpecifications.length > 0 && SubmodelElementObject.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.definition" :descriptionObject="SubmodelElementObject.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.definition" :descriptionTitle="'Definition'" :small="true"></DescriptionElement> -->
-                <!-- <v-divider                      v-if="SubmodelElementObject.conceptDescription.embeddedDataSpecifications && SubmodelElementObject.conceptDescription.embeddedDataSpecifications.length > 0 && SubmodelElementObject.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.definition" class="mt-2"></v-divider> -->
                 <MultiLanguageProperty          v-if="SubmodelElementObject.modelType == 'MultiLanguageProperty'"           :multiLanguagePropertyObject="SubmodelElementObject"></MultiLanguageProperty>
                 <Property                       v-if="SubmodelElementObject.modelType == 'Property'"                        :propertyObject="SubmodelElementObject" @updateValue="updatePropertyValue"></Property>
                 <File                           v-if="SubmodelElementObject.modelType == 'File'"                            :fileObject="SubmodelElementObject"></File>
@@ -21,8 +19,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import DescriptionElement from './DescriptionElement.vue';
-
 import Property                     from '../SubmodelElements/Property.vue';
 import MultiLanguageProperty        from '../SubmodelElements/MultiLanguageProperty.vue';
 import File                         from '../SubmodelElements/File.vue';
@@ -36,9 +32,6 @@ import AnnotatedRelationshipElement from '../SubmodelElements/AnnotatedRelations
 export default defineComponent({
     name: 'SubmodelELementWrapper',
     components: {
-        // UI Components
-        DescriptionElement,
-
         // SubmodelElements
         Property,
         MultiLanguageProperty,
