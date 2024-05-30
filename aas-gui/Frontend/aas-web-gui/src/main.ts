@@ -28,31 +28,25 @@ import { createPinia } from 'pinia'
 import { registerPlugins } from '@/plugins'
 import Keycloak from 'keycloak-js';
 import { KeycloakOnLoad } from 'keycloak-js';
- 
-let initOptions = {
-    url: 'http://keycloak:9095',
-    realm: 'BaSyx',
-    clientId: 'basyx-client-api',
-    onLoad: 'login-required' as KeycloakOnLoad
-};
-
-let keycloak = new Keycloak(initOptions);
 
 const app = createApp(App)
 
 const pinia = createPinia()
 
 async function loadUserPlugins() {
-    console.info("Authenticated");   
     const router = await createAppRouter();
 
     app.use(router);
     app.use(pinia);
-
     app.use(VueApexCharts);
     
     const envStore = useEnvStore();  // Get the store instance
     await envStore.fetchConfig();  // make sure to await fetchConfig
+
+    // create keycloak instance
+    if (envStore.getKeycloakUrl !== "" && envStore.getKeycloakRealm !== "" && envStore.getKeycloakClientId !== "") {
+        initKeycloak(envStore.getKeycloakUrl, envStore.getKeycloakRealm, envStore.getKeycloakClientId);
+    }
 
     await registerPlugins(app)
 
@@ -74,29 +68,49 @@ async function loadUserPlugins() {
     app.mount('#app');
 }
 
-keycloak.init({onLoad: initOptions.onLoad}).then(async (auth)=>{
-    if (!auth) {
-        window.location.reload();
-    } else {
-        loadUserPlugins().then(() => {
+function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloakClientId: string) {
+    let keycloak: Keycloak | null = null;
+
+    let initOptions = {
+        url: keycloakUrl,
+        realm: keycloakRealm,
+        clientId: keycloakClientId,
+        onLoad: 'login-required' as KeycloakOnLoad
+    };
+
+    try {
+        keycloak = new Keycloak(initOptions);
+    } catch (error) {
+        console.error("Failed to initialize Keycloak, running without authentication.", error);
+    }
+
+    keycloak?.init({ onLoad: initOptions.onLoad }).then(async (auth) => {
+        if (!auth) {
+            window.location.reload();
+        } else {
+            console.info("Authenticated");
             const authStore = useAuthStore();
             authStore.setToken(keycloak.token);
             authStore.setRefreshToken(keycloak.refreshToken);
             setInterval(() => {
                 keycloak.updateToken(70).then((refreshed) => {
-                if (refreshed) { 
-                    console.log('Token refreshed');
-                    authStore.setToken(keycloak.token);
-                    authStore.setRefreshToken(keycloak.refreshToken);
-                } else {
-                    const exp = keycloak?.tokenParsed?.exp as number;
-                    const timeScew = keycloak?.timeSkew as number;
-                    console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
-                }
+                    if (refreshed) {
+                        console.log('Token refreshed');
+                        authStore.setToken(keycloak.token);
+                        authStore.setRefreshToken(keycloak.refreshToken);
+                    } else {
+                        const exp = keycloak?.tokenParsed?.exp as number;
+                        const timeScew = keycloak?.timeSkew as number;
+                        console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
+                    }
                 }).catch(() => {
-                console.log('Failed to refresh token');
+                    console.log('Failed to refresh token');
                 });
             }, 60000);
-        });
-    }
-});
+        }
+    }).catch((error) => {
+        console.error("Failed to authenticate with Keycloak, running without authentication.", error);
+    });
+}
+
+loadUserPlugins();
