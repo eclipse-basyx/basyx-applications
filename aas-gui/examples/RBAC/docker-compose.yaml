@@ -1,4 +1,5 @@
 services:
+  # AAS Environment
   aas-env:
     image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
     container_name: aas-env
@@ -16,6 +17,8 @@ services:
         condition: service_healthy
     networks:
         - basyx-java-server-sdk
+  
+  # AAS Registry
   aas-registry:
     image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
     container_name: aas-registry
@@ -27,6 +30,8 @@ services:
     restart: always
     networks:
         - basyx-java-server-sdk
+
+  # Submodel Registry
   sm-registry:
     image: eclipsebasyx/submodel-registry-log-mem:2.0.0-SNAPSHOT
     container_name: sm-registry
@@ -38,6 +43,8 @@ services:
     restart: always
     networks:
         - basyx-java-server-sdk
+
+  # AAS Discovery
   aas-discovery:
     image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
     container_name: aas-discovery
@@ -49,9 +56,13 @@ services:
     restart: always
     networks:
         - basyx-java-server-sdk
+
+  # AAS Web UI
   aas-web-ui:
     image: eclipsebasyx/aas-gui:v2-240515
     container_name: aas-ui
+    extra_hosts:
+      - "keycloak:127.0.0.1"
     ports:
       - '3000:3000'
     environment:
@@ -67,6 +78,8 @@ services:
         condition: service_healthy
     networks:
         - basyx-java-server-sdk
+
+  # Keycloak
   keycloak:
       container_name: keycloak
       build:
@@ -80,6 +93,7 @@ services:
         
       networks:
         - basyx-java-server-sdk
+
 networks:
   basyx-java-server-sdk:
     name: basyx-java-server-sdk
