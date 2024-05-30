@@ -142,7 +142,6 @@ export default defineComponent({
         // UI Components
         IdentificationElement,
         DescriptionElement,
-        // SubmodelElements
         GenericDataVisu,
 
         // Leaflet Map
