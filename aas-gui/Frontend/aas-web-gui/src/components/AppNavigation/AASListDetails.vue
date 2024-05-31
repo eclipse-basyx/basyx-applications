@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="showExtended" class="pa-0" fluid>
+    <v-container class="pa-0" fluid>
         <!-- AAS Details Card (only visible if the Information Button is pressed on an AAS) -->
         <v-expand-transition>
             <div v-if="showDetailsCard" class="transition-fast-in-fast-out" :class="isMobile ? 'v-card--reveal-mobile' : 'v-card--reveal-desktop'" style="z-index: 9000">
@@ -48,7 +48,7 @@ export default defineComponent({
         AssetInformation,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
-    props: ['detailsObject', 'showDetailsCard', 'showExtended'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
+    props: ['detailsObject', 'showDetailsCard'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
 
     setup() {
         const navigationStore = useNavigationStore()
