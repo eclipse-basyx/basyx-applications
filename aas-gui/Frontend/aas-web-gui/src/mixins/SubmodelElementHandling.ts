@@ -394,64 +394,72 @@ export default defineComponent({
             }
         },
 
-        // Get the ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
-        getConceptDescription(SelectedNode: any) {
+        // Get all ConceptDescriptions for the SubmodelElement from the ConceptDescription Repository
+        async getConceptDescriptions(SelectedNode: any) {
             let conceptDescriptionRepoURL = '';
             if (this.conceptDescriptionRepoURL && this.conceptDescriptionRepoURL != '') {
                 conceptDescriptionRepoURL = this.conceptDescriptionRepoURL;
             } else {
-                return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
+                return Promise.resolve([]); // Return an empty object wrapped in a resolved promise
             }
+
             // return if no SemanticID is available
             if (!SelectedNode.semanticId || !SelectedNode.semanticId.keys || SelectedNode.semanticId.keys.length == 0) {
-                return Promise.resolve({});
+                return Promise.resolve([]);
             }
-            let path = conceptDescriptionRepoURL + "/" + this.URLEncode(SelectedNode.semanticId.keys[0].value);
-            let context = 'retrieving ConceptDescription';
-            let disableMessage = true;
 
-            // Return the promise from getRequest
-            return this.getRequest(path, context, disableMessage).then((response: any) => {
-                if (response.success) {
-                    // console.log('ConceptDescription Data: ', response.data);
-                    let conceptDescription = response.data;
-                    conceptDescription.path = path;
-                    return conceptDescription;
-                } else {
-                    return {};
-                }
+            let cdPromises = SelectedNode.semanticId.keys.map((key: any) => {
+
+                let path = conceptDescriptionRepoURL + "/" + this.URLEncode(key.value);
+                let context = 'retrieving ConceptDescriptions';
+                let disableMessage = true;
+
+                return this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) {
+                        // console.log('ConceptDescription Data: ', response.data);
+                        let conceptDescription = response.data;
+                        conceptDescription.path = path;
+                        // Check if ConceptDescription has data to be displayed
+                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0) || (conceptDescription.description && conceptDescription. description.length > 0) || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
+                            return conceptDescription;
+                        }
+                        return {};
+                    } else {
+                        return {};
+                    }
+                });
+
             });
+
+            let conceptDescriptions = await Promise.all(cdPromises);
+            conceptDescriptions = conceptDescriptions.filter((conceptDescription: any) => Object.keys(conceptDescription).length !== 0); // Filter empty Objects
+            return conceptDescriptions;
         },
 
         // calculate the pathes of the SubmodelElements in a provided Submodel/SubmodelElement
-        calculateSubmodelElementPathes(parent: any, startPath: string): any {
-            // console.log('Parent: ', parent, 'StartPath: ', startPath);
+        async calculateSubmodelElementPathes(parent: any, startPath: string): Promise<any> {
             parent.path = startPath;
             parent.id = this.UUID();
-            // get the conceptDescription for the SubmodelElement
-            this.getConceptDescription(parent).then((response: any) => {
-                if (response) {
-                    parent.conceptDescription = response;
+            parent.conceptDescriptions = await this.getConceptDescriptions(parent);
+
+            if (parent.submodelElements && parent.submodelElements.length > 0) {
+                for (const element of parent.submodelElements) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '/submodel-elements/' + element.idShort);
                 }
-            });
-            // check for children
-            if (parent.submodelElements && parent.submodelElements.length > 0) { // check for SubmodelElements
-                parent.submodelElements.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '/submodel-elements/' + element.idShort);
-                });
-            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementCollection') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
-                parent.value.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
-                });
-            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementList') { // check for Values (SubmodelElementCollections or SubmodelElementLists)
-                parent.value.forEach((element: any, index: number) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + encodeURIComponent('[') + index + encodeURIComponent(']'));
-                });
-            } else if (parent.statements && Array.isArray(parent.statements) && parent.statements.length > 0 && parent.modelType == 'Entity') { // check for Statements (Entities)
-                parent.value.forEach((element: any) => {
-                    element = this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
-                });
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementCollection') {
+                for (const element of parent.value) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                }
+            } else if (parent.value && Array.isArray(parent.value) && parent.value.length > 0 && parent.modelType == 'SubmodelElementList') {
+                for (const [index, element] of parent.value.entries()) {
+                    await this.calculateSubmodelElementPathes(element, startPath + encodeURIComponent('[') + index + encodeURIComponent(']'));
+                }
+            } else if (parent.statements && Array.isArray(parent.statements) && parent.statements.length > 0 && parent.modelType == 'Entity') {
+                for (const element of parent.value) {
+                    await this.calculateSubmodelElementPathes(element, startPath + '.' + element.idShort);
+                }
             }
+
             return parent;
         },
 
@@ -463,6 +471,24 @@ export default defineComponent({
                 path = selectedNode.path + '/attachment';
             }
             return path;
-        }
+        },
+
+        // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)  
+        unitSuffix(prop: any) {
+            if (!prop.conceptDescriptions) {
+                return '';
+            }
+            for (const conceptDescription of prop.conceptDescriptions) {
+                if (!conceptDescription.embeddedDataSpecifications) {
+                    continue;
+                }
+                for (const embeddedDataSpecification of conceptDescription.embeddedDataSpecifications) {
+                    if (embeddedDataSpecification.dataSpecificationContent && embeddedDataSpecification.dataSpecificationContent.unit) {
+                        return embeddedDataSpecification.dataSpecificationContent.unit;
+                    }
+                }
+            }
+            return '';
+        },
     },
 })

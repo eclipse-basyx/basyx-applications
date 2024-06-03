@@ -129,8 +129,6 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
-import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
@@ -144,10 +142,6 @@ export default defineComponent({
         // UI Components
         IdentificationElement,
         DescriptionElement,
-
-        // SubmodelElements
-        SubmodelElementWrapper,
-        CollectionWrapper,
         GenericDataVisu,
 
         // Leaflet Map

@@ -78,17 +78,5 @@ export default defineComponent({
             return 0;
         },
     },
-
-    methods: {
-        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
-        unitSuffix(prop: any) {
-            // console.log('prop: ', prop);
-            if (prop.conceptDescription && prop.conceptDescription.embeddedDataSpecifications && prop.conceptDescription.embeddedDataSpecifications.length > 0 && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                return prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit;
-            } else {
-                return '';
-            }
-        },
-    },
 });
 </script>
