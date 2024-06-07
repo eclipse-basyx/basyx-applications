@@ -12,19 +12,22 @@
                     style="min-width: fit-content; padding-left: 20px; font-size: 20px; pointer-events: none;">
                     <div v-if="productCarbonFootprintData">
                         <p style="margin: 40px 0"><span
-                                style="display: inline-block; width: 10px; height: 10px; margin-right: 5px; background-color:#0078AD;"  ></span>Product:<br>
+                                style="display: inline-block; width: 10px; height: 10px; margin-right: 5px;"
+                                class="bg-pcf">
+                            </span>Product:<br>
                             {{ productIsoValue }} CO₂eq
                         </p>
                     </div>
                     <div
                         v-if="transportCarbonFootprintData && Number(transportENValue) !== 0 && transportENValue !== null">
-                        <p><span
-                                style="display: inline-block; width: 10px; height: 10px; margin-right: 5px; background-color: #2D821A;"></span>Transport:<br>
+                        <p><span style="display: inline-block; width: 10px; height: 10px; margin-right: 5px;"
+                                class="bg-tcf">
+                            </span>Transport:<br>
                             {{ transportENValue }} CO₂eq</p>
                     </div>
                 </v-col>
                 <v-col cols="12" md="6">
-                    <svg maxWidth="400px" height="100%"  style="margin-left: -50px" version="1.1"
+                    <svg :fill="fingersColor" maxWidth="400px" height="100%" style="margin-left: -50px" version="1.1"
                         id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 489.978 489.978" xml:space="preserve">
                         <defs>
@@ -116,34 +119,43 @@ export default defineComponent({
             return total ? (tcfValue / total) * 100 : 0;
         },
         pcfValueColor() {
-            return '#0078AD';
+            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
+            return themeColors.pcf; // Return the pcf color or a default color if not found
         },
         tcfValueColor() {
-            return '#2D821A';
+            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
+            return themeColors.tcf; // Return the pcf color or a default color if not found
         },
+        fingersColor() {
+            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
+            return themeColors.fingers; // Return the fingers color or a default color if not found
+        }
     },
     methods: {
-      // Function to initialize the Product Carbon Footprint Plugin
-      initializeProductCarbonFootprint() {
-        // Check if a Node is selected
-        if (Object.keys(this.submodelElementData).length == 0) {
-          this.productCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
-          return;
+        // Function to initialize the Product Carbon Footprint Plugin
+        initializeProductCarbonFootprint() {
+            // Check if a Node is selected
+            if (Object.keys(this.submodelElementData).length == 0) {
+                this.productCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
+                return;
+            }
+            let productCarbonFootprintData = { ...this.submodelElementData }; // create local copy of the productCarbonFootprintData
+            this.productCarbonFootprintData = this.calculateSubmodelElementPathes(productCarbonFootprintData, this.SelectedNode.path); // Set the DigitalNameplate Data
+            this.productIsoValue = this.submodelElementData?.submodelElements?.[0]?.value?.[1]?.value;
+        },
+        intializeTransportCarbonFootprint() {
+            if (Object.keys(this.submodelElementData).length == 0) {
+                this.transportCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
+                return;
+            }
+            let transportCarbonFootprintData = { ...this.submodelElementData };
+            this.transportCarbonFootprintData = this.calculateSubmodelElementPathes(transportCarbonFootprintData, this.SelectedNode.path);
+            this.transportENValue = this.submodelElementData?.submodelElements?.[1]?.value?.[1]?.value;
+            console.log('Transport Carbon Footprint Data:', this.transportCarbonFootprintData);
         }
-        let productCarbonFootprintData = { ...this.submodelElementData }; // create local copy of the productCarbonFootprintData
-        this.productCarbonFootprintData = this.calculateSubmodelElementPathes(productCarbonFootprintData, this.SelectedNode.path); // Set the DigitalNameplate Data
-        this.productIsoValue = this.submodelElementData?.submodelElements?.[0]?.value?.[1]?.value;
-      },
-      intializeTransportCarbonFootprint() {
-        if (Object.keys(this.submodelElementData).length == 0) {
-          this.transportCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
-          return;
-        }
-        let transportCarbonFootprintData = { ...this.submodelElementData };
-        this.transportCarbonFootprintData = this.calculateSubmodelElementPathes(transportCarbonFootprintData, this.SelectedNode.path);
-        this.transportENValue = this.submodelElementData?.submodelElements?.[1]?.value?.[1]?.value;
-        console.log('Transport Carbon Footprint Data:', this.transportCarbonFootprintData);
-      }
     }
 });
 </script>
