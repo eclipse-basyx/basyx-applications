@@ -36,7 +36,7 @@
     "@types/three": "^0.165.0",
     "@types/uuid": "^9.0.8",
     "@types/webfontloader": "^1.6.38",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-vuetify": "^2.0.3",
