@@ -3,27 +3,30 @@
         <!-- Header -->
         <v-card class="mb-4">
             <v-card-title>
-                <div class="text-subtitle-1">{{ "Product Carbon Footprint:" }}</div>
+                <div class="text-subtitle-1">{{ "Carbon Footprint:" }}</div>
             </v-card-title>
         </v-card>
         <v-card class="mb-4 py-8">
             <v-row flex align="center" justify="center">
-                <v-col cols="12" md="2"
-                    style="min-width: fit-content; padding-left: 20px; font-size: 20px; pointer-events: none;">
+                <v-col cols="12" md="2" style="min-width: fit-content; padding-left: 20px; font-size: 20px;">
                     <div v-if="productCarbonFootprintData">
-                        <p style="margin: 40px 0"><span
-                                style="display: inline-block; width: 10px; height: 10px; margin-right: 5px;"
-                                class="bg-pcf">
-                            </span>Product:<br>
-                            {{ productIsoValue }} CO₂eq
+                        <p style="margin: 40px 0">
+                            <span
+                                style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
+                                class="bg-pcf"></span>
+                            <span class="text-subtitle-1 subtitleText">Product:</span>
+                        <div class="text-h6">{{ productIsoValue + ' CO₂eq'}}</div>
                         </p>
                     </div>
                     <div
                         v-if="transportCarbonFootprintData && Number(transportENValue) !== 0 && transportENValue !== null">
-                        <p><span style="display: inline-block; width: 10px; height: 10px; margin-right: 5px;"
-                                class="bg-tcf">
-                            </span>Transport:<br>
-                            {{ transportENValue }} CO₂eq</p>
+                        <p>
+                            <span
+                                style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
+                                class="bg-tcf"></span>
+                            <span class="text-subtitle-1 subtitleText">Transport:</span>
+                        <div class="text-h6">{{ transportENValue + ' CO₂eq'}}</div>
+                        </p>
                     </div>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -64,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue';
+import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
@@ -93,14 +96,14 @@ export default defineComponent({
         return {
             productCarbonFootprintData: {} as any,
             transportCarbonFootprintData: {} as any,
-            productIsoValue: "",
-            transportENValue: "",
+            productIsoValue: '' as string, // Initialize with an empty array
+            transportENValue: '' as string, // Initialize with an empty array
         };
     },
     mounted() {
         console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
         this.initializeProductCarbonFootprint(); // initialize Product Carbon Footprint Plugin
-        this.intializeTransportCarbonFootprint(); // initialize Transport Carbon Footprint Plugin
+        this.initializeTransportCarbonFootprint(); // initialize Transport Carbon Footprint Plugin
     },
     computed: {
         SelectedNode() {
@@ -119,43 +122,72 @@ export default defineComponent({
             return total ? (tcfValue / total) * 100 : 0;
         },
         pcfValueColor() {
-            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const isDark = this.$vuetify.theme.global.current.dark;
             const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
-            return themeColors.pcf; // Return the pcf color or a default color if not found
+            return themeColors.pcf;
         },
         tcfValueColor() {
-            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const isDark = this.$vuetify.theme.global.current.dark;
             const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
-            return themeColors.tcf; // Return the pcf color or a default color if not found
+            return themeColors.tcf;
         },
         fingersColor() {
-            const isDark = this.$vuetify.theme.global.current.dark; // Check if the current theme is dark
+            const isDark = this.$vuetify.theme.global.current.dark;
             const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
-            return themeColors.fingers; // Return the fingers color or a default color if not found
+            return themeColors.fingers;
         }
     },
     methods: {
-        // Function to initialize the Product Carbon Footprint Plugin
-        initializeProductCarbonFootprint() {
-            // Check if a Node is selected
-            if (Object.keys(this.submodelElementData).length == 0) {
-                this.productCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
-                return;
-            }
-            let productCarbonFootprintData = { ...this.submodelElementData }; // create local copy of the productCarbonFootprintData
-            this.productCarbonFootprintData = this.calculateSubmodelElementPathes(productCarbonFootprintData, this.SelectedNode.path); // Set the DigitalNameplate Data
-            this.productIsoValue = this.submodelElementData?.submodelElements?.[0]?.value?.[1]?.value;
-        },
-        intializeTransportCarbonFootprint() {
-            if (Object.keys(this.submodelElementData).length == 0) {
-                this.transportCarbonFootprintData = {}; // Reset the productCarbonFootprint Data when no Node is selected
-                return;
-            }
+    // Function to initialize the Product Carbon Footprint Plugin
+    initializeProductCarbonFootprint() {
+        this.productCarbonFootprintData = {};
+        this.productIsoValue = "";
+        // Check if a Node is selected
+        if (Object.keys(this.submodelElementData).length === 0) {
+            return;
+        }
+        try {
+            let productCarbonFootprintData = { ...this.submodelElementData };
+            // Find all PCF entries and aggregate CO2eq values
+            const pcfEntries: Array<any> = productCarbonFootprintData.submodelElements.filter((elem: any) => elem.idShort.startsWith('ProductCarbonFootprint'));
+            const totalPcfValue = pcfEntries.reduce((accumulator, entry) => {
+                const co2eqValue = parseFloat(entry.value?.[1]?.value) || 0;
+                return accumulator + co2eqValue;
+            }, 0);
+            
+            this.productCarbonFootprintData = pcfEntries; // Set the PCF entries for display or further processing
+            this.productIsoValue = totalPcfValue.toFixed(2);
+        } catch (error) {
+            console.error('Error initializing Product Carbon Footprint:', error);
+        }
+    },
+
+    // Function to initialize the Transport Carbon Footprint Plugin
+    initializeTransportCarbonFootprint() {
+        // Reset data
+        this.transportCarbonFootprintData = {};
+        this.transportENValue = "";
+
+        // Check if a Node is selected
+        if (Object.keys(this.submodelElementData).length === 0) {
+            return;
+        }
+
+        try {
             let transportCarbonFootprintData = { ...this.submodelElementData };
-            this.transportCarbonFootprintData = this.calculateSubmodelElementPathes(transportCarbonFootprintData, this.SelectedNode.path);
-            this.transportENValue = this.submodelElementData?.submodelElements?.[1]?.value?.[1]?.value;
-            console.log('Transport Carbon Footprint Data:', this.transportCarbonFootprintData);
+            // Find all TCF entries and aggregate CO2eq values
+            const tcfEntries: Array<any> = transportCarbonFootprintData.submodelElements.filter((elem: any) => elem.idShort === 'TransportCarbonFootprint');
+            const totalTcfValue = tcfEntries.reduce((accumulator, entry) => {
+                const co2eqValue = parseFloat(entry.value?.[1]?.value) || 0;
+                return accumulator + co2eqValue;
+            }, 0);
+            
+            this.transportCarbonFootprintData = tcfEntries; // Set the TCF entries for display or further processing
+            this.transportENValue = totalTcfValue.toFixed(2);
+        } catch (error) {
+            console.error('Error initializing Transport Carbon Footprint:', error);
         }
     }
+}
 });
 </script>
