@@ -106,7 +106,7 @@ export default defineComponent({
         };
     },
     mounted() {
-        console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
+        // console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
         this.initializeProductCarbonFootprint(); // initialize Product Carbon Footprint Plugin
         this.initializeTransportCarbonFootprint(); // initialize Transport Carbon Footprint Plugin
     },
