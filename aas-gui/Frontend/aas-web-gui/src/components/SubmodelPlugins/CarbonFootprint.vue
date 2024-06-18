@@ -6,7 +6,7 @@
                 <div class="text-subtitle-1">{{ "Carbon Footprint:" }}</div>
             </v-card-title>
         </v-card>
-        <!-- Product -->
+        <!-- Product and Transport CarbonFootprint -->
         <v-card class="mb-4 py-8">
             <v-row flex align="center" justify="center">
                 <v-col cols="12" md="2" style="min-width: fit-content; padding-left: 20px; font-size: 20px;">
@@ -80,7 +80,7 @@ const TRANSPORT_CARBON_FOOTPRINT = 'TransportCarbonFootprint';
 const CO2_EQ = 'CO2eq';
 
 export default defineComponent({
-    name: 'ProductCarbonFootprint',
+    name: 'CarbonFootprint',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
     },
