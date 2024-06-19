@@ -410,7 +410,7 @@ export default defineComponent({
                 if (!this.aasRegistryURL.includes('/shell-descriptors')) {
                     this.aasRegistryURL += '/shell-descriptors';
                 }
-                let path = this.aasRegistryURL + this.URLEncode(AAS.id);
+                let path = this.aasRegistryURL + '/' + this.URLEncode(AAS.id);
                 let context = 'removing AAS from AAS Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {
