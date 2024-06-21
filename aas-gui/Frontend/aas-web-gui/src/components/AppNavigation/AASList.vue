@@ -394,7 +394,8 @@ export default defineComponent({
                     path += '/serialization?aasIds=' + aasIds + '&submodelIds=' + submodelIds.join('&submodelIds=') + '&includeConceptDescriptions=true';
                     let context = 'retrieving AAS serialization';
                     let disableMessage = false;
-                    let headers = { 'Accept': 'application/asset-administration-shell-package+xml'}
+                    let headers = new Headers();
+                    headers.append('Accept', 'application/asset-administration-shell-package+xml');
                     this.getRequest(path, context, disableMessage, headers).then(async (response: any) => {
                         if (response.success) { // execute if the Request was successful
                             let aasSerialization = response.data;

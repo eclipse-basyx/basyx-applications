@@ -166,8 +166,9 @@ export default defineComponent({
             // console.log("Update Value: ", this.multiLanguagePropertyObject);
             let path = this.multiLanguagePropertyObject.path;
             let content = JSON.stringify(this.multiLanguagePropertyObject);
-            let headers = { 'Content-Type': 'application/json' };
-                let context = 'updating ' + this.multiLanguagePropertyObject.modelType + ' "' + this.multiLanguagePropertyObject.idShort + '"';
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            let context = 'updating ' + this.multiLanguagePropertyObject.modelType + ' "' + this.multiLanguagePropertyObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
             this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
@@ -178,7 +179,7 @@ export default defineComponent({
                     // this.$emit('updateValue', updatedPropertyObject); // emit event to update the value in the parent component
                 }
             });
-    },
+        },
 
         // Function to set the focus on the input field
         setFocus(e: boolean, value: any) {

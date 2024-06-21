@@ -16,6 +16,7 @@ import { createAppRouter } from './router';
 import { useNavigationStore } from './store/NavigationStore';
 import { useEnvStore } from './store/EnvironmentStore';
 import { useAuthStore } from './store/AuthStore';
+import { reactive } from 'vue';
 
 import VueApexCharts from "vue3-apexcharts";
 
@@ -45,7 +46,12 @@ async function loadUserPlugins() {
 
     // create keycloak instance
     if (envStore.getKeycloakUrl !== "" && envStore.getKeycloakRealm !== "" && envStore.getKeycloakClientId !== "") {
-        initKeycloak(envStore.getKeycloakUrl, envStore.getKeycloakRealm, envStore.getKeycloakClientId);
+        try {
+            await initKeycloak(envStore.getKeycloakUrl, envStore.getKeycloakRealm, envStore.getKeycloakClientId);
+        } catch(error) {
+            alert("Could not connect to Keycloak.")
+            return;
+        }
     }
 
     await registerPlugins(app)
@@ -68,48 +74,65 @@ async function loadUserPlugins() {
     app.mount('#app');
 }
 
-function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloakClientId: string) {
-    let keycloak: Keycloak | null = null;
+async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloakClientId: string) {
+    return new Promise<void>((resolve, reject) => {
+        let keycloak: Keycloak | null = null;
 
-    let initOptions = {
-        url: keycloakUrl,
-        realm: keycloakRealm,
-        clientId: keycloakClientId,
-        onLoad: 'login-required' as KeycloakOnLoad
-    };
+        
+        let initOptions = {
+            url: keycloakUrl,
+            realm: keycloakRealm,
+            clientId: keycloakClientId,
+            onLoad: 'login-required' as KeycloakOnLoad
+        };
 
-    try {
-        keycloak = new Keycloak(initOptions);
-    } catch (error) {
-        console.error("Failed to initialize Keycloak, running without authentication.", error);
-    }
-
-    keycloak?.init({ onLoad: initOptions.onLoad }).then(async (auth) => {
-        if (!auth) {
-            window.location.reload();
-        } else {
-            console.info("Authenticated");
+        try {
+            keycloak = new Keycloak(initOptions);
+            // set the keycloak instance in the auth store
             const authStore = useAuthStore();
-            authStore.setToken(keycloak.token);
-            authStore.setRefreshToken(keycloak.refreshToken);
-            setInterval(() => {
-                keycloak.updateToken(70).then((refreshed) => {
-                    if (refreshed) {
-                        console.log('Token refreshed');
-                        authStore.setToken(keycloak.token);
-                        authStore.setRefreshToken(keycloak.refreshToken);
-                    } else {
-                        const exp = keycloak?.tokenParsed?.exp as number;
-                        const timeScew = keycloak?.timeSkew as number;
-                        console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
-                    }
-                }).catch(() => {
-                    console.log('Failed to refresh token');
-                });
-            }, 60000);
+            authStore.setKeycloak(keycloak);
+            authStore.setAuthStatus(false);
+            authStore.setAuthEnabled(true);
+        } catch (error) {
+            console.error("Failed to initialize Keycloak, running without authentication.", error);
+            const authStore = useAuthStore();
+            authStore.setAuthEnabled(false);
         }
-    }).catch((error) => {
-        console.error("Failed to authenticate with Keycloak, running without authentication.", error);
+
+        keycloak?.init({ onLoad: initOptions.onLoad }).then(async (auth) => {
+            if (!auth) {
+                window.location.reload();
+            } else {
+                console.info("Authenticated");
+                resolve();
+                const authStore = useAuthStore();
+                authStore.setToken(keycloak.token);
+                authStore.setRefreshToken(keycloak.refreshToken);
+                authStore.setAuthStatus(true);
+                setInterval(() => {
+                    keycloak.updateToken(70).then((refreshed) => {
+                        if (refreshed) {
+                            console.log('Token refreshed');
+                            authStore.setToken(keycloak.token);
+                            authStore.setRefreshToken(keycloak.refreshToken);
+                        } else {
+                            const exp = keycloak?.tokenParsed?.exp as number;
+                            const timeScew = keycloak?.timeSkew as number;
+                            console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
+                        }
+                        authStore.setAuthStatus(true);
+                    }).catch(() => {
+                        console.log('Failed to refresh token');
+                        authStore.setAuthStatus(false)
+                    });
+                }, 60000);
+            }
+        }).catch((error) => {
+            console.error("Failed to authenticate with Keycloak", error);
+            const authStore = useAuthStore();
+            authStore.setAuthStatus(false);
+            reject();
+        });
     });
 }
 

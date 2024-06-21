@@ -120,7 +120,8 @@ export default defineComponent({
                     }
                     let path = this.aasRegistryURL;
                     let content = JSON.stringify(registrationContent);
-                    let headers = { 'Content-Type': 'application/json' };
+                    let headers = new Headers();
+                    headers.append('Content-Type', 'application/json');
                     let context = 'registering AAS';
                     let disableMessage = false;
                     this.postRequest(path, content, headers, context, disableMessage).then((response: any) => {

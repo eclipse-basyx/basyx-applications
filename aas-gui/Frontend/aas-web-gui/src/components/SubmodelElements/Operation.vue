@@ -173,7 +173,9 @@ export default defineComponent({
                 clientTimeoutDuration:  "PT60S", // 60 second timeout
             };
             let body = JSON.stringify(content);
-            let headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('accept', 'application/json');
+            headers.append('Content-Type', 'application/json');
             let context = 'invoking ' + this.localOperationObject.modelType + ' "' + this.localOperationObject.idShort + '"';
             let disableMessage = false;
             this.loading = true;
