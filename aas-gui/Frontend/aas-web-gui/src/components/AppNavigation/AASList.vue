@@ -344,9 +344,6 @@ export default defineComponent({
             this.aasStore.dispatchSelectedAAS(AAS);
             // trigger the AAS Selected Event
             this.navigationStore.dispatchTriggerAASSelected();
-            // update data of detailsCard
-            // if (this.showDetailsCard)
-                // this.detailsObject = AAS;
         },
 
         // Function to download the AAS
@@ -389,8 +386,10 @@ export default defineComponent({
                 return false;
             }
             let isSelected = this.selectedAAS['endpoints'][0]['protocolInformation']['href'] === AAS['endpoints'][0]['protocolInformation']['href'];
-            if (isSelected && this.showDetailsCard)
+            if (isSelected && this.showDetailsCard) {
+                // update data of detailsCard
                 this.detailsObject = AAS;
+            }
             return isSelected;
         },
 
