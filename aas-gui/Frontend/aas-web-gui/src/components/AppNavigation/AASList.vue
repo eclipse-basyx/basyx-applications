@@ -344,6 +344,9 @@ export default defineComponent({
             this.aasStore.dispatchSelectedAAS(AAS);
             // trigger the AAS Selected Event
             this.navigationStore.dispatchTriggerAASSelected();
+            // update data of detailsCard
+            if (this.showDetailsCard)
+                this.detailsObject = AAS;
         },
 
         // Function to download the AAS
