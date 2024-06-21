@@ -135,9 +135,7 @@ export default defineComponent({
             let content = JSON.stringify(updateObject);
             let context = 'updating ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
-            // Create a new Headers object
             const headers = new Headers();
-            // Set the Content-Type header
             headers.append('Content-Type', 'application/json');
             
             // Send Request to update the path of the file element

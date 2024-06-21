@@ -67,7 +67,7 @@ export default defineComponent({
         // Function to send post Request which returns a Promise
         postRequest(path: string, body: any, headers: Headers, context: string, disableMessage: boolean): any {
             headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
-            return fetch(path, { method: 'POST', body: body, headers: {Authorization:'Bearer '+this.authStore.getToken} })
+            return fetch(path, { method: 'POST', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
