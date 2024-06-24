@@ -10,23 +10,22 @@
         <v-card class="mb-4 py-8">
             <v-row flex align="center" justify="center">
                 <v-col cols="12" md="2" style="min-width: fit-content; padding-left: 20px; font-size: 20px;">
-                    <div v-if="productCarbonFootprintData">
+                    <div v-if="PCFCO2eq">
                         <p style="margin: 40px 0">
                             <span
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-pcf"></span>
                             <span class="text-subtitle-1 subtitleText">Product:</span>
-                        <div class="text-h6">{{ productIsoValue + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ PCFCO2eq + ' CO₂eq' }}</div>
                         </p>
                     </div>
-                    <div
-                        v-if="transportCarbonFootprintData && Number(transportEnValue) !== 0 && transportEnValue !== null">
+                    <div v-if="Number(TCFCO2eq) !== 0 && TCFCO2eq !== null">
                         <p>
                             <span
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-tcf"></span>
                             <span class="text-subtitle-1 subtitleText">Transport:</span>
-                        <div class="text-h6">{{ transportEnValue + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ TCFCO2eq + ' CO₂eq' }}</div>
                         </p>
                     </div>
                 </v-col>
@@ -95,10 +94,8 @@ export default defineComponent({
     },
     data() {
         return {
-            productCarbonFootprintData: [] as any[],
-            transportCarbonFootprintData: [] as any[],
-            productIsoValue: '' as string,
-            transportEnValue: '' as string,
+            PCFCO2eq: '' as string,
+            TCFCO2eq: '' as string,
         };
     },
     mounted() {
@@ -110,7 +107,7 @@ export default defineComponent({
             return this.aasStore.getSelectedNode;
         },
         colorPercentage() {
-            return this.calculatePercentage(this.productIsoValue, this.transportEnValue);
+            return this.calculatePercentage(this.PCFCO2eq, this.TCFCO2eq);
         },
         pcfValueColor() {
             return this.getThemeColor('pcf');
@@ -123,9 +120,9 @@ export default defineComponent({
         }
     },
     methods: {
-        calculatePercentage(productIsoValue: string, transportEnValue: string): number {
-            const productValue = parseFloat(productIsoValue) || 0;
-            const transportValue = parseFloat(transportEnValue) || 0;
+        calculatePercentage(PCFCO2eq: string, TCFCO2eq: string): number {
+            const productValue = parseFloat(PCFCO2eq) || 0;
+            const transportValue = parseFloat(TCFCO2eq) || 0;
             const total = productValue + transportValue;
             return total ? (productValue / total) * 100 : 0;
         },
@@ -134,10 +131,8 @@ export default defineComponent({
             const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
             return themeColors[colorKey];
         },
-        initializeCarbonFootprint(semanticId: string, dataKey: 'productCarbonFootprintData' | 'transportCarbonFootprintData', valueKey: 'productIsoValue' | 'transportEnValue') {
+        initializeCarbonFootprint(semanticId: string, value: 'PCFCO2eq' | 'TCFCO2eq',) {
             // console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
-            this[dataKey] = [];
-            this[valueKey] = "";
             if (Object.keys(this.submodelElementData).length === 0) {
                 return;
             }
@@ -156,17 +151,16 @@ export default defineComponent({
                     const co2eqValue = parseFloat(entry.value?.find((val: any) => val?.idShort?.includes('CO2eq'))?.value) || 0;
                     return accumulator + co2eqValue;
                 }, 0);
-                this[dataKey] = entries;
-                this[valueKey] = totalValue.toString();
+                this[value] = totalValue.toString();
             } catch (error) {
                 console.error(`Error initializing ${semanticId}:`, error);
             }
         },
         initializeProductCarbonFootprint() {
-            this.initializeCarbonFootprint('https://adminshell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9', 'productCarbonFootprintData', 'productIsoValue');
+            this.initializeCarbonFootprint('https://adminshell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9', 'PCFCO2eq');
         },
         initializeTransportCarbonFootprint() {
-            this.initializeCarbonFootprint('[IRDI] https://adminshell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9', 'transportCarbonFootprintData', 'transportEnValue');
+            this.initializeCarbonFootprint('[IRDI] https://adminshell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9', 'TCFCO2eq');
         }
     },
 });
