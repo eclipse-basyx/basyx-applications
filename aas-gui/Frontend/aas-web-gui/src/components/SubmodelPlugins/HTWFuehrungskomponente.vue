@@ -628,7 +628,8 @@ export default defineComponent({
             });
             let path = this.selectedNode.pathFull + '/' + propName + '/value';
             let content = "'" + mode + "'";
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating Property "Prop_UnitMode"';
             let disableMessage = false;
             // Send Request to update the value of the property
@@ -649,7 +650,8 @@ export default defineComponent({
             });
             let path = this.selectedNode.pathFull + '/' + propName + '/value';
             let content = "'" + state + "'";
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating Property "' + propName + '"';
             let disableMessage = false;
             // Send Request to update the value of the property

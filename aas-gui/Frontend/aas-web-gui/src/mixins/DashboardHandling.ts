@@ -75,7 +75,9 @@ export default defineComponent({
             // console.log('Add Element to Dasboard: ', dashboardObj);
             // construct the request
             let path = this.dashboardServicePath + '/addElement';
-            let headers = { 'Content-Type': 'application/json', 'accept': '*/*' };
+            let headers: Headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('accept', '*/*');
             let content = JSON.stringify(dashboardObj);
             let context = 'adding element to dashboard';
             let disableMessage = false;
@@ -142,7 +144,9 @@ export default defineComponent({
         async updateElement(element: any): Promise<any | undefined> {
             // console.log(element)
             let path = this.dashboardServicePath + '/updateElement/' + element.id;
-            let headers = { 'Content-Type': 'application/json', 'accept': '*/*' };
+            let headers: Headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('accept', '*/*');
             let content = JSON.stringify(element);
             let context = 'adding element to dashboard';
             let disableMessage = false;

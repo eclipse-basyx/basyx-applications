@@ -14,6 +14,9 @@ export const useEnvStore = defineStore({
         dashboardServicePath: "",
         primaryColor: "",
         influxdbToken: "",
+        keycloakUrl: "",
+        keycloakRealm: "",
+        keycloakClientId: "",
     }),
     getters: {
         getEnvLogoPath: (state) => state.logoPath,
@@ -27,6 +30,9 @@ export const useEnvStore = defineStore({
         getEnvDashboardServicePath: (state) => state.dashboardServicePath,
         getEnvPrimaryColor: (state) => state.primaryColor,
         getEnvInfluxdbToken: (state) => state.influxdbToken,
+        getKeycloakUrl: (state) => state.keycloakUrl,
+        getKeycloakRealm: (state) => state.keycloakRealm,
+        getKeycloakClientId: (state) => state.keycloakClientId,
     },
     actions: {
         async fetchConfig() {
@@ -44,6 +50,9 @@ export const useEnvStore = defineStore({
                 this.dashboardServicePath = config.dashboardServicePath;
                 this.primaryColor = config.primaryColor;
                 this.influxdbToken = config.influxdbToken;
+                this.keycloakUrl = config.keycloakUrl;
+                this.keycloakRealm = config.keycloakRealm;
+                this.keycloakClientId = config.keycloakClientId;
             } catch (error) {
                 console.error('Error fetching config.json: ', error);
             }

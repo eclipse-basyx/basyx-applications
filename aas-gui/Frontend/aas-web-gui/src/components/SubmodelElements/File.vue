@@ -133,9 +133,11 @@ export default defineComponent({
             let updateObject = { 'value': this.newPathValue, 'contentType': this.fileObject.contentType }
             let path = this.fileObject.path + '/$value';
             let content = JSON.stringify(updateObject);
-            let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.fileObject.modelType + ' "' + this.fileObject.idShort + '"';
             let disableMessage = false;
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            
             // Send Request to update the path of the file element
             this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {

@@ -54,6 +54,20 @@
                 </v-dialog>
                 <!-- Settings Menu -->
                 <Settings v-if="!isMobile"></Settings>
+                <!-- Auth Status -->
+                <v-tooltip text="Authorization Status" location="bottom" :open-delay="600">
+                    <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props" class="mr-3">{{ isAuthEnabled ? (authStatus ? 'mdi-lock-check' : 'mdi-lock-remove') : 'mdi-lock-off' }}</v-icon>
+                    </template>
+                    <span>{{ isAuthEnabled ? (authStatus ? 'Authenticated' : 'Not Authenticated') : 'Authentication disabled' }}</span>
+                </v-tooltip>
+                <!-- Logout Button -->
+                <v-tooltip v-if="isAuthEnabled && authStatus" text="Authorization Status" location="bottom" :open-delay="600">
+                    <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props" @click="logout">mdi-logout</v-icon>
+                    </template>
+                    <span>Logout</span>
+                </v-tooltip>
             </v-row>
         </v-app-bar>
 
@@ -134,6 +148,7 @@ import { mergeProps } from 'vue'
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
+import { useAuthStore } from '@/store/AuthStore';
 import RequestHandling from '../../mixins/RequestHandling';
 import AASList  from './AASList.vue';
 import AutoSync from './AutoSync.vue';
@@ -158,11 +173,13 @@ export default defineComponent({
         const theme = useTheme()
         const navigationStore = useNavigationStore()
         const envStore = useEnvStore()
+        const authStore = useAuthStore()
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             envStore, // EnvironmentStore Object
+            authStore, // AuthorizationStore Object
         }
     },
     
@@ -383,6 +400,17 @@ export default defineComponent({
             }
             return showAutoSync;
         },
+
+        // get the keycloak authStatus from the store
+        authStatus() {
+            return this.authStore.getAuthStatus ? 'Authenticated' : 'Not Authenticated';
+        },
+
+        // Determine if Authorization is enabled
+        isAuthEnabled() {
+            return this.authStore.getAuthEnabled;
+        },
+
     },
 
     methods: {
@@ -533,6 +561,9 @@ export default defineComponent({
                 }
             });
         },
+        logout(){
+            this.authStore.getKeycloak?.logout();
+        }
     },
 });
 </script>

@@ -120,7 +120,8 @@ export default defineComponent({
             // console.log("Update Blob: " + this.newBlobValue);
             let path = this.SelectedAAS.endpoints[0].protocolInformation.href + '/' + this.SelectedNode.path + '/value';
             let content = "'" + this.newBlobValue + "'";
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the content of the Blob element
@@ -160,7 +161,8 @@ export default defineComponent({
                 let content = JSON.stringify(contentJSON);
                 // console.log("Content: ", content);
                 let path = this.blobObject.path + '/$value';
-                let headers = { 'Content-Type': 'application/json' };
+                let headers = new Headers();
+                headers.append('Content-Type', 'application/json');
                 let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
                 let disableMessage = false;
                 // Send Request to update the content of the Blob element

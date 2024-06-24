@@ -9,5 +9,8 @@
     "cdRepoPath": "",
     "dashboardServicePath": "",
     "primaryColor": "#0cb2f0",
-    "influxdbToken": ""
+    "influxdbToken": "",
+    "keycloakUrl": "",
+    "keycloakRealm": "",
+    "keycloakClientId": ""
 }
