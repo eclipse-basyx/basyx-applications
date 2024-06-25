@@ -476,6 +476,11 @@ export default defineComponent({
         // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)  
         unitSuffix(prop: any) {
             if (!prop.conceptDescriptions) {
+                this.getConceptDescriptions(prop).then(conceptDescriptions => {
+                    prop.conceptDescriptions = conceptDescriptions;
+                });
+            }
+            if (!prop.conceptDescriptions || prop.conceptDescriptions.length == 0) {
                 return '';
             }
             for (const conceptDescription of prop.conceptDescriptions) {

@@ -38,6 +38,9 @@
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.valueType }}</v-chip>
                                 </template>
+                                <template v-slot:append-inner>
+                                    <span class="text-subtitleText">{{ unitSuffix(SubmodelElement) }}</span>
+                                </template>
                             </v-text-field>
                             <!-- MultiLanguageProperty -->
                             <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="nameToDisplay(SubmodelElement)" :small="false" style="margin-top: -12px"></DescriptionElement>
@@ -158,6 +161,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import DescriptionElement from './DescriptionElement.vue';
 
 export default defineComponent({
@@ -165,6 +169,7 @@ export default defineComponent({
     components: {
         DescriptionElement,
     },
+    mixins: [SubmodelElementHandling],
     props: ['smeObject', 'smeLocator', 'topMargin'],
 
     setup() {
