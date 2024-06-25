@@ -385,7 +385,12 @@ export default defineComponent({
             if (this.selectedAAS === undefined || this.selectedAAS === null || Object.keys(this.selectedAAS).length === 0) {
                 return false;
             }
-            return this.selectedAAS['endpoints'][0]['protocolInformation']['href'] === AAS['endpoints'][0]['protocolInformation']['href'];
+            let isSelected = this.selectedAAS['endpoints'][0]['protocolInformation']['href'] === AAS['endpoints'][0]['protocolInformation']['href'];
+            if (isSelected && this.showDetailsCard) {
+                // update data of detailsCard
+                this.detailsObject = AAS;
+            }
+            return isSelected;
         },
 
         // Function to display the AAS Details
