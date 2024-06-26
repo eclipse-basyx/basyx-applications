@@ -16,7 +16,7 @@
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-pcf"></span>
                             <span class="text-subtitle-1 subtitleText">Product:</span>
-                        <div class="text-h6">{{ PCFCO2eq + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ unitSuffix(PCFCO2eq) + ' CO₂eq' }}</div>
                         </p>
                     </div>
                     <div v-if="Number(TCFCO2eq) !== 0 && TCFCO2eq !== null">
@@ -25,7 +25,7 @@
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-tcf"></span>
                             <span class="text-subtitle-1 subtitleText">Transport:</span>
-                        <div class="text-h6">{{ TCFCO2eq + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ unitSuffix(TCFCO2eq) + ' CO₂eq' }}</div>
                         </p>
                     </div>
                 </v-col>
@@ -161,6 +161,9 @@ export default defineComponent({
         },
         initializeTransportCarbonFootprint() {
             this.initializeCarbonFootprint('[IRDI] https://adminshell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9', 'TCFCO2eq');
+        },
+        unitSuffix(value: string): string {
+            return value;
         }
     },
 });
