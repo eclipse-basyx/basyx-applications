@@ -73,16 +73,21 @@ export default defineComponent({
         getLocalPath(path: string): string {
             this.useIFrame = true;
             if (!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                path = this.submodelElementData.path + '/attachment';
+
+            try {
+                new URL(path);
+                // If no error is thrown, path is a valid URL
+                return path;
+            } catch {
+                // If error is thrown, path is not a valid URL
+                if(!path.endsWith('.pdf') && path.endsWith('/File')) {
+                    this.useIFrame = false;
+                    this.getPDFData();
+                    return path;
+                } else {
+                    return `${this.submodelElementData.path}/attachment`;
+                }
             }
-            // check if path has not .pdf at the end and instead /File
-            if (!path.endsWith('.pdf') && path.endsWith('/File')) {
-                this.useIFrame = false;
-                this.getPDFData();
-            }
-            return path;
         },
 
         // Function to fetch raw PDF data

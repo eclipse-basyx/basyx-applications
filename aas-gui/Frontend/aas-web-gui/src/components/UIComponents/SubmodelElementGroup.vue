@@ -55,11 +55,6 @@
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
                                 </template>
-                                <template v-slot:append-inner>
-                                    <v-btn :disabled="!SubmodelElement.value" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="downloadFile(SubmodelElement.value)">
-                                        <v-icon>mdi-download</v-icon>
-                                    </v-btn>
-                                </template>
                             </v-text-field>
                             <!-- Blob -->
                             <v-text-field v-else-if="SubmodelElement.modelType == 'Blob'" :label="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
@@ -204,22 +199,6 @@ export default defineComponent({
                 return keys[keys.length - 1].value;
             }
             return '';
-        },
-
-        // Function to download a file
-        downloadFile(link: string) {
-            // open new tab with file
-            window.open(this.getLocalPath(link), '_blank');
-        },
-
-        // Function to prepare the Image Link for the Image Preview
-        getLocalPath(path: string): string {
-            if (!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
-            }
-            return path;
         },
     },
 });
