@@ -18,11 +18,11 @@
                         </v-tooltip>
                     </v-col>
                     <!-- AAS Search Field -->
-                    <v-col class="pl-1 pr-0" v-if="showExtended">
+                    <v-col class="pl-1 pr-0">
                         <v-text-field variant="outlined" density="compact" hide-details label="Search for AAS..." clearable @update:modelValue="filterAASList"></v-text-field>
                     </v-col>
                     <!-- Add existing AAS -->
-                    <v-col cols="auto" class="px-0" v-if="showExtended">
+                    <v-col cols="auto" class="px-0">
                         <!-- <RegisterAAS></RegisterAAS> -->
                         <UploadAAS></UploadAAS>
                     </v-col>
@@ -40,20 +40,16 @@
                                 <div class="text-caption"><span class="font-weight-bold">{{ 'idShort: ' }}</span>{{ item['idShort'] }}</div>
                                 <div class="text-caption"><span class="font-weight-bold">{{ 'ID: ' }}</span>{{ item['id'] }}</div>
                             </v-tooltip>
-                            <!-- Icon of the AAS -->
-                            <template v-if="drawerState" v-slot:prepend>
-                                <v-icon>mdi-robot-industrial</v-icon>
-                            </template>
                             <!-- idShort of the AAS -->
-                            <template v-if="!drawerState" v-slot:title>
+                            <template v-if="drawerState" v-slot:title>
                                 <div class="text-primary" style="z-index: 9999">{{ aasNameToDisplay(item) }}</div>
                             </template>
                             <!-- id of the AAS -->
-                            <template v-if="!drawerState" v-slot:subtitle>
+                            <template v-if="drawerState" v-slot:subtitle>
                                 <div>{{ item['id'] }}</div>
                             </template>
                             <!-- open Details Button (with Status Badge) -->
-                            <template v-if="!drawerState" v-slot:append>
+                            <template v-if="drawerState" v-slot:append>
                                 <!-- Badge that show's the Status of the AAS -->
                                 <v-badge :model-value="item['status'] && item['status'] == 'offline'" icon="mdi-network-strength-4-alert" color="error" text-color="buttonText" inline></v-badge>
                                 <!-- Information Button -->
@@ -69,22 +65,16 @@
                 </v-virtual-scroll>
             </v-list>
             <!-- AAS Details (only visible if the Information Button is pressed on an AAS) -->
-            <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" :show-extended="showExtended" />
+            <AASListDetails :detailsObject="detailsObject" :showDetailsCard="showDetailsCard" @close-details="showDetailsCard = false" />
             <!-- Collapse/extend Sidebar Button -->
             <v-list v-if="!isMobile" nav style="width: 100%; z-index: 9000" class="bg-detailsCard pa-0">
                 <v-divider style="margin-left: -8px; margin-right: -8px"></v-divider>
                 <!-- Button to collapse the Sidebar -->
-                <v-list-item v-if="!drawerState" @click="collapseSidebar()" class="ma-0">
+                <v-list-item @click="collapseSidebar()" class="ma-0">
                     <template v-slot:prepend>
                         <v-icon class="ml-2">mdi-chevron-double-left</v-icon>
                     </template>
-                    <v-list-item-title class="text-caption">Collapse Sidebar</v-list-item-title>
-                </v-list-item>
-                <!-- Button to extend the Sidebar -->
-                <v-list-item v-else @click="extendSidebar()" class="ma-0">
-                    <template v-slot:prepend>
-                        <v-icon class="ml-2">mdi-chevron-double-right</v-icon>
-                    </template>
+                    <v-list-item-title class="text-caption">Close Sidebar</v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-card>
@@ -129,7 +119,6 @@ export default defineComponent({
             unfilteredAASData: [],      // Variable to store the AAS Data before filtering
             detailsObject: {} as any,   // Variable to store the AAS Data of the currently selected AAS
             showDetailsCard: false,     // Variable to store if the Details Card should be shown
-            showExtended: true,         // Variable to store if the extended List should be shown
             listLoading: false,         // Variable to store if the AAS List is loading
         }
     },
@@ -139,8 +128,6 @@ export default defineComponent({
         if(this.aasRegistryURL !== '') {
             this.getAASData();
         }
-
-        if(this.drawerState) this.showExtended = false;
 
         // check if the aas Query is set in the URL and if so load the AAS
         const searchParams = new URL(window.location.href).searchParams;
@@ -176,14 +163,6 @@ export default defineComponent({
             }
         },
 
-        // delays the draweState change to prevent the drawer from overflowing
-        drawerState() {
-            if(this.drawerState) return;
-            setTimeout(() => {
-                this.showExtended = true;
-            }, 300);
-        },
-
         // watch for changes in the status-check state and add/remove the connection interval
         statusCheck() {
             if(this.statusCheck) {
@@ -210,6 +189,7 @@ export default defineComponent({
         drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
             return this.navigationStore.getDrawerState;
         },
+
         // get AAS Registry URL from Store
         aasRegistryURL() {
             return this.navigationStore.getAASRegistryURL;
@@ -262,11 +242,6 @@ export default defineComponent({
         },
         // Function to collapse the Sidebar
         collapseSidebar() {
-            this.showExtended = false;
-            this.navigationStore.dispatchDrawerState(true);
-        },
-        // Function to extend the Sidebar
-        extendSidebar() {
             this.navigationStore.dispatchDrawerState(false);
         },
         // Function to get the AAS Data from the Registry Server
@@ -435,7 +410,7 @@ export default defineComponent({
                 if (!this.aasRegistryURL.includes('/shell-descriptors')) {
                     this.aasRegistryURL += '/shell-descriptors';
                 }
-                let path = this.aasRegistryURL + this.URLEncode(AAS.id);
+                let path = this.aasRegistryURL + '/' + this.URLEncode(AAS.id);
                 let context = 'removing AAS from AAS Registry';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {

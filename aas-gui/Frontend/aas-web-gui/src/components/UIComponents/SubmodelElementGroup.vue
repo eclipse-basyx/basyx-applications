@@ -38,6 +38,9 @@
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.valueType }}</v-chip>
                                 </template>
+                                <template v-slot:append-inner>
+                                    <span class="text-subtitleText">{{ unitSuffix(SubmodelElement) }}</span>
+                                </template>
                             </v-text-field>
                             <!-- MultiLanguageProperty -->
                             <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="nameToDisplay(SubmodelElement)" :small="false" style="margin-top: -12px"></DescriptionElement>
@@ -75,8 +78,8 @@
                                         <div class="text-subtitle-2">{{ nameToDisplay(SubmodelElement) }}</div>
                                     </template>
                                 </v-list-item>
-                                <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.value.keys[SubmodelElement.value.keys.length - 1].type }}</v-chip>
-                                <span>{{ SubmodelElement.value.keys[0].value }}</span>
+                                <v-chip label size="x-small" border class="mr-2">{{ referenceKeyTypeToDisplay(SubmodelElement.value?.keys) }}</v-chip>
+                                <span>{{ referenceKeyValueToDisplay(SubmodelElement.value?.keys) }}</span>
                             </div>
                             <!-- Range -->
                             <div v-else-if="SubmodelElement.modelType == 'Range'">
@@ -105,13 +108,13 @@
                                 </v-list-item>
                                 <div>
                                     <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
-                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
-                                    <span>{{ SubmodelElement.first.keys[0].value }}</span>
+                                    <v-chip label size="x-small" border class="mr-2">{{ referenceKeyTypeToDisplay(SubmodelElement.first?.keys) }}</v-chip>
+                                    <span>{{ referenceKeyValueToDisplay(SubmodelElement.first?.keys) }}</span>
                                 </div>
                                 <div class="mt-3">
                                     <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
-                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
-                                    <span>{{ SubmodelElement.second.keys[0].value }}</span>
+                                    <v-chip label size="x-small" border class="mr-2">{{ referenceKeyTypeToDisplay(SubmodelElement.second?.keys) }}</v-chip>
+                                    <span>{{ referenceKeyValueToDisplay(SubmodelElement.second?.keys) }}</span>
                                 </div>
                             </div>
                             <!-- AnnotatedRelationshipElement -->
@@ -124,13 +127,13 @@
                                 </v-list-item>
                                 <div>
                                     <v-chip label size="x-small" border class="mr-2">{{ 'first' }}</v-chip>
-                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.first.keys[SubmodelElement.first.keys.length - 1].type }}</v-chip>
-                                    <span>{{ SubmodelElement.first.keys[0].value }}</span>
+                                    <v-chip label size="x-small" border class="mr-2">{{ referenceKeyTypeToDisplay(SubmodelElement.first?.keys) }}</v-chip>
+                                    <span>{{ referenceKeyValueToDisplay(SubmodelElement.first?.keys) }}</span>
                                 </div>
                                 <div class="mt-3">
                                     <v-chip label size="x-small" border class="mr-2">{{ 'second' }}</v-chip>
-                                    <v-chip label size="x-small" border class="mr-2">{{ SubmodelElement.second.keys[SubmodelElement.second.keys.length - 1].type }}</v-chip>
-                                    <span>{{ SubmodelElement.second.keys[0].value }}</span>
+                                    <v-chip label size="x-small" border class="mr-2">{{ referenceKeyTypeToDisplay(SubmodelElement.second?.keys) }}</v-chip>
+                                    <span>{{ referenceKeyValueToDisplay(SubmodelElement.second?.keys) }}</span>
                                 </div>
                                 <div class="mt-3 ml-3">
                                     <span class="text-caption">{{ 'Annotations: ' }}</span>
@@ -158,6 +161,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import DescriptionElement from './DescriptionElement.vue';
 
 export default defineComponent({
@@ -165,6 +169,7 @@ export default defineComponent({
     components: {
         DescriptionElement,
     },
+    mixins: [SubmodelElementHandling],
     props: ['smeObject', 'smeLocator', 'topMargin'],
 
     setup() {
@@ -190,6 +195,20 @@ export default defineComponent({
                 if (displayNameEn && displayNameEn.text) return displayNameEn.text;
             }
             return (submodelElement.idShort ? submodelElement.idShort : '');
+        },
+
+        referenceKeyTypeToDisplay(keys: any): string {
+            if (keys?.length > 0) {
+                return keys[keys.length - 1].type;
+            }
+            return '';
+        },
+
+        referenceKeyValueToDisplay(keys: any): string {
+            if (keys?.length > 0) {
+                return keys[keys.length - 1].value;
+            }
+            return '';
         },
 
         // Function to download a file

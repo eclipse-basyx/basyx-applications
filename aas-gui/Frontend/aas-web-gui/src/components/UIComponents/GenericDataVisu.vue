@@ -38,9 +38,6 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
-import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
-
 import SubmodelElementList from '../SubmodelElements/SubmodelElementList.vue';
 import Property from '../SubmodelElements/Property.vue';
 import MultyLanguageProperty from '../SubmodelElements/MultiLanguageProperty.vue';
@@ -64,9 +61,6 @@ export default defineComponent({
         DescriptionElement,
 
         // SubmodelElements
-        SubmodelElementWrapper,
-        CollectionWrapper,
-
         SubmodelElementList,
         Property,
         MultyLanguageProperty,
@@ -96,7 +90,7 @@ export default defineComponent({
     data() {
         return {
             localSubmodelElementData: [] as Array<any>, // SubmodelElement Data
-            conceptDescription: {}, // ConceptDescription Object
+            // conceptDescriptions: {}, // Data of Concept Descriptions
         }
     },
 
@@ -116,22 +110,15 @@ export default defineComponent({
     methods: {
         // Initialize the SubmodelElement Data
         initializeSubmodelElementData() {
+            if(!this.submodelElementData) return
+
             // console.log('SubmodelElementData: ', this.submodelElementData)
             if (Object.keys(this.submodelElementData).length == 0) {
                 this.localSubmodelElementData = []; // Reset the SubmodelElement Data when no Node is selected
                 return;
             }
             let submodelElementData = [ ...this.submodelElementData ];
-            // console.log('SubmodelElementData: ', submodelElementData)
-            submodelElementData.forEach((submodelElement: any) => {
-                // console.log('ModelType: ', submodelElement);
-                if (submodelElement.modelType === 'SubmodelElementList') {
-                    // add embeddedDataSpecifications to every value of the SubmodelElementList
-                    submodelElement.value.forEach((value: any) => {
-                        value.embeddedDataSpecifications = submodelElement.conceptDescription.embeddedDataSpecifications;
-                    });
-                }
-            });
+            // console.log('SubmodelElementData: ', submodelElementData);
             this.localSubmodelElementData = submodelElementData;
         },
         

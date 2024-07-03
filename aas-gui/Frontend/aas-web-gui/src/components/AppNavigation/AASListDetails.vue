@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="showExtended" class="pa-0" fluid>
+    <v-container class="pa-0" fluid>
         <!-- AAS Details Card (only visible if the Information Button is pressed on an AAS) -->
         <v-expand-transition>
             <div v-if="showDetailsCard" class="transition-fast-in-fast-out" :class="isMobile ? 'v-card--reveal-mobile' : 'v-card--reveal-desktop'" style="z-index: 9000">
@@ -48,7 +48,7 @@ export default defineComponent({
         AssetInformation,
     },
     mixins: [RequestHandling, SubmodelElementHandling],
-    props: ['detailsObject', 'showDetailsCard', 'showExtended'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
+    props: ['detailsObject', 'showDetailsCard'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
 
     setup() {
         const navigationStore = useNavigationStore()
@@ -99,7 +99,13 @@ export default defineComponent({
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // console.log('asset information: ', response.data);
-                    this.assetInformation = response.data;
+                    let assetInformation = response.data;
+                    if (assetInformation.defaultThumbnail && assetInformation.defaultThumbnail.path && !assetInformation.defaultThumbnail.path.startsWith('http')) {
+                        let assetInformationThumbnailEndpoint = assetInformationEndpoint + '/thumbnail';
+                        assetInformation.defaultThumbnail.path = assetInformationThumbnailEndpoint;
+                    }
+                    // console.log('asset information thumbnail: ', assetInformation.defaultThumbnail);
+                    this.assetInformation = assetInformation;
                 }
             });
         },

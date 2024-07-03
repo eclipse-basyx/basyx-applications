@@ -129,8 +129,6 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
-import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
@@ -144,10 +142,6 @@ export default defineComponent({
         // UI Components
         IdentificationElement,
         DescriptionElement,
-
-        // SubmodelElements
-        SubmodelElementWrapper,
-        CollectionWrapper,
         GenericDataVisu,
 
         // Leaflet Map
@@ -368,7 +362,7 @@ export default defineComponent({
         extractMarkings(digitalNameplateData: any) {
             let markings = digitalNameplateData.submodelElements.find((element: any) => element.idShort === 'Markings');
             let formattedMarkings = [] as Array<any>;
-            if (markings) {
+            if (markings?.value) {
                 markings.value.forEach((marking: any) => {
                     // find property with the idShort "MarkingFile"
                     let markingFile = marking.value.find((element: any) => element.idShort === 'MarkingFile');

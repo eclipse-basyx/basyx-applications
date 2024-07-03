@@ -29,6 +29,7 @@
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import { useDate } from 'vuetify';
 
@@ -36,8 +37,9 @@ export default defineComponent({
     name: 'DateTimeStampType',
     components: {
         RequestHandling, // Mixin to handle the requests to the AAS
+        SubmodelElementHandling, // Mixin to handle the SubmodelElements
     },
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
     props: ['dateTimeStampValue', 'isOperationVariable', 'variableType'],
 
     setup() {
@@ -143,15 +145,6 @@ export default defineComponent({
                     this.$emit('updateValue', updatedDateTimeStampValue); // emit event to update the value in the parent component
                 }
             });
-        },
-
-        // Get the Unit from the EmbeddedDataSpecification of the Property (if available)
-        unitSuffix(prop: any) {
-            if (prop.conceptDescription && prop.conceptDescription.embeddedDataSpecifications && prop.conceptDescription.embeddedDataSpecifications.length > 0 && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent && prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                return prop.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent.unit;
-            } else {
-                return '';
-            }
         },
 
         // create XSD Date String for the current date
