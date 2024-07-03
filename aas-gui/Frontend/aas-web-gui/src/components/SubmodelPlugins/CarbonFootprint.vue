@@ -119,10 +119,10 @@ export default defineComponent({
             return this.getThemeColor('fingers');
         },
         PCFCO2eqTotal(): number {
-            return this.PCFCO2eq.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
+            return this.PCFCO2eq.reduce((acc, item) => acc + item.value, 0);
         },
         TCFCO2eqTotal(): number {
-            return this.TCFCO2eq.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
+            return this.TCFCO2eq.reduce((acc, item) => acc + item.value, 0);
         }
     },
     methods: {
@@ -152,7 +152,7 @@ export default defineComponent({
                     return;
                 }
                 this[value] = entries.map((entry: any) => ({
-                    idShort: entry.idShort,
+                    semanticId: semanticId,
                     value: parseFloat(entry.value?.find((val: any) => val?.idShort?.includes('CO2eq'))?.value) || 0
                 }));
             } catch (error) {
