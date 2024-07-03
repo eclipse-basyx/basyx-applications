@@ -466,11 +466,15 @@ export default defineComponent({
         // Function to calculate the local path (used for files)
         getLocalPath(path: string, selectedNode: any): string {
             if (!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                path = selectedNode.path + '/attachment';
+        
+            try {
+                new URL(path);
+                // If no error is thrown, path is a valid URL
+                return path;
+            } catch {
+                // If error is thrown, path is not a valid URL
+                return `${selectedNode.path}/attachment`;
             }
-            return path;
         },
 
         // Get the Unit from the EmbeddedDataSpecification of the ConceptDescription of the Property (if available)  

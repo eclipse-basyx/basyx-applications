@@ -201,10 +201,10 @@ export default defineComponent({
     },
 
     methods: {
-        initHandoverDocumentation() {
+        async initHandoverDocumentation() {
             // console.log('Initialize Handover Documentation Plugin: ', this.submodelElementData);
             let submodelElementData = { ...this.submodelElementData };
-            submodelElementData = this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
+            submodelElementData = await this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
             // create array of documents
             let documents = this.submodelElementData.submodelElements.filter((element: any) => {
                 return element.semanticId.keys[0].value.includes("0173-1#02-ABI500#001/0173-1#01-AHF579#001");
@@ -262,11 +262,14 @@ export default defineComponent({
 
         getLocalPath(value: string, path: string): string {
             if (!value) return '';
-            // check if Link starts with '/'
-            if (value.startsWith('/')) {
-                path = path + '/attachment';
+            try {
+                new URL(value);
+                // If no error is thrown, path is a valid URL
+                return value;
+            } catch {
+                // If error is thrown, path is not a valid URL
+                return `${path}/attachment`;
             }
-            return path;
         },
     },
 });
