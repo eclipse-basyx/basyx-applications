@@ -21,7 +21,7 @@
     "mermaid": "^10.9.1",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
-    "three": "^0.165.0",
+    "three": "^0.166.1",
     "uuid": "^10.0.0",
     "vue": "^3.4.30",
     "vue-router": "^4.3.2",
