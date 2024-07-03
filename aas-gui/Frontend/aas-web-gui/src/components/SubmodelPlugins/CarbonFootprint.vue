@@ -16,7 +16,7 @@
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-pcf"></span>
                             <span class="text-subtitle-1 subtitleText">Product:</span>
-                        <div class="text-h6">{{ unitSuffix(PCFCO2eq) + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ PCFCO2eqTotal + unitSuffix(PCFCO2eq) + ' CO₂eq' }}</div>
                         </p>
                     </div>
                     <div v-if="Number(TCFCO2eq) !== 0 && TCFCO2eq !== null">
@@ -25,7 +25,7 @@
                                 style="display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 3px"
                                 class="bg-tcf"></span>
                             <span class="text-subtitle-1 subtitleText">Transport:</span>
-                        <div class="text-h6">{{ unitSuffix(TCFCO2eq) + ' CO₂eq' }}</div>
+                        <div class="text-h6">{{ TCFCO2eqTotal + unitSuffix(TCFCO2eq) + ' CO₂eq' }}</div>
                         </p>
                     </div>
                 </v-col>
@@ -94,8 +94,8 @@ export default defineComponent({
     },
     data() {
         return {
-            PCFCO2eq: '' as string,
-            TCFCO2eq: '' as string,
+            PCFCO2eq: [] as Array<any>,
+            TCFCO2eq: [] as Array<any>,
         };
     },
     mounted() {
@@ -107,7 +107,7 @@ export default defineComponent({
             return this.aasStore.getSelectedNode;
         },
         colorPercentage() {
-            return this.calculatePercentage(this.PCFCO2eq, this.TCFCO2eq);
+            return this.calculatePercentage(this.PCFCO2eqTotal, this.TCFCO2eqTotal);
         },
         pcfValueColor() {
             return this.getThemeColor('pcf');
@@ -117,12 +117,16 @@ export default defineComponent({
         },
         fingersColor() {
             return this.getThemeColor('fingers');
+        },
+        PCFCO2eqTotal(): number {
+            return this.PCFCO2eq.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
+        },
+        TCFCO2eqTotal(): number {
+            return this.TCFCO2eq.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
         }
     },
     methods: {
-        calculatePercentage(PCFCO2eq: string, TCFCO2eq: string): number {
-            const productValue = parseFloat(PCFCO2eq) || 0;
-            const transportValue = parseFloat(TCFCO2eq) || 0;
+        calculatePercentage(productValue: number, transportValue: number): number {
             const total = productValue + transportValue;
             return total ? (productValue / total) * 100 : 0;
         },
@@ -131,7 +135,7 @@ export default defineComponent({
             const themeColors = isDark ? this.$vuetify.theme.themes.dark.colors : this.$vuetify.theme.themes.light.colors;
             return themeColors[colorKey];
         },
-        initializeCarbonFootprint(semanticId: string, value: 'PCFCO2eq' | 'TCFCO2eq',) {
+        initializeCarbonFootprint(semanticId: string, value: 'PCFCO2eq' | 'TCFCO2eq') {
             // console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
             if (Object.keys(this.submodelElementData).length === 0) {
                 return;
@@ -147,11 +151,10 @@ export default defineComponent({
                     console.warn(`No entries found for ${semanticId}.`);
                     return;
                 }
-                const totalValue = entries.reduce((accumulator: number, entry: any) => {
-                    const co2eqValue = parseFloat(entry.value?.find((val: any) => val?.idShort?.includes('CO2eq'))?.value) || 0;
-                    return accumulator + co2eqValue;
-                }, 0);
-                this[value] = totalValue.toString();
+                this[value] = entries.map((entry: any) => ({
+                    idShort: entry.idShort,
+                    value: parseFloat(entry.value?.find((val: any) => val?.idShort?.includes('CO2eq'))?.value) || 0
+                }));
             } catch (error) {
                 console.error(`Error initializing ${semanticId}:`, error);
             }
@@ -162,8 +165,8 @@ export default defineComponent({
         initializeTransportCarbonFootprint() {
             this.initializeCarbonFootprint('[IRDI] https://adminshell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9', 'TCFCO2eq');
         },
-        unitSuffix(value: string): string {
-            return value;
+        unitSuffix(value: Array<any>): string {
+            return value.length > 0 && value[0].unit || '';
         }
     },
 });

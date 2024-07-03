@@ -52,7 +52,7 @@ export default defineComponent({
         // converts AAS identification to UTF8 BASE64 encoded URL
         URLEncode(aasId: string) {
             const base64Id = btoa(unescape(encodeURIComponent(aasId)));
-            const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '%3D');
+            const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
             return urlSafeBase64Id;
         },
 
