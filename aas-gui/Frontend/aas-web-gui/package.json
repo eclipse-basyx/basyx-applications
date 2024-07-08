@@ -24,7 +24,7 @@
     "three": "^0.166.1",
     "uuid": "^10.0.0",
     "vue": "^3.4.30",
-    "vue-router": "^4.3.2",
+    "vue-router": "^4.4.0",
     "vue3-apexcharts": "^1.5.3",
     "vuetify": "^3.6.10",
     "webfontloader": "^1.0.0"
