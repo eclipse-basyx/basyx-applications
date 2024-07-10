@@ -226,13 +226,9 @@ export default defineComponent({
             // prepare each DocumentVersion
             document.documentVersions.forEach((documentVersion: any) => {
                 // extract the DigitalFile
-                documentVersion.digitalFile = documentVersion.value.find((element: any) => {
-                    return element.idShort === "DigitalFile";
-                });
+                documentVersion.digitalFile = this.getElementBySemanticId("0173-1#02-ABI504", documentVersion);
                 // extract the PreviewFile
-                documentVersion.previewFile = documentVersion.value.find((element: any) => {
-                    return element.idShort === "PreviewFile";
-                });
+                documentVersion.previewFile = this.getElementBySemanticId("0173-1#02-ABI505", documentVersion);
                 // filter for relevant versionProperties
                 documentVersion.meta = documentVersion.value.filter((element: any) => {
                     // return elements with the following idShorts: Language, Title, SubTitle, Summary, KeyWords
@@ -270,6 +266,12 @@ export default defineComponent({
                 // If error is thrown, path is not a valid URL
                 return `${path}/attachment`;
             }
+        },
+
+        getElementBySemanticId(semanticId: string, parentElement: any) {
+            return parentElement.value.find((element: any) => {
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes(semanticId);
+            });
         },
     },
 });
