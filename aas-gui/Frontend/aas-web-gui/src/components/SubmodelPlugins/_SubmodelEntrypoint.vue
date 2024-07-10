@@ -95,7 +95,7 @@ export default defineComponent({
         // return if in viewer mode
         viewerMode() {
             // check if the route name is aasviewer
-            return this.$route.name === 'AASViewer';
+            return this.$route.name === 'AASViewer' || this.$route.name === 'ComponentVisualization';
         },
     },
 
