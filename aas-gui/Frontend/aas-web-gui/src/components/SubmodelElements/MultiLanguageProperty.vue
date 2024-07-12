@@ -164,14 +164,14 @@ export default defineComponent({
         // Function to update the value of the property
         updateMLP() {
             // console.log("Update Value: ", this.multiLanguagePropertyObject);
-            let path = this.multiLanguagePropertyObject.path;
-            let content = JSON.stringify(this.multiLanguagePropertyObject);
+            let path = this.multiLanguagePropertyObject.path + '/$value';
+            let content = JSON.stringify(this.multiLanguagePropertyObject.value.map((item: any) => ({ [item.language]: item.text })));
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             let context = 'updating ' + this.multiLanguagePropertyObject.modelType + ' "' + this.multiLanguagePropertyObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
-            this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+            this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // // this.newPropertyValue = ''; // reset input
                     // let updatedPropertyObject = { ...this.propertyObject }; // copy the propertyObject

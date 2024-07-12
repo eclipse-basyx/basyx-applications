@@ -5,7 +5,7 @@
             <HTWFuehrungskomponente v-if="checkSemanticId('http://htw-berlin.de/smc_statemachine')" :submodelElementData="submodelElementData" :selectedNode="selectedNode"></HTWFuehrungskomponente>
             <DigitalNameplate v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/2/0/Nameplate')" :submodelElementData="submodelElementData"></DigitalNameplate>
             <TimeSeriesData v-else-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="submodelElementData"></TimeSeriesData>
-            <BillsOfMaterial v-else-if="checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
+            <BillsOfMaterial v-else-if="checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel') || checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
             <HandoverDocumentation v-else-if="checkSemanticId('0173-1#01-AHF578#001')" :submodelElementData="submodelElementData"></HandoverDocumentation>
             <ContactInformation v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/ContactInformations')" :submodelElementData="submodelElementData"></ContactInformation>
             <TechnicalData v-else-if="checkSemanticId('https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2')" :submodelElementData="submodelElementData"></TechnicalData>
@@ -95,7 +95,7 @@ export default defineComponent({
         // return if in viewer mode
         viewerMode() {
             // check if the route name is aasviewer
-            return this.$route.name === 'AASViewer';
+            return this.$route.name === 'AASViewer' || this.$route.name === 'ComponentVisualization';
         },
     },
 

@@ -13,7 +13,7 @@
         </v-list>
         <v-divider v-if="conceptDescriptionObject.embeddedDataSpecifications && conceptDescriptionObject.embeddedDataSpecifications.length > 0" class="mt-2"></v-divider>
         <v-list nav v-if="conceptDescriptionObject.embeddedDataSpecifications && conceptDescriptionObject.embeddedDataSpecifications.length > 0">
-            <v-card v-for="(embeddedDataSpecification, i) in conceptDescriptionObject.embeddedDataSpecifications" :key="i"color="elevatedCard" class="mt-2">
+            <v-card v-for="(embeddedDataSpecification, i) in conceptDescriptionObject.embeddedDataSpecifications" :key="i" color="elevatedCard" class="mt-2">
                 <v-list nav class="bg-elevatedCard pt-0">
                     <!-- hasDataSpecification -->
                     <SemanticID v-if="embeddedDataSpecification.dataSpecification && embeddedDataSpecification.dataSpecification.keys && embeddedDataSpecification.dataSpecification.keys.length > 0" :semanticIdObject="embeddedDataSpecification.dataSpecification" :semanticTitle="'Data Specification'" class="mb-2"></SemanticID>

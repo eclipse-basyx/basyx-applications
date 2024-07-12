@@ -41,7 +41,7 @@ export const useNavigationStore = defineStore({
     id: 'navigationStore',
 
     state: () => ({
-        drawerState: false as boolean,
+        drawerState: true as boolean,
         AASDiscoveryURL: '' as string,
         AASRegistryURL: '' as string,
         SubmodelRegistryURL: '' as string,

@@ -38,6 +38,9 @@
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.valueType }}</v-chip>
                                 </template>
+                                <template v-slot:append-inner>
+                                    <span class="text-subtitleText">{{ unitSuffix(SubmodelElement) }}</span>
+                                </template>
                             </v-text-field>
                             <!-- MultiLanguageProperty -->
                             <DescriptionElement v-else-if="SubmodelElement.modelType == 'MultiLanguageProperty'" :descriptionObject="SubmodelElement.value" :descriptionTitle="nameToDisplay(SubmodelElement)" :small="false" style="margin-top: -12px"></DescriptionElement>
@@ -54,11 +57,6 @@
                             <v-text-field v-else-if="SubmodelElement.modelType == 'File'" :label="nameToDisplay(SubmodelElement)" density="compact" variant="outlined" v-model="SubmodelElement.value" readonly hide-details>
                                 <template v-slot:prepend-inner>
                                     <v-chip label size="x-small" border color="primary">{{ SubmodelElement.modelType }}</v-chip>
-                                </template>
-                                <template v-slot:append-inner>
-                                    <v-btn :disabled="!SubmodelElement.value" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="downloadFile(SubmodelElement.value)">
-                                        <v-icon>mdi-download</v-icon>
-                                    </v-btn>
                                 </template>
                             </v-text-field>
                             <!-- Blob -->
@@ -158,6 +156,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import DescriptionElement from './DescriptionElement.vue';
 
 export default defineComponent({
@@ -165,6 +164,7 @@ export default defineComponent({
     components: {
         DescriptionElement,
     },
+    mixins: [SubmodelElementHandling],
     props: ['smeObject', 'smeLocator', 'topMargin'],
 
     setup() {
@@ -204,22 +204,6 @@ export default defineComponent({
                 return keys[keys.length - 1].value;
             }
             return '';
-        },
-
-        // Function to download a file
-        downloadFile(link: string) {
-            // open new tab with file
-            window.open(this.getLocalPath(link), '_blank');
-        },
-
-        // Function to prepare the Image Link for the Image Preview
-        getLocalPath(path: string): string {
-            if (!path) return '';
-            // check if Link starts with '/'
-            if (path.startsWith('/')) {
-                path = this.SelectedAAS.endpoints[0].protocolInformation.href.replace('/aas', '') + '/files' + path;
-            }
-            return path;
         },
     },
 });

@@ -129,8 +129,6 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
 
-import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
-import CollectionWrapper from '../UIComponents/CollectionWrapper.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
@@ -144,10 +142,6 @@ export default defineComponent({
         // UI Components
         IdentificationElement,
         DescriptionElement,
-
-        // SubmodelElements
-        SubmodelElementWrapper,
-        CollectionWrapper,
         GenericDataVisu,
 
         // Leaflet Map
@@ -196,14 +190,14 @@ export default defineComponent({
 
     methods: {
         // Function to initialize the Digital Nameplate
-        initializeDigitalNameplate() {
+        async initializeDigitalNameplate() {
             // Check if a Node is selected
             if (Object.keys(this.submodelElementData).length == 0) {
                 this.digitalNameplateData = {}; // Reset the DigitalNameplate Data when no Node is selected
                 return;
             }
             let digitalNameplateData = { ...this.submodelElementData }; // create local copy of the Nameplate Object
-            this.digitalNameplateData = this.calculateSubmodelElementPathes(digitalNameplateData, this.SelectedNode.path); // Set the DigitalNameplate Data
+            this.digitalNameplateData = await this.calculateSubmodelElementPathes(digitalNameplateData, this.SelectedNode.path); // Set the DigitalNameplate Data
             // console.log('Digital Nameplate Data:', this.digitalNameplateData);
             this.extractProductProperties(digitalNameplateData); // Extract the Product Properties
             this.extractManufacturerProperties(digitalNameplateData); // Extract the Manufacturer Properties

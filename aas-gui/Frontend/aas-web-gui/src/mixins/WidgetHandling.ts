@@ -4,10 +4,11 @@ import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 
 import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'WidgetHandling',
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
         const navigationStore = useNavigationStore()
@@ -53,8 +54,10 @@ export default defineComponent({
         prepareYValueTooltip(chartData: any, yVariables: any) {
             return chartData.map((series: any, index: number) => {
                 // Use optional chaining and nullish coalescing to simplify the retrieval of the unit
-                const unit = yVariables[index]?.embeddedDataSpecifications?.[0]?.dataSpecificationContent?.unit || '';
-
+                let unit = '';
+                if (yVariables[index]) {
+                    unit = this.unitSuffix(yVariables[index]);
+                }
                 return {
                     formatter: (value: any) => `${value} ${unit}`
                 };
@@ -63,15 +66,15 @@ export default defineComponent({
 
         prepareLegend(yVariables: any) {
             return {
-                formatter: function (seriesName: any, opts: any) {
+                formatter: (seriesName: any, opts: any) => {
                     let unit = '';
                     const index = opts.seriesIndex;
 
                     // check if the yVariable exists
                     if (yVariables.length > index) {
                         // check if the yVariable has an unit (embeddedDataSpecification) -> take the first one (TODO: make this more generic in the future)
-                        if (yVariables[index] && yVariables[index].embeddedDataSpecifications && yVariables[index].embeddedDataSpecifications[0] && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent && yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit) {
-                            unit = '[' + yVariables[index].embeddedDataSpecifications[0].dataSpecificationContent.unit + ']';
+                        if (yVariables[index]) {
+                            unit = '[' + this.unitSuffix(yVariables[index]) + ']';
                         }
                     }
                     return seriesName + ' ' + unit;

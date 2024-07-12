@@ -98,9 +98,10 @@
         </v-footer>
 
         <!-- left Side Menu with the AAS List -->
-        <v-navigation-drawer width="336" color="appNavigation" :rail="drawerState" class="leftMenu" v-if="showAASList && !isMobile">
+        <v-navigation-drawer :width="336" color="appNavigation" class="leftMenu" v-if="showAASList && !isMobile" v-model="drawerVisibility" @update:model-value="updateDrawerState">
             <AASList />
         </v-navigation-drawer>
+        <v-btn v-if="showAASList && !isMobile && !drawerVisibility" @click="extendSidebar()" style="position: fixed; bottom: 50px; left: 10px; z-index: 10;" icon="mdi-chevron-double-right"></v-btn>
 
         <!-- Mobile Menu -->
         <v-menu transition="slide-y-reverse-transition" v-model="mobileMenu" v-if="showMobileMenu" style="z-index: 9992">
@@ -196,6 +197,7 @@ export default defineComponent({
             mainMenu: false,                // Variable to show the Main Menu
             mobileMenu: false,              // Variable to show the Mobile Menu
             dashboardAvailable: false,      // Dashboard Availability
+            drawerVisibility: true,         // Variable to show the AAS List Drawer
         }
     },
 
@@ -309,6 +311,10 @@ export default defineComponent({
                 setTimeout(() => this.closeSnackbar(), this.Snackbar.timeout);
             }
         },
+
+        drawerState() {
+            this.drawerVisibility = this.drawerState;
+        },
     },
 
 
@@ -316,11 +322,6 @@ export default defineComponent({
         // Check if the current Device is a Mobile Device
         isMobile() {
             return this.navigationStore.getIsMobile;
-        },
-
-        // get Drawer State from store
-        drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
-            return this.navigationStore.getDrawerState;
         },
 
         // Check if the current Theme is dark
@@ -336,6 +337,11 @@ export default defineComponent({
         // to check if the MainWindow is the current Route
         showAASList() {
             return ['MainWindow', 'AASViewer'].includes(this.$route.name as string);
+        },
+
+        // get Drawer State from store
+        drawerState() { // Computed Property to control the state of the Navigation Drawer (true -> collapsed, false -> extended)
+            return this.navigationStore.getDrawerState;
         },
 
         // Get the Env Variable for the AAS Discovery URL from the store
@@ -529,6 +535,16 @@ export default defineComponent({
         // Function to close the Snackbar
         closeSnackbar() {
             this.navigationStore.dispatchSnackbar({ status: false });
+        },
+
+        extendSidebar() {
+            this.drawerVisibility = true;
+            this.navigationStore.dispatchDrawerState(true);
+        },
+
+        updateDrawerState(value: boolean) {
+            // console.log('updateDrawerState: ', value);
+            this.navigationStore.dispatchDrawerState(value);
         },
 
         isDashboardAvailable() {

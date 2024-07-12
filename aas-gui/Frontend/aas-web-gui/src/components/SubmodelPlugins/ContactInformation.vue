@@ -98,10 +98,10 @@ export default defineComponent({
     },
 
     methods: {
-        initContactInformation() {
+        async initContactInformation() {
             // console.log('Initialize Contact Information Plugin: ', this.submodelElementData);
             let submodelElementData = { ...this.submodelElementData };
-            submodelElementData = this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
+            submodelElementData = await this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
             // create array of contacts
             let contacts = this.submodelElementData.submodelElements.filter((element: any) => {
                 return element.semanticId.keys[0].value === 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation';
