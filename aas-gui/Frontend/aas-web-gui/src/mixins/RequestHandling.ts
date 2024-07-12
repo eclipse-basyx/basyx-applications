@@ -25,11 +25,15 @@ export default defineComponent({
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json();  // Return the response as JSON
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/asset-administration-shell-package+xml' && response.headers.get('Content-Length') !== '0') {
+                        return response.blob();  // Return the response as Blob} 
+                    } else if (response.headers.get('Content-Type')?.split(';')[0].includes("image") && response.headers.get('Content-Length') !== '0') {
                         return response.blob();  // Return the response as Blob
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/csv' && response.headers.get('Content-Length') !== '0') {
                         return response.text();  // Return the response as text
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/plain' && response.headers.get('Content-Length') !== '0') {
                         return response.text();  // Return the response as text
+                    } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/pdf' && response.headers.get('Content-Length') !== '0') {
+                        return response.blob();  // Return the response as Blob
                     } else if (!response.ok) {
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);

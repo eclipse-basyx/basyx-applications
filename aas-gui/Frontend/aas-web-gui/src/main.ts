@@ -103,7 +103,7 @@ async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloak
             if (!auth) {
                 window.location.reload();
             } else {
-                console.info("Authenticated");
+                // console.info("Authenticated");
                 resolve();
                 const authStore = useAuthStore();
                 authStore.setToken(keycloak.token);
@@ -112,17 +112,17 @@ async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloak
                 setInterval(() => {
                     keycloak.updateToken(70).then((refreshed) => {
                         if (refreshed) {
-                            console.log('Token refreshed');
+                            // console.log('Token refreshed');
                             authStore.setToken(keycloak.token);
                             authStore.setRefreshToken(keycloak.refreshToken);
                         } else {
                             const exp = keycloak?.tokenParsed?.exp as number;
                             const timeScew = keycloak?.timeSkew as number;
-                            console.log('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
+                            console.error('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
                         }
                         authStore.setAuthStatus(true);
                     }).catch(() => {
-                        console.log('Failed to refresh token');
+                        console.error('Failed to refresh token');
                         authStore.setAuthStatus(false)
                     });
                 }, 60000);

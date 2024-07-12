@@ -81,6 +81,7 @@ export default defineComponent({
                 this.aasFile = []; // clear the AASX File
                 // reload the AAS list
                 this.navigationStore.dispatchTriggerAASListReload(true);
+                this.uploadAASDialog = false;
             });
         },
     },

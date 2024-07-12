@@ -20,7 +20,7 @@
                 <!-- Blob in Inputfield -->
                 <v-list-item class="pt-0">
                     <v-list-item-title>
-                        <v-textarea variant="outlined" density="compact" hide-details clearable @keydown.native.enter="updateBlob()" v-model="newBlobValue" @click:clear="clearBlob()" @update:focused="setFocus">
+                        <v-textarea variant="outlined" density="compact" :hide-details="isTruncated ? false : true" clearable @keydown.native.enter="updateBlob()" v-model="truncatetBlobValue" @click:clear="clearBlob()" @update:focused="setFocus" :hint="isTruncated ? 'Blob string is truncated!' : ''" persistent-hint>
                             <!-- Update Blob Button -->
                             <template v-slot:append-inner="{ isFocused }">
                                 <v-btn v-if="isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateBlob()">
@@ -73,6 +73,9 @@ export default defineComponent({
     data() {
         return {
             newBlobValue: '',
+            truncatetBlobValue: '', // Truncated Blob Value
+            maxLength: 1000, // Max Length of the Blob Value
+            isTruncated: false, // boolean to check if the Blob Value is truncated
             newFile: [] as any, // Blob Object to Upload
             isFocused: false, // boolean to check if the input field is focused
         }
@@ -80,6 +83,13 @@ export default defineComponent({
 
     mounted() {
         this.newBlobValue = this.blobObject.value;
+        if (this.blobObject.value.length > this.maxLength) {
+            this.truncatetBlobValue = this.blobObject.value.substring(0, this.maxLength);
+            this.isTruncated = true;
+        } else {
+            this.truncatetBlobValue = this.blobObject.value;
+            this.isTruncated = false;
+        }
     },
 
     watch: {
@@ -88,6 +98,7 @@ export default defineComponent({
             deep: true,
             handler() {
                 this.newBlobValue = '';
+                this.truncatetBlobValue = '';
             }
         },
 
@@ -97,6 +108,13 @@ export default defineComponent({
             handler() {
                 if (!this.isFocused) {
                     this.newBlobValue = this.blobObject.value;
+                    if (this.blobObject.value.length > this.maxLength) {
+                        this.truncatetBlobValue = this.blobObject.value.substring(0, this.maxLength);
+                        this.isTruncated = true;
+                    } else {
+                        this.truncatetBlobValue = this.blobObject.value;
+                        this.isTruncated = false;
+                    }
                 }
             }
         }
@@ -135,6 +153,7 @@ export default defineComponent({
         // Function to clear the content of the Blob Element
         clearBlob() {
             this.newBlobValue = '';
+            this.truncatetBlobValue = '';
         },
 
         // Function to upload a File as Blob to the AAS
@@ -155,7 +174,7 @@ export default defineComponent({
                     const base64String = base64.split(',')[1];
                     value = base64String ? base64String.trim() : '';
                 }
-                let contentJSON = { ...this.blobObject };
+                let contentJSON = {} as any;
                 contentJSON.contentType = contentType;
                 contentJSON.value = value;
                 let content = JSON.stringify(contentJSON);
@@ -166,7 +185,7 @@ export default defineComponent({
                 let context = 'updating ' + this.blobObject.modelType + ' "' + this.blobObject.idShort + '"';
                 let disableMessage = false;
                 // Send Request to update the content of the Blob element
-                this.putRequest(path, content, headers, context, disableMessage).then((response: any) => {
+                this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
                     if (response.success) {
                         this.$emit('updateBlob'); // emit event to update the content in the parent component
                     }
@@ -177,13 +196,24 @@ export default defineComponent({
         // Function to set the focus on the input field
         setFocus(e: boolean) {
             this.isFocused = e;
-            if (!e) this.newBlobValue = this.blobObject.value; // set input to current value in the AAS if the input field is not focused
+            // set input to current value in the AAS if the input field is not focused
+            if (!e) {
+                this.newBlobValue = this.blobObject.value;
+                if (this.blobObject.value.length > this.maxLength) {
+                    this.truncatetBlobValue = this.blobObject.value.substring(0, this.maxLength);
+                    this.isTruncated = true;
+                } else {
+                    this.truncatetBlobValue = this.blobObject.value;
+                    this.isTruncated = false;
+                }
+            }
         },
 
         // Function to download the Blob as File
         downloadFile() {
             // Convert base64 to Blob
-            fetch(`data:${this.blobObject.contentType};base64,${this.newBlobValue}`)
+            let decodedValue = atob(this.newBlobValue);
+            fetch(`data:${this.blobObject.contentType};base64,${decodedValue}`)
                 .then(response => response.blob())
                 .then(blob => {
                     // Create a downloadable link for the Blob

@@ -57,7 +57,7 @@
                                 <!-- Download AAS -->
                                 <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(item)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                                 <!-- Remove from AAS Registry Button -->
-                                <v-btn @click.stop="removeFromAASRegistry(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                                <v-btn @click.stop="removeAAS(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                             </template>
                             <v-overlay :model-value="isSelected(item)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
                         </v-list-item>
@@ -418,6 +418,27 @@ export default defineComponent({
                 }
                 let path = this.aasRegistryURL + '/' + this.URLEncode(AAS.id);
                 let context = 'removing AAS from AAS Registry';
+                let disableMessage = false;
+                this.deleteRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) { // execute if deletion was successful
+                        this.reloadList(); // reload the AAS List
+                    }
+                });
+            }
+        },
+
+        removeAAS(AAS: any) {
+            // console.log('Remove AAS: ', AAS);
+            // return if loading state is true -> prevents multiple requests
+            if(this.loading) {
+                this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
+                return;
+            }
+            // show a confirmation Dialog to delete the AAS
+            if(confirm('Are you sure you want to delete the AAS')) {
+                console.log('Remove AAS: ', AAS);
+                let path = AAS.endpoints[0].protocolInformation.href;
+                let context = 'removing AAS';
                 let disableMessage = false;
                 this.deleteRequest(path, context, disableMessage).then((response: any) => {
                     if (response.success) { // execute if deletion was successful
