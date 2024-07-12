@@ -80,8 +80,7 @@ export default defineComponent({
                 let path = this.getLocalPath(this.submodelElementData.value, this.submodelElementData)
                 let context = 'retrieving Attachment File';
                 let disableMessage = false;
-                this.getRequest(path, context, disableMessage).then(async (response: any) => {
-                    this.aasStore.dispatchLoadingState(false); // set loading state to false
+                this.getRequest(path, context, disableMessage).then((response: any) => {
                     if (response.success) { // execute if the Request was successful
                         this.Base64Image = URL.createObjectURL(response.data as Blob);
                     }

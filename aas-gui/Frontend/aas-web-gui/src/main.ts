@@ -118,7 +118,6 @@ async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloak
                         } else {
                             const exp = keycloak?.tokenParsed?.exp as number;
                             const timeScew = keycloak?.timeSkew as number;
-                            console.error('Token not refreshed, valid for ' + Math.round(exp + timeScew - new Date().getTime() / 1000) + ' seconds');
                         }
                         authStore.setAuthStatus(true);
                     }).catch(() => {
