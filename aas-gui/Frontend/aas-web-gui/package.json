@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/roboto": "^5.0.8",
+    "@fontsource/roboto": "^5.0.13",
     "@mdi/font": "^7.4.47",
     "@types/lodash": "^4.17.6",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
