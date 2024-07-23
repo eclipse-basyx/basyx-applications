@@ -121,15 +121,6 @@ export default defineComponent({
             // console.log('SubmodelElementData: ', submodelElementData);
             this.localSubmodelElementData = submodelElementData;
         },
-
-        nameToDisplay(sme: any) {
-            if (sme.displayName) {
-                let displayNameEn = sme.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
-                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
-            }
-            return (sme.idShort ? sme.idShort : '');
-        },
-        
     },
 });
 </script>

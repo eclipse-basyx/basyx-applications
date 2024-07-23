@@ -183,15 +183,6 @@ export default defineComponent({
     },
 
     methods: {
-        // Name to be displayed
-        nameToDisplay(submodelElement: any) {
-            if (submodelElement.displayName) {
-                let displayNameEn = submodelElement.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
-                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
-            }
-            return (submodelElement.idShort ? submodelElement.idShort : '');
-        },
-
         referenceKeyTypeToDisplay(keys: any): string {
             if (keys?.length > 0) {
                 return keys[keys.length - 1].type;
