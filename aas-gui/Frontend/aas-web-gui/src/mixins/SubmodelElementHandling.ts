@@ -466,7 +466,6 @@ export default defineComponent({
         // Function to calculate the local path (used for files)
         getLocalPath(path: string, selectedNode: any): string {
             if (!path) return '';
-        
             try {
                 new URL(path);
                 // If no error is thrown, path is a valid URL

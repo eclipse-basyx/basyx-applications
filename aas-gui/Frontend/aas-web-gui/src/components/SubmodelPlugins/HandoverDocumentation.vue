@@ -153,8 +153,8 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import ImagePreview from './ImagePreview.vue';
 import PDFPreview from './PDFPreview.vue';
@@ -251,21 +251,20 @@ export default defineComponent({
         },
 
         downloadFile(file: any) {
-            // console.log('Download File: ', file);
-            const downloadUrl = this.getLocalPath(file.value, file.path);
-            window.open(downloadUrl, '_blank');
-        },
-
-        getLocalPath(value: string, path: string): string {
-            if (!value) return '';
-            try {
-                new URL(value);
-                // If no error is thrown, path is a valid URL
-                return value;
-            } catch {
-                // If error is thrown, path is not a valid URL
-                return `${path}/attachment`;
-            }
+            let path = this.getLocalPath(file.value, file)
+            let context = 'retrieving Attachment File';
+            let disableMessage = false;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) { // execute if the Request was successful
+                    let Base64File = URL.createObjectURL(response.data as Blob);
+                    const link = document.createElement('a');
+                    link.href = Base64File;
+                    link.download = file.idShort;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
         },
 
         getElementBySemanticId(semanticId: string, parentElement: any) {

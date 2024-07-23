@@ -22,6 +22,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ViewHelper } from 'three/examples/jsm/helpers/ViewHelper.js';
 import { OutlineEffect } from 'three/examples/jsm/effects/OutlineEffect.js';
+import { useAuthStore } from '@/store/AuthStore';
 
 export default defineComponent({
     name: 'CADPreview',
@@ -32,11 +33,13 @@ export default defineComponent({
         const theme = useTheme()
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const authStore = useAuthStore()
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            authStore
         }
     },
 
@@ -67,6 +70,10 @@ export default defineComponent({
         SelectedNode() {
             return this.aasStore.getSelectedNode;
         },
+        
+        authToken() {
+            return this.authStore.getToken;
+        }
     },
 
     methods: {
@@ -194,20 +201,37 @@ export default defineComponent({
 
         // Function to import a STL file
         importSTL(scene: THREE.Scene) {
-            // create a new STLLoader instance to load and display a STL model
-            const stl_loader = new STLLoader();
-            stl_loader.load(this.localPathValue, (geometry: any) => {
+            // Assuming authToken contains your authentication token
+        
+            fetch(this.localPathValue, {
+                headers: {
+                    'Authorization': `Bearer ${this.authToken}` // Adjust this according to your auth token type
+                }
+            })
+            .then(response => response.arrayBuffer())
+            .then(buffer => {
+                const stlLoader = new STLLoader();
+                const geometry = stlLoader.parse(buffer);
                 const material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, roughness: 0.5, envMapIntensity: 1.0, transparent: true, opacity: 0.5 });
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.scale.multiplyScalar(0.03);
                 scene.add(mesh);
-            });
+            })
+            .catch(error => console.error('Error loading STL:', error));
         },
 
         // Function to import a OBJ file
         importOBJ(scene: THREE.Scene) {
-            const objLoader = new OBJLoader();
-            objLoader.load(this.localPathValue, (object) => {
+            // Assuming authToken contains your authentication token
+            fetch(this.localPathValue, {
+                headers: {
+                    'Authorization': `Bearer ${this.authToken}` // Adjust this according to your auth token type
+                }
+            })
+            .then(response => response.text())
+            .then(text => {
+                const objLoader = new OBJLoader();
+                const object = objLoader.parse(text);
                 object.traverse((child) => {
                     if ((child as THREE.Mesh).isMesh) {
                         const mesh = child as THREE.Mesh;
@@ -220,21 +244,33 @@ export default defineComponent({
                     }
                 });
                 scene.add(object);
-            });
+            })
+            .catch(error => console.error('Error loading OBJ:', error));
         },
 
         // Function to import a glTF file
         importGLTF(scene: THREE.Scene) {
-            const gltfLoader = new GLTFLoader();
-            gltfLoader.load(this.localPathValue, (gltf) => {
-                gltf.scene.traverse((child) => {
-                    if ((child as THREE.Mesh).isMesh) {
-                        const mesh = child as THREE.Mesh;
-                        mesh.scale.multiplyScalar(0.03);
-                    }
+            // Assuming authToken contains your authentication token
+        
+            fetch(this.localPathValue, {
+                headers: {
+                    'Authorization': `Bearer ${this.authToken}` // Adjust this according to your auth token type
+                }
+            })
+            .then(response => response.arrayBuffer())
+            .then(buffer => {
+                const gltfLoader = new GLTFLoader();
+                gltfLoader.parse(buffer, '', (gltf) => {
+                    gltf.scene.traverse((child) => {
+                        if ((child as THREE.Mesh).isMesh) {
+                            const mesh = child as THREE.Mesh;
+                            mesh.scale.multiplyScalar(0.03);
+                        }
+                    });
+                    scene.add(gltf.scene);
                 });
-                scene.add(gltf.scene);
-            });
+            })
+            .catch(error => console.error('Error loading GLTF:', error));
         },
     },
 });

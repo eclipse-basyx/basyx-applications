@@ -10,7 +10,7 @@
     "dashboardServicePath": "",
     "primaryColor": "#0cb2f0",
     "influxdbToken": "",
-    "keycloakUrl": "http://localhost:9097",
-    "keycloakRealm": "BaSyx",
-    "keycloakClientId": "basyx-web-ui"
+    "keycloakUrl": "",
+    "keycloakRealm": "",
+    "keycloakClientId": ""
 }

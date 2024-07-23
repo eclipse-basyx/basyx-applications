@@ -38,10 +38,7 @@ export default defineComponent({
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);
                     } else if (response.ok && response.status >= 200 && response.status < 300) {
-                        console.error(`Request was successful, but received unexpected content type or no content. 
-                                    Content-Type: ${response.headers.get('Content-Type')}, 
-                                    Content-Length: ${response.headers.get('Content-Length')}`);
-                        return { success: false };
+                        return response.blob();  // Return the response as Blob
                     } else {
                         // Unexpected HTTP status
                         throw new Error('Unexpected HTTP status: ' + response.status);
