@@ -1,37 +1,44 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
+import { useAuthStore } from '@/store/AuthStore';
 
 export default defineComponent({
     name: 'RequestHandling',
     data() {
         return {
             navigationStore: useNavigationStore(), // NavigationStore Object
+            authStore: useAuthStore(), // AuthStore Object
         }
     },
 
     methods: {
-
+        addAuthorizationHeader(headers: Headers): Headers {
+            headers.set('Authorization', 'Bearer ' + this.authStore.getToken);
+            return headers;
+        },
         // Function to send get Request which returns a Promise
-        getRequest(path: string, context: string, disableMessage: boolean, headers: Record<string, string> = {}): any {
-            return fetch(path, { method: 'GET', headers: headers })
+        getRequest(path: string, context: string, disableMessage: boolean, headers: Headers = new Headers()): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
+            return fetch(path, { method: 'GET', headers: headers })  
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {
                         return response.json();  // Return the response as JSON
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/asset-administration-shell-package+xml' && response.headers.get('Content-Length') !== '0') {
+                        return response.blob();  // Return the response as Blob} 
+                    } else if (response.headers.get('Content-Type')?.split(';')[0].includes("image") && response.headers.get('Content-Length') !== '0') {
                         return response.blob();  // Return the response as Blob
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/csv' && response.headers.get('Content-Length') !== '0') {
                         return response.text();  // Return the response as text
                     } else if (response.headers.get('Content-Type')?.split(';')[0] === 'text/plain' && response.headers.get('Content-Length') !== '0') {
                         return response.text();  // Return the response as text
+                    } else if (response.headers.get('Content-Type')?.split(';')[0] === 'application/pdf' && response.headers.get('Content-Length') !== '0') {
+                        return response.blob();  // Return the response as Blob
                     } else if (!response.ok) {
                         // No content but received an HTTP error status
                         throw new Error('Error status: ' + response.status);
                     } else if (response.ok && response.status >= 200 && response.status < 300) {
-                        console.error(`Request was successful, but received unexpected content type or no content. 
-                                    Content-Type: ${response.headers.get('Content-Type')}, 
-                                    Content-Length: ${response.headers.get('Content-Length')}`);
-                        return { success: false };
+                        return response.blob();  // Return the response as Blob
                     } else {
                         // Unexpected HTTP status
                         throw new Error('Unexpected HTTP status: ' + response.status);
@@ -59,7 +66,8 @@ export default defineComponent({
         },
 
         // Function to send post Request which returns a Promise
-        postRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+        postRequest(path: string, body: any, headers: Headers, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
             return fetch(path, { method: 'POST', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -99,7 +107,8 @@ export default defineComponent({
         },
 
         // Function to send put Request which returns a Promise
-        putRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+        putRequest(path: string, body: any, headers: Headers, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
             return fetch(path, { method: 'PUT', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -137,7 +146,8 @@ export default defineComponent({
         },
 
         // Function to send patch Request which returns a Promise
-        patchRequest(path: string, body: any, headers: any, context: string, disableMessage: boolean): any {
+        patchRequest(path: string, body: any, headers: Headers, context: string, disableMessage: boolean): any {
+            headers = this.addAuthorizationHeader(headers);  // Add the Authorization header
             return fetch(path, { method: 'PATCH', body: body, headers: headers })
                 .then(response => {
                     // Check if the Server responded with content
@@ -176,7 +186,7 @@ export default defineComponent({
 
         // Function to send delete Request which returns a Promise
         deleteRequest(path: string, context: string, disableMessage: boolean): any {
-            return fetch(path, { method: 'DELETE' })
+            return fetch(path, { method: 'DELETE', headers: this.addAuthorizationHeader(new Headers()) })
                 .then(response => {
                     // Check if the Server responded with content
                     if (response.headers.get('Content-Type')?.split(';')[0] === 'application/json' && response.headers.get('Content-Length') !== '0') {

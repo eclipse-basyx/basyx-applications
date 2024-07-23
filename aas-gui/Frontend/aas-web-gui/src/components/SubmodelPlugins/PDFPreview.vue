@@ -1,11 +1,8 @@
 <template>
     <v-container fluid class="pa-0">
         <v-card class="pdfCard" style="transform: translateY(0px)">
-            <!-- PDF File Preview -->
-            <iframe v-if="useIFrame && submodelElementData.modelType == 'File'" :src="localPathValue" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
-            <iframe v-if="!useIFrame && submodelElementData.modelType == 'File'" :src="pdfData" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
-            <!-- PDF Blob Preview -->
-            <iframe v-if="Base64PDF && submodelElementData.modelType == 'Blob'" :src="Base64PDF" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
+            <iframe v-if="pdfUrl.length > 0" :src="pdfUrl" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
+            <iframe v-else :src="Base64PDF" width="100%" height="600px" frameBorder="0" style="margin-bottom: -5px"></iframe>
         </v-card>
     </v-container>
 </template>
@@ -16,11 +13,12 @@ import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '../../mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'PDFPreview',
     props: ['submodelElementData'],
-    mixins: [RequestHandling],
+    mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
         const theme = useTheme()
@@ -37,26 +35,32 @@ export default defineComponent({
     data() {
         return {
             localPathValue: '', // Path to the File when it is embedded to the AAS
-            Base64PDF: '',      // Base64 PDF String
-            useIFrame: false,
+            Base64PDF: '',      // Base64 PDF string
+            pdfUrl: '',         // URL to the PDF File
             pdfData: '',
         }
     },
 
     mounted() {
+        this.Base64PDF = '';
+        this.pdfUrl = '';
         if (this.submodelElementData.modelType == 'File') {
-            this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+            // console.log('SubmodelElementData: ', this.submodelElementData);
+            this.getPDFBlob();
         } else if (this.submodelElementData.modelType == 'Blob') {
-            this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
+            this.getDecodedPDFBlob();
         }
     },
 
     watch: {
         submodelElementData() {
+            this.Base64PDF = '';
+            this.pdfUrl = '';
             if (this.submodelElementData.modelType == 'File') {
-                this.localPathValue = this.getLocalPath(this.submodelElementData.value)
+                // console.log('SubmodelElementData: ', this.submodelElementData);
+                this.getPDFBlob();
             } else if (this.submodelElementData.modelType == 'Blob') {
-                this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${this.submodelElementData.value}`;
+                this.getDecodedPDFBlob();
             }
         },
     },
@@ -69,53 +73,25 @@ export default defineComponent({
     },
 
     methods: {
-        // Function to prepare the PDF Link for the PDF Preview
-        getLocalPath(path: string): string {
-            this.useIFrame = true;
-            if (!path) return '';
-
+        getPDFBlob() {
             try {
-                new URL(path);
-                // If no error is thrown, path is a valid URL
-                return path;
+                new URL(this.submodelElementData.value);
+                this.pdfUrl = this.submodelElementData.value;
             } catch {
-                // If error is thrown, path is not a valid URL
-                if(!path.endsWith('.pdf') && path.endsWith('/File')) {
-                    this.useIFrame = false;
-                    this.getPDFData();
-                    return path;
-                } else {
-                    return `${this.submodelElementData.path}/attachment`;
-                }
+                let path = this.getLocalPath(this.submodelElementData.value, this.submodelElementData)
+                let context = 'retrieving Attachment File';
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) { // execute if the Request was successful
+                        this.Base64PDF = URL.createObjectURL(response.data as Blob);
+                    }
+                });
             }
         },
 
-        // Function to fetch raw PDF data
-        getPDFData() {
-            console.log('getPDFData: ', this.submodelElementData.value);
-            let path = this.submodelElementData.value;
-            fetch(path, { method: 'GET', headers: { 'Content-Type': 'application/octet-stream' } })
-                .then(response => response.blob())
-                .then(result => {
-                    // console.log(result);
-                    this.createPDF(result);
-                })
-                .catch(error => {
-                    // console.log('error', error)
-                    this.navigationStore.dispatchSnackbar({ status: true, timeout: 60000, color: 'error', btnColor: 'buttonText', text: 'Error! Server responded with: ' + error }); // Show Error Snackbar
-                });
-        },
-
-        // Function to create PDF Preview
-        createPDF(PDFData: Blob) {
-            // convert PDFData to data:application/pdf;base64,<BASE64_ENCODED_PDF>
-            const reader = new FileReader();
-            reader.readAsDataURL(PDFData);
-            reader.onloadend = () => {
-                const base64data = reader.result as string;
-                const pdfDataUri = base64data.replace('data:application/octet-stream', 'data:application/pdf');
-                this.pdfData = pdfDataUri;
-            };
+        getDecodedPDFBlob() {
+            let decodedValue = atob(this.submodelElementData.value);
+            this.Base64PDF = `data:${this.submodelElementData.contentType};base64,${decodedValue}`;
         },
     },
 });

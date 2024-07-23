@@ -118,7 +118,8 @@ export default defineComponent({
             // console.log("Update Value: ", this.newBooleanValue);
             let path = this.booleanValue.path + '/$value';
             let content = JSON.stringify(this.newBooleanValue.toString());
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating ' + this.booleanValue.modelType + ' "' + this.booleanValue.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property

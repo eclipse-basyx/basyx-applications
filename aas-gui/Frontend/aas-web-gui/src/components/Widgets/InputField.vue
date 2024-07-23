@@ -108,7 +108,8 @@ export default defineComponent({
                 path = this.selectedNode.pathFull + '/' + inputElement.idShort + '/value';
             }
             let content = "'" + this.newPropertyValues[position] + "'";
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating Property "' + this.selectedNode.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
