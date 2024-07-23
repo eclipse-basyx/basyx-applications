@@ -17,7 +17,7 @@
                         <tr v-for="(productProperty, index) in productProperties" :key="productProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                             <td>
                                 <div class="text-subtitleText text-caption">
-                                    <span>{{ productProperty.idShort }}</span>
+                                    <span>{{ nameToDisplay(productProperty) }}</span>
                                     <v-tooltip v-if="productProperty.description && productProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                         <div v-for="(description, i) in productProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                     </v-tooltip>
@@ -58,7 +58,7 @@
                         <tr v-for="(manufacturerProperty, index) in manufacturerProperties" :key="manufacturerProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                             <td>
                                 <div class="text-subtitleText text-caption">
-                                    <span>{{ manufacturerProperty.idShort }}</span>
+                                    <span>{{ nameToDisplay(manufacturerProperty) }}</span>
                                     <v-tooltip v-if="manufacturerProperty.description && manufacturerProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                         <div v-for="(description, i) in manufacturerProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                     </v-tooltip>
@@ -500,6 +500,14 @@ export default defineComponent({
                     }
                 });
             }
+        },
+
+        nameToDisplay(sme: any) {
+            if (sme.displayName) {
+                let displayNameEn = sme.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
+            }
+            return (sme.idShort ? sme.idShort : '');
         },
     },
 });

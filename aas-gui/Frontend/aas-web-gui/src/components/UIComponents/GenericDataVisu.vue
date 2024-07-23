@@ -3,7 +3,7 @@
         <v-expansion-panels multiple class="mt-3">
             <v-expansion-panel v-for="(submodelElement, index) in localSubmodelElementData" :key="submodelElement.id">
                 <v-expansion-panel-title color="elevatedCard">
-                    <span v-if="submodelElement.idShort">{{ submodelElement.idShort }}</span>
+                    <span v-if="submodelElement.idShort">{{ nameToDisplay(submodelElement) }}</span>
                     <span v-else>{{ 'Element ' + (index + 1) }}</span>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
@@ -120,6 +120,14 @@ export default defineComponent({
             let submodelElementData = [ ...this.submodelElementData ];
             // console.log('SubmodelElementData: ', submodelElementData);
             this.localSubmodelElementData = submodelElementData;
+        },
+
+        nameToDisplay(sme: any) {
+            if (sme.displayName) {
+                let displayNameEn = sme.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
+            }
+            return (sme.idShort ? sme.idShort : '');
         },
         
     },
