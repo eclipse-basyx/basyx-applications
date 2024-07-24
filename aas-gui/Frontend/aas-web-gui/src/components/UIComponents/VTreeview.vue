@@ -49,7 +49,7 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useTheme } from 'vuetify';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'VTreeview',
