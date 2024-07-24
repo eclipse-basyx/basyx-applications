@@ -25,7 +25,7 @@
                             <tr v-for="(generalProperty, index) in generalProperties" :key="generalProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                                 <td>
                                     <div class="text-subtitleText text-caption">
-                                        <span>{{ generalProperty.idShort }}</span>
+                                        <span>{{ nameToDisplay(generalProperty) }}</span>
                                         <v-tooltip v-if="generalProperty.description && generalProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                             <div v-for="(description, i) in generalProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                         </v-tooltip>
@@ -67,7 +67,7 @@
                                 <tr v-if="productClassifications.length > 0">
                                     <th v-for="classificationProperty in productClassifications[0].value" :key="classificationProperty.idShort">
                                         <v-list-item class="pl-0">
-                                            <v-list-item-title class="text-caption">{{ classificationProperty.idShort }}</v-list-item-title>
+                                            <v-list-item-title class="text-caption">{{ nameToDisplay(classificationProperty) }}</v-list-item-title>
                                         </v-list-item>
                                     </th>
                                 </tr>
@@ -122,7 +122,7 @@
                             <tr v-for="(furtherInfo, index) in furtherInformation" :key="furtherInfo.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                                 <td>
                                     <div class="text-subtitleText text-caption">
-                                        <span>{{ furtherInfo.idShort }}</span>
+                                        <span>{{ nameToDisplay(furtherInfo) }}</span>
                                         <v-tooltip v-if="furtherInfo.description && furtherInfo.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                             <div v-for="(description, i) in furtherInfo.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                         </v-tooltip>
