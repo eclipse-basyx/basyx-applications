@@ -411,8 +411,8 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
     name: 'HTWFuehrungskomponente',

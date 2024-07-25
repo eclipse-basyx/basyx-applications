@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent, shallowRef } from 'vue';
 import RelationshipElement from './RelationshipElement.vue';
-// import SubmodelElementWrapper from '../UIComponents/SubmodelElementWrapper.vue';
+// import SubmodelElementWrapper from '@/components/UIComponents/SubmodelElementWrapper.vue';
 
 export default defineComponent({
     name: 'AnnotatedRelationshipElement',
@@ -30,7 +30,7 @@ export default defineComponent({
     setup() {
         const SubmodelElementWrapper = shallowRef(null) as any;
 
-        import('../UIComponents/SubmodelElementWrapper.vue').then((module) => {
+        import('@/components/UIComponents/SubmodelElementWrapper.vue').then((module) => {
             SubmodelElementWrapper.value = module.default;
         });
 

@@ -9,8 +9,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import IdentificationElement from '../UIComponents/IdentificationElement.vue';
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
+
+import IdentificationElement from '@/components/UIComponents/IdentificationElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
 
 export default defineComponent({
     name: 'AssetInformation',

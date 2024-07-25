@@ -28,8 +28,8 @@ import { useRouter } from 'vue-router';
 import mermaid from 'mermaid';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 declare global {
     interface Window { callback: any; }
