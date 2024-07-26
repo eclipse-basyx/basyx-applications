@@ -14,7 +14,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import SubmodelElementGroup from '../UIComponents/SubmodelElementGroup.vue';
+
+import SubmodelElementGroup from '@/components/UIComponents/SubmodelElementGroup.vue';
 
 export default defineComponent({
     name: 'Submodel',

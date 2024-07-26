@@ -46,7 +46,8 @@
     import { defineComponent } from 'vue';
     import { useEnvStore } from '@/store/EnvironmentStore';
     import DashboardHandling from '@/mixins/DashboardHandling';
-    import TimeSeriesData from '../SubmodelPlugins/TimeSeriesData.vue';
+    
+    import TimeSeriesData from '@/components/SubmodelPlugins/TimeSeriesData.vue';
 
     export default defineComponent({
     name: 'DashboardEditElement',

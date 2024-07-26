@@ -17,10 +17,10 @@
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from './mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import AppNavigation from './components/AppNavigation/AppNavigation.vue';
+import AppNavigation from '@/components/AppNavigation/AppNavigation.vue';
 
 interface AASType {
   endpoints: Array<{

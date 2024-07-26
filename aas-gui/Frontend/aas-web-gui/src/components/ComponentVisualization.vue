@@ -33,7 +33,7 @@ import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import SubmodelEntrypoint from './SubmodelPlugins/_SubmodelEntrypoint.vue';
+import SubmodelEntrypoint from '@/components/SubmodelPlugins/_SubmodelEntrypoint.vue';
 
 export default defineComponent({
     name: 'ComponentVisualization',

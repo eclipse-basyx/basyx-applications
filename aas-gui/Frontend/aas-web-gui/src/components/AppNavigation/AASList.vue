@@ -436,7 +436,7 @@ export default defineComponent({
             }
             // show a confirmation Dialog to delete the AAS
             if(confirm('Are you sure you want to delete the AAS')) {
-                console.log('Remove AAS: ', AAS);
+                // console.log('Remove AAS: ', AAS);
                 let path = AAS.endpoints[0].protocolInformation.href;
                 let context = 'removing AAS';
                 let disableMessage = false;

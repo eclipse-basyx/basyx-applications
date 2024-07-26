@@ -32,24 +32,24 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import IdentificationElement from '../UIComponents/IdentificationElement.vue';
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
+import IdentificationElement from '@/components/UIComponents/IdentificationElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
 
-import SubmodelElementList from '../SubmodelElements/SubmodelElementList.vue';
-import Property from '../SubmodelElements/Property.vue';
-import MultyLanguageProperty from '../SubmodelElements/MultiLanguageProperty.vue';
-import Operation from '../SubmodelElements/Operation.vue';
-import File from '../SubmodelElements/File.vue';
-import Blob from '../SubmodelElements/Blob.vue';
-import ReferenceElement from '../SubmodelElements/ReferenceElement.vue';
-import Range from '../SubmodelElements/Range.vue';
-import Entity from '../SubmodelElements/Entity.vue';
-import RelationshipElement from '../SubmodelElements/RelationshipElement.vue';
-import AnnotatedRelationshipElement from '../SubmodelElements/AnnotatedRelationshipElement.vue';
-import InvalidElement from '../SubmodelElements/InvalidElement.vue';
+import SubmodelElementList from '@/components/SubmodelElements/SubmodelElementList.vue';
+import Property from '@/components/SubmodelElements/Property.vue';
+import MultyLanguageProperty from '@/components/SubmodelElements/MultiLanguageProperty.vue';
+import Operation from '@/components/SubmodelElements/Operation.vue';
+import File from '@/components/SubmodelElements/File.vue';
+import Blob from '@/components/SubmodelElements/Blob.vue';
+import ReferenceElement from '@/components/SubmodelElements/ReferenceElement.vue';
+import Range from '@/components/SubmodelElements/Range.vue';
+import Entity from '@/components/SubmodelElements/Entity.vue';
+import RelationshipElement from '@/components/SubmodelElements/RelationshipElement.vue';
+import AnnotatedRelationshipElement from '@/components/SubmodelElements/AnnotatedRelationshipElement.vue';
+import InvalidElement from '@/components/SubmodelElements/InvalidElement.vue';
 
 export default defineComponent({
     name: 'GenericDataVisu',

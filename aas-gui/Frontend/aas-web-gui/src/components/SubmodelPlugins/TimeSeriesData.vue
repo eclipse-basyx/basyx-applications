@@ -81,12 +81,12 @@ import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import DashboardHandling from '@/mixins/DashboardHandling';
 
 // Widget imports
-import LineChart from '../Widgets/LineChart.vue';
-import AreaChart from '../Widgets/AreaChart.vue';
-import ScatterChart from '../Widgets/ScatterChart.vue';
-import Histogram from '../Widgets/Histogram.vue';
-import Gauge from '../Widgets/Gauge.vue';
-import DisplayField from '../Widgets/DisplayField.vue';
+import LineChart from '@/components/Widgets/LineChart.vue';
+import AreaChart from '@/components/Widgets/AreaChart.vue';
+import ScatterChart from '@/components/Widgets/ScatterChart.vue';
+import Histogram from '@/components/Widgets/Histogram.vue';
+import Gauge from '@/components/Widgets/Gauge.vue';
+import DisplayField from '@/components/Widgets/DisplayField.vue';
 
 export default defineComponent({
     name: 'TimeSeriesData',

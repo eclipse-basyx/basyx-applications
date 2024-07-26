@@ -14,8 +14,6 @@ export default defineComponent({
         const aasStore = useAASStore()
         const envStore = useEnvStore()
 
-        console.log(aasStore)
-
         return {
             aasStore, // AASStore Object
             envStore, // EnvironmentStore Object
@@ -84,7 +82,7 @@ export default defineComponent({
             // send the request
             this.postRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    console.log('Successfully added Element to Dashboard: ', response.data);
+                    // console.log('Successfully added Element to Dashboard: ', response.data);
                 }
             });
         },

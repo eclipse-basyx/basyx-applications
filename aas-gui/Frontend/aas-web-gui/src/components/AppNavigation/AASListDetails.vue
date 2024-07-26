@@ -34,11 +34,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
-import IdentificationElement from '../UIComponents/IdentificationElement.vue';
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
-import AssetInformation from '../UIComponents/AssetInformation.vue';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
+import IdentificationElement from '@/components/UIComponents/IdentificationElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
+import AssetInformation from '@/components/UIComponents/AssetInformation.vue';
 
 export default defineComponent({
     name: 'AASListDetails',

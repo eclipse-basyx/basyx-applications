@@ -83,19 +83,9 @@ export default defineComponent({
     },
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
-        },
-
-        // Check if the current Theme is dark
-        isDark() {
-            return this.theme.global.current.value.dark
+            return this.navigationStore.getIsMobile;
         },
 
         // get selected AAS from Store

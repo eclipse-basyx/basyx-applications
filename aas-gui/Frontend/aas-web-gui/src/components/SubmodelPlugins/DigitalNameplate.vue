@@ -123,14 +123,14 @@ import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { latLng } from 'leaflet';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import IdentificationElement from '../UIComponents/IdentificationElement.vue';
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
-import ImagePreview from '../UIComponents/ImagePreview.vue';
+import IdentificationElement from '@/components/UIComponents/IdentificationElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
+import ImagePreview from '@/components/SubmodelPlugins/ImagePreview.vue';
 
-import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
+import GenericDataVisu from '@/components/UIComponents/GenericDataVisu.vue';
 
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 import 'leaflet/dist/leaflet.css';

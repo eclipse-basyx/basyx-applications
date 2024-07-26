@@ -36,8 +36,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useEnvStore } from '@/store/EnvironmentStore';
-import DashboardElement from '@/components/Dashboard/DashboardElement.vue';
 import DashboardHandling from '@/mixins/DashboardHandling';
+
+import DashboardElement from './DashboardElement.vue';
 
 export default defineComponent({
     name: 'Dashboard',

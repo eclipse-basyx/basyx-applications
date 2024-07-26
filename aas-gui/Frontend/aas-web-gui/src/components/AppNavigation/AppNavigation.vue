@@ -149,7 +149,8 @@ import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
 import { useAuthStore } from '@/store/AuthStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+
 import AASList  from './AASList.vue';
 import AutoSync from './AutoSync.vue';
 import ThemeSwitch from './Settings/ThemeSwitch.vue';

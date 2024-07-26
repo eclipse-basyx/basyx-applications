@@ -25,10 +25,10 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
-import RequestHandling from '../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import VTreeview from './UIComponents/VTreeview.vue';
+import VTreeview from '@/components/UIComponents/VTreeview.vue';
 
 export default defineComponent({
     name: 'AASTreeview',
