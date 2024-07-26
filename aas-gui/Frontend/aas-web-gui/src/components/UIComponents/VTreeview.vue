@@ -95,16 +95,6 @@ export default defineComponent({
             return this.navigationStore.getIsMobile;
         },
 
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
-        },
-
-        // Check if the current Theme is dark
-        isDark() {
-            return this.theme.global.current.value.dark
-        },
-
         // get selected AAS from Store
         SelectedAAS() {
             return this.aasStore.getSelectedAAS;
