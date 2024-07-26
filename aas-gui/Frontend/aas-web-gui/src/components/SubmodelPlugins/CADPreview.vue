@@ -133,7 +133,7 @@ export default defineComponent({
             } else if (contentType == 'model/gltf+json') {
                 this.importGLTF(scene);
             } else {
-                console.log('Unsupported File Type');
+                // console.log('Unsupported File Type');
                 return;
             }
 

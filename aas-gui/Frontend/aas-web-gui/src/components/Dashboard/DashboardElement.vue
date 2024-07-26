@@ -103,7 +103,7 @@ export default defineComponent({
             } else {
                 this.syncStatus = false;
                 if (this.timeout) {
-                    console.log('Clear Timeout')
+                    // console.log('Clear Timeout')
                     window.clearTimeout(this.timeout);
                     this.timeout = null;
                 }
@@ -154,7 +154,7 @@ export default defineComponent({
         },
 
         updateDashboardElement(element: any) {
-            console.log('Updated Element: ', element, this.localDashboardData);
+            // console.log('Updated Element: ', element, this.localDashboardData);
             if (element) {
                 // check if the element moved to another group
                 // console.log(element.group.groupId, this.localDashboardData.group.groupId)
