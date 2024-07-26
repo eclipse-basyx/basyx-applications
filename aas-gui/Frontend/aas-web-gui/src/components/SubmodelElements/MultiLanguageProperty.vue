@@ -2,11 +2,14 @@
     <v-container fluid class="pa-0">
         <v-card color="elevatedCard" v-if="multiLanguagePropertyObject" class="mt-4">
             <!-- Value(s) of the MultiLanguageProperty -->
-            <v-list nav class="bg-elevatedCard pt-0" v-if="multiLanguagePropertyObject.value && multiLanguagePropertyObject.value.length > 0">
+            <v-list nav class="bg-elevatedCard pt-0"
+                v-if="multiLanguagePropertyObject.value && multiLanguagePropertyObject.value.length > 0">
                 <v-list-item v-for="(value, i) in mlpValue" :key="i">
                     <v-list-item-title class="pt-2">
                         <!-- Input Field containing the Variable Value -->
-                        <v-text-field v-model="value.text" variant="outlined" density="compact" hide-details clearable append-icon="mdi-delete" @click:append="removeEntry(i)" @update:focused="setFocus($event, value)" @keydown.native.enter="updateValue()">
+                        <v-text-field v-model="value.text" variant="outlined" density="compact" hide-details clearable
+                            append-icon="mdi-delete" @click:append="removeEntry(i)"
+                            @update:focused="setFocus($event, value)" @keydown.native.enter="updateValue()">
                             <template v-slot:prepend-inner>
                                 <!-- language -->
                                 <v-chip label size="x-small" border>
@@ -15,7 +18,8 @@
                                     <!-- Menu to select the Language -->
                                     <v-menu activator="parent">
                                         <v-list density="compact" class="pa-0">
-                                            <v-list-item v-for="language in languages" :key="language.id" @click="selectLanguage(language,  value)">
+                                            <v-list-item v-for="language in languages" :key="language.id"
+                                                @click="selectLanguage(language, value)">
                                                 <v-list-item-title class="py-0">{{ language.short }}</v-list-item-title>
                                             </v-list-item>
                                         </v-list>
@@ -24,7 +28,8 @@
                             </template>
                             <!-- Update Value Button -->
                             <template v-slot:append-inner>
-                                <v-btn v-if="value.isFocused" size="small" variant="elevated" color="primary" class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
+                                <v-btn v-if="value.isFocused" size="small" variant="elevated" color="primary"
+                                    class="text-buttonText" style="right: -4px" @click.stop="updateValue()">
                                     <v-icon>mdi-upload</v-icon>
                                 </v-btn>
                             </template>
@@ -36,7 +41,8 @@
             <v-list nav class="bg-elevatedCard pt-0" v-else>
                 <v-list-item>
                     <v-list-item-title class="pt-2">
-                        <v-alert text="MultiLanguageProperty doesn't contain a Value!" density="compact" type="warning" variant="outlined"></v-alert>
+                        <v-alert text="MultiLanguageProperty doesn't contain a Value!" density="compact" type="warning"
+                            variant="outlined"></v-alert>
                     </v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -45,7 +51,8 @@
             <v-list nav class="bg-elevatedCard py-0">
                 <v-list-item>
                     <template v-slot:append>
-                        <v-btn color="primary" size="small" variant="elevated" class="text-buttonText" @click="addEntry()">
+                        <v-btn color="primary" size="small" variant="elevated" class="text-buttonText"
+                            @click="addEntry()">
                             <div>Add new Entry</div>
                             <v-icon class="ml-1">mdi-plus</v-icon>
                         </v-btn>
@@ -166,7 +173,8 @@ export default defineComponent({
             // console.log("Update Value: ", this.multiLanguagePropertyObject);
             let path = this.multiLanguagePropertyObject.path + '/$value';
             let content = JSON.stringify(this.multiLanguagePropertyObject.value.map((item: any) => ({ [item.language]: item.text })));
-            let headers = { 'Content-Type': 'application/json' };
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             let context = 'updating ' + this.multiLanguagePropertyObject.modelType + ' "' + this.multiLanguagePropertyObject.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
@@ -178,7 +186,7 @@ export default defineComponent({
                     // this.$emit('updateValue', updatedPropertyObject); // emit event to update the value in the parent component
                 }
             });
-    },
+        },
 
         // Function to set the focus on the input field
         setFocus(e: boolean, value: any) {

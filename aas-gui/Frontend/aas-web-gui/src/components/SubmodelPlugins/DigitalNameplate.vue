@@ -17,7 +17,7 @@
                         <tr v-for="(productProperty, index) in productProperties" :key="productProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                             <td>
                                 <div class="text-subtitleText text-caption">
-                                    <span>{{ productProperty.idShort }}</span>
+                                    <span>{{ nameToDisplay(productProperty) }}</span>
                                     <v-tooltip v-if="productProperty.description && productProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                         <div v-for="(description, i) in productProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                     </v-tooltip>
@@ -58,7 +58,7 @@
                         <tr v-for="(manufacturerProperty, index) in manufacturerProperties" :key="manufacturerProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                             <td>
                                 <div class="text-subtitleText text-caption">
-                                    <span>{{ manufacturerProperty.idShort }}</span>
+                                    <span>{{ nameToDisplay(manufacturerProperty) }}</span>
                                     <v-tooltip v-if="manufacturerProperty.description && manufacturerProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                         <div v-for="(description, i) in manufacturerProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                     </v-tooltip>
@@ -66,7 +66,7 @@
                             </td>
                             <td>
                                 <!-- Company Logo -->
-                                <v-img v-if="manufacturerProperty.idShort == 'CompanyLogo'" :src="getLocalPath(manufacturerProperty.value, manufacturerProperty)" max-width="100%" max-height="100%" contain class="my-2"></v-img>
+                                <v-img v-if="manufacturerProperty.idShort == 'CompanyLogo'" :src="companyLogoUrl" max-width="100%" max-height="100%" contain class="my-2"></v-img>
                                 <!-- MultiLanguageProperties -->
                                 <template v-else-if="manufacturerProperty.modelType == 'MultiLanguageProperty'">
                                     <v-list-item v-for="(element, i) in manufacturerProperty.value" :key="i" class="pl-0">
@@ -99,8 +99,8 @@
             </v-card-title>
             <v-card-text>
                 <v-row class="text-caption mb-2" justify="start">
-                    <v-col v-for="marking in markings" :key="marking.name" cols="auto">
-                        <v-img :src="getLocalPath(marking.value, marking)" height="150px" width="150px" contain></v-img>
+                    <v-col v-for="(marking, i) in markings" :key="marking.name" cols="auto">
+                        <v-img :src="markingImageUrls[i]" height="150px" width="150px" contain></v-img>
                         <span class="text-subtitleText text-caption">{{ marking.name }}</span>
                     </v-col>
                 </v-row>
@@ -128,6 +128,7 @@ import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
 
 import IdentificationElement from '../UIComponents/IdentificationElement.vue';
 import DescriptionElement from '../UIComponents/DescriptionElement.vue';
+import ImagePreview from '../UIComponents/ImagePreview.vue';
 
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
@@ -168,7 +169,9 @@ export default defineComponent({
             productProperties: [] as Array<any>, // Array to store the product properties
             manufacturerProperties: [] as Array<any>, // Array to store the manufacturer properties
             markings: [] as Array<any>, // Array to store the markings
+            markingImageUrls: [] as Array<string>, // Array to store the marking image urls
             assetSpecificProperties: [] as Array<any>, // Array to store the asset specific properties
+            companyLogoUrl: '', // URL of the Company Logo
             // Leaflet Map
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -285,6 +288,7 @@ export default defineComponent({
             // find property with the idShort "CompanyLogo" and add that element to the manufacturerProperties array
             let companyLogo = digitalNameplateData.submodelElements.find((element: any) => element.idShort === 'CompanyLogo');
             if (companyLogo) {
+                this.getImageUrl(companyLogo, 'companyLogoUrl');
                 manufacturerProperties.push(companyLogo);
             }
             // find property with the idShort "ManufacturerName" and add that element to the manufacturerProperties array
@@ -375,6 +379,7 @@ export default defineComponent({
                         name: markingName.value,
                         path: markingFile.path,
                     };
+                    this.getImageUrl(formattedMarking, 'markingImageUrls', true);
                     formattedMarkings.push(formattedMarking);
                 });
                 // console.log('Formatted Markings:', formattedMarkings);
@@ -469,6 +474,31 @@ export default defineComponent({
                     .catch(error => {
                         this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Error fetching the coordinates for the address!', extendedError: error });
                     });
+            }
+        },
+
+        getImageUrl(fileProperty: any, dataElementName: string, isMarking: boolean = false) {
+            if (!fileProperty.value) return;
+            try {
+                new URL(fileProperty.value);
+                if (isMarking) {
+                    (this as any)[dataElementName].push(fileProperty.value);
+                } else {
+                    (this as any)[dataElementName] = fileProperty.value;
+                }
+            } catch {
+                let path = this.getLocalPath(fileProperty.value, fileProperty)
+                let context = 'retrieving Attachment File';
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) {
+                        if (isMarking) {
+                            (this as any)[dataElementName].push(URL.createObjectURL(response.data as Blob));
+                        } else {
+                            (this as any)[dataElementName] = URL.createObjectURL(response.data as Blob);
+                        }
+                    }
+                });
             }
         },
     },

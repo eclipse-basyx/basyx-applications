@@ -52,7 +52,7 @@ export default defineComponent({
         // converts AAS identification to UTF8 BASE64 encoded URL
         URLEncode(aasId: string) {
             const base64Id = btoa(unescape(encodeURIComponent(aasId)));
-            const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+            const urlSafeBase64Id = base64Id.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '%3D');
             return urlSafeBase64Id;
         },
 
@@ -420,7 +420,7 @@ export default defineComponent({
                         let conceptDescription = response.data;
                         conceptDescription.path = path;
                         // Check if ConceptDescription has data to be displayed
-                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0) || (conceptDescription.description && conceptDescription. description.length > 0) || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
+                        if ((conceptDescription.displayName && conceptDescription.displayName.length > 0) || (conceptDescription.description && conceptDescription.description.length > 0) || (conceptDescription.embeddedDataSpecifications && conceptDescription.embeddedDataSpecifications.length > 0)) {
                             return conceptDescription;
                         }
                         return {};
@@ -466,7 +466,6 @@ export default defineComponent({
         // Function to calculate the local path (used for files)
         getLocalPath(path: string, selectedNode: any): string {
             if (!path) return '';
-        
             try {
                 new URL(path);
                 // If no error is thrown, path is a valid URL
@@ -498,6 +497,15 @@ export default defineComponent({
                 }
             }
             return '';
+        },
+
+        // Name to be displayed
+        nameToDisplay(sme: any) {
+            if (sme.displayName) {
+                let displayNameEn = sme.displayName.find((displayName: any) => { return (displayName.language === 'en' && displayName.text !== ''); });
+                if (displayNameEn && displayNameEn.text) return displayNameEn.text;
+            }
+            return (sme.idShort ? sme.idShort : '');
         },
     },
 })

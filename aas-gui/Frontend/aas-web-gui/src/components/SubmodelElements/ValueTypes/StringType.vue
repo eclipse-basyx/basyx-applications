@@ -104,11 +104,12 @@ export default defineComponent({
             // console.log("Update Value: " + this.newPropertyValue);
             let path = this.stringValue.path + '/$value';
             let content = JSON.stringify(this.newStringValue);
-            let headers = { 'Content-Type': 'application/json' };
             let context = 'updating ' + this.stringValue.modelType + ' "' + this.stringValue.idShort + '"';
             let disableMessage = false;
             // Send Request to update the value of the property
-            this.patchRequest(path, content, headers, context, disableMessage).then((response: any) => {
+            const requestHeaders = new Headers();
+            requestHeaders.append('Content-Type', 'application/json');
+            this.patchRequest(path, content, requestHeaders, context, disableMessage).then((response: any) => {
                 if (response.success) {
                     // this.newPropertyValue = ''; // reset input
                     let updatedStringValue = { ...this.stringValue }; // copy the stringValue

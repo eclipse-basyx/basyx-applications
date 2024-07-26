@@ -23,12 +23,20 @@
                         <!-- General Document Information (DocumentVersion) -->
                         <v-table>
                             <tbody>
-                                <tr v-for="(versionPropertie, index) in documentVersion.meta" :key="versionPropertie.idShort" :class="index % 2 === 0 ? 'bg-tableEven' : 'bg-tableOdd'">
+                                <tr v-for="(versionPropertie, index) in documentVersion.meta"
+                                    :key="versionPropertie.idShort"
+                                    :class="index % 2 === 0 ? 'bg-tableEven' : 'bg-tableOdd'">
                                     <td>
                                         <div class="text-subtitleText text-caption">
                                             <span>{{ versionPropertie.idShort }}</span>
-                                            <v-tooltip v-if="versionPropertie.description && versionPropertie.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
-                                                <div v-for="(description, i) in versionPropertie.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
+                                            <v-tooltip
+                                                v-if="versionPropertie.description && versionPropertie.description.length > 0"
+                                                activator="parent" open-delay="600" transition="slide-y-transition"
+                                                max-width="360px" location="bottom">
+                                                <div v-for="(description, i) in versionPropertie.description" :key="i"
+                                                    class="text-caption"><span class="font-weight-bold">{{
+                                                        description.language + ': ' }}</span>{{ description.text }}
+                                                </div>
                                             </v-tooltip>
                                         </div>
                                     </td>
@@ -36,7 +44,8 @@
                                         <!-- MultiLanguageProperties -->
                                         <template v-if="versionPropertie.modelType == 'MultiLanguageProperty'">
                                             <v-list-item class="pl-0">
-                                                <v-list-item-title class="text-caption">{{ versionPropertie.value[0].text }}</v-list-item-title>
+                                                <v-list-item-title class="text-caption">{{
+                                                    versionPropertie.value[0].text }}</v-list-item-title>
                                             </v-list-item>
                                         </template>
                                         <!-- Default -->
@@ -48,7 +57,8 @@
                         <!-- Switcher for File Preview/Digital File -->
                         <v-row justify="center" class="mt-3">
                             <v-col cols="auto">
-                                <v-btn-toggle color="primary" variant="outlined" divided density="compact" v-model="documentVersion.fileToggle">
+                                <v-btn-toggle color="primary" variant="outlined" divided density="compact"
+                                    v-model="documentVersion.fileToggle">
                                     <v-btn value="preview">
                                         <span>Preview File</span>
                                     </v-btn>
@@ -61,30 +71,46 @@
                         <!-- File Preview (PreviewFile) -->
                         <template v-if="documentVersion.fileToggle === 'preview'">
                             <div class="mt-3" v-if="documentVersion.previewFile">
-                                <ImagePreview v-if="documentVersion.previewFile.contentType && documentVersion.previewFile.contentType.includes('image')" :submodelElementData="documentVersion.previewFile"></ImagePreview>
-                                <PDFPreview v-if="documentVersion.previewFile.contentType && documentVersion.previewFile.contentType.includes('pdf')" :submodelElementData="documentVersion.previewFile"></PDFPreview>
-                                <CADPreview v-if="documentVersion.previewFile.contentType && (documentVersion.previewFile.contentType.includes('sla') || documentVersion.previewFile.contentType.includes('stl') || documentVersion.previewFile.contentType.includes('model') || documentVersion.previewFile.contentType.includes('obj') || documentVersion.previewFile.contentType.includes('gltf'))" :submodelElementData="documentVersion.previewFile"></CADPreview>
+                                <ImagePreview
+                                    v-if="documentVersion.previewFile.contentType && documentVersion.previewFile.contentType.includes('image')"
+                                    :submodelElementData="documentVersion.previewFile"></ImagePreview>
+                                <PDFPreview
+                                    v-if="documentVersion.previewFile.contentType && documentVersion.previewFile.contentType.includes('pdf')"
+                                    :submodelElementData="documentVersion.previewFile"></PDFPreview>
+                                <CADPreview
+                                    v-if="documentVersion.previewFile.contentType && (documentVersion.previewFile.contentType.includes('sla') || documentVersion.previewFile.contentType.includes('stl') || documentVersion.previewFile.contentType.includes('model') || documentVersion.previewFile.contentType.includes('obj') || documentVersion.previewFile.contentType.includes('gltf'))"
+                                    :submodelElementData="documentVersion.previewFile"></CADPreview>
                             </div>
                             <!-- Download Button -->
-                            <v-btn class="mt-3" block color="primary" variant="tonal" @click="downloadFile(documentVersion.previewFile)" v-if="documentVersion.previewFile">
+                            <v-btn class="mt-3" block color="primary" variant="tonal"
+                                @click="downloadFile(documentVersion.previewFile)" v-if="documentVersion.previewFile">
                                 <v-icon left>mdi-download</v-icon>
                                 <span>Download Preview File</span>
                             </v-btn>
-                            <v-alert v-else text="No preview file found!" class="mt-3" density="compact" type="warning" variant="outlined"></v-alert>
+                            <v-alert v-else text="No preview file found!" class="mt-3" density="compact" type="warning"
+                                variant="outlined"></v-alert>
                         </template>
                         <!-- File Preview (DigitalFile) -->
                         <template v-else-if="documentVersion.fileToggle === 'digital'">
                             <div class="mt-3" v-if="documentVersion.digitalFile">
-                                <ImagePreview v-if="documentVersion.digitalFile.contentType && documentVersion.digitalFile.contentType.includes('image')" :submodelElementData="documentVersion.digitalFile"></ImagePreview>
-                                <PDFPreview v-if="documentVersion.digitalFile.contentType && documentVersion.digitalFile.contentType.includes('pdf')" :submodelElementData="documentVersion.digitalFile"></PDFPreview>
-                                <CADPreview v-if="documentVersion.digitalFile.contentType && (documentVersion.digitalFile.contentType.includes('sla') || documentVersion.digitalFile.contentType.includes('stl') || documentVersion.digitalFile.contentType.includes('model') || documentVersion.digitalFile.contentType.includes('obj') || documentVersion.digitalFile.contentType.includes('gltf'))" :submodelElementData="documentVersion.digitalFile"></CADPreview>
+                                <ImagePreview
+                                    v-if="documentVersion.digitalFile.contentType && documentVersion.digitalFile.contentType.includes('image')"
+                                    :submodelElementData="documentVersion.digitalFile"></ImagePreview>
+                                <PDFPreview
+                                    v-if="documentVersion.digitalFile.contentType && documentVersion.digitalFile.contentType.includes('pdf')"
+                                    :submodelElementData="documentVersion.digitalFile"></PDFPreview>
+                                <CADPreview
+                                    v-if="documentVersion.digitalFile.contentType && (documentVersion.digitalFile.contentType.includes('sla') || documentVersion.digitalFile.contentType.includes('stl') || documentVersion.digitalFile.contentType.includes('model') || documentVersion.digitalFile.contentType.includes('obj') || documentVersion.digitalFile.contentType.includes('gltf'))"
+                                    :submodelElementData="documentVersion.digitalFile"></CADPreview>
                             </div>
                             <!-- Download Button -->
-                            <v-btn class="mt-3" block color="primary" variant="tonal" @click="downloadFile(documentVersion.digitalFile)" v-if="documentVersion.digitalFile">
+                            <v-btn class="mt-3" block color="primary" variant="tonal"
+                                @click="downloadFile(documentVersion.digitalFile)" v-if="documentVersion.digitalFile">
                                 <v-icon left>mdi-download</v-icon>
                                 <span>Download Digital File</span>
                             </v-btn>
-                            <v-alert v-else text="No digital file found!" class="mt-3" density="compact" type="warning" variant="outlined"></v-alert>
+                            <v-alert v-else text="No digital file found!" class="mt-3" density="compact" type="warning"
+                                variant="outlined"></v-alert>
                         </template>
                     </template>
                     <!-- DocumentClassifications -->
@@ -92,24 +118,31 @@
                         <v-table>
                             <thead>
                                 <tr v-if="document.documentClassifications.length > 0">
-                                    <th v-for="classificationProperty in document.documentClassifications[0].value" :key="classificationProperty.idShort">
+                                    <th v-for="classificationProperty in document.documentClassifications[0].value"
+                                        :key="classificationProperty.idShort">
                                         <v-list-item class="pl-0">
-                                            <v-list-item-title class="text-caption">{{ classificationProperty.idShort }}</v-list-item-title>
+                                            <v-list-item-title class="text-caption">{{ classificationProperty.idShort
+                                                }}</v-list-item-title>
                                         </v-list-item>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(documentClassification, index) in document.documentClassifications" :key="documentClassification.idShort" :class="index % 2 === 0 ? 'bg-tableOdd' : 'bg-tableEven'">
-                                    <td v-for="classificationProperty in documentClassification.value" :key="classificationProperty.idShort">
+                                <tr v-for="(documentClassification, index) in document.documentClassifications"
+                                    :key="documentClassification.idShort"
+                                    :class="index % 2 === 0 ? 'bg-tableOdd' : 'bg-tableEven'">
+                                    <td v-for="classificationProperty in documentClassification.value"
+                                        :key="classificationProperty.idShort">
                                         <!-- MultiLanguageProperties -->
                                         <template v-if="classificationProperty.modelType == 'MultiLanguageProperty'">
                                             <v-list-item class="pl-0">
-                                                <span class="text-caption text-subtitleText">{{ classificationProperty.value[0].text }}</span>
+                                                <span class="text-caption text-subtitleText">{{
+                                                    classificationProperty.value[0].text }}</span>
                                             </v-list-item>
                                         </template>
                                         <!-- Default -->
-                                        <span v-else class="text-caption text-subtitleText">{{ classificationProperty.value }}</span>
+                                        <span v-else class="text-caption text-subtitleText">{{
+                                            classificationProperty.value }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -122,22 +155,26 @@
                                 <tr v-if="document.documentIds.length > 0">
                                     <th v-for="idProperty in document.documentIds[0].value" :key="idProperty.idShort">
                                         <v-list-item class="pl-0">
-                                            <v-list-item-title class="text-caption">{{ idProperty.idShort }}</v-list-item-title>
+                                            <v-list-item-title class="text-caption">{{ idProperty.idShort
+                                                }}</v-list-item-title>
                                         </v-list-item>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(documentId, index) in document.documentIds" :key="documentId.idShort" :class="index % 2 === 0 ? 'bg-tableOdd' : 'bg-tableEven'">
+                                <tr v-for="(documentId, index) in document.documentIds" :key="documentId.idShort"
+                                    :class="index % 2 === 0 ? 'bg-tableOdd' : 'bg-tableEven'">
                                     <td v-for="idProperty in documentId.value" :key="idProperty.idShort">
                                         <!-- MultiLanguageProperties -->
                                         <template v-if="idProperty.modelType == 'MultiLanguageProperty'">
                                             <v-list-item class="pl-0">
-                                                <span class="text-caption text-subtitleText">{{ idProperty.value[0].text }}</span>
+                                                <span class="text-caption text-subtitleText">{{ idProperty.value[0].text
+                                                    }}</span>
                                             </v-list-item>
                                         </template>
                                         <!-- Default -->
-                                        <span v-else class="text-caption text-subtitleText">{{ idProperty.value }}</span>
+                                        <span v-else class="text-caption text-subtitleText">{{ idProperty.value
+                                            }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -153,8 +190,8 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import ImagePreview from './ImagePreview.vue';
 import PDFPreview from './PDFPreview.vue';
@@ -226,13 +263,9 @@ export default defineComponent({
             // prepare each DocumentVersion
             document.documentVersions.forEach((documentVersion: any) => {
                 // extract the DigitalFile
-                documentVersion.digitalFile = documentVersion.value.find((element: any) => {
-                    return element.idShort === "DigitalFile";
-                });
+                documentVersion.digitalFile = this.getElementBySemanticId("0173-1#02-ABI504", documentVersion);
                 // extract the PreviewFile
-                documentVersion.previewFile = documentVersion.value.find((element: any) => {
-                    return element.idShort === "PreviewFile";
-                });
+                documentVersion.previewFile = this.getElementBySemanticId("0173-1#02-ABI505", documentVersion);
                 // filter for relevant versionProperties
                 documentVersion.meta = documentVersion.value.filter((element: any) => {
                     // return elements with the following idShorts: Language, Title, SubTitle, Summary, KeyWords
@@ -255,21 +288,26 @@ export default defineComponent({
         },
 
         downloadFile(file: any) {
-            // console.log('Download File: ', file);
-            const downloadUrl = this.getLocalPath(file.value, file.path);
-            window.open(downloadUrl, '_blank');
+            let path = this.getLocalPath(file.value, file)
+            let context = 'retrieving Attachment File';
+            let disableMessage = false;
+            this.getRequest(path, context, disableMessage).then((response: any) => {
+                if (response.success) { // execute if the Request was successful
+                    let Base64File = URL.createObjectURL(response.data as Blob);
+                    const link = document.createElement('a');
+                    link.href = Base64File;
+                    link.download = file.idShort;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
         },
 
-        getLocalPath(value: string, path: string): string {
-            if (!value) return '';
-            try {
-                new URL(value);
-                // If no error is thrown, path is a valid URL
-                return value;
-            } catch {
-                // If error is thrown, path is not a valid URL
-                return `${path}/attachment`;
-            }
+        getElementBySemanticId(semanticId: string, parentElement: any) {
+            return parentElement.value.find((element: any) => {
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes(semanticId);
+            });
         },
     },
 });

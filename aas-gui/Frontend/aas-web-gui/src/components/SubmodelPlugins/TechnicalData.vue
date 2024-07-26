@@ -25,7 +25,7 @@
                             <tr v-for="(generalProperty, index) in generalProperties" :key="generalProperty.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                                 <td>
                                     <div class="text-subtitleText text-caption">
-                                        <span>{{ generalProperty.idShort }}</span>
+                                        <span>{{ nameToDisplay(generalProperty) }}</span>
                                         <v-tooltip v-if="generalProperty.description && generalProperty.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                             <div v-for="(description, i) in generalProperty.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                         </v-tooltip>
@@ -33,7 +33,8 @@
                                 </td>
                                 <td>
                                     <!-- Files -->
-                                    <v-img v-if="generalProperty.modelType === 'File'" :src="getLocalPath(generalProperty.value, generalProperty) " max-width="100%" max-height="100%" contain class="my-2"></v-img>
+                                    <v-img v-if="generalProperty.idShort === 'ManufacturerLogo'" :src="ManufacturerLogoUrl" max-width="100%" max-height="100%" contain class="my-2"></v-img>
+                                    <v-img v-else-if="generalProperty.idShort === 'ProductImage'" :src="ProductImageUrl" max-width="100%" max-height="100%" contain class="my-2"></v-img>
                                     <!-- MultiLanguageProperties -->
                                     <template v-else-if="generalProperty.modelType == 'MultiLanguageProperty'">
                                         <v-list-item class="pl-0">
@@ -66,7 +67,7 @@
                                 <tr v-if="productClassifications.length > 0">
                                     <th v-for="classificationProperty in productClassifications[0].value" :key="classificationProperty.idShort">
                                         <v-list-item class="pl-0">
-                                            <v-list-item-title class="text-caption">{{ classificationProperty.idShort }}</v-list-item-title>
+                                            <v-list-item-title class="text-caption">{{ nameToDisplay(classificationProperty) }}</v-list-item-title>
                                         </v-list-item>
                                     </th>
                                 </tr>
@@ -121,7 +122,7 @@
                             <tr v-for="(furtherInfo, index) in furtherInformation" :key="furtherInfo.idShort" :class="index % 2 === 0 ? 'tableEven' : 'bg-tableOdd'">
                                 <td>
                                     <div class="text-subtitleText text-caption">
-                                        <span>{{ furtherInfo.idShort }}</span>
+                                        <span>{{ nameToDisplay(furtherInfo) }}</span>
                                         <v-tooltip v-if="furtherInfo.description && furtherInfo.description.length > 0" activator="parent" open-delay="600" transition="slide-y-transition" max-width="360px" location="bottom">
                                             <div v-for="(description, i) in furtherInfo.description" :key="i" class="text-caption"><span class="font-weight-bold">{{ description.language + ': ' }}</span>{{ description.text }}</div>
                                         </v-tooltip>
@@ -183,6 +184,8 @@ export default defineComponent({
             productClassifications: [] as Array<any>,
             technicalProperties: [] as Array<any>,
             furtherInformation: [] as Array<any>,
+            ManufacturerLogoUrl: '',
+            ProductImageUrl: '',
         }
     },
 
@@ -198,14 +201,14 @@ export default defineComponent({
     },
 
     methods: {
-        initTechnicalData() {
+        async initTechnicalData() {
             // Check if a Node is selected
             if (Object.keys(this.submodelElementData).length == 0) {
                 this.technicalData = {}; // Reset the DigitalNameplate Data when no Node is selected
                 return;
             }
             let technicalData = { ...this.submodelElementData }; // create local copy of the Nameplate Object
-            this.technicalData = this.calculateSubmodelElementPathes(technicalData, this.SelectedNode.path); // Set the DigitalNameplate Data
+            this.technicalData = await this.calculateSubmodelElementPathes(technicalData, this.SelectedNode.path); // Set the DigitalNameplate Data
             this.extractGeneralProperties(technicalData);
             this.extractProductClassifications(technicalData);
             this.extractTechnicalProperties(technicalData);
@@ -216,6 +219,15 @@ export default defineComponent({
             // find SubmodelElementCollection with semanticId: https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1
             let generalInformation = technicalData.submodelElements.find((element: any) => {
                 return element.semanticId.keys[0].value === 'https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1';
+            });
+            if (!generalInformation) return;
+            generalInformation.value.forEach((generalProperty: any) => {
+                if (generalProperty.idShort === 'ManufacturerLogo') {
+                    this.getImageUrl(generalProperty, 'ManufacturerLogoUrl');
+                }
+                if (generalProperty.idShort.includes('ProductImage')) {
+                    this.getImageUrl(generalProperty, 'ProductImageUrl');
+                }
             });
             // console.log('General Information:', generalInformation);
             this.generalProperties = generalInformation.value;
@@ -248,6 +260,23 @@ export default defineComponent({
             // console.log('Further Information:', furtherInformation);
             if (!furtherInformation) return;
             this.furtherInformation = furtherInformation.value;
+        },
+
+        getImageUrl(fileProperty: any, dataElementName: string) {
+            if (!fileProperty.value) return;
+            try {
+                new URL(fileProperty.value);
+                (this as any)[dataElementName] = fileProperty.value;
+            } catch {
+                let path = this.getLocalPath(fileProperty.value, fileProperty)
+                let context = 'retrieving Attachment File';
+                let disableMessage = false;
+                this.getRequest(path, context, disableMessage).then((response: any) => {
+                    if (response.success) {
+                        (this as any)[dataElementName] = URL.createObjectURL(response.data as Blob);
+                    }
+                });
+            }
         },
     },
 });

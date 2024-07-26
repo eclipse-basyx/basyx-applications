@@ -3,7 +3,7 @@
         <v-icon size="x-large">mdi-upload</v-icon>
         <v-tooltip activator="parent" open-delay="600" location="bottom" :disabled="isMobile">Upload AAS File to Environment</v-tooltip>
         <v-dialog activator="parent" v-model="uploadAASDialog" width="600">
-            <v-card>
+            <v-card :loading="loadingUpload">
                 <v-card-title>
                     <span class="text-subtile-1">Upload AAS to Environment</span>
                 </v-card-title>
@@ -43,6 +43,7 @@ export default defineComponent({
         return {
             uploadAASDialog: false, // Dialog State Handler
             aasFile: [] as any,    // AASX File to upload
+            loadingUpload: false,  // Loading State
         }
     },
 
@@ -66,7 +67,7 @@ export default defineComponent({
             // console.log('upload aasx file: ' + this.aasxFile);
             // check if a file is selected
             if (this.aasFile.length == 0) return;
-
+            this.loadingUpload = true;
             let context = 'uploading AASX File';
             let disableMessage = false;
             let path = this.uploadURL;
@@ -81,6 +82,8 @@ export default defineComponent({
                 this.aasFile = []; // clear the AASX File
                 // reload the AAS list
                 this.navigationStore.dispatchTriggerAASListReload(true);
+                this.uploadAASDialog = false;
+                this.loadingUpload = false;
             });
         },
     },
