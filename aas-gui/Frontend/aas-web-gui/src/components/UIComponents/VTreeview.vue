@@ -90,9 +90,9 @@ export default defineComponent({
     },
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
+            return this.navigationStore.getIsMobile;
         },
 
         // get Platform from store
