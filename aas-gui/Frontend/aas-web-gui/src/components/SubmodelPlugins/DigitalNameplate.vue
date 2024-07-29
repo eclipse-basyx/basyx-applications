@@ -7,7 +7,10 @@
             </v-card-title>
         </v-card>
         <!-- Product -->
-        <v-card class="mb-4">
+        <v-card v-if="loading" class="mb-4">
+            <v-skeleton-loader type="heading, table-heading@7"></v-skeleton-loader>
+        </v-card>
+        <v-card v-else class="mb-4">
             <v-card-title>
                 <div class="text-subtitle-1">{{ "Product" }}</div>
             </v-card-title>
@@ -48,7 +51,10 @@
             </v-card-text>
         </v-card>
         <!-- Manufacturer -->
-        <v-card class="mb-4">
+        <v-card v-if="loading" class="mb-4">
+            <v-skeleton-loader type="heading, table-heading@5, actions"></v-skeleton-loader>
+        </v-card>
+        <v-card v-else class="mb-4">
             <v-card-title>
                 <div class="text-subtitle-1">{{ "Manufacturer" }}</div>
             </v-card-title>
@@ -93,7 +99,10 @@
             </l-map>
         </v-card>
         <!-- Markings -->
-        <v-card class="mb-4">
+        <v-card v-if="loading" class="mb-4">
+            <v-skeleton-loader type="heading, image"></v-skeleton-loader>
+        </v-card>
+        <v-card v-else class="mb-4">
             <v-card-title>
                 <div class="text-subtitle-1">{{ "Markings" }}</div>
             </v-card-title>
@@ -107,7 +116,10 @@
             </v-card-text>
         </v-card>
         <!-- Asset Specific Properties -->
-        <v-card>
+        <v-card v-if="loading">
+            <v-skeleton-loader type="heading, table-heading@2"></v-skeleton-loader>
+        </v-card>
+        <v-card v-else>
             <v-card-title>
                 <div class="text-subtitle-1">{{ "Asset Specific Properties" }}</div>
             </v-card-title>
@@ -177,6 +189,7 @@ export default defineComponent({
             attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
             center: latLng(51.1657, 10.4515), // Center of the Map
             vCard: '', // vCard String
+            loading: false, // Loading State
         }
     },
 
@@ -194,6 +207,7 @@ export default defineComponent({
     methods: {
         // Function to initialize the Digital Nameplate
         async initializeDigitalNameplate() {
+            this.loading = true;
             // Check if a Node is selected
             if (Object.keys(this.submodelElementData).length == 0) {
                 this.digitalNameplateData = {}; // Reset the DigitalNameplate Data when no Node is selected
@@ -207,6 +221,7 @@ export default defineComponent({
             this.extractMarkings(digitalNameplateData); // Extract the Markings
             this.extractAssetSpecificProperties(digitalNameplateData); // Extract the Asset Specific Properties
             this.vCard = this.generateVCard(this.manufacturerProperties);
+            this.loading = false;
         },
 
         // Function to extract the Product Properties

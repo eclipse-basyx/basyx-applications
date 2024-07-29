@@ -7,7 +7,10 @@
             </v-card-title>
         </v-card>
         <!-- Documents -->
-        <v-expansion-panels v-model="panel">
+        <v-card v-if="loading">
+            <v-skeleton-loader type="list-item-avatar, divider, table-heading@8, actions"></v-skeleton-loader>
+        </v-card>
+        <v-expansion-panels v-else v-model="panel">
             <v-expansion-panel v-for="(contact, index) in contacts" :key="index">
                 <v-expansion-panel-title>
                     <v-list-item class="pa-0">
@@ -83,6 +86,7 @@ export default defineComponent({
         return {
             panel: 0 as Number | null,
             contacts: [] as Array<any>,
+            loading: false,
         }
     },
 
@@ -99,6 +103,7 @@ export default defineComponent({
 
     methods: {
         async initContactInformation() {
+            this.loading = true;
             // console.log('Initialize Contact Information Plugin: ', this.submodelElementData);
             let submodelElementData = { ...this.submodelElementData };
             submodelElementData = await this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
@@ -222,6 +227,7 @@ export default defineComponent({
                 this.generateVCard(contact);
             });
             this.contacts = contacts;
+            this.loading = false;
         },
 
         // Function to generate a vCard from the given contact

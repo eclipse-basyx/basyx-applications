@@ -2,41 +2,43 @@
     <div class="VTreeview">
         <!-- List Item with a Submodel / SubmodelelementCollection / submodelElement (like Property) -->
         <!-- TODO: Fix weird Ripple effect on isActive change to false -->
-        <v-list-item @click="toggleNode()" :style="{ 'padding-left': depth * 22 + 'px' }" density="compact" class="py-0" nav color="primary" :active="item.isActive">
-            <v-list-item-title>{{ (nameToDisplay(item)) }}</v-list-item-title>
-            <template v-slot:prepend>
-                <!-- Button to show/hide children -->
-                <v-btn v-if="item.children" size="small" variant="plain" @click.stop="toggleChildren()" :icon="showChildren ? 'mdi-menu-down' : 'mdi-menu-right'" :ripple="false"></v-btn>
-                <div v-else style="width: 40px; height: 40px"></div>
-                <!-- Empty Submodel Icon -->
-                <v-icon v-if="item.modelType === 'Submodel' && !item.children" color="primary">mdi-folder-alert</v-icon>
-                <!-- Icon for Submodel with children (open/closed) -->
-                <v-icon v-else-if="item.modelType === 'Submodel' && item.children" color="primary">{{ showChildren ? 'mdi-folder-open' : 'mdi-folder' }}</v-icon>
-                <!-- Icon for empty SubmodelelementCollection -->
-                <v-icon v-else-if="item.modelType === 'SubmodelElementCollection' && !item.children" color="primary">mdi-file-alert</v-icon>
-                <!-- Icon for SubmodelelementCollection -->
-                <v-icon v-else-if="item.modelType === 'SubmodelElementCollection'" color="primary">mdi-file-multiple</v-icon>
-                <!-- Icon for empty SubmodelelementList -->
-                <v-icon v-else-if="item.modelType === 'SubmodelElementList' && !item.children" color="primary">mdi-file-alert</v-icon>
-                <!-- Icon for SubmodelelementList -->
-                <v-icon v-else-if="item.modelType === 'SubmodelElementList'" color="primary">mdi-list-box</v-icon>
-                <!-- Icon for empty Entities -->
-                <v-icon v-else-if="item.modelType === 'Entity' && !item.children" color="primary">mdi-file-alert</v-icon>
-                <!-- Icon for Entities -->
-                <v-icon v-else-if="item.modelType === 'Entity'" color="primary">mdi-format-list-group</v-icon>
-                <!-- Icon for every other SubmodelElement (like Property) -->
-                <v-icon v-else color="primary">mdi-file-code</v-icon>
-            </template>
-            <template v-slot:append="{isActive}">
-                <v-chip v-if="item.modelType"  color="primary" size="x-small" :style="{ 'margin-right': isActive ? '14px' : '' }">{{ item.modelType }}</v-chip>
-                <!-- Button to Copy the Path to the Clipboard -->
-                <v-tooltip v-if="isActive" text="Copy Path to Clipboard" :open-delay="600" location="bottom">
-                    <template v-slot:activator="{ props }">
-                        <v-icon color="subtitleText" v-bind="props" @click.stop.prevent="copyPathToClipboard(item.path)">{{ copyIcon }}</v-icon>
-                    </template>
-                </v-tooltip>
-            </template>
-        </v-list-item>
+        <v-lazy transition="fade-transition">
+            <v-list-item @click="toggleNode()" :style="{ 'padding-left': depth * 22 + 'px' }" density="compact" class="py-0" nav color="primary" :active="item.isActive">
+                <v-list-item-title>{{ (nameToDisplay(item)) }}</v-list-item-title>
+                <template v-slot:prepend>
+                    <!-- Button to show/hide children -->
+                    <v-btn v-if="item.children" size="small" variant="plain" @click.stop="toggleChildren()" :icon="showChildren ? 'mdi-menu-down' : 'mdi-menu-right'" :ripple="false"></v-btn>
+                    <div v-else style="width: 40px; height: 40px"></div>
+                    <!-- Empty Submodel Icon -->
+                    <v-icon v-if="item.modelType === 'Submodel' && !item.children" color="primary">mdi-folder-alert</v-icon>
+                    <!-- Icon for Submodel with children (open/closed) -->
+                    <v-icon v-else-if="item.modelType === 'Submodel' && item.children" color="primary">{{ showChildren ? 'mdi-folder-open' : 'mdi-folder' }}</v-icon>
+                    <!-- Icon for empty SubmodelelementCollection -->
+                    <v-icon v-else-if="item.modelType === 'SubmodelElementCollection' && !item.children" color="primary">mdi-file-alert</v-icon>
+                    <!-- Icon for SubmodelelementCollection -->
+                    <v-icon v-else-if="item.modelType === 'SubmodelElementCollection'" color="primary">mdi-file-multiple</v-icon>
+                    <!-- Icon for empty SubmodelelementList -->
+                    <v-icon v-else-if="item.modelType === 'SubmodelElementList' && !item.children" color="primary">mdi-file-alert</v-icon>
+                    <!-- Icon for SubmodelelementList -->
+                    <v-icon v-else-if="item.modelType === 'SubmodelElementList'" color="primary">mdi-list-box</v-icon>
+                    <!-- Icon for empty Entities -->
+                    <v-icon v-else-if="item.modelType === 'Entity' && !item.children" color="primary">mdi-file-alert</v-icon>
+                    <!-- Icon for Entities -->
+                    <v-icon v-else-if="item.modelType === 'Entity'" color="primary">mdi-format-list-group</v-icon>
+                    <!-- Icon for every other SubmodelElement (like Property) -->
+                    <v-icon v-else color="primary">mdi-file-code</v-icon>
+                </template>
+                <template v-slot:append="{isActive}">
+                    <v-chip v-if="item.modelType"  color="primary" size="x-small" :style="{ 'margin-right': isActive ? '14px' : '' }">{{ item.modelType }}</v-chip>
+                    <!-- Button to Copy the Path to the Clipboard -->
+                    <v-tooltip v-if="isActive" text="Copy Path to Clipboard" :open-delay="600" location="bottom">
+                        <template v-slot:activator="{ props }">
+                            <v-icon color="subtitleText" v-bind="props" @click.stop.prevent="copyPathToClipboard(item.path)">{{ copyIcon }}</v-icon>
+                        </template>
+                    </v-tooltip>
+                </template>
+            </v-list-item>
+        </v-lazy>
         <!-- Recursive Treeview -->
         <template v-if="showChildren">
             <vTreeview v-for="innerItem in item.children" :key="innerItem.id" :item="innerItem" :depth="depth + 1"></vTreeview>
