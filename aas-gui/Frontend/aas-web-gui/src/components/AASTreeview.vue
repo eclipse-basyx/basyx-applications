@@ -143,6 +143,7 @@ export default defineComponent({
             if(!this.SelectedAAS || !this.SelectedAAS.endpoints || this.SelectedAAS.endpoints.length === 0 || !this.SelectedAAS.endpoints[0].protocolInformation || !this.SelectedAAS.endpoints[0].protocolInformation.href) {
                 // TODO: this seems to get executed on reload with a selected AAS
                 // this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'AAS with no (valid) Endpoint selected!' });
+                this.submodelData = [];
                 return;
             }
             if (this.loading && !this.initialUpdate) return; // return if loading state is true -> prevents multiple requests

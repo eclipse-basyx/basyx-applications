@@ -57,7 +57,7 @@
                                 <!-- Download AAS -->
                                 <v-btn v-if="aasRepoURL" @click.stop="downloadAAS(item)" icon="mdi-download" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                                 <!-- Remove from AAS Registry Button -->
-                                <v-btn @click.stop="removeAAS(item)" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
+                                <v-btn @click.stop="showDeleteDialog = true; aasToDelete = item" icon="mdi-close" size="x-small" variant="plain" style="z-index: 9000; margin-left: -6px"></v-btn>
                             </template>
                             <v-overlay :model-value="isSelected(item)" scrim="primary" style="opacity: 0.2" contained persistent></v-overlay>
                         </v-list-item>
@@ -79,6 +79,24 @@
             </v-list>
         </v-card>
     </v-container>
+    <v-dialog v-model="showDeleteDialog" max-width="500px">
+        <v-card>
+            <v-card-title class="headline">Confirm Delete</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="pb-0">
+                Are you sure you want to delete the AAS?
+                <v-checkbox v-model="deleteSubmodels" label="Also delete Submodels" hide-details></v-checkbox>
+                <v-alert class="mb-2" variant="tonal" border v-if="deleteSubmodels" color="warning">
+                    Warning: If other shells refer to the same submodels, those references are not deleted!
+                </v-alert>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="showDeleteDialog = false">Cancel</v-btn>
+                <v-btn variant="tonal" color="error" @click="confirmDelete" :loading="deleteLoading">Delete</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -120,6 +138,10 @@ export default defineComponent({
             detailsObject: {} as any,   // Variable to store the AAS Data of the currently selected AAS
             showDetailsCard: false,     // Variable to store if the Details Card should be shown
             listLoading: false,         // Variable to store if the AAS List is loading
+            showDeleteDialog: false,    // Variable to store if the Delete Dialog should be shown
+            deleteSubmodels: false,     // Variable to store if the Submodels should be deleted
+            aasToDelete: {} as any,     // Variable to store the AAS to be deleted
+            deleteLoading: false,       // Variable to store if the AAS is being deleted
         }
     },
 
@@ -193,6 +215,11 @@ export default defineComponent({
         // get AAS Registry URL from Store
         aasRegistryURL() {
             return this.navigationStore.getAASRegistryURL;
+        },
+
+        // get Submodel Registry URL from Store
+        submodelRegistryURL() {
+            return this.navigationStore.getSubmodelRegistryURL;
         },
 
         // get the selected AAS from Store
@@ -434,17 +461,58 @@ export default defineComponent({
                 this.navigationStore.dispatchSnackbar({ status: true, timeout: 4000, color: 'error', btnColor: 'buttonText', text: 'Please wait for the current Request to finish.' });
                 return;
             }
-            // show a confirmation Dialog to delete the AAS
-            if(confirm('Are you sure you want to delete the AAS')) {
-                console.log('Remove AAS: ', AAS);
-                let path = AAS.endpoints[0].protocolInformation.href;
-                let context = 'removing AAS';
-                let disableMessage = false;
-                this.deleteRequest(path, context, disableMessage).then((response: any) => {
-                    if (response.success) { // execute if deletion was successful
-                        this.reloadList(); // reload the AAS List
+            console.log('Remove AAS: ', AAS);
+            let path = AAS.endpoints[0].protocolInformation.href;
+            let context = 'removing AAS';
+            let disableMessage = false;
+            this.deleteRequest(path, context, disableMessage)
+        },
+
+        async confirmDelete() {
+            this.deleteLoading = true;
+            let error = false;
+            try {
+                if (this.deleteSubmodels) {
+                    const path = `${this.aasToDelete.endpoints[0].protocolInformation.href}/submodel-refs`;
+                    const context = 'retrieving Submodel References';
+                    const disableMessage = false;
+                    const response = await this.getRequest(path, context, disableMessage);
+                    if (response.success) {
+                        const submodelRefs = response.data.result;
+                        const aasIds = this.URLEncode(this.aasToDelete.id);
+                        // Extract all references in an array called submodelIds from each keys[0].value
+                        const submodelIds = submodelRefs.map((ref:any) => ref.keys[0].value);
+                        this.removeAAS(this.aasToDelete);
+                        // Remove each submodel
+                        for (const submodelId of submodelIds) {
+                            const submodelPath = `${this.submodelRegistryURL}/${this.URLEncode(submodelId)}`;
+                            const submodelResponse = await this.getRequest(submodelPath, 'Removing Submodels', disableMessage);
+                            if (submodelResponse.success) {
+                                const deletePath = submodelResponse.data.endpoints[0].protocolInformation.href;
+                                await this.deleteRequest(deletePath, 'removing Submodel', disableMessage);
+                            }else{
+                                error = true;
+                            }
+                        }
+                    }else{
+                        error = true;
                     }
-                });
+                } else {
+                    this.removeAAS(this.aasToDelete);
+                }
+            } finally {
+                this.showDeleteDialog = false;
+                this.aasToDelete = {};
+                this.deleteSubmodels = false;
+                if(!error){
+                    //remove query from URL
+                    this.$router.push({ path: this.$route.path, query: {} });
+                    this.aasStore.dispatchSelectedAAS({});
+                    this.aasStore.dispatchSelectedNode({});
+                    this.reloadList(); // reload the AAS List
+                    this.navigationStore.dispatchTriggerAASSelected();
+                }
+                this.deleteLoading = false;
             }
         },
     },
