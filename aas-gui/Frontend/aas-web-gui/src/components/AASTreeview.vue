@@ -8,11 +8,24 @@
             <v-divider></v-divider>
             <v-card-text style="overflow-y: auto; height: calc(100vh - 170px)">
                 <!-- Spinner for loading State -->
-                <v-row v-if="loading" justify="center" class="ma-3">
+                <!-- <v-row v-if="loading" justify="center" class="ma-3">
                     <v-col cols="auto">
                         <v-progress-circular :size="70" :width="7" indeterminate></v-progress-circular>
                     </v-col>
-                </v-row>
+                </v-row> -->
+                <div v-if="loading">
+                    <v-list-item v-for="i in 6" :key="i" density="compact" nav class="pa-0">
+                        <template #prepend>
+                            <v-skeleton-loader type="list-item" :width="50"></v-skeleton-loader>
+                        </template>
+                        <template #title>
+                            <v-skeleton-loader type="list-item" :width="240"></v-skeleton-loader>
+                        </template>
+                        <template #append>
+                            <v-skeleton-loader type="list-item" :width="90"></v-skeleton-loader>
+                        </template>
+                    </v-list-item>
+                </div>
                 <!-- TODO: Replace with Vuetify Treeview Component when it get's released in Q1 2023 -->
                 <VTreeview v-else v-for="item in submodelData" :key="item.id" class="root" :item="item" :depth="0"></VTreeview>
             </v-card-text>
@@ -153,7 +166,6 @@ export default defineComponent({
             let context = 'retrieving Submodel References';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then(async (response: any) => {
-                this.aasStore.dispatchLoadingState(false); // set loading state to false
                 if (response.success) { // execute if the Request was successful
                     try {
                         // request submodels from the retrieved AAS (top layer of the Treeview)
@@ -228,6 +240,7 @@ export default defineComponent({
                 });
             });
             let submodels = await Promise.all(submodelPromises);
+            this.aasStore.dispatchLoadingState(false); // set loading state to false
             return submodels;
         },
 
@@ -376,3 +389,9 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+.skeleton-loader-background {
+    background-color: rgba(241, 0, 0, 0.12);
+}
+</style>

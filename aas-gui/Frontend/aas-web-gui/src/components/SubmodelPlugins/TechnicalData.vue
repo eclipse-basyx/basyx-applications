@@ -7,7 +7,10 @@
             </v-card-title>
         </v-card>
         <!-- Technical Data Collections -->
-        <v-expansion-panels v-model="panel" multiple>
+        <v-card v-if="loading">
+            <v-skeleton-loader type="list-item-avatar, divider, list-item-avatar, divider, list-item-avatar, divider, list-item-avatar" :height="288"></v-skeleton-loader>
+        </v-card>
+        <v-expansion-panels v-else v-model="panel" multiple>
             <!-- General Information -->
             <v-expansion-panel>
                 <v-expansion-panel-title>
@@ -186,6 +189,7 @@ export default defineComponent({
             furtherInformation: [] as Array<any>,
             ManufacturerLogoUrl: '',
             ProductImageUrl: '',
+            loading: false,
         }
     },
 
@@ -202,6 +206,7 @@ export default defineComponent({
 
     methods: {
         async initTechnicalData() {
+            this.loading = true;
             // Check if a Node is selected
             if (Object.keys(this.submodelElementData).length == 0) {
                 this.technicalData = {}; // Reset the DigitalNameplate Data when no Node is selected
@@ -213,6 +218,7 @@ export default defineComponent({
             this.extractProductClassifications(technicalData);
             this.extractTechnicalProperties(technicalData);
             this.extractFurtherInformation(technicalData);
+            this.loading = false;
         },
 
         extractGeneralProperties(technicalData: any) {
