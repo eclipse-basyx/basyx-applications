@@ -333,7 +333,7 @@
   resolved "https://registry.yarnpkg.com/@types/webxr/-/webxr-0.5.19.tgz#463a27bc06ff1c0a0c997e86b48bf24c5f50a4af"
   integrity sha512-4hxA+NwohSgImdTSlPXEqDqqFktNgmTXQ05ff1uWam05tNGroCMp4G+4XVl6qWm1p7GQ/9oD41kAYsSssF6Mzw==
 
-"@vitejs/plugin-vue@^5.0.5":
+"@vitejs/plugin-vue@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.1.1.tgz#bb9ddb0af012450edef4f5d65d5b3a3c7630864f"
   integrity sha512-sDckXxlHpMsjRQbAH9WanangrfrblsOd3pNifePs+FOHjJg1jfWq5L/P0PsBRndEt3nmdUnmvieP8ULDeX5AvA==
@@ -1065,7 +1065,7 @@ katex@^0.16.9:
   dependencies:
     commander "^8.3.0"
 
-keycloak-js@^25.0.1:
+keycloak-js@^25.0.2:
   version "25.0.2"
   resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-25.0.2.tgz#10de8352ae7bb0d46396e4f083b40b959285791b"
   integrity sha512-ACLf5O5PqzfDJwGqvLpqM0kflYWmyl3+T7M2C23gztJYccDxdfNP54+B9OkXz2GnDpLUId0ceoA+lbHw9t4Wng==
@@ -1644,7 +1644,7 @@ vite-plugin-vuetify@^2.0.3:
     debug "^4.3.3"
     upath "^2.0.1"
 
-vite@^5.3.3:
+vite@^5.3.5:
   version "5.3.5"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.3.5.tgz#b847f846fb2b6cb6f6f4ed50a830186138cb83d8"
   integrity sha512-MdjglKR6AQXQb9JGiS7Rc2wC6uMjcm7Go/NHNO63EwiJXfuk9PgqiP/n5IDJCziMkfw9n4Ubp7lttNwz+8ZVKA==
@@ -1672,7 +1672,7 @@ vue-router@^4.4.0:
   dependencies:
     "@vue/devtools-api" "^6.5.1"
 
-vue-tsc@^2.0.22:
+vue-tsc@^2.0.29:
   version "2.0.29"
   resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.29.tgz#bf7e9605af9fadec7fd6037d242217f5c6ad2c3b"
   integrity sha512-MHhsfyxO3mYShZCGYNziSbc63x7cQ5g9kvijV7dRe1TTXBRLxXyL0FnXWpUF1xII2mJ86mwYpYsUmMwkmerq7Q==
