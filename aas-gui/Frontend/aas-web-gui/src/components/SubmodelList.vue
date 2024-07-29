@@ -19,14 +19,11 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text style="overflow-y: auto; height: calc(100svh - 170px)" class="py-2 px-2">
-                <!-- Spinner for loading State -->
-                <v-row v-if="loading" justify="center" class="ma-3">
-                    <v-col cols="auto">
-                        <v-progress-circular :size="70" :width="7" indeterminate></v-progress-circular>
-                    </v-col>
-                </v-row>
+                <div v-if="loading">
+                    <v-skeleton-loader type="list-item@6"></v-skeleton-loader>
+                </div>
                 <!-- List of Submodels -->
-                <v-list-item v-for="submodel in submodelData" :key="submodel.id" @click="toggleNode(submodel)" color="primary" nav class="bg-listItem mb-2" style="border-width: 1px" :style="{ 'border-color': submodel.isActive ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
+                <v-list-item v-else v-for="submodel in submodelData" :key="submodel.id" @click="toggleNode(submodel)" color="primary" nav class="bg-listItem mb-2" style="border-width: 1px" :style="{ 'border-color': submodel.isActive ? primaryColor + ' !important' : (isDark ? '#686868 !important' : '#ABABAB !important') }">
                     <template v-slot:prepend>
                         <v-chip label border color="primary" size="x-small" class="mr-3">SM</v-chip>
                     </template>
@@ -158,7 +155,6 @@ export default defineComponent({
             let context = 'retrieving Submodel References';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then(async (response: any) => {
-                this.aasStore.dispatchLoadingState(false); // set loading state to false
                 if (response.success) { // execute if the Request was successful
                     try {
                         // request submodels from the retrieved AAS
@@ -228,6 +224,7 @@ export default defineComponent({
                 });
             });
             let submodels = await Promise.all(submodelPromises);
+            this.aasStore.dispatchLoadingState(false); // set loading state to false
             return submodels;
         },
 
