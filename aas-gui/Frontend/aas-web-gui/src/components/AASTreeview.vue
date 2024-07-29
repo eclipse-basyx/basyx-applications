@@ -7,12 +7,6 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text style="overflow-y: auto; height: calc(100vh - 170px)">
-                <!-- Spinner for loading State -->
-                <!-- <v-row v-if="loading" justify="center" class="ma-3">
-                    <v-col cols="auto">
-                        <v-progress-circular :size="70" :width="7" indeterminate></v-progress-circular>
-                    </v-col>
-                </v-row> -->
                 <div v-if="loading">
                     <v-list-item v-for="i in 6" :key="i" density="compact" nav class="pa-0">
                         <template #prepend>
