@@ -10,6 +10,7 @@
             <ContactInformation v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/ContactInformations')" :submodelElementData="submodelElementData"></ContactInformation>
             <TechnicalData v-else-if="checkSemanticId('https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2')" :submodelElementData="submodelElementData"></TechnicalData>
             <CarbonFootprint v-else-if="checkSemanticId('https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9')" :submodelElementData="submodelElementData"></CarbonFootprint>
+            <AssetInterfacesDescription v-else-if="checkSemanticId('https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Submodel')" :submodelElementData="submodelElementData"></AssetInterfacesDescription>
             <JSONArrayProperty v-else-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')" :submodelElementData="submodelElementData"></JSONArrayProperty>
             <GenericDataVisu v-else-if="viewerMode" :submodelElementData="submodelElementData.submodelElements"></GenericDataVisu>
             <!-- Plugins added by the user are dynamically registered here -->
@@ -40,6 +41,7 @@ import HandoverDocumentation from './HandoverDocumentation.vue';
 import ContactInformation from './ContactInformation.vue';
 import TechnicalData from './TechnicalData.vue';
 import CarbonFootprint from './CarbonFootprint.vue';
+import AssetInterfacesDescription from './AssetInterfacesDescription.vue';
 import JSONArrayProperty from './JSONArrayProperty.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
@@ -58,6 +60,7 @@ export default defineComponent({
         ContactInformation,
         TechnicalData,
         CarbonFootprint,
+        AssetInterfacesDescription,
         JSONArrayProperty,
         GenericDataVisu,
         ImagePreview,
