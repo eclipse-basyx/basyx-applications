@@ -7,7 +7,10 @@
             </v-card-title>
         </v-card>
         <!-- Documents -->
-        <v-expansion-panels v-model="panel">
+        <v-card v-if="loading">
+            <v-skeleton-loader type="list-item-avatar, divider, list-item-avatar" :height="144"></v-skeleton-loader>
+        </v-card>
+        <v-expansion-panels v-else v-model="panel">
             <v-expansion-panel v-for="(document, index) in documents" :key="document.idShort">
                 <v-expansion-panel-title>
                     <v-list-item class="pa-0">
@@ -223,6 +226,7 @@ export default defineComponent({
         return {
             panel: null as Number | null,
             documents: [] as Array<any>,
+                loading: false,
         }
     },
 
@@ -239,6 +243,7 @@ export default defineComponent({
 
     methods: {
         async initHandoverDocumentation() {
+            this.loading = true;
             // console.log('Initialize Handover Documentation Plugin: ', this.submodelElementData);
             let submodelElementData = { ...this.submodelElementData };
             submodelElementData = await this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
@@ -253,6 +258,7 @@ export default defineComponent({
             });
             // console.log('Documents: ', documents);
             this.documents = documents;
+            this.loading = false;
         },
 
         extractDocumentVersions(document: any) {
