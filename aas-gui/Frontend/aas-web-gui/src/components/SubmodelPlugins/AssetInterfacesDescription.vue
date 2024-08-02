@@ -14,7 +14,7 @@
           </v-expansion-panel-title>
           <v-expansion-panel-text>
             <!-- Dynamically display each property's metadata and endpoint -->
-            <v-card v-for="property in collection.properties" :key="property.idShort" class="mb-4 py-8">
+            <v-card v-for="property in collection.properties" :key="property.idShort" class="pb-4">
               <v-row flex align="center" justify="center">
                 <v-col cols="12" md="11">
                   <div class="text-subtitle-1">
@@ -32,7 +32,6 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-  
       <!-- Handle case when no properties are available -->
       <v-card v-if="!submodelElementCollections.length" class="mb-4 py-8">
         <v-row flex align="center" justify="center">
@@ -100,7 +99,7 @@
           console.warn("SubmodelElementData or submodelElements is not defined");
           return;
         }
-        // console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
+        console.log('Component Mounted. SubmodelElementData:', this.submodelElementData);
         // Find all SubmodelElementCollection
         const submodelElementCollections = this.submodelElementData.submodelElements.filter(
           (element: any) => element.modelType === "SubmodelElementCollection"
