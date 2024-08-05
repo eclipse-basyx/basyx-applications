@@ -12,7 +12,7 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
     "@mdi/font": "^7.4.47",
-    "@types/lodash": "^4.17.6",
+    "@types/lodash": "^4.17.7",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "apexcharts": "^3.51.0",
     "keycloak-js": "^25.0.2",
