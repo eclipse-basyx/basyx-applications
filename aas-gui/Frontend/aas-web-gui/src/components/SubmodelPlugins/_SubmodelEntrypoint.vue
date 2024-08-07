@@ -8,6 +8,7 @@
             <BillsOfMaterial v-else-if="checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel') || checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
             <HandoverDocumentation v-else-if="checkSemanticId('0173-1#01-AHF578#001')" :submodelElementData="submodelElementData"></HandoverDocumentation>
             <ContactInformation v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/ContactInformations')" :submodelElementData="submodelElementData"></ContactInformation>
+            <AID v-else-if="checkSemanticId('https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Submodel')" :submodelElementData="submodelElementData"></AID>
             <TechnicalData v-else-if="checkSemanticId('https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2')" :submodelElementData="submodelElementData"></TechnicalData>
             <JSONArrayProperty v-else-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')" :submodelElementData="submodelElementData"></JSONArrayProperty>
             <GenericDataVisu v-else-if="viewerMode" :submodelElementData="submodelElementData.submodelElements"></GenericDataVisu>
@@ -38,6 +39,7 @@ import BillsOfMaterial from './BillsOfMaterial.vue';
 import HandoverDocumentation from './HandoverDocumentation.vue';
 import ContactInformation from './ContactInformation.vue';
 import TechnicalData from './TechnicalData.vue';
+import AID from './AID.vue';
 import JSONArrayProperty from './JSONArrayProperty.vue';
 import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
 
@@ -55,6 +57,7 @@ export default defineComponent({
         HandoverDocumentation,
         ContactInformation,
         TechnicalData,
+        AID,
         JSONArrayProperty,
         GenericDataVisu,
         ImagePreview,
