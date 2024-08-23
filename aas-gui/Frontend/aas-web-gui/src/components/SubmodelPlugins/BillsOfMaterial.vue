@@ -206,6 +206,8 @@ export default defineComponent({
                 relationship = 'HasPart';
             } else if (relationship === "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0") {
                 relationship = 'IsPartOf';
+            } else if (relationship === "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0") {
+                relationship = 'SameAs';
             } else {
                 relationship = '';
             }
