@@ -125,6 +125,22 @@ export default defineComponent({
                 const { svg, bindFunctions } = await mermaid.render('BoMDiagram', graphDefinition);
                 if (element) {
                     element.innerHTML = svg;
+                    let foreignObjects = element.querySelectorAll('foreignObject');
+                    foreignObjects.forEach(foreignObject => {
+                        let div = foreignObject.querySelector('div');
+                        if (div) {
+                            // Calculate the required width based on content
+                            let textLength = div.textContent?.length;
+                            let baseWidth = Math.max(150, (textLength ?? 0) * 8); // Base width estimation
+                            let contentWidth = div.scrollWidth; // Actual content width
+
+                            // Choose the larger of the two widths and add a buffer
+                            let newWidth = Math.max(baseWidth, contentWidth) + 20; // Add a 20px buffer
+
+                            foreignObject.setAttribute('width', newWidth.toString());
+                            div.style.maxWidth = `${newWidth}px`; // Set the same max-width for div
+                        }
+                    });
                     // add the element to the card
                     let card = document.querySelector('#BoMCard');
                     if (card) {
@@ -141,7 +157,7 @@ export default defineComponent({
         callback(assetId: string) {
             // console.log('AssetId:', assetId);
             this.checkAssetId(assetId)
-                .then(({ success, aas }) => {
+                .then(({ success, aas }: { success: boolean, aas?: any }) => {
                     if (success) {
                         // console.log('AAS:', aas);
                         this.jumpToReferencedElement(aas, []);
@@ -171,9 +187,6 @@ export default defineComponent({
 
             [graphDefinition, callBacks] = this.addChildrenToGraph(entryNode, graphDefinition, callBacks); // Update the graphDefinition
             graphDefinition += callBacks; // add the callbacks to the graphDefinition
-
-            // add classDefintions
-            graphDefinition += 'classDef FixFont padding-right:6px;';
 
             // console.log('Graph Definition:\n', graphDefinition);
             return graphDefinition;
@@ -213,7 +226,7 @@ export default defineComponent({
             }
 
             children.forEach((child: any) => {
-                graphDefinition += parentNode.idShort + '(' + parentNode.idShort + '):::FixFont -->|' + relationship + '| ' + child.idShort + '(' + child.idShort + '):::FixFont\n'; // add the relationship to the graphDefinition
+                graphDefinition += parentNode.idShort + '(' + parentNode.idShort + ') -->|' + relationship + '| ' + child.idShort + '(' + child.idShort + ')\n'; // add the relationship to the graphDefinition
                 callBacks += 'click ' + child.idShort + ' call callback(' + child.globalAssetId + ')\n'; // add the callback to the callBacks
                 if (child.statements) {
                     const hasChildren = child.statements.some((element: any) => {
