@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from './mixins/RequestHandling';
@@ -43,10 +44,14 @@ export default defineComponent({
   setup() {
     const navigationStore = useNavigationStore()
     const aasStore = useAASStore()
+    const route = useRoute();
+    const router = useRouter();
 
     return {
       navigationStore, // NavigationStore Object
       aasStore, // AASStore Object
+      route, // Route Object
+      router, // Router Object
     }
   },
 
@@ -73,32 +78,32 @@ export default defineComponent({
 
     // check which platform is used and change the fitting view
     if (mobile) {
-      if (this.$route.name === 'MainWindow') {
+      if (this.route.name === 'MainWindow') {
         if (aasEndpoint && submodelElementPath) {
-          this.$router.push({ name: 'AASList', query: { aas: aasEndpoint, path: submodelElementPath } });
+          this.router.push({ name: 'AASList', query: { aas: aasEndpoint, path: submodelElementPath } });
         } else if (aasEndpoint && !submodelElementPath) {
-          this.$router.push({ name: 'AASList', query: { aas: aasEndpoint } });
+          this.router.push({ name: 'AASList', query: { aas: aasEndpoint } });
         } else {
-          this.$router.push({ name: 'AASList' });
+          this.router.push({ name: 'AASList' });
         }
-      } else if (this.$route.name === 'ComponentVisualization') {
+      } else if (this.route.name === 'ComponentVisualization') {
         if (!aasEndpoint && !submodelElementPath) {
-          this.$router.push({ name: 'AASList' });
+          this.router.push({ name: 'AASList' });
         } else if (aasEndpoint && !submodelElementPath) {
-          this.$router.push({ name: 'SubmodelList', query: { aas: aasEndpoint } });
+          this.router.push({ name: 'SubmodelList', query: { aas: aasEndpoint } });
         }
       }
     } else { // change to MainWindow when the platform is not android or ios
-      if (this.$route.name === 'AASList' || this.$route.name === 'SubmodelList') {
-        if (aasEndpoint && submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint, path: submodelElementPath } });
-        else if (aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
-        else this.$router.push({ name: 'MainWindow' });
-      } else if (this.$route.name === 'ComponentVisualization') {
-        if (aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
-        else if (!aasEndpoint && !submodelElementPath) this.$router.push({ name: 'MainWindow' });
+      if (this.route.name === 'AASList' || this.route.name === 'SubmodelList') {
+        if (aasEndpoint && submodelElementPath) this.router.push({ name: 'MainWindow', query: { aas: aasEndpoint, path: submodelElementPath } });
+        else if (aasEndpoint && !submodelElementPath) this.router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
+        else this.router.push({ name: 'MainWindow' });
+      } else if (this.route.name === 'ComponentVisualization') {
+        if (aasEndpoint && !submodelElementPath) this.router.push({ name: 'MainWindow', query: { aas: aasEndpoint } });
+        else if (!aasEndpoint && !submodelElementPath) this.router.push({ name: 'MainWindow' });
       } else {
-        if (aasEndpoint && submodelElementPath) this.$router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
-        else if (aasEndpoint && !submodelElementPath) this.$router.push({ query: { aas: aasEndpoint } });
+        if (aasEndpoint && submodelElementPath) this.router.push({ query: { aas: aasEndpoint, path: submodelElementPath } });
+        else if (aasEndpoint && !submodelElementPath) this.router.push({ query: { aas: aasEndpoint } });
       }
     }
 

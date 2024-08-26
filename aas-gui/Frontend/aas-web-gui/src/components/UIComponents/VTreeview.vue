@@ -48,6 +48,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useTheme } from 'vuetify';
@@ -62,11 +63,15 @@ export default defineComponent({
         const theme = useTheme()
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const route = useRoute();
+        const router = useRouter();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            route, // Route Object
+            router, // Router Object
         };
     },
 
@@ -123,16 +128,16 @@ export default defineComponent({
             if(localItem.isActive) {
                 if (this.isMobile) {
                     // Change to SubmodelElementView on Mobile and add the path to the URL
-                    this.$router.push({ path: '/submodelelementview', query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
+                    this.router.push({ path: '/submodelelementview', query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
                 } else {
                     // just add the path to the URL
-                    this.$router.push({ query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
+                    this.router.push({ query: { aas: this.SelectedAAS.endpoints[0].protocolInformation.href, path: localItem.path } });
                 }
             } else {
                 // remove the path query from the Route entirely
-                let query = {...this.$route.query};
+                let query = {...this.route.query};
                 delete query.path;
-                this.$router.push({ query: query });
+                this.router.push({ query: query });
             }
             // dispatch the selected Node to the store
             this.aasStore.dispatchNode(localItem);

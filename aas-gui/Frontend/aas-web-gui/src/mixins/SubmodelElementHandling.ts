@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
 
@@ -14,10 +15,12 @@ export default defineComponent({
     setup() {
         const aasStore = useAASStore();
         const navigationStore = useNavigationStore();
+        const router = useRouter();
 
         return {
             aasStore, // AASStore Object
             navigationStore, // NavigationStore Object
+            router, // Router Object
         }
     },
 
@@ -300,10 +303,10 @@ export default defineComponent({
             promise.then(() => {
                 // check if mobile device
                 if (this.navigationStore.getIsMobile) {
-                    this.$router.push({ name: 'SubmodelList', query: { aas: endpoint, path: path } });
+                    this.router.push({ name: 'SubmodelList', query: { aas: endpoint, path: path } });
                 } else {
                     // set the AAS Endpoint and SubmodelElement path in the aas and path query parameters using the router
-                    this.$router.push({ query: { aas: endpoint, path: path } });
+                    this.router.push({ query: { aas: endpoint, path: path } });
                 }
                 // dispatch the AAS set by the ReferenceElement to the store
                 this.aasStore.dispatchSelectedAAS(referencedAAS);
@@ -338,10 +341,10 @@ export default defineComponent({
         jumpToAAS(aas: any, endpoint: string) {
             // check if mobile device
             if (this.navigationStore.getIsMobile) {
-                this.$router.push({ name: 'SubmodelList', query: { aas: endpoint } });
+                this.router.push({ name: 'SubmodelList', query: { aas: endpoint } });
             } else {
                 // set the AAS Endpoint in the aas query parameter using the router
-                this.$router.push({ query: { aas: endpoint } });
+                this.router.push({ query: { aas: endpoint } });
             }
             // dispatch the AAS set by the ReferenceElement to the store
             // console.log('AAS:', aas, 'Endpoint:', endpoint);
