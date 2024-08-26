@@ -115,7 +115,7 @@
                         <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/aaslist">AAS Viewer</v-card>
                     </v-col>
                     <v-col cols="auto" class="py-1">
-                        <v-btn icon="mdi-format-list-text" to="/aaslist" :active="$route.path === '/aaslist'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
+                        <v-btn icon="mdi-format-list-text" to="/aaslist" :active="route.path === '/aaslist'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
                     </v-col>
                 </v-row>
                 <!-- Dashboard -->
@@ -124,7 +124,7 @@
                         <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/dashboard">Dashboard</v-card>
                     </v-col>
                     <v-col cols="auto" class="py-1">
-                        <v-btn icon="mdi-chart-timeline-variant-shimmer" to="/dashboard" :active="$route.path === '/dashboard'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
+                        <v-btn icon="mdi-chart-timeline-variant-shimmer" to="/dashboard" :active="route.path === '/dashboard'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
                     </v-col>
                 </v-row>
                 <!-- About -->
@@ -133,7 +133,7 @@
                         <v-card class="py-1 px-2 text-buttonText" color="lightButton" to="/about">About</v-card>
                     </v-col>
                     <v-col cols="auto" class="py-1">
-                        <v-btn icon="mdi-format-list-group" to="/about" :active="$route.path === '/about'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
+                        <v-btn icon="mdi-format-list-group" to="/about" :active="route.path === '/about'" style="z-index: 9990" size="small" color="primary" class="text-buttonText"></v-btn>
                     </v-col>
                 </v-row>
             </div>
@@ -145,6 +145,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mergeProps } from 'vue'
+import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
@@ -174,12 +175,14 @@ export default defineComponent({
         const navigationStore = useNavigationStore()
         const envStore = useEnvStore()
         const authStore = useAuthStore()
+        const route = useRoute();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             envStore, // EnvironmentStore Object
             authStore, // AuthorizationStore Object
+            route, // Route Object
         }
     },
     
@@ -336,7 +339,7 @@ export default defineComponent({
 
         // to check if the MainWindow is the current Route
         showAASList() {
-            return ['MainWindow', 'AASViewer'].includes(this.$route.name as string);
+            return ['MainWindow', 'AASViewer'].includes(this.route.name as string);
         },
 
         // get Drawer State from store
@@ -395,7 +398,7 @@ export default defineComponent({
         // Determine if Auto-Sync should be shown
         showAutoSync() {
             let showAutoSync = false;
-            if (this.$route.name === 'MainWindow' || this.$route.name === 'AASList' || this.$route.name === 'SubmodelList' || this.$route.name === 'ComponentVisualization' || this.$route.name === 'AASViewer') {
+            if (this.route.name === 'MainWindow' || this.route.name === 'AASList' || this.route.name === 'SubmodelList' || this.route.name === 'ComponentVisualization' || this.route.name === 'AASViewer') {
                 showAutoSync = true;
             }
             return showAutoSync;

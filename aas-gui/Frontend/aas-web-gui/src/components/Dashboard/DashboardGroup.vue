@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useEnvStore } from '@/store/EnvironmentStore';
 import DashboardElement from '@/components/Dashboard/DashboardElement.vue';
 import DashboardHandling from '@/mixins/DashboardHandling';
@@ -49,9 +50,13 @@ export default defineComponent({
 
     setup() {
         const envStore = useEnvStore();
+        const route = useRoute();
+        const router = useRouter();
 
         return {
             envStore, // EnvironmentStore Object
+            route, // Route Object
+            router, // Router Object
         };
     },
 
@@ -91,7 +96,7 @@ export default defineComponent({
         // console.log('Dashboard mounted for group with id: ', this.$route.query.group);
         // TODO: fetch the group based on the query
         this.show = false;
-        let groupElements = await this.getElements(this.$route.query.group)
+        let groupElements = await this.getElements(this.route.query.group)
         this.elements = groupElements.slice().sort((a: any, b: any) => a.order - b.order);
         // console.log(this.elements)
     },
@@ -105,7 +110,7 @@ export default defineComponent({
             if (this.elements.length === 0) {
                 // console.log('Group is empty')
                 // navigate back to the dashboard
-                this.$router.push({ name: 'Dashboard' });
+                this.router.push({ name: 'Dashboard' });
             }
         },
 
