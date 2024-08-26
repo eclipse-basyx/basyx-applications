@@ -157,7 +157,7 @@ export default defineComponent({
         callback(assetId: string) {
             // console.log('AssetId:', assetId);
             this.checkAssetId(assetId)
-                .then(({ success, aas }: { success: boolean, aas: any }) => {
+                .then(({ success, aas }: { success: boolean, aas?: any }) => {
                     if (success) {
                         // console.log('AAS:', aas);
                         this.jumpToReferencedElement(aas, []);
