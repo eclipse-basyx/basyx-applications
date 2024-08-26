@@ -41,6 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import DashboardHandling from '@/mixins/DashboardHandling';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
@@ -55,10 +56,12 @@ export default defineComponent({
     setup() {
         const navigationStore = useNavigationStore();
         const envStore = useEnvStore();
+        const router = useRouter();
 
         return {
             navigationStore, // NavigationStore Object
             envStore, // EnvironmentStore Object
+            router, // Router Object
         };
     },
 
@@ -89,7 +92,7 @@ export default defineComponent({
     methods: {
         openDashboard(group: any){
             // console.log('Group: ', group);
-            this.$router.push({ name: 'DashboardGroup', query: { group: group.groupId } });
+            this.router.push({ name: 'DashboardGroup', query: { group: group.groupId } });
         },
 
         openDeleteDialog(group: any){

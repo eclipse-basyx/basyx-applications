@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
@@ -48,10 +49,14 @@ export default defineComponent({
     setup() {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const route = useRoute();
+        const router = useRouter();
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            route, // Route Object
+            router, // Router Object
         }
     },
 
@@ -66,7 +71,7 @@ export default defineComponent({
         if (Object.keys(this.SelectedNode).length > 0 && this.isMobile) {
             // initialize if component got mounted on mobile devices (needed there because it is rendered in a separate view)
             this.initializeView();
-        } else if (Object.keys(this.SelectedNode).length == 0 && this.$route.path == '/componentvisualization') {
+        } else if (Object.keys(this.SelectedNode).length == 0 && this.route.path == '/componentvisualization') {
 
             const searchParams = new URL(window.location.href).searchParams;
             const aasEndpoint = searchParams.get('aas');
@@ -221,7 +226,7 @@ export default defineComponent({
         },
 
         backToSubmodelList() {
-            this.$router.push({ name: 'SubmodelList', query: this.$route.query });
+            this.router.push({ name: 'SubmodelList', query: this.route.query });
         },
     },
 });

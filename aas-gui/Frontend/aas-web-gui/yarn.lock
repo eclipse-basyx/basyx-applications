@@ -159,10 +159,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz#acad351d582d157bb145535db2a6ff53dd514b5c"
   integrity sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==
 
-"@fontsource/roboto@^5.0.8":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-5.0.13.tgz#2d6ec431a2f9dfe38ca76525c2d6bf12241f575b"
-  integrity sha512-j61DHjsdUCKMXSdNLTOxcG701FWnF0jcqNNQi2iPCDxU8seN/sMxeh62dC++UiagCWq9ghTypX+Pcy7kX+QOeQ==
+"@fontsource/roboto@^5.0.14":
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-5.0.14.tgz#a3f67e47116309233ff3bba2c3613d2cf0302529"
+  integrity sha512-zHAxlTTm9RuRn9/StwclFJChf3z9+fBrOxC3fw71htjHP1BgXNISwRjdJtAKAmMe5S2BzgpnjkQR93P9EZYI/Q==
 
 "@jridgewell/sourcemap-codec@^1.4.15":
   version "1.5.0"
@@ -331,10 +331,10 @@
   resolved "https://registry.yarnpkg.com/@types/webxr/-/webxr-0.5.19.tgz#463a27bc06ff1c0a0c997e86b48bf24c5f50a4af"
   integrity sha512-4hxA+NwohSgImdTSlPXEqDqqFktNgmTXQ05ff1uWam05tNGroCMp4G+4XVl6qWm1p7GQ/9oD41kAYsSssF6Mzw==
 
-"@vitejs/plugin-vue@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.1.1.tgz#bb9ddb0af012450edef4f5d65d5b3a3c7630864f"
-  integrity sha512-sDckXxlHpMsjRQbAH9WanangrfrblsOd3pNifePs+FOHjJg1jfWq5L/P0PsBRndEt3nmdUnmvieP8ULDeX5AvA==
+"@vitejs/plugin-vue@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.1.2.tgz#f11091e0130eca6c1ca8cfb85ee71ea53b255d31"
+  integrity sha512-nY9IwH12qeiJqumTCLJLE7IiNx7HZ39cbHaysEUd+Myvbz9KAqd2yq+U01Kab1R/H1BmiyM2ShTYlNH32Fzo3A==
 
 "@volar/language-core@2.4.0-alpha.18", "@volar/language-core@~2.4.0-alpha.18":
   version "2.4.0-alpha.18"
@@ -414,7 +414,7 @@
     de-indent "^1.0.2"
     he "^1.2.0"
 
-"@vue/devtools-api@^6.5.1", "@vue/devtools-api@^6.6.3":
+"@vue/devtools-api@^6.6.3":
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.6.3.tgz#b23a588154cba8986bba82b6e1d0248bde3fd1a0"
   integrity sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==
@@ -1380,10 +1380,10 @@ svg.select.js@^3.0.1:
   dependencies:
     svg.js "^2.6.5"
 
-three@^0.166.1:
-  version "0.166.1"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.166.1.tgz#322cfc48fff4e751cd47d61fd1558c387d098d7c"
-  integrity sha512-LtuafkKHHzm61AQA1be2MAYIw1IjmhOUxhBa0prrLpEMWbV7ijvxCRHjSgHPGp2493wLBzwKV46tA9nivLEgKg==
+three@^0.167.1:
+  version "0.167.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.167.1.tgz#3fe4ba2b0a03fd662afe4977a56803d955b61689"
+  integrity sha512-gYTLJA/UQip6J/tJvl91YYqlZF47+D/kxiWrbTon35ZHlXEN0VOo+Qke2walF1/x92v55H6enomymg4Dak52kw==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
@@ -1482,12 +1482,12 @@ vue-demi@^0.14.8:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.10.tgz#afc78de3d6f9e11bf78c55e8510ee12814522f04"
   integrity sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==
 
-vue-router@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.4.0.tgz#128e3fc0c84421035a9bd26027245e6bd68f69ab"
-  integrity sha512-HB+t2p611aIZraV2aPSRNXf0Z/oLZFrlygJm+sZbdJaW6lcFqEDQwnzUBXn+DApw+/QzDU/I9TeWx9izEjTmsA==
+vue-router@^4.4.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.4.3.tgz#58a39dc804632bfb6d26f052aa8f6718bd130299"
+  integrity sha512-sv6wmNKx2j3aqJQDMxLFzs/u/mjA9Z5LCgy6BE0f7yFWMjrPLnS/sPNn8ARY/FXw6byV18EFutn5lTO6+UsV5A==
   dependencies:
-    "@vue/devtools-api" "^6.5.1"
+    "@vue/devtools-api" "^6.6.3"
 
 vue-tsc@^2.0.29:
   version "2.0.29"

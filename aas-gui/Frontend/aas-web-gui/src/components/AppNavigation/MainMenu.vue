@@ -89,6 +89,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
@@ -105,12 +106,14 @@ export default defineComponent({
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
         const envStore = useEnvStore()
+        const route = useRoute();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
             envStore, // EnvironmentStore Object
+            route, // Route Object
         }
     },
 
@@ -192,7 +195,7 @@ export default defineComponent({
 
         // get the current route name
         currentRoute() {
-            return this.$route.name;
+            return this.route.name;
         },
     },
 

@@ -99,6 +99,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
@@ -121,11 +122,15 @@ export default defineComponent({
         const theme = useTheme()
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const route = useRoute();
+        const router = useRouter();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
+            route, // Route Object
+            router, // Router Object
         }
     },
 
@@ -360,10 +365,10 @@ export default defineComponent({
             
             if (this.isMobile) {
                 // Change to Treeview add AAS Endpoint as Query to the Router
-                this.$router.push({ path: '/submodellist', query: { aas: AAS.endpoints[0].protocolInformation.href } });
+                this.router.push({ path: '/submodellist', query: { aas: AAS.endpoints[0].protocolInformation.href } });
             } else {
                 // Add AAS Endpoint as Query to the Router
-                this.$router.push({ query: { aas: AAS.endpoints[0].protocolInformation.href } });
+                this.router.push({ query: { aas: AAS.endpoints[0].protocolInformation.href } });
             }
             // dispatch the selected AAS to the Store
             this.aasStore.dispatchSelectedAAS(AAS);
@@ -503,7 +508,7 @@ export default defineComponent({
                 this.deleteSubmodels = false;
                 if (!error) {
                     //remove query from URL
-                    this.$router.push({ path: this.$route.path, query: {} });
+                    this.router.push({ path: this.route.path, query: {} });
                     this.aasStore.dispatchSelectedAAS({});
                     this.aasStore.dispatchSelectedNode({});
                     this.reloadList(); // reload the AAS List

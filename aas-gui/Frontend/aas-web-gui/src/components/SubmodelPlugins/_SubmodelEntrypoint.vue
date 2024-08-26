@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 
@@ -66,11 +67,13 @@ export default defineComponent({
     setup() {
         const navigationStore = useNavigationStore()
         const aasStore = useAASStore()
+        const route = useRoute();
 
         return {
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
             plugins: [] as Array<any>,
+            route, // Route Object
         }
     },
 
@@ -95,7 +98,7 @@ export default defineComponent({
         // return if in viewer mode
         viewerMode() {
             // check if the route name is aasviewer
-            return this.$route.name === 'AASViewer' || this.$route.name === 'ComponentVisualization';
+            return this.route.name === 'AASViewer' || this.route.name === 'ComponentVisualization';
         },
     },
 

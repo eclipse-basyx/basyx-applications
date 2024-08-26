@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useAASStore } from '@/store/AASDataStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
@@ -13,12 +14,14 @@ export default defineComponent({
     setup() {
         const aasStore = useAASStore()
         const envStore = useEnvStore()
+        const route = useRoute();
 
         console.log(aasStore)
 
         return {
             aasStore, // AASStore Object
             envStore, // EnvironmentStore Object
+            route, // Route Object
         }
     },
 
@@ -30,7 +33,7 @@ export default defineComponent({
         
         // check if plugin is in dashboard
         hideSettings() {
-            if(this.$route.name === 'DashboardGroup'){
+            if(this.route.name === 'DashboardGroup'){
                 return true;
             } else {
                 return false;
