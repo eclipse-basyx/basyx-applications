@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import mermaid from 'mermaid';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
@@ -45,10 +46,12 @@ export default defineComponent({
     setup() {
         const theme = useTheme()
         const aasStore = useAASStore()
+        const router = useRouter();
 
         return {
             theme, // Theme Object
             aasStore, // AASStore Object
+            router, // Router Object
         }
     },
 

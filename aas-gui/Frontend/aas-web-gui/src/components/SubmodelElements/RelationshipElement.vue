@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAASStore } from '@/store/AASDataStore';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
@@ -55,9 +56,11 @@ export default defineComponent({
 
     setup() {
         const aasStore = useAASStore()
+        const router = useRouter();
 
         return {
             aasStore, // AASStore Object
+            router, // Router Object
         }
     },
 
