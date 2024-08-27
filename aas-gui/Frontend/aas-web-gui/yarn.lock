@@ -1060,10 +1060,10 @@ katex@^0.16.9:
   dependencies:
     commander "^8.3.0"
 
-keycloak-js@^25.0.2:
-  version "25.0.2"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-25.0.2.tgz#10de8352ae7bb0d46396e4f083b40b959285791b"
-  integrity sha512-ACLf5O5PqzfDJwGqvLpqM0kflYWmyl3+T7M2C23gztJYccDxdfNP54+B9OkXz2GnDpLUId0ceoA+lbHw9t4Wng==
+keycloak-js@^25.0.4:
+  version "25.0.4"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-25.0.4.tgz#9f3bf8c68fc2535a7dc1d04c1c9f427ae8f4cfc4"
+  integrity sha512-LW7dVgqcBxMnnJTdmh7Zgd0NpStJnX2sCMrJGqcGtm4zmk4Rwlqk2o2uOvY7PaRHHYePXfbIwrqVhlN3GAnRCg==
   dependencies:
     js-sha256 "^0.11.0"
     jwt-decode "^4.0.0"
