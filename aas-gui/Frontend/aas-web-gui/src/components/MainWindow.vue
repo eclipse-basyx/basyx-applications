@@ -125,9 +125,14 @@ export default defineComponent({
         let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0px)';                        // checks if the navigation drawer is open
         screenWidth = screenWidth - (isDrawerOpen ? navigationDrawer[0].clientWidth : 0);                         // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
         let diffX = parseInt(e.pageX) - pageX;                                                                    // amount the header was dragged (minus - left, plus - right)
-        // TODO: prevent negative width
-        if(curCol) curCol.style.width = (100 - ((screenWidth - curColWidth - diffX) / screenWidth) * 100) + '%';  // scale the current Column (Window)
-        if(nxtCol) nxtCol.style.width = (100 - ((screenWidth - nxtColWidth + diffX) / screenWidth) * 100) + '%';  // scale the next Column (Window) if it exists
+        let minimalColWith = 200;
+        if ((curColWidth + diffX) >= minimalColWith
+          && (nxtColWidth - diffX) >= minimalColWith) {
+
+          if(curCol) curCol.style.width = (100 - ((screenWidth - (curColWidth + diffX)) / screenWidth) * 100) + '%';  // scale the current Column (Window)
+          if(nxtCol) nxtCol.style.width = (100 - ((screenWidth - (nxtColWidth - diffX)) / screenWidth) * 100) + '%';  // scale the next Column (Window) if it exists
+
+        }
 			});
       // Eventlistener to clear the local Variables mouse up
 			document.addEventListener('mouseup', function() { 
