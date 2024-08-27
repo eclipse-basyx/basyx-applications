@@ -1505,10 +1505,10 @@ vue@^3.2.25, vue@^3.4.38:
     "@vue/server-renderer" "3.4.38"
     "@vue/shared" "3.4.38"
 
-vuetify@^3.6.13:
-  version "3.6.13"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.13.tgz#e875b99e2a8874bb456eb10dbda6a8de7a144c90"
-  integrity sha512-Gz7jxXAkmff2m6CM0EUWOo/72TM322/3I6aDna++k1nPOW1/hNx4td1MZG4u75fzdn3r+uIe0dbF7SWuhu6DWA==
+vuetify@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.7.1.tgz#102dc8b6c8795955d874da85375a98e369c102d6"
+  integrity sha512-N1XlczbgeGt/O+JUk72QPrqcDaRIXUdptUciJqGyTvZ9cfMoSlEWs6TZO+dOOfXbKvmIMFMycYg4dgSHDpCPhg==
 
 webfontloader@^1.0.0:
   version "1.6.28"
