@@ -123,7 +123,7 @@ export default defineComponent({
         let screenWidth = document.getElementsByTagName('html')[0].clientWidth;                                   // the width of the screen (Window) excluding the scrollbar
         let navigationDrawer: any = document.getElementsByClassName('leftMenu')[0];                               // the width of the navigation drawer
         let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0px)';                        // checks if the navigation drawer is open
-        screenWidth = screenWidth - (isDrawerOpen ? 336 : 0);                                                     // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
+        screenWidth = screenWidth - (isDrawerOpen ? navigationDrawer[0].clientWidth : 0);                         // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
         let diffX = parseInt(e.pageX) - pageX;                                                                    // amount the header was dragged (minus - left, plus - right)
         // TODO: prevent negative width
         if(curCol) curCol.style.width = (100 - ((screenWidth - curColWidth - diffX) / screenWidth) * 100) + '%';  // scale the current Column (Window)
