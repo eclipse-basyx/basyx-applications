@@ -113,7 +113,7 @@ export default defineComponent({
 				curCol = e.target.parentElement;                        // the current element that will be scaled
 				nxtCol = curCol.nextElementSibling;                     // selects the divider
         if(nxtCol) nxtCol = nxtCol.nextElementSibling;          // the next element that will be scaled too
-				pageX = e.pageX;                                        // the current x position of the mouse
+				pageX = parseInt(e.pageX);                                        // the current x position of the mouse
         curColWidth = parseInt(curCol.offsetWidth);             // the current width of the current element
 				if(nxtCol) nxtColWidth = parseInt(nxtCol.offsetWidth);  // the current width of the next element
 			});
@@ -122,7 +122,7 @@ export default defineComponent({
         if(!curCol) return;                                                                                       // if no element is selected return
         let screenWidth = document.getElementsByTagName('html')[0].clientWidth;                                   // the width of the screen (Window) excluding the scrollbar
         let navigationDrawer: any = document.getElementsByClassName('leftMenu')[0];                               // the width of the navigation drawer
-        let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0%)';                         // checks if the navigation drawer is open
+        let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0px)';                        // checks if the navigation drawer is open
         screenWidth = screenWidth - (isDrawerOpen ? 336 : 0);                                                     // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
         let diffX = parseInt(e.pageX) - pageX;                                                                    // amount the header was dragged (minus - left, plus - right)
         // TODO: prevent negative width
