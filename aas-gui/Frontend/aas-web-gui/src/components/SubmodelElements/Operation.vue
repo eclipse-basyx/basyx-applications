@@ -82,8 +82,8 @@ export default defineComponent({
     props: ['operationObject'],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
 
         return {
             navigationStore, // NavigationStore Object

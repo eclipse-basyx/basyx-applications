@@ -47,9 +47,9 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
 
         return {
             navigationStore, // NavigationStore Object

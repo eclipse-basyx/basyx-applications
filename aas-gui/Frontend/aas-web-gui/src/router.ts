@@ -28,7 +28,7 @@ export async function createAppRouter() {
 
   const router = createRouter({
     history: createWebHistory(base || '/'),
-    routes
+    routes,
   });
 
   return router;

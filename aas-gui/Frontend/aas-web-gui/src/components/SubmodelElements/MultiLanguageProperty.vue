@@ -70,7 +70,7 @@ export default defineComponent({
     props: ['multiLanguagePropertyObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

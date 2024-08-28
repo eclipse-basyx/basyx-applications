@@ -107,9 +107,9 @@ export default defineComponent({
     emits: ['timeVal', 'YVal', 'newOptions'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
 
         return {
             theme, // Theme Object
@@ -178,7 +178,7 @@ export default defineComponent({
 
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
 
         // Determine Segment Type of the selected Segment
@@ -450,7 +450,7 @@ export default defineComponent({
             // get the Data File/Blob submodel element
             const dataFile = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Data');
             // determine the path to the file
-            let path = dataFile.value
+            let path = dataFile.value;
             if (path.startsWith('/')) {
                 path = this.submodelElementData.path + '/submodel-elements/Segments.' + this.selectedSegment.idShort + '.Data/attachment';
             }
@@ -512,7 +512,7 @@ export default defineComponent({
             if (this.apiToken && this.apiToken !== '') dashboardElement.apiToken = this.apiToken;
             dashboardElement.chartType = this.selectedChartType;
             dashboardElement.chartOptions = this.chartOptions;
-            this.dashboardAdd(dashboardElement)
+            this.dashboardAdd(dashboardElement);
         },
 
         getChartOptions(options: any) {

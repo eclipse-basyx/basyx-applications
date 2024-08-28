@@ -86,7 +86,7 @@ export default defineComponent({
                             elementToPush.name = this.widgetSettings.chartNamesUnits[i].name;
                             elementToPush.unit = this.widgetSettings.chartNamesUnits[i].unit;
                             // console.log('value: ', elementToPush.value)
-                            collectionValues.push(elementToPush)
+                            collectionValues.push(elementToPush);
                         }
                     });
                 });

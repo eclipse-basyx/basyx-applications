@@ -13,7 +13,7 @@ export default defineComponent({
     props: ['submodelElementData', 'widgetSettings'],
 
     setup() {
-        const theme = useTheme()
+        const theme = useTheme();
 
         return {
             theme, // Theme Object
@@ -26,7 +26,7 @@ export default defineComponent({
             chartOptions: {
                 chart: {
                     type: 'bar',
-                    height: 350
+                    height: 350,
                 },
                 plotOptions: {
                     bar: {
@@ -38,7 +38,7 @@ export default defineComponent({
                     }
                 },
                 legend: {
-                    show: false
+                    show: false,
                 },
                 dataLabels: {
                     enabled: true,
@@ -53,7 +53,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.barchart as any).chart
+            const chart = (this.$refs.barchart as any).chart;
             if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -80,7 +80,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -94,7 +94,7 @@ export default defineComponent({
                 this.widgetSettings.idShorts.forEach((element: any) => {
                     this.submodelElementData.value.forEach((el: any) => {
                         if (element == el.idShort) {
-                            collectionValues.push(el)
+                            collectionValues.push(el);
                         }
                     });
                 });
@@ -109,14 +109,14 @@ export default defineComponent({
                 });
                 let chartSeries = {
                     name: this.widgetSettings.widgetTitle,
-                    data: chartValues
+                    data: chartValues,
                 } as any;
                 // Append the series to the chart
                 (this.$refs.barchart as any).appendSeries(chartSeries);
                 // Update the chartOptions
                 let chartOptions = {
                     xaxis: {
-                        categories: categories
+                        categories: categories,
                     }
                 } as any;
                 (this.$refs.barchart as any).updateOptions(chartOptions);
@@ -147,7 +147,7 @@ export default defineComponent({
                 this.widgetSettings.idShorts.forEach((element: any) => {
                     this.submodelElementData.value.forEach((el: any) => {
                         if (element == el.idShort) {
-                            collectionValues.push(el)
+                            collectionValues.push(el);
                         }
                     });
                 });
@@ -158,7 +158,7 @@ export default defineComponent({
                     chartValues.push(element.value);
                 });
                 let chartSeries = {
-                    data: chartValues
+                    data: chartValues,
                 } as any;
                 // Update the series for the chart
                 (this.$refs.barchart as any).updateSeries([chartSeries]);
@@ -176,14 +176,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.barchart as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.barchart as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

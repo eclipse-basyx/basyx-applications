@@ -46,7 +46,7 @@ export default defineComponent({
   },
 
   setup() {
-    const aasStore = useAASStore()
+    const aasStore = useAASStore();
 
     return {
       aasStore, // AASStore Object

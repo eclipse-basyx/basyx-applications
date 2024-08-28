@@ -30,16 +30,16 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
-        const authStore = useAuthStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
+        const authStore = useAuthStore();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
-            authStore
+            authStore,
         }
     },
 
@@ -238,7 +238,7 @@ export default defineComponent({
                         mesh.material = new THREE.MeshStandardMaterial({
                             color: 0xffffff,
                             metalness: 0.2,
-                            roughness: 0.5
+                            roughness: 0.5,
                         });
                         mesh.scale.multiplyScalar(0.03);
                     }

@@ -55,7 +55,7 @@ export default defineComponent({
     props: ['relationshipElementObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
         const router = useRouter();
 
         return {

@@ -51,7 +51,7 @@ export default defineComponent({
     props: ['detailsObject', 'showDetailsCard'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
 
     setup() {
-        const navigationStore = useNavigationStore()
+        const navigationStore = useNavigationStore();
 
         return {
             navigationStore, // NavigationStore Object
@@ -94,7 +94,7 @@ export default defineComponent({
             let assetInformationEndpoint = aasRepoEndpoint + '/shells/' + this.URLEncode(this.detailsObject.id) + '/asset-information';
             // console.log('aasRepoEndpoint: ', assetInformationEndpoint);
             let path = assetInformationEndpoint;
-            let context = 'retrieving asset information'
+            let context = 'retrieving asset information';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {

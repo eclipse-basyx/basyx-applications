@@ -56,7 +56,7 @@ export default defineComponent({
     props: ['entityObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
         const router = useRouter();
 
         return {

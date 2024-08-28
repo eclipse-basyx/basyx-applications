@@ -36,7 +36,7 @@ export default defineComponent({
     props: ['rangeObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

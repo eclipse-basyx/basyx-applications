@@ -12,8 +12,8 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
         const route = useRoute();
 
         return {

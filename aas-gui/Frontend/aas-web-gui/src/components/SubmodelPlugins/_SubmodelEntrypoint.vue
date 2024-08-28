@@ -68,8 +68,8 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
         const route = useRoute();
 
         return {

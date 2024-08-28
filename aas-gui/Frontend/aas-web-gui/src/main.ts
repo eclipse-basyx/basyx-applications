@@ -30,9 +30,9 @@ import { registerPlugins } from '@/plugins'
 import Keycloak from 'keycloak-js';
 import { KeycloakOnLoad } from 'keycloak-js';
 
-const app = createApp(App)
+const app = createApp(App);
 
-const pinia = createPinia()
+const pinia = createPinia();
 
 async function loadUserPlugins() {
     const router = await createAppRouter();
@@ -49,12 +49,12 @@ async function loadUserPlugins() {
         try {
             await initKeycloak(envStore.getKeycloakUrl, envStore.getKeycloakRealm, envStore.getKeycloakClientId);
         } catch(error) {
-            alert("Could not connect to Keycloak.")
+            alert("Could not connect to Keycloak.");
             return;
         }
     }
 
-    await registerPlugins(app)
+    await registerPlugins(app);
 
     // Load all components in the components folder
     const pluginFiles = import.meta.glob('./UserPlugins/*.vue');
@@ -78,12 +78,11 @@ async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloak
     return new Promise<void>((resolve, reject) => {
         let keycloak: Keycloak | null = null;
 
-        
         let initOptions = {
             url: keycloakUrl,
             realm: keycloakRealm,
             clientId: keycloakClientId,
-            onLoad: 'login-required' as KeycloakOnLoad
+            onLoad: 'login-required' as KeycloakOnLoad,
         };
 
         try {
@@ -122,7 +121,7 @@ async function initKeycloak(keycloakUrl: string, keycloakRealm: string, keycloak
                         authStore.setAuthStatus(true);
                     }).catch(() => {
                         console.error('Failed to refresh token');
-                        authStore.setAuthStatus(false)
+                        authStore.setAuthStatus(false);
                     });
                 }, 60000);
             }

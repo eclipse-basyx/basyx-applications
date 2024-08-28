@@ -146,7 +146,7 @@ export default defineComponent({
 
         async deleteElement(elementId: any) {
             // console.log(elementId)
-            let deletedId =  await this.deleteSingle(elementId)
+            let deletedId =  await this.deleteSingle(elementId);
             if(deletedId) {
                 this.$emit("deleteElement", deletedId);
             }

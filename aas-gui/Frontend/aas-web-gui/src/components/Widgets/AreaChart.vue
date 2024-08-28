@@ -33,7 +33,7 @@ export default defineComponent({
     mixins: [WidgetHandling, DashboardHandling],
 
     setup() {
-        const theme = useTheme()
+        const theme = useTheme();
 
         return {
             theme, // Theme Object
@@ -51,7 +51,7 @@ export default defineComponent({
                     background: '#ffffff00',
                 },
                 dataLabels: {
-                    enabled: false
+                    enabled: false,
                 },
                 xaxis: {
                     type: 'datetime',
@@ -69,7 +69,7 @@ export default defineComponent({
                     tickPlacement: 'on',
                 },
                 yaxis: {
-                    decimalsInFloat: 2
+                    decimalsInFloat: 2,
                 },
                 stroke: {
                     curve: 'smooth',
@@ -78,17 +78,17 @@ export default defineComponent({
                 grid: {
                     xaxis: {
                         lines: {
-                            show: false
+                            show: false,
                         }
                     },
                 },
                 tooltip: {
                     x: {
-                        format: 'dd MMM yyyy HH:mm:ss'
+                        format: 'dd MMM yyyy HH:mm:ss',
                     }
                 },
                 theme: {
-                    mode: 'dark'
+                    mode: 'dark',
                 },
             } as any,
             localChartOptions: {} as any,
@@ -104,7 +104,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.areachart as any).chart
+            const chart = (this.$refs.areachart as any).chart;
             if (chart) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -133,7 +133,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -162,9 +162,9 @@ export default defineComponent({
             // update the tooltip
             (this.$refs.areachart as any).updateOptions({
                 tooltip: {
-                    y: tooltip_y
+                    y: tooltip_y,
                 },
-                legend: legend
+                legend: legend,
             });
             // emit the chartOptions to the parent component
             this.$emit("chartOptions", this.localChartOptions);
@@ -181,7 +181,7 @@ export default defineComponent({
             }
             let newOptions = {
                 xaxis: {
-                    range: range
+                    range: range,
                 }
             };
             // update the chart options
@@ -197,7 +197,7 @@ export default defineComponent({
         changeInterpolation() {
             let newOptions = {
                 stroke: {
-                    curve: this.interpolation
+                    curve: this.interpolation,
                 }
             };
             // update the chart options
@@ -216,14 +216,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.areachart as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.areachart as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

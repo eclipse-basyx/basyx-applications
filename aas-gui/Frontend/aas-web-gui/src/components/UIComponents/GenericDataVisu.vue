@@ -78,8 +78,8 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
 
         return {
             theme, // Theme Object
@@ -110,7 +110,7 @@ export default defineComponent({
     methods: {
         // Initialize the SubmodelElement Data
         initializeSubmodelElementData() {
-            if(!this.submodelElementData) return
+            if(!this.submodelElementData) return;
 
             // console.log('SubmodelElementData: ', this.submodelElementData)
             if (Object.keys(this.submodelElementData).length == 0) {

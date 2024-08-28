@@ -172,10 +172,10 @@ export default defineComponent({
     mixins: [RequestHandling],
 
     setup () {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const envStore = useEnvStore()
-        const authStore = useAuthStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const envStore = useEnvStore();
+        const authStore = useAuthStore();
         const route = useRoute();
 
         return {

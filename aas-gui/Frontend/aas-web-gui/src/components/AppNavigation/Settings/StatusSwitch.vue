@@ -10,7 +10,7 @@ export default defineComponent({
     name: 'StatusSwitch',
 
     setup() {
-        const navigationStore = useNavigationStore()
+        const navigationStore = useNavigationStore();
 
         return {
             navigationStore, // NavigationStore Object

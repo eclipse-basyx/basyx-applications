@@ -424,8 +424,8 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
 
         return {
             theme, // Theme Object
@@ -464,7 +464,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
 
         // Returns a hash created from the selectedNode.pathFull
@@ -499,92 +499,92 @@ export default defineComponent({
                 {
                     value: 0,
                     text: 'Undefined',
-                    path: undefined
+                    path: undefined,
                 },
                 {
                     value: 1,
                     text: 'Clearing',
-                    path: document.getElementById('Clearing_Border' + this.uniqueId)
+                    path: document.getElementById('Clearing_Border' + this.uniqueId),
                 },
                 {
                     value: 2,
                     text: 'Stopped',
-                    path: document.getElementById('Stopped_Border' + this.uniqueId)
+                    path: document.getElementById('Stopped_Border' + this.uniqueId),
                 },
                 {
                     value: 3,
                     text: 'Starting',
-                    path: document.getElementById('Starting_Border' + this.uniqueId)
+                    path: document.getElementById('Starting_Border' + this.uniqueId),
                 },
                 {
                     value: 4,
                     text: 'Idle',
-                    path: document.getElementById('Idle_Border' + this.uniqueId)
+                    path: document.getElementById('Idle_Border' + this.uniqueId),
                 },
                 {
                     value: 5,
                     text: 'Suspended',
-                    path: document.getElementById('Suspended_Border' + this.uniqueId)
+                    path: document.getElementById('Suspended_Border' + this.uniqueId),
                 },
                 {
                     value: 6,
                     text: 'Execute',
-                    path: document.getElementById('Execute_Border' + this.uniqueId)
+                    path: document.getElementById('Execute_Border' + this.uniqueId),
                 },
                 {
                     value: 7,
                     text: 'Stopping',
-                    path: document.getElementById('Stopping_Border' + this.uniqueId)
+                    path: document.getElementById('Stopping_Border' + this.uniqueId),
                 },
                 {
                     value: 8,
                     text: 'Aborting',
-                    path: document.getElementById('Aborting_Border' + this.uniqueId)
+                    path: document.getElementById('Aborting_Border' + this.uniqueId),
                 },
                 {
                     value: 9,
                     text: 'Aborted',
-                    path: document.getElementById('Aborted_Border' + this.uniqueId)
+                    path: document.getElementById('Aborted_Border' + this.uniqueId),
                 },
                 {
                     value: 10,
                     text: 'Holding',
-                    path: document.getElementById('Holding_Border' + this.uniqueId)
+                    path: document.getElementById('Holding_Border' + this.uniqueId),
                 },
                 {
                     value: 11,
                     text: 'Held',
-                    path: document.getElementById('Held_Border' + this.uniqueId)
+                    path: document.getElementById('Held_Border' + this.uniqueId),
                 },
                 {
                     value: 12,
                     text: 'Unholding',
-                    path: document.getElementById('Unholding_Border' + this.uniqueId)
+                    path: document.getElementById('Unholding_Border' + this.uniqueId),
                 },
                 {
                     value: 13,
                     text: 'Suspending',
-                    path: document.getElementById('Suspending_Border' + this.uniqueId)
+                    path: document.getElementById('Suspending_Border' + this.uniqueId),
                 },
                 {
                     value: 14,
                     text: 'Unsuspending',
-                    path: document.getElementById('Unsuspending_Border' + this.uniqueId)
+                    path: document.getElementById('Unsuspending_Border' + this.uniqueId),
                 },
                 {
                     value: 15,
                     text: 'Resetting',
-                    path: document.getElementById('Resetting_Border' + this.uniqueId)
+                    path: document.getElementById('Resetting_Border' + this.uniqueId),
                 },
                 {
                     value: 16,
                     text: 'Completing',
-                    path: document.getElementById('Completing_Border' + this.uniqueId)
+                    path: document.getElementById('Completing_Border' + this.uniqueId),
                 },
                 {
                     value: 17,
                     text: 'Complete',
-                    path: document.getElementById('Complete_Border' + this.uniqueId)
+                    path: document.getElementById('Complete_Border' + this.uniqueId),
                 },
             ]
         },

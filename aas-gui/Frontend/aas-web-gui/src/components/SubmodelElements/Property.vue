@@ -70,7 +70,7 @@ export default defineComponent({
     props: ['propertyObject', 'isOperationVariable', 'variableType'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

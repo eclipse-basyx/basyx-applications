@@ -156,7 +156,7 @@ export default defineComponent({
                 'long',
                 'short',
                 'decimal',
-                'byte'
+                'byte',
             ];
             // strip xs: from the property if it exists
             if (valueType.includes('xs:')) {
@@ -295,7 +295,7 @@ export default defineComponent({
                             if (referenceValue[index - 1].type == 'SubmodelElementList') {
                                 // console.log('SubmodelElementList: ', this.referenceValue[index - 1])
                                 // check in which position of the list the element is (list needs to be requested to get the position)
-                                let listPath = path
+                                let listPath = path;
                                 let context = 'retrieving SubmodelElementList';
                                 let disableMessage = false;
                                 this.getRequest(listPath, context, disableMessage).then((response: any) => {

@@ -60,9 +60,9 @@ export default defineComponent({
     props: ['item', 'depth'],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
         const route = useRoute();
         const router = useRouter();
 

@@ -13,7 +13,7 @@ export default defineComponent({
     props: ['submodelElementData', 'widgetSettings'],
 
     setup() {
-        const theme = useTheme()
+        const theme = useTheme();
 
         return {
             theme, // Theme Object
@@ -42,12 +42,12 @@ export default defineComponent({
                 grid: {
                     xaxis: {
                         lines: {
-                            show: false
+                            show: false,
                         }
                     },
                 },
                 legend: {
-                    show: false
+                    show: false,
                 },
                 dataLabels: {
                     enabled: true,
@@ -62,7 +62,7 @@ export default defineComponent({
                     categories: [],
                 },
                 fill: {
-                    opacity: 1
+                    opacity: 1,
                 },
                 style: {
                     fontSize: '12px',
@@ -73,7 +73,7 @@ export default defineComponent({
                 },
                 yaxis: {
                     axisBorder: {
-                        show: false
+                        show: false,
                     },
                 },
                 labels: {
@@ -85,7 +85,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.columnchart as any).chart
+            const chart = (this.$refs.columnchart as any).chart;
             if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -112,7 +112,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -126,7 +126,7 @@ export default defineComponent({
                 this.widgetSettings.idShorts.forEach((element: any) => {
                     this.submodelElementData.value.forEach((el: any) => {
                         if (element == el.idShort) {
-                            collectionValues.push(el)
+                            collectionValues.push(el);
                         }
                     });
                 });
@@ -141,17 +141,17 @@ export default defineComponent({
                 });
                 let chartSeries = {
                     name: this.widgetSettings.widgetTitle,
-                    data: chartValues
+                    data: chartValues,
                 } as any;
                 // Append the series to the chart
                 (this.$refs.columnchart as any).appendSeries(chartSeries);
                 // Update the chartOptions
                 let chartOptions = {
                     xaxis: {
-                        categories: categories
+                        categories: categories,
                     },
                     dataLables: {
-                        label: chartValues
+                        label: chartValues,
                     }
                 } as any;
                 (this.$refs.columnchart as any).updateOptions(chartOptions);
@@ -162,7 +162,7 @@ export default defineComponent({
                         categories: [this.widgetSettings.chartNamesUnits[0].name  + ' [' + this.widgetSettings.chartNamesUnits[0].unit + ']']
                     },
                     dataLables: {
-                        label: this.submodelElementData.value
+                        label: this.submodelElementData.value,
                     }
                 });
                 // Append the series to the chart
@@ -185,7 +185,7 @@ export default defineComponent({
                 this.widgetSettings.idShorts.forEach((element: any) => {
                     this.submodelElementData.value.forEach((el: any) => {
                         if (element == el.idShort) {
-                            collectionValues.push(el)
+                            collectionValues.push(el);
                         }
                     });
                 });
@@ -196,7 +196,7 @@ export default defineComponent({
                     chartValues.push(element.value);
                 });
                 let chartSeries = {
-                    data: chartValues
+                    data: chartValues,
                 } as any;
                 // Update the series for the chart
                 (this.$refs.columnchart as any).updateSeries([chartSeries]);
@@ -214,14 +214,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.columnchart as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.columnchart as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

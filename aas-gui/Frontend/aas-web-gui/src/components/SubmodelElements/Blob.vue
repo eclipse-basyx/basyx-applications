@@ -63,7 +63,7 @@ export default defineComponent({
     props: ['blobObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

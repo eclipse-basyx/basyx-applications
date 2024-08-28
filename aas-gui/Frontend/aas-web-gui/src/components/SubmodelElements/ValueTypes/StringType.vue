@@ -27,7 +27,7 @@ export default defineComponent({
     props: ['stringValue', 'isOperationVariable', 'variableType'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

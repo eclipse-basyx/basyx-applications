@@ -246,7 +246,7 @@ export default defineComponent({
                 color: 'error',
                 btnColor: 'buttonText',
                 baseError: initialErrorMessage,
-                extendedError: errorMessage
+                extendedError: errorMessage,
             });
         },
     }
