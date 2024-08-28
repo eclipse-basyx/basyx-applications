@@ -101,12 +101,39 @@ export default defineComponent({
         },
 
         // Function to check if the SemanticID of a SubmodelElement matches the given SemanticID
-        checkSemanticId(submodelElementData: any, semanticId: string): boolean {
+        checkSemanticId(submodelElement: any, semanticId: string): boolean {
+
+            if (semanticId.trim() == '') return false;
+
+            if (!submodelElement.semanticId
+                || !submodelElement.semanticId.keys
+                ||  submodelElement.semanticId.keys.length == 0) return false;
+
             let result = false;
-            submodelElementData.semanticId.keys.forEach((key: any) => {
-                if (key.value === semanticId) {
-                    result = true;
+            submodelElement.semanticId.keys.forEach((key: any) => {
+
+                if (key.value.startsWith('http://') || 'https://') {
+                    // e.g. IDTA IRI like
+                    if (new RegExp('\/\d\/\d\/{0,1}' + '$').test(semanticId)) {
+                        if (key.value === semanticId) result = true;
+                    } else {
+                        if (key.value.startsWith(semanticId)) result = true;
+                    }
+                } else if (key.value.startsWith('0173-1')) {
+                    // ECLASS IRDI like 0173-1#01-AHF578#001 resp. 0173-1-01-AHF578-001
+                    if (new RegExp('[#-]{1}\d{3}$').test(semanticId)) {
+                        // ECLASS IRDI with version (like 0173-1#01-AHF578#001 resp. 0173-1-01-AHF578-001)
+                        if (key.value === semanticId) result = true;
+                    } else {
+                        // ECLASS IRDI without version (like 0173-1#01-AHF578 resp. 0173-1-01-AHF578)
+                        if (key.value.startsWith(semanticId)) result = true;
+                    }
+                } else {
+                    console.log('5 submodelElement.semanticId.keys', key.value, semanticId);
+                    if (key.value === semanticId) result = true;
                 }
+
+            
             });
             return result;
         },
