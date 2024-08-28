@@ -24,7 +24,7 @@
             </v-col>
         </v-row>
         <template v-if="AASData && Object.keys(AASData).length > 0">
-            <TimeSeriesData v-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="AASData" :configData="localDashboardData" :editDialog="false" :loadTrigger="trigger"></TimeSeriesData>
+            <TimeSeriesData v-if="checkSemanticId(localDashboardData.configObject, 'https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="AASData" :configData="localDashboardData" :editDialog="false" :loadTrigger="trigger"></TimeSeriesData>
         </template>
     </v-card>
     <!-- Dialog for deleting a dashboard element -->
@@ -45,6 +45,7 @@
 import { defineComponent } from 'vue';
 import { useEnvStore } from '@/store/EnvironmentStore';
 import DashboardHandling from '@/mixins/DashboardHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import TimeSeriesData from '../SubmodelPlugins/TimeSeriesData.vue';
 import DashboardEditElement from '../Dashboard/DashboardEditElement.vue';
 
@@ -55,7 +56,7 @@ export default defineComponent({
         TimeSeriesData,
         DashboardEditElement,
     },
-    mixins: [DashboardHandling],
+    mixins: [SubmodelElementHandling, DashboardHandling],
     props: ['dashboardData', 'globalSyncStatus'],
     emits: ['deleteElement', 'updateElement'],
 
@@ -133,10 +134,6 @@ export default defineComponent({
                 }
             });
 
-        },
-        // Function to check if the SemanticID of a SubmodelElement matches the given SemanticID
-        checkSemanticId(semanticId: string): boolean {
-            return this.localDashboardData.configObject.semanticId === semanticId;
         },
 
         updateVisibility() {

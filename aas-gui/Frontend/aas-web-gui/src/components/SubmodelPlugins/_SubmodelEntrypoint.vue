@@ -2,14 +2,14 @@
     <v-container fluid class="pa-0">
         <!-- List of all available Submodel and SubmodelElement Plugins matched by their SemanticID -->
         <template v-if="SelectedNode && Object.keys(SelectedNode).length > 0 && Object.keys(submodelElementData).length > 0 && submodelElementData.semanticId && submodelElementData.semanticId.keys && submodelElementData.semanticId.keys.length > 0">
-            <HTWFuehrungskomponente v-if="checkSemanticId('http://htw-berlin.de/smc_statemachine')" :submodelElementData="submodelElementData" :selectedNode="selectedNode"></HTWFuehrungskomponente>
-            <DigitalNameplate v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/2/0/Nameplate')" :submodelElementData="submodelElementData"></DigitalNameplate>
-            <TimeSeriesData v-else-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="submodelElementData"></TimeSeriesData>
-            <BillsOfMaterial v-else-if="checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel') || checkSemanticId('https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
-            <HandoverDocumentation v-else-if="checkSemanticId('0173-1#01-AHF578#001')" :submodelElementData="submodelElementData"></HandoverDocumentation>
-            <ContactInformation v-else-if="checkSemanticId('https://admin-shell.io/zvei/nameplate/1/0/ContactInformations')" :submodelElementData="submodelElementData"></ContactInformation>
-            <TechnicalData v-else-if="checkSemanticId('https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2')" :submodelElementData="submodelElementData"></TechnicalData>
-            <JSONArrayProperty v-else-if="checkSemanticId('http://iese.fraunhofer.de/prop_jsonarray')" :submodelElementData="submodelElementData"></JSONArrayProperty>
+            <HTWFuehrungskomponente v-if="checkSemanticId(submodelElementData, 'http://htw-berlin.de/smc_statemachine')" :submodelElementData="submodelElementData" :selectedNode="selectedNode"></HTWFuehrungskomponente>
+            <DigitalNameplate v-else-if="checkSemanticId(submodelElementData, 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate')" :submodelElementData="submodelElementData"></DigitalNameplate>
+            <TimeSeriesData v-else-if="checkSemanticId(submodelElementData, 'https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="submodelElementData"></TimeSeriesData>
+            <BillsOfMaterial v-else-if="checkSemanticId(submodelElementData, 'https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel') || checkSemanticId(submodelElementData, 'https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel')" :submodelElementData="submodelElementData"></BillsOfMaterial>
+            <HandoverDocumentation v-else-if="checkSemanticId(submodelElementData, '0173-1#01-AHF578#001')" :submodelElementData="submodelElementData"></HandoverDocumentation>
+            <ContactInformation v-else-if="checkSemanticId(submodelElementData, 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations')" :submodelElementData="submodelElementData"></ContactInformation>
+            <TechnicalData v-else-if="checkSemanticId(submodelElementData, 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2')" :submodelElementData="submodelElementData"></TechnicalData>
+            <JSONArrayProperty v-else-if="checkSemanticId(submodelElementData, 'http://iese.fraunhofer.de/prop_jsonarray')" :submodelElementData="submodelElementData"></JSONArrayProperty>
             <GenericDataVisu v-else-if="viewerMode" :submodelElementData="submodelElementData.submodelElements"></GenericDataVisu>
             <!-- Plugins added by the user are dynamically registered here -->
             <component v-for="(plugin, i) in filteredPlugins" :key="i" :is="plugin.name" :submodelElementData="submodelElementData"></component>
@@ -31,6 +31,7 @@ import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import HTWFuehrungskomponente from './HTWFuehrungskomponente.vue';
 import DigitalNameplate from './DigitalNameplate.vue';
@@ -62,6 +63,7 @@ export default defineComponent({
         PDFPreview,
         CADPreview,
     },
+    mixins: [SubmodelElementHandling],
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
@@ -102,17 +104,5 @@ export default defineComponent({
         },
     },
 
-    methods: {
-        // Function to check if the SemanticID of a SubmodelElement matches the given SemanticID
-        checkSemanticId(semanticId: string): boolean {
-            let result = false;
-            this.submodelElementData.semanticId.keys.forEach((key: any) => {
-                if (key.value === semanticId) {
-                    result = true;
-                }
-            });
-            return result;
-        },
-    },
 });
 </script>
