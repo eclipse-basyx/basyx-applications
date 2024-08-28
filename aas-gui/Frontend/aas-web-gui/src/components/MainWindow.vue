@@ -119,12 +119,12 @@ export default defineComponent({
 			});
       // Eventlistener to scale the current and next Window when the mouse is moved
 			document.addEventListener('mousemove', function(e: any) {
-        if(!curCol) return;                                                                                       // if no element is selected return
-        let screenWidth = document.getElementsByTagName('html')[0].clientWidth;                                   // the width of the screen (Window) excluding the scrollbar
-        let navigationDrawer: any = document.getElementsByClassName('leftMenu')[0];                               // the width of the navigation drawer
-        let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0px)';                        // checks if the navigation drawer is open
-        screenWidth = screenWidth - (isDrawerOpen ? navigationDrawer.clientWidth : 0);                         // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
-        let diffX = parseInt(e.pageX) - pageX;                                                                    // amount the header was dragged (minus - left, plus - right)
+        if(!curCol) return;                                                                  // if no element is selected return
+        let screenWidth = document.documentElement.clientWidth;                              // the width of the screen (Window) excluding the scrollbar
+        let navigationDrawer: any = document.getElementsByClassName('leftMenu')[0];          // the width of the navigation drawer
+        let isDrawerOpen: boolean = navigationDrawer.style.transform == 'translateX(0px)';  // checks if the navigation drawer is open
+        screenWidth = screenWidth - (isDrawerOpen ? navigationDrawer.clientWidth : 0);      // if the navigation drawer is open subtract the width of the navigation drawer from the screen width
+        let diffX = parseInt(e.pageX) - pageX;                                              // amount the header was dragged (minus - left, plus - right)
         let minimalColWith = 200;
         if ((curColWidth + diffX) >= minimalColWith && (nxtColWidth - diffX) >= minimalColWith) {
           if(curCol) curCol.style.width = (100 - ((screenWidth - (curColWidth + diffX)) / screenWidth) * 100) + '%';  // scale the current Column (Window)
