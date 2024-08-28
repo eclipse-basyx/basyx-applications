@@ -129,7 +129,6 @@ export default defineComponent({
                         if (key.value.startsWith(semanticId)) result = true;
                     }
                 } else {
-                    console.log('5 submodelElement.semanticId.keys', key.value, semanticId);
                     if (key.value === semanticId) result = true;
                 }
 
