@@ -109,32 +109,31 @@ export default defineComponent({
                 || !submodelElement.semanticId.keys
                 ||  submodelElement.semanticId.keys.length == 0) return false;
 
-            let result = false;
-            submodelElement.semanticId.keys.forEach((key: any) => {
+            for (const key of  submodelElement.semanticId.keys) {
 
                 if (key.value.startsWith('http://') || 'https://') {
                     // e.g. IDTA IRI like
                     if (new RegExp('\/\d\/\d\/{0,1}' + '$').test(semanticId)) {
-                        if (key.value === semanticId) result = true;
+                        if (key.value === semanticId) return true;
                     } else {
-                        if (key.value.startsWith(semanticId)) result = true;
+                        if (key.value.startsWith(semanticId)) return true;
                     }
                 } else if (key.value.startsWith('0173-1')) {
                     // ECLASS IRDI like 0173-1#01-AHF578#001 resp. 0173-1-01-AHF578-001
                     if (new RegExp('[#-]{1}\d{3}$').test(semanticId)) {
                         // ECLASS IRDI with version (like 0173-1#01-AHF578#001 resp. 0173-1-01-AHF578-001)
-                        if (key.value === semanticId) result = true;
+                        if (key.value === semanticId) return true;
                     } else {
                         // ECLASS IRDI without version (like 0173-1#01-AHF578 resp. 0173-1-01-AHF578)
-                        if (key.value.startsWith(semanticId)) result = true;
+                        if (key.value.startsWith(semanticId)) return true;
                     }
                 } else {
-                    if (key.value === semanticId) result = true;
+                    if (key.value === semanticId) return true;
                 }
 
             
-            });
-            return result;
+            }
+            return false;
         },
 
         // Function to check if the valueType is a number
