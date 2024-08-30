@@ -2,7 +2,7 @@
 
 ## Applications:
 
-- AAS GUI (select asset administration shells from a registry server and visualize them in the browser)
+- :warning: The AAS Web UI permanently moved to the [basyx-aas-web-ui](https://github.com/eclipse-basyx/basyx-aas-web-ui) repository. :warning:
 
 - OPC2AAS (convert OPC UA information models to asset administration shells and create configuration files for the BaSyx Databridge)
 
