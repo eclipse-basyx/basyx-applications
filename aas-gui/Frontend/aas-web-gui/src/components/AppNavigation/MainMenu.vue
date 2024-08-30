@@ -102,10 +102,10 @@ export default defineComponent({
     mixins: [RequestHandling, DashboardHandling],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
         const route = useRoute();
 
         return {
@@ -210,7 +210,7 @@ export default defineComponent({
                     this.aasDiscoveryURL += '/lookup/shells';
                 }
                 let path = this.aasDiscoveryURL;
-                let context = 'connecting to AAS Discovery Service'
+                let context = 'connecting to AAS Discovery Service';
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingAASDiscovery = false;
@@ -235,7 +235,7 @@ export default defineComponent({
                     this.aasRegistryURL += '/shell-descriptors';
                 }
                 let path = this.aasRegistryURL;
-                let context = 'connecting to AAS Registry'
+                let context = 'connecting to AAS Registry';
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingAASRegistry = false;
@@ -260,7 +260,7 @@ export default defineComponent({
                     this.submodelRegistryURL += '/submodel-descriptors';
                 }
                 let path = this.submodelRegistryURL;
-                let context = 'connecting to Submodel Registry'
+                let context = 'connecting to Submodel Registry';
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     this.loadingSubmodelRegistry = false;
@@ -281,7 +281,7 @@ export default defineComponent({
             if ((this as any)[RepoType + 'RepoURL'] != '') {
                 (this as any)['loading' + RepoType + 'Repo'] = true;
                 let path = (this as any)[RepoType + 'RepoURL'] + '?limit=1' + (RepoType == 'Submodel' ? '&level=core' : '');
-                let context = 'connecting to ' + RepoType + ' Repository'
+                let context = 'connecting to ' + RepoType + ' Repository';
                 let disableMessage = false;
                 this.getRequest(path, context, disableMessage).then((response: any) => {
                     (this as any)['loading' + RepoType + 'Repo'] = false;

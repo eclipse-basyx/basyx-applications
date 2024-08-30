@@ -32,10 +32,10 @@ import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
 import { useEnvStore } from '@/store/EnvironmentStore';
-import RequestHandling from '../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import VTreeview from './UIComponents/VTreeview.vue';
+import VTreeview from '@/components/UIComponents/VTreeview.vue';
 
 export default defineComponent({
     name: 'AASTreeview',
@@ -47,9 +47,9 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
 
         return {
             navigationStore, // NavigationStore Object

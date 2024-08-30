@@ -168,7 +168,7 @@ export default defineComponent({
     props: ['smeObject', 'smeLocator', 'topMargin'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

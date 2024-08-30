@@ -58,7 +58,7 @@ export default defineComponent({
     props: ['submodelObject'],
 
     setup() {
-        const navigationStore = useNavigationStore()
+        const navigationStore = useNavigationStore();
 
         return {
             navigationStore, // NavigationStore Object

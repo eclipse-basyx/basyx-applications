@@ -22,8 +22,8 @@ export default defineComponent({
     mixins: [SubmodelElementHandling,RequestHandling],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
 
         return {
             theme, // Theme Object

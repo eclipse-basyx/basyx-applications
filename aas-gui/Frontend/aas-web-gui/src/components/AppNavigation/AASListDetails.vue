@@ -34,11 +34,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
-import IdentificationElement from '../UIComponents/IdentificationElement.vue';
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
-import AssetInformation from '../UIComponents/AssetInformation.vue';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
+import IdentificationElement from '@/components/UIComponents/IdentificationElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
+import AssetInformation from '@/components/UIComponents/AssetInformation.vue';
 
 export default defineComponent({
     name: 'AASListDetails',
@@ -51,7 +51,7 @@ export default defineComponent({
     props: ['detailsObject', 'showDetailsCard'], // Props from the parent component with the AAS Details Object and the boolean to show the AAS Details Card
 
     setup() {
-        const navigationStore = useNavigationStore()
+        const navigationStore = useNavigationStore();
 
         return {
             navigationStore, // NavigationStore Object
@@ -94,7 +94,7 @@ export default defineComponent({
             let assetInformationEndpoint = aasRepoEndpoint + '/shells/' + this.URLEncode(this.detailsObject.id) + '/asset-information';
             // console.log('aasRepoEndpoint: ', assetInformationEndpoint);
             let path = assetInformationEndpoint;
-            let context = 'retrieving asset information'
+            let context = 'retrieving asset information';
             let disableMessage = false;
             this.getRequest(path, context, disableMessage).then((response: any) => {
                 if (response.success) {

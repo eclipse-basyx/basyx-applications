@@ -24,7 +24,7 @@
             </v-col>
         </v-row>
         <template v-if="AASData && Object.keys(AASData).length > 0">
-            <TimeSeriesData v-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="AASData" :configData="localDashboardData" :editDialog="false" :loadTrigger="trigger"></TimeSeriesData>
+            <TimeSeriesData v-if="checkSemanticId(localDashboardData.configObject, 'https://admin-shell.io/idta/TimeSeries/1/1')" :submodelElementData="AASData" :configData="localDashboardData" :editDialog="false" :loadTrigger="trigger"></TimeSeriesData>
         </template>
     </v-card>
     <!-- Dialog for deleting a dashboard element -->
@@ -45,8 +45,10 @@
 import { defineComponent } from 'vue';
 import { useEnvStore } from '@/store/EnvironmentStore';
 import DashboardHandling from '@/mixins/DashboardHandling';
-import TimeSeriesData from '../SubmodelPlugins/TimeSeriesData.vue';
-import DashboardEditElement from '../Dashboard/DashboardEditElement.vue';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
+
+import TimeSeriesData from '@/components/SubmodelPlugins/TimeSeriesData.vue';
+import DashboardEditElement from './DashboardEditElement.vue';
 
 export default defineComponent({
     name: 'DashboardElement',
@@ -55,7 +57,7 @@ export default defineComponent({
         TimeSeriesData,
         DashboardEditElement,
     },
-    mixins: [DashboardHandling],
+    mixins: [SubmodelElementHandling, DashboardHandling],
     props: ['dashboardData', 'globalSyncStatus'],
     emits: ['deleteElement', 'updateElement'],
 
@@ -101,7 +103,7 @@ export default defineComponent({
             } else {
                 this.syncStatus = false;
                 if (this.timeout) {
-                    console.log('Clear Timeout')
+                    // console.log('Clear Timeout')
                     window.clearTimeout(this.timeout);
                     this.timeout = null;
                 }
@@ -134,10 +136,6 @@ export default defineComponent({
             });
 
         },
-        // Function to check if the SemanticID of a SubmodelElement matches the given SemanticID
-        checkSemanticId(semanticId: string): boolean {
-            return this.localDashboardData.configObject.semanticId === semanticId;
-        },
 
         updateVisibility() {
             this.localDashboardData.visibility = !this.localDashboardData.visibility;
@@ -148,7 +146,7 @@ export default defineComponent({
 
         async deleteElement(elementId: any) {
             // console.log(elementId)
-            let deletedId =  await this.deleteSingle(elementId)
+            let deletedId =  await this.deleteSingle(elementId);
             if(deletedId) {
                 this.$emit("deleteElement", deletedId);
             }
@@ -156,7 +154,7 @@ export default defineComponent({
         },
 
         updateDashboardElement(element: any) {
-            console.log('Updated Element: ', element, this.localDashboardData);
+            // console.log('Updated Element: ', element, this.localDashboardData);
             if (element) {
                 // check if the element moved to another group
                 // console.log(element.group.groupId, this.localDashboardData.group.groupId)

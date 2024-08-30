@@ -13,7 +13,7 @@ export default defineComponent({
     props: ['submodelElementData', 'widgetSettings'],
 
     setup() {
-        const theme = useTheme()
+        const theme = useTheme();
 
         return {
             theme, // Theme Object
@@ -51,7 +51,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.donutchart as any).chart
+            const chart = (this.$refs.donutchart as any).chart;
             if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -78,7 +78,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -156,7 +156,7 @@ export default defineComponent({
             series.push(parseFloat(displayMaxValue.toFixed(2)));
             // console.log(series);
 
-            (this.$refs.donutchart as any).updateSeries(series)
+            (this.$refs.donutchart as any).updateSeries(series);
         },
 
         // Function to apply the selected theme to the chart
@@ -165,14 +165,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.donutchart as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.donutchart as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

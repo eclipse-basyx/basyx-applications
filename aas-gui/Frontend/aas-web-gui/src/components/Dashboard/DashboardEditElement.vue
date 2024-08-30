@@ -29,7 +29,7 @@
                         </template>
                     </v-combobox>
                     <template v-if="aasData && Object.keys(aasData).length > 0">
-                        <TimeSeriesData v-if="checkSemanticId('https://admin-shell.io/idta/TimeSeries/1/1')" class="py-2" :submodelElementData="aasData" :configData="dashboardData" :editDialog="true" @newOptions="setNewOptions"></TimeSeriesData>
+                        <TimeSeriesData v-if="checkSemanticId(dashboardData.configObject, 'https://admin-shell.io/idta/TimeSeries/1/1')" class="py-2" :submodelElementData="aasData" :configData="dashboardData" :editDialog="true" @newOptions="setNewOptions"></TimeSeriesData>
                     </template>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -46,7 +46,8 @@
     import { defineComponent } from 'vue';
     import { useEnvStore } from '@/store/EnvironmentStore';
     import DashboardHandling from '@/mixins/DashboardHandling';
-    import TimeSeriesData from '../SubmodelPlugins/TimeSeriesData.vue';
+    import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
+    import TimeSeriesData from '@/components/SubmodelPlugins/TimeSeriesData.vue';
 
     export default defineComponent({
     name: 'DashboardEditElement',
@@ -54,7 +55,7 @@
         TimeSeriesData,
         DashboardHandling,
     },
-    mixins: [DashboardHandling],
+    mixins: [SubmodelElementHandling, DashboardHandling],
     props: ['aasData', 'dashboardData'],
 
     setup() {
@@ -92,11 +93,6 @@
     },
 
     methods: {
-        checkSemanticId(semanticId: string): boolean {
-            // console.log(this.dashboardData)
-            return this.dashboardData.configObject.semanticId === semanticId;
-        },
-
         async getAvailableGroups() {
             this.groups = await this.getGroups();
         },

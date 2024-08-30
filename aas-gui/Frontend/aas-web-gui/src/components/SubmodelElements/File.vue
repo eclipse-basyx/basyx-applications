@@ -59,7 +59,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
@@ -71,7 +71,7 @@ export default defineComponent({
     props: ['fileObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

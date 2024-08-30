@@ -37,8 +37,9 @@
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useEnvStore } from '@/store/EnvironmentStore';
-import DashboardElement from '@/components/Dashboard/DashboardElement.vue';
 import DashboardHandling from '@/mixins/DashboardHandling';
+
+import DashboardElement from './DashboardElement.vue';
 
 export default defineComponent({
     name: 'Dashboard',
@@ -93,10 +94,10 @@ export default defineComponent({
     
     async mounted() {
         // get the group from the query
-        // console.log('Dashboard mounted for group with id: ', this.$route.query.group);
+        // console.log('Dashboard mounted for group with id: ', this.route.query.group);
         // TODO: fetch the group based on the query
         this.show = false;
-        let groupElements = await this.getElements(this.route.query.group)
+        let groupElements = await this.getElements(this.route.query.group);
         this.elements = groupElements.slice().sort((a: any, b: any) => a.order - b.order);
         // console.log(this.elements)
     },

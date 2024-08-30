@@ -60,9 +60,9 @@ export default defineComponent({
     props: ['item', 'depth'],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
         const route = useRoute();
         const router = useRouter();
 
@@ -90,19 +90,9 @@ export default defineComponent({
     },
 
     computed: {
-        // Check if the current Platform is Mobile
+        // Check if the current Device is a Mobile Device
         isMobile() {
-            return this.platform.android || this.platform.ios ? true : false;
-        },
-
-        // get Platform from store
-        platform() {
-            return this.navigationStore.getPlatform;
-        },
-
-        // Check if the current Theme is dark
-        isDark() {
-            return this.theme.global.current.value.dark
+            return this.navigationStore.getIsMobile;
         },
 
         // get selected AAS from Store

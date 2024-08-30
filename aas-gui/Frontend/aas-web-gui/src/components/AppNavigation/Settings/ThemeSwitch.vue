@@ -31,7 +31,7 @@ export default defineComponent({
     name: 'ThemeSwitch',
 
     setup() {
-        const theme = useTheme()
+        const theme = useTheme();
 
         return {
             theme, // Theme Object
@@ -62,7 +62,7 @@ export default defineComponent({
         // Function to toggle between dark and light Theme
         toggleTheme() {
             if (this.themeOption == 'dark') {
-                this.theme.global.name.value = 'dark'
+                this.theme.global.name.value = 'dark';
             } else if (this.themeOption == 'system'){
                 // sets the Theme according to the Users preferred Theme
                 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {

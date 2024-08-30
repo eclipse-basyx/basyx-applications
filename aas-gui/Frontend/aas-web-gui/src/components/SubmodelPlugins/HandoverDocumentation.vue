@@ -176,8 +176,8 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
 
         return {
             theme, // Theme Object
@@ -212,7 +212,7 @@ export default defineComponent({
             submodelElementData = await this.calculateSubmodelElementPathes(submodelElementData, this.SelectedNode.path);
             // create array of documents
             let documents = this.submodelElementData.submodelElements.filter((element: any) => {
-                return element.semanticId.keys[0].value.includes("0173-1#02-ABI500#001/0173-1#01-AHF579#001");
+                return this.checkSemanticId(element, '0173-1#02-ABI500#001/0173-1#01-AHF579#001');
             });
             documents.forEach((document: any) => {
                 this.extractDocumentVersions(document);
@@ -227,7 +227,7 @@ export default defineComponent({
         extractDocumentVersions(document: any) {
             // create an array with every DocumentVersion SubmodelElementCollection
             document.documentVersions = document.value.filter((element: any) => {
-                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI503#001/0173-1#01-AHF582#001");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && this.checkSemanticId(element, '0173-1#02-ABI503#001/0173-1#01-AHF582#001');
             });
             // prepare each DocumentVersion
             document.documentVersions.forEach((documentVersion: any) => {
@@ -246,13 +246,13 @@ export default defineComponent({
 
         extractDocumentIds(document: any) {
             document.documentIds = document.value.filter((element: any) => {
-                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI501#001/0173-1#01-AHF580#001");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && this.checkSemanticId(element, '0173-1#02-ABI501#001/0173-1#01-AHF580#001');
             });
         },
 
         extractDocumentClassifications(document: any) {
             document.documentClassifications = document.value.filter((element: any) => {
-                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes("0173-1#02-ABI502#001/0173-1#01-AHF581#001*02");
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && this.checkSemanticId(element, '0173-1#02-ABI502#001/0173-1#01-AHF581#001*02');
             });
         },
 
@@ -275,7 +275,7 @@ export default defineComponent({
 
         getElementBySemanticId(semanticId: string, parentElement: any) {
             return parentElement.value.find((element: any) => {
-                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && element.semanticId.keys[0].value.includes(semanticId);
+                return element.semanticId && element.semanticId.keys && element.semanticId.keys.length > 0 && this.checkSemanticId(element, semanticId);
             });
         },
     },

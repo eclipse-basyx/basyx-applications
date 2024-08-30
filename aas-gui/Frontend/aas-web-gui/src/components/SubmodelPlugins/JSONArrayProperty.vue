@@ -16,8 +16,8 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
 
         const chartData = ref([
             {
@@ -35,23 +35,23 @@ export default defineComponent({
             },
             // colors: ['#1e8567'],
             dataLabels: {
-                enabled: false
+                enabled: false,
             },
             stroke: {
-                curve: 'smooth'
+                curve: 'smooth',
             },
             markers: {
-                size: 0
+                size: 0,
             },
             xaxis: {
                 type: 'numeric',
-                decimalsInFloat: 0
+                decimalsInFloat: 0,
             },
             yaxis: {
-                decimalsInFloat: 2
+                decimalsInFloat: 2,
             },
             theme: {
-                mode: 'dark'
+                mode: 'dark',
             },
         })
 
@@ -70,7 +70,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.areachart as any).chart
+            const chart = (this.$refs.areachart as any).chart;
             if (chart && this.submodelElementData && Object.keys(this.submodelElementData).length > 0) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -107,7 +107,7 @@ export default defineComponent({
 
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -124,7 +124,7 @@ export default defineComponent({
                 // set/update the chart data
                 (this.$refs.areachart as any).updateSeries([{
                     name: seriesName,
-                    data: chartData
+                    data: chartData,
                 }]);
             } else if (typeof chartData === 'object') { // object in form of { title1: [y11, y12, y13, ..., y1n], title2: [y21, y22, y23, ..., y2n] }
                 // set/update the chart data
@@ -142,13 +142,13 @@ export default defineComponent({
             if (this.isDark) {
                 (this.$refs.areachart as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 (this.$refs.areachart as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

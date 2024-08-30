@@ -12,7 +12,7 @@ import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useNavigationStore } from '@/store/NavigationStore';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 import * as THREE from 'three';
@@ -30,16 +30,16 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
-        const authStore = useAuthStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
+        const authStore = useAuthStore();
 
         return {
             theme, // Theme Object
             navigationStore, // NavigationStore Object
             aasStore, // AASStore Object
-            authStore
+            authStore,
         }
     },
 
@@ -133,7 +133,7 @@ export default defineComponent({
             } else if (contentType == 'model/gltf+json') {
                 this.importGLTF(scene);
             } else {
-                console.log('Unsupported File Type');
+                // console.log('Unsupported File Type');
                 return;
             }
 
@@ -238,7 +238,7 @@ export default defineComponent({
                         mesh.material = new THREE.MeshStandardMaterial({
                             color: 0xffffff,
                             metalness: 0.2,
-                            roughness: 0.5
+                            roughness: 0.5,
                         });
                         mesh.scale.multiplyScalar(0.03);
                     }

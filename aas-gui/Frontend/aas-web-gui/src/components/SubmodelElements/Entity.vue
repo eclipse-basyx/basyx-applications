@@ -44,7 +44,8 @@ import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAASStore } from '@/store/AASDataStore';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
-import SubmodelElementGroup from '../UIComponents/SubmodelElementGroup.vue';
+
+import SubmodelElementGroup from '@/components/UIComponents/SubmodelElementGroup.vue';
 
 export default defineComponent({
     name: 'Entity',
@@ -55,7 +56,7 @@ export default defineComponent({
     props: ['entityObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
         const router = useRouter();
 
         return {

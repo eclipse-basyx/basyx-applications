@@ -43,8 +43,8 @@ export default defineComponent({
     props: ['dateTimeStampValue', 'isOperationVariable', 'variableType'],
 
     setup() {
-        const aasStore = useAASStore()
-        const date = useDate()
+        const aasStore = useAASStore();
+        const date = useDate();
 
         return {
             aasStore, // AASStore Object
@@ -219,7 +219,7 @@ export default defineComponent({
             let tempDateTimeStampValue = this.newDateTimeStampValue.split('T')[0];
             let tempStampEnd = this.newDateTimeStampValue.split('.')[1];
             if (!tempStampEnd) {
-                this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + 'Z'
+                this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + 'Z';
             } else {
                 this.newDateTimeStampValue = tempDateTimeStampValue + 'T' + this.time + '.' + tempStampEnd;
             }

@@ -34,8 +34,8 @@ export default defineComponent({
     mixins: [DashboardHandling],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
 
         return {
             theme, // Theme Object
@@ -68,7 +68,7 @@ export default defineComponent({
                             name: {
                                 fontSize: '16px',
                                 color: undefined,
-                                offsetY: 120
+                                offsetY: 120,
                             },
                             value: {
                                 offsetY: 76,
@@ -82,7 +82,7 @@ export default defineComponent({
                     },
                 },
                 theme: {
-                    mode: 'dark'
+                    mode: 'dark',
                 },
             } as any,
             localChartOptions: {} as any,
@@ -91,7 +91,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.gauge as any).chart
+            const chart = (this.$refs.gauge as any).chart;
             if (chart) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -118,7 +118,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -156,7 +156,7 @@ export default defineComponent({
             }
             // update the labels
             (this.$refs.gauge as any).updateOptions({
-                labels: chartLabels
+                labels: chartLabels,
             });
             // emit the chartOptions to the parent component
             this.$emit("chartOptions", this.localChartOptions);
@@ -168,14 +168,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.gauge as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.gauge as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }

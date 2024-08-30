@@ -28,8 +28,8 @@ import { useRouter } from 'vue-router';
 import mermaid from 'mermaid';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 declare global {
     interface Window { callback: any; }
@@ -44,8 +44,8 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
         const router = useRouter();
 
         return {
@@ -90,7 +90,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
 
         // get the vuetify primary color
