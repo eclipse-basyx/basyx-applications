@@ -11,8 +11,8 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
 
         return {
             navigationStore, // NavigationStore Object
@@ -33,7 +33,7 @@ export default defineComponent({
             let newSeries = chartData.map((series: any, index: number) => {
                 let chartValues = series.map((element: any) => ({
                     x: new Date(element.time),
-                    y: Number(element.value).toFixed(2)
+                    y: Number(element.value).toFixed(2),
                 }));
                 let name = 'Value ' + Number(index + 1);
                 // check if the yVariable exists
@@ -45,7 +45,7 @@ export default defineComponent({
                 }
                 return {
                     name: name,
-                    data: chartValues
+                    data: chartValues,
                 };
             });
             return newSeries;

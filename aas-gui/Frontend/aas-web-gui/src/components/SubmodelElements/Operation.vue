@@ -60,7 +60,7 @@ import { useAASStore } from '@/store/AASDataStore';
 import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import DescriptionElement from '../UIComponents/DescriptionElement.vue';
+import DescriptionElement from '@/components/UIComponents/DescriptionElement.vue';
 
 import Property from './Property.vue';
 import ReferenceElement from './ReferenceElement.vue';
@@ -82,8 +82,8 @@ export default defineComponent({
     props: ['operationObject'],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
 
         return {
             navigationStore, // NavigationStore Object

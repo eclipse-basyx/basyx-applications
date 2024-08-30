@@ -41,7 +41,8 @@ import HandoverDocumentation from './HandoverDocumentation.vue';
 import ContactInformation from './ContactInformation.vue';
 import TechnicalData from './TechnicalData.vue';
 import JSONArrayProperty from './JSONArrayProperty.vue';
-import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
+
+import GenericDataVisu from '@/components/UIComponents/GenericDataVisu.vue';
 
 import ImagePreview from './ImagePreview.vue';
 import PDFPreview from './PDFPreview.vue';
@@ -67,8 +68,8 @@ export default defineComponent({
     props: ['submodelElementData', 'selectedNode'],
 
     setup() {
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
         const route = useRoute();
 
         return {

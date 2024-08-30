@@ -12,11 +12,9 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
         const route = useRoute();
-
-        console.log(aasStore)
 
         return {
             aasStore, // AASStore Object
@@ -87,7 +85,7 @@ export default defineComponent({
             // send the request
             this.postRequest(path, content, headers, context, disableMessage).then((response: any) => {
                 if (response.success) {
-                    console.log('Successfully added Element to Dashboard: ', response.data);
+                    // console.log('Successfully added Element to Dashboard: ', response.data);
                 }
             });
         },

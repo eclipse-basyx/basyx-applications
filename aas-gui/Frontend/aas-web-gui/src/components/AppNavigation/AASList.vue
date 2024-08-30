@@ -119,9 +119,9 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup () {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
+        const aasStore = useAASStore();
         const route = useRoute();
         const router = useRouter();
 
@@ -232,7 +232,7 @@ export default defineComponent({
 
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
 
         // gets loading State from Store

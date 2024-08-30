@@ -82,7 +82,7 @@ export default defineComponent({
     props: ['referenceElementObject', 'isOperationVariable', 'variableType'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
         const router = useRouter();
 
         return {

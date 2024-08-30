@@ -50,7 +50,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useNavigationStore } from '@/store/NavigationStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
 export default defineComponent({
@@ -58,7 +58,7 @@ export default defineComponent({
     mixins: [RequestHandling, SubmodelElementHandling],
 
     setup() {
-        const navigationStore = useNavigationStore()
+        const navigationStore = useNavigationStore();
 
         return {
             navigationStore, // NavigationStore Object

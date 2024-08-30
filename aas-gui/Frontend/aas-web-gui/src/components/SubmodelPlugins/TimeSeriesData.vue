@@ -81,12 +81,12 @@ import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 import DashboardHandling from '@/mixins/DashboardHandling';
 
 // Widget imports
-import LineChart from '../Widgets/LineChart.vue';
-import AreaChart from '../Widgets/AreaChart.vue';
-import ScatterChart from '../Widgets/ScatterChart.vue';
-import Histogram from '../Widgets/Histogram.vue';
-import Gauge from '../Widgets/Gauge.vue';
-import DisplayField from '../Widgets/DisplayField.vue';
+import LineChart from '@/components/Widgets/LineChart.vue';
+import AreaChart from '@/components/Widgets/AreaChart.vue';
+import ScatterChart from '@/components/Widgets/ScatterChart.vue';
+import Histogram from '@/components/Widgets/Histogram.vue';
+import Gauge from '@/components/Widgets/Gauge.vue';
+import DisplayField from '@/components/Widgets/DisplayField.vue';
 
 export default defineComponent({
     name: 'TimeSeriesData',
@@ -107,9 +107,9 @@ export default defineComponent({
     emits: ['timeVal', 'YVal', 'newOptions'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
-        const envStore = useEnvStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
+        const envStore = useEnvStore();
 
         return {
             theme, // Theme Object
@@ -178,7 +178,7 @@ export default defineComponent({
 
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
 
         // Determine Segment Type of the selected Segment
@@ -450,7 +450,7 @@ export default defineComponent({
             // get the Data File/Blob submodel element
             const dataFile = this.selectedSegment.value.find((smc: any) => smc.idShort === 'Data');
             // determine the path to the file
-            let path = dataFile.value
+            let path = dataFile.value;
             if (path.startsWith('/')) {
                 path = this.submodelElementData.path + '/submodel-elements/Segments.' + this.selectedSegment.idShort + '.Data/attachment';
             }
@@ -512,7 +512,7 @@ export default defineComponent({
             if (this.apiToken && this.apiToken !== '') dashboardElement.apiToken = this.apiToken;
             dashboardElement.chartType = this.selectedChartType;
             dashboardElement.chartOptions = this.chartOptions;
-            this.dashboardAdd(dashboardElement)
+            this.dashboardAdd(dashboardElement);
         },
 
         getChartOptions(options: any) {

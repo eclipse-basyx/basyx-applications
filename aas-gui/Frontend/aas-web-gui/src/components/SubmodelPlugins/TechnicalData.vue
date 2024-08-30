@@ -154,10 +154,10 @@
 import { defineComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
-import SubmodelElementHandling from '../../mixins/SubmodelElementHandling';
+import RequestHandling from '@/mixins/RequestHandling';
+import SubmodelElementHandling from '@/mixins/SubmodelElementHandling';
 
-import GenericDataVisu from '../UIComponents/GenericDataVisu.vue';
+import GenericDataVisu from '@/components/UIComponents/GenericDataVisu.vue';
 
 export default defineComponent({
     name: 'TechnicalData',
@@ -170,8 +170,8 @@ export default defineComponent({
     props: ['submodelElementData'],
 
     setup() {
-        const theme = useTheme()
-        const aasStore = useAASStore()
+        const theme = useTheme();
+        const aasStore = useAASStore();
 
         return {
             theme, // Theme Object

@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAASStore } from '@/store/AASDataStore';
-import RequestHandling from '../../mixins/RequestHandling';
+import RequestHandling from '@/mixins/RequestHandling';
 
 export default defineComponent({
     name: 'Blob',
@@ -63,7 +63,7 @@ export default defineComponent({
     props: ['blobObject'],
 
     setup() {
-        const aasStore = useAASStore()
+        const aasStore = useAASStore();
 
         return {
             aasStore, // AASStore Object

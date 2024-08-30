@@ -19,15 +19,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import Property                     from '../SubmodelElements/Property.vue';
-import MultiLanguageProperty        from '../SubmodelElements/MultiLanguageProperty.vue';
-import File                         from '../SubmodelElements/File.vue';
-import Blob                         from '../SubmodelElements/Blob.vue';
-import Operation                    from '../SubmodelElements/Operation.vue';
-import ReferenceElement             from '../SubmodelElements/ReferenceElement.vue';
-import Range                        from '../SubmodelElements/Range.vue';
-import RelationshipElement          from '../SubmodelElements/RelationshipElement.vue';
-import AnnotatedRelationshipElement from '../SubmodelElements/AnnotatedRelationshipElement.vue';
+import Property                     from '@/components/SubmodelElements/Property.vue';
+import MultiLanguageProperty        from '@/components/SubmodelElements/MultiLanguageProperty.vue';
+import File                         from '@/components/SubmodelElements/File.vue';
+import Blob                         from '@/components/SubmodelElements/Blob.vue';
+import Operation                    from '@/components/SubmodelElements/Operation.vue';
+import ReferenceElement             from '@/components/SubmodelElements/ReferenceElement.vue';
+import Range                        from '@/components/SubmodelElements/Range.vue';
+import RelationshipElement          from '@/components/SubmodelElements/RelationshipElement.vue';
+import AnnotatedRelationshipElement from '@/components/SubmodelElements/AnnotatedRelationshipElement.vue';
 
 export default defineComponent({
     name: 'SubmodelELementWrapper',

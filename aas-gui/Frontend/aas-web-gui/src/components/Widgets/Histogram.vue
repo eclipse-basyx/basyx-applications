@@ -35,8 +35,8 @@ export default defineComponent({
     mixins: [WidgetHandling, DashboardHandling],
 
     setup() {
-        const theme = useTheme()
-        const navigationStore = useNavigationStore()
+        const theme = useTheme();
+        const navigationStore = useNavigationStore();
 
         return {
             theme, // Theme Object
@@ -65,7 +65,7 @@ export default defineComponent({
                     }
                 },
                 legend: {
-                    show: false
+                    show: false,
                 },
                 dataLabels: {
                     enabled: true,
@@ -75,7 +75,7 @@ export default defineComponent({
                     categories: [],
                 },
                 theme: {
-                    mode: 'dark'
+                    mode: 'dark',
                 },
             } as any,
             localChartOptions: {} as any,
@@ -86,7 +86,7 @@ export default defineComponent({
 
     mounted() {
         this.$nextTick(() => {
-            const chart = (this.$refs.histogram as any).chart
+            const chart = (this.$refs.histogram as any).chart;
             if (chart) {
                 // console.log('Chart has rendered')
                 // apply the theme on component mount
@@ -113,7 +113,7 @@ export default defineComponent({
     computed: {
         // Check if the current Theme is dark
         isDark() {
-            return this.theme.global.current.value.dark
+            return this.theme.global.current.value.dark;
         },
     },
 
@@ -141,7 +141,7 @@ export default defineComponent({
             });
             let chartOptions = {
                 xaxis: {
-                    categories: categories
+                    categories: categories,
                 },
             } as any;
             // Update the chartOptions
@@ -156,7 +156,7 @@ export default defineComponent({
         changeVariant() {
             let newOptions = {
                 chart: {
-                    stacked: this.stacked
+                    stacked: this.stacked,
                 }
             };
             // update the chart options
@@ -175,14 +175,14 @@ export default defineComponent({
                 // apply the dark theme to the chart options
                 (this.$refs.histogram as any).updateOptions({
                     theme: {
-                        mode: 'dark'
+                        mode: 'dark',
                     }
                 });
             } else {
                 // apply the light theme to the chart options
                 (this.$refs.histogram as any).updateOptions({
                     theme: {
-                        mode: 'light'
+                        mode: 'light',
                     }
                 });
             }
