@@ -1,4 +1,4 @@
-# AAS Dashboard for Industry 4.0
+# BaSyx Dashboard API
 
 ## Overview
 

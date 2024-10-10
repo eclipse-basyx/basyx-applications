@@ -1,0 +1,130 @@
+{
+  "assetAdministrationShells": [
+    {
+      "assetInformation": {
+        "assetKind": "INSTANCE",
+        "assetType": null,
+        "defaultThumbnail": {
+          "contentType": "image/jpg",
+          "path": "https://opcfoundation.org/wp-content/themes/opc/images/logo.jpg"
+        },
+        "globalAssetId": "http://opc2aas.com/asset/DKHWNPEIJGW",
+        "specificAssetIds": [
+          {
+            "semanticId": null,
+            "supplementalSemanticIds": [],
+            "externalSubjectId": {
+              "keys": [
+                {
+                  "type": "GLOBAL_REFERENCE",
+                  "value": "http://opc2aas.com/Systems/ZRUVZEJGRVR"
+                }
+              ],
+              "referredSemanticId": null,
+              "type": "EXTERNAL_REFERENCE"
+            },
+            "name": "OpcUaServerID",
+            "value": "urn:freeopcua:python:server"
+          }
+        ]
+      },
+      "derivedFrom": null,
+      "submodels": [
+        {
+          "keys": [
+            {
+              "type": "SUBMODEL",
+              "value": "CreationSubmodel"
+            }
+          ],
+          "referredSemanticId": null,
+          "type": "EXTERNAL_REFERENCE"
+        },
+        {
+          "keys": [
+            {
+              "type": "SUBMODEL",
+              "value": "OutputSubmodel"
+            }
+          ],
+          "referredSemanticId": null,
+          "type": "EXTERNAL_REFERENCE"
+        }
+      ],
+      "embeddedDataSpecifications": [],
+      "extensions": [],
+      "administration": null,
+      "id": "http://opc2aas.com/aas/7633_4558_1152_8636",
+      "category": null,
+      "description": [],
+      "displayName": [],
+      "idShort": "OPC2AAS"
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "kind": "Instance",
+      "id": "OutputSubmodel",
+      "category": "TestCategory",
+      "description": [
+        {
+          "language": "de-DE",
+          "text": "OutputSubmodel"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "de-DE",
+          "text": "OutputSubmodel"
+        }
+      ],
+      "idShort": "OutputSubmodel",
+      "submodelElements": [
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "aas"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "consumerFile"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "extractvalue"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "jsonatatransformer"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "jacksontransformer"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "aasserver"
+        },
+        {
+          "modelType": "File",
+          "contentType": "application/json",
+          "value": "",
+          "idShort": "route"
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}
