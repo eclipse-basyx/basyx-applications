@@ -1,89 +1,80 @@
-version: '3.8'
 services:
+  # OPC UA Test Server
   opcua:
-    build:
-      context: ./DatabridgeDemo/OpcUaServer/
-      dockerfile: ./Dockerfile
+    image: aaronzi/demo-opc-server:v1.0.0
     container_name: opcserver
     ports:
-      - "4840:4840"
-    restart: always
-  registrydb:
-    image: eclipsebasyx/aas-registry:1.3.1
-    ports:
-      - 4099:4099
-    environment:
-      - basyxregistry_registry_backend=InMemory
-      - basyxcontext_contextpath=/registry
-      - basyxcontext_contextport=4099
-      - basyxcontext_accesscontrolalloworigin=*
-    hostname: registrydb
-    container_name: registrydb
-    restart: always
+      - "4840:4840"  # OPC UA server port
+      - "8080:8080"  # Health check port
     healthcheck:
-      test: wget --no-verbose --tries=1 --spider registrydb:4099/health || exit 1
-      interval: 5s
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
       retries: 3
-      start_period: 1s
-      timeout: 10s
-  aasserverdb:
-    image: eclipsebasyx/aas-server:1.4.0-SNAPSHOT
-    container_name: aasserverdb
-    ports:
-      - 4500:4500
-    volumes: 
-      - "./DatabridgeDemo/AASServerConfig:/usr/share/config"
-    environment:
-      - basyxaas_registry_path=http://registrydb:4099/registry/
-      - basyxaas_aas_backend=InMemory
-      - basyxcontext_contextpath=/aasServer
-      - basyxcontext_contextport=4500
-      - waiting_for=[{"host":"registrydb","port":"4099"}]
-      - basyxcontext_accesscontrolalloworigin=*
-      - basyxaas_aas_source=/usr/share/config/AAS.aasx
     restart: always
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider aasserverdb:4500/health || exit 1
-      interval: 5s
-      retries: 3
-      start_period: 1s
-      timeout: 10s
-    depends_on:
-      - opcua
-  databridge:
-    image: eclipsebasyx/databridge:1.0.0-SNAPSHOT
-    container_name: databridge
-    volumes:
-      - "./DatabridgeDemo/DatabridgeConfig:/usr/share/config"
-    depends_on:
-      aasserverdb:
-        condition: service_healthy
-      registrydb:
-        condition: service_healthy
-    restart: always
+  
+  # OPC2AAS Service
   opc2aas:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: opc2aas
     ports:
-      - "4700:4700"
+      - "9085:8081"
     depends_on:
-      aasserverdb:
-        condition: service_healthy
-      registrydb:
+      opcua:
         condition: service_healthy
     restart: always
-  gui:
-    image: eclipsebasyx/aas-gui:v230403
-    container_name: webui
-    ports:
-      - "4088:3000"
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-      VITE_REGISTRY_PATH: "http://localhost:4099/registry"
-      VITE_AAS_SERVER_PATH: "http://localhost:4500/aasServer"
-      VITE_PRIMARY_COLOR: "#76b900"
+
+  # AAS Environment
+  aas-environment:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: aas-environment
     volumes:
-      - ./DatabridgeDemo/Logo:/app/src/assets/Logo
+      - ./basyx/aas-env.properties:/application/application.properties
+      - ./aas:/application/aas
+    ports:
+      - 9081:8081
     restart: always
+    depends_on:
+      shell-registry:
+        condition: service_healthy
+      submodel-registry:
+        condition: service_healthy
+
+  # AAS Registry
+  shell-registry:
+    image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
+    container_name: shell-registry
+    ports:
+      - 9082:8080
+    volumes:
+      - ./basyx/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # Submodel Registry
+  submodel-registry:
+    image: eclipsebasyx/submodel-registry-log-mem:2.0.0-SNAPSHOT
+    container_name: submodel-registry
+    ports:
+      - 9083:8080
+    volumes:
+      - ./basyx/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # AAS Web UI
+  aas-web-ui:
+    image: eclipsebasyx/aas-gui:v2-241006
+    container_name: aas-web-ui
+    ports:
+      - "9080:3000"
+    environment:
+      AAS_REGISTRY_PATH: "http://localhost:9082/shell-descriptors"
+      SUBMODEL_REGISTRY_PATH: "http://localhost:9083/submodel-descriptors"
+      AAS_REPO_PATH: "http://localhost:9081/shells"
+      SUBMODEL_REPO_PATH: "http://localhost:9081/submodels"
+      CD_REPO_PATH: "http://localhost:9081/concept-descriptions"
+    restart: always
+    depends_on:
+      aas-environment:
+        condition: service_healthy
