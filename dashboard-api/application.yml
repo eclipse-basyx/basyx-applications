@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+spring:
+  data:
+    mongodb:
+      host: ${DB_HOST:mongo}
+      database: ${DB_NAME:aas-dashboard}
+      authentication-database: admin
+      username: ${DB_USERNAME:mongoAdmin}
+      password: ${DB_PASSWORD:mongoPassword}
+
+basyx:
+  cors:
+    allowed-origins: "*"
+    allowed-methods: "GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD"
+  externalurl: "http://localhost:8085"

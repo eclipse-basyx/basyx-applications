@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  # MongoDB
+  mongo:
+    image: mongo:5.0.10
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    ports:
+      - 27017:27017
+    restart: always
+    healthcheck:
+      test: mongo
+      interval: 10s
+      start_period: 5s
+      retries: 5
+  
+  # Mongo Express
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mongo-express
+    ports:
+      - 7081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongoAdmin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongoPassword
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  # Dashboard API
+  dashboard-api:
+    build: .
+    container_name: dashboard-api
+    ports:
+      - "8085:8085"
+    # mount externagit l application config
+    volumes:
+      - ./application.yml:/application.yml
+    depends_on:
+      mongo:
+        condition: service_healthy
