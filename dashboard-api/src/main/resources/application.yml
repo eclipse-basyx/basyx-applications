@@ -1,14 +1,28 @@
 server:
   port: 8085
 
+#spring:
+#  data:
+#    mongodb:
+#      host: ${DB_HOST:mongo}
+#      database: ${DB_NAME:aas-dashboard}
+#      authentication-database: admin
+#      username: ${DB_USERNAME:mongoAdmin}
+#      password: ${DB_PASSWORD:mongoPassword}
 spring:
-  data:
-    mongodb:
-      host: ${DB_HOST:mongo}
-      database: ${DB_NAME:aas-dashboard}
-      authentication-database: admin
-      username: ${DB_USERNAME:mongoAdmin}
-      password: ${DB_PASSWORD:mongoPassword}
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
 
 
 basyx:
@@ -17,4 +31,6 @@ basyx:
     allowed-methods: "GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD"
   externalurl: "http://localhost:8085"
 
-
+ld-sso:
+  apiToken: ${LD_SSO_API_TOKEN}
+  baseUrl: ${LD_SSO_BASE_URL}
