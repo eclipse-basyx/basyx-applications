@@ -1,0 +1,3129 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "CarbonFootprintAAS1",
+      "administration": {
+        "version": "1",
+        "revision": "0",
+        "creator": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "AasDesigner"
+            }
+          ]
+        }
+      },
+      "id": "https://example.com/ids/AssetAdministrationShell/6328_6346_5187_9295",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "3a4e07c6-4df6-4061-9914-b2b9b75c260a"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2560_5132_5042_5176"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    },
+    {
+      "idShort": "CarbonFootprintAAS2",
+      "id": "https://example.com/ids/aas/8432_5132_5042_9207",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/1232_5132_5042_7576"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/5323_5132_5042_0178"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    },
+    {
+      "idShort": "CarbonFootprintAAS3",
+      "id": "https://example.com/ids/sm/8533_5132_5042_2545",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/4392_5132_5042_1978"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/4343_5132_5042_0600"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "CarbonFootprint",
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel HierarchicalStructures identified by its semanticId. The Submodel idShort can be picked freely."
+        }
+      ],
+      "id": "https://example.com/ids/sm/2560_5132_5042_5176",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9"
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "type": "Multiplicity",
+          "valueType": "xs:string",
+          "value": "ZeroToOne"
+        },
+        {
+          "type": "EditIdShort",
+          "valueType": "xs:string",
+          "value": "True"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "ProductCarbonFootprint",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "PCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG854#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "ISO 14067",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU218#002"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG855#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "15.7",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG856#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "piece",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG857#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "4.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFLifeCyclePhase",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG858#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "D - reuse",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU214#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "PCFGoodsAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI497#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Siemensta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35267",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "15.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "TransportCarbonFootprint",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "TCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG859#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EN 16258",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU224#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG860#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "5.6",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG861#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "t",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABZ598#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG862#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "4.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFProcessesForGreenhouseGasEmissionInATransportService",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG863#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "TTW - Tank-to-Wheel",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU215#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressTakeover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI499#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "76A",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "45637",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Munich",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI498#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "CarbonFootprint",
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel HierarchicalStructures identified by its semanticId. The Submodel idShort can be picked freely."
+        }
+      ],
+      "id": "https://example.com/ids/sm/5323_5132_5042_0178",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9"
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "type": "Multiplicity",
+          "valueType": "xs:string",
+          "value": "ZeroToOne"
+        },
+        {
+          "type": "EditIdShort",
+          "valueType": "xs:string",
+          "value": "True"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "ProductCarbonFootprint(00)",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "PCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG854#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EN 15804",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU223#002"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG855#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "34",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG856#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "kg",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG857#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "3",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFLifeCyclePhase",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG858#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "A4 - transport to final destination ",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU211#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "PCFGoodsAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI497#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "15.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "ProductCarbonFootprint(01)",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "PCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG854#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "ISO 14044",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABV506#002"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG855#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "20.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG856#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "qm",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG857#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "5.6",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFLifeCyclePhase",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG858#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "C3 - recycling, waste treatment ",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABV503#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "PCFGoodsAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI497#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "15.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "TransportCarbonFootprint",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "TCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG859#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EN 16258",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU224#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG860#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "5.6",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG861#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "kg",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABZ597#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG862#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "4.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFProcessesForGreenhouseGasEmissionInATransportService",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG863#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "WTW - Well-to-Wheel",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU217#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressTakeover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI499#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "76A",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "45637",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Munich",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI498#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "HierarchicalStructures",
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel HierarchicalStructures identified by its semanticId. The Submodel idShort can be picked freely."
+        }
+      ],
+      "id": "814f6e7a-30eb-4469-95af-de6b82fcd61f",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel"
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "type": "Multiplicity",
+          "valueType": "xs:string",
+          "value": "ZeroToOne"
+        },
+        {
+          "type": "EditIdShort",
+          "valueType": "xs:string",
+          "value": "True"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "AAS3",
+          "description": [
+            {
+              "language": "en",
+              "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the AAS this Submodel is part of."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "EditIdShort",
+              "valueType": "xs:string",
+              "value": "True"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "statements": [
+            {
+              "idShort": "AAS1",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the Asset Administration Shell this Submodel is part of. The idShort of the EntryNode can be picked freely and may reflect a name of the asset."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "OneToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "statements": [],
+              "entityType": "SelfManagedEntity",
+              "globalAssetId": "3a4e07c6-4df6-4061-9914-b2b9b75c260a",
+              "modelType": "Entity"
+            },
+            {
+              "idShort": "isPartOfAAS1",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Modeling of logical connections between asset and sub-asset. Either this or \u0022HasPart\u0022 must be used, not both."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "ZeroToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "first": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "814f6e7a-30eb-4469-95af-de6b82fcd61f"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS3"
+                  }
+                ]
+              },
+              "second": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "814f6e7a-30eb-4469-95af-de6b82fcd61f"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS3"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS1"
+                  }
+                ]
+              },
+              "modelType": "RelationshipElement"
+            }
+          ],
+          "entityType": "SelfManagedEntity",
+          "globalAssetId": "https://example.com/ids/X/3609_6273_6658_4627",
+          "modelType": "Entity"
+        },
+        {
+          "category": "CONSTANT",
+          "idShort": "ArcheType",
+          "description": [
+            {
+              "language": "en",
+              "text": "ArcheType of the Submodel, there are three allowed enumeration entries: 1. \u201CFull\u201D, 2. \u201COneDown\u201D and 3. \u201COneUp\u201D. "
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "FormChoices",
+              "valueType": "xs:string",
+              "value": "Full;OneDown;OneUp"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "valueType": "xs:string",
+          "value": "OneUp",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "HierarchicalStructures",
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel HierarchicalStructures identified by its semanticId. The Submodel idShort can be picked freely."
+        }
+      ],
+      "id": "f27a7e66-7d3a-45e9-9947-e74fc64e8e26",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel"
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "type": "Multiplicity",
+          "valueType": "xs:string",
+          "value": "ZeroToOne"
+        },
+        {
+          "type": "EditIdShort",
+          "valueType": "xs:string",
+          "value": "True"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "AAS4",
+          "description": [
+            {
+              "language": "en",
+              "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the AAS this Submodel is part of."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "EditIdShort",
+              "valueType": "xs:string",
+              "value": "True"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "statements": [
+            {
+              "idShort": "AAS2",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the Asset Administration Shell this Submodel is part of. The idShort of the EntryNode can be picked freely and may reflect a name of the asset."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "OneToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "statements": [],
+              "entityType": "SelfManagedEntity",
+              "globalAssetId": "https://example.com/ids/X/6125_3999_1761_8665",
+              "modelType": "Entity"
+            },
+            {
+              "idShort": "isPartOfAAS2",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Modeling of logical connections between asset and sub-asset. Either this or \u0022HasPart\u0022 must be used, not both."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "ZeroToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "first": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "f27a7e66-7d3a-45e9-9947-e74fc64e8e26"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS4"
+                  }
+                ]
+              },
+              "second": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "f27a7e66-7d3a-45e9-9947-e74fc64e8e26"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS4"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS2"
+                  }
+                ]
+              },
+              "modelType": "RelationshipElement"
+            }
+          ],
+          "entityType": "SelfManagedEntity",
+          "globalAssetId": "https://example.com/ids/X/6203_5575_6300_7979",
+          "modelType": "Entity"
+        },
+        {
+          "category": "CONSTANT",
+          "idShort": "ArcheType",
+          "description": [
+            {
+              "language": "en",
+              "text": "ArcheType of the Submodel, there are three allowed enumeration entries: 1. \u201CFull\u201D, 2. \u201COneDown\u201D and 3. \u201COneUp\u201D. "
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "FormChoices",
+              "valueType": "xs:string",
+              "value": "Full;OneDown;OneUp"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "valueType": "xs:string",
+          "value": "OneUp",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "HierarchicalStructures",
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel HierarchicalStructures identified by its semanticId. The Submodel idShort can be picked freely."
+        }
+      ],
+      "id": "c45c0d5b-3451-4e4c-b6b7-33d1bcf14c37",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel"
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "type": "Multiplicity",
+          "valueType": "xs:string",
+          "value": "ZeroToOne"
+        },
+        {
+          "type": "EditIdShort",
+          "valueType": "xs:string",
+          "value": "True"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "AAS5",
+          "description": [
+            {
+              "language": "en",
+              "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the AAS this Submodel is part of."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "EditIdShort",
+              "valueType": "xs:string",
+              "value": "True"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "statements": [
+            {
+              "idShort": "AAS2",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Base entry point for the Entity tree in this Submodel, this must be a Self-managed Entity reflecting the Assets administrated in the Asset Administration Shell this Submodel is part of. The idShort of the EntryNode can be picked freely and may reflect a name of the asset."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "OneToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "statements": [],
+              "entityType": "SelfManagedEntity",
+              "globalAssetId": "https://example.com/ids/X/6125_3999_1761_8665",
+              "modelType": "Entity"
+            },
+            {
+              "idShort": "isPartOfAAS2",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Modeling of logical connections between asset and sub-asset. Either this or \u0022HasPart\u0022 must be used, not both."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "Multiplicity",
+                  "valueType": "xs:string",
+                  "value": "ZeroToMany"
+                },
+                {
+                  "type": "EditIdShort",
+                  "valueType": "xs:string",
+                  "value": "True"
+                }
+              ],
+              "embeddedDataSpecifications": [],
+              "first": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "c45c0d5b-3451-4e4c-b6b7-33d1bcf14c37"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS5"
+                  }
+                ]
+              },
+              "second": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "c45c0d5b-3451-4e4c-b6b7-33d1bcf14c37"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS5"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "AAS2"
+                  }
+                ]
+              },
+              "modelType": "RelationshipElement"
+            }
+          ],
+          "entityType": "SelfManagedEntity",
+          "globalAssetId": "https://example.com/ids/X/3499_1688_5952_7588",
+          "modelType": "Entity"
+        },
+        {
+          "category": "CONSTANT",
+          "idShort": "ArcheType",
+          "description": [
+            {
+              "language": "en",
+              "text": "ArcheType of the Submodel, there are three allowed enumeration entries: 1. \u201CFull\u201D, 2. \u201COneDown\u201D and 3. \u201COneUp\u201D. "
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"
+              }
+            ]
+          },
+          "qualifiers": [
+            {
+              "type": "Multiplicity",
+              "valueType": "xs:string",
+              "value": "One"
+            },
+            {
+              "type": "FormChoices",
+              "valueType": "xs:string",
+              "value": "Full;OneDown;OneUp"
+            }
+          ],
+          "embeddedDataSpecifications": [],
+          "valueType": "xs:string",
+          "value": "OneUp",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "CarbonFootprint",
+      "id": "https://example.com/ids/sm/4343_5132_5042_0600",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "idShort": "ProductCarbonFootprint",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "PCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG854#002"
+                  }
+                ]
+              },
+              "embeddedDataSpecifications": [],
+              "valueType": "xs:string",
+              "value": "PEP Ecopassport",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU220#002"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG855#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "20.3",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG856#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "l",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG857#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "4.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "PCFLifeCyclePhase",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG858#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "B6 - usage energy consumption ",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABV500#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "PCFGoodsAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI497#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "15.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "TransportCarbonFootprint(00)",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "TCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG859#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EN 16258",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU224#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG860#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "6.7",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG861#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "kg",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABZ597#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG862#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "7",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFProcessesForGreenhouseGasEmissionInATransportService",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG863#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "WTT - Well-to-Tank",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU216#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressTakeover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI499#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Breiter Weg",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "4",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "39106",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Magdeburg",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI498#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "TransportCarbonFootprint(01)",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CarbonFootprint/TransportCarbonFootprint/0/9"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "TCFCalculationMethod",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG859#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EN 16258",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU224#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFCO2eq",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG860#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "7.8",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFReferenceValueForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG861#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "qm",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABZ602#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFQuantityOfMeasureForCalculation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG862#001"
+                  }
+                ]
+              },
+              "valueType": "xs:double",
+              "value": "4.5",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "TCFProcessesForGreenhouseGasEmissionInATransportService",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABG863#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "WTT - Well-to-Tank",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#07-ABU216#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExplanatoryStatement",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExplanatoryStatement/1/0"
+                  }
+                ]
+              },
+              "contentType": "application/pdf",
+              "modelType": "File"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressTakeover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI499#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "76A",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "45637",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Munich",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "TCFGoodsTransportAddressHandover",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI498#001"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH956#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Wilheminenhofsta\u00DFe",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "HouseNumber",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH957#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "34",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ZipCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH958#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "35245",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABH959#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Berlin",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "Country",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-AAO259#005"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Germany",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "PublicationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/PublicationDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2023",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "ExpirationDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CarbonFootprint/ExpirationnDate/1/0"
+                  }
+                ]
+              },
+              "valueType": "xs:date",
+              "value": "13.04.2029",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "id": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "id": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "id": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "id": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "id": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "modelType": "ConceptDescription"
+    }
+  ]
+}
