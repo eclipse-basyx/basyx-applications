@@ -5,11 +5,11 @@
 - :warning: The AAS Web UI permanently moved to the [basyx-aas-web-ui](https://github.com/eclipse-basyx/basyx-aas-web-ui) repository. :warning:
 - Dashboard API (REST API and backend for the AAS Web UIs Dashboard feature)
 - OPC2AAS (convert OPC UA information models to asset administration shells and create configuration files for the BaSyx Databridge)
+- Test Orchestrator (Validate Submodel compliance to standardized and non-standardized Submodel Templates)
 
 ## Metamodel V2 compatible (BaSyx v1 compatible, deprecated!)
 
 - Data Integrator (Integration of legacy systems into the AAS)
-- Test Orchestrator (Test AASs and belonging Assets -> I4.0 component quality assurance)
 
 ## How to contribute to BaSyx
 
