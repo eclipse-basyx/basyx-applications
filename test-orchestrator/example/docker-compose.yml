@@ -1,0 +1,106 @@
+services:
+  # MQTT Broker (Mosquitto)
+  mosquitto:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto
+    ports:
+      - '1883:1883'
+    volumes:
+      - ./mosquitto:/mosquitto
+    restart: always
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mosquitto_sub -p 1883 -t 'topic' -C 1 -E -i probe -W 3
+      interval: 5s
+      timeout: 10s
+      start_period: 1s
+      retries: 3
+
+  # TestOrchestrator Service
+  testorchestrator:
+    image: inowshin19/testorchestrator:latest
+    container_name: testorchestrator
+    ports:
+      - '8082:8082'
+    volumes:
+      - ./basyx/testorchestrator.properties:/app/application.properties
+      - ./external-schemas:/app/external-schemas:ro  # Mount read-only
+    restart: on-failure
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      shell-registry:
+        condition: service_healthy
+      submodel-registry:
+        condition: service_healthy
+
+  # AAS Environment
+  aas-environment:
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-05
+    container_name: aas-environment
+    volumes:
+      - ./basyx/aas-env.properties:/application/application.properties
+      - ./aas:/application/aas
+    ports:
+      - 9081:8081
+    restart: always
+    depends_on:
+      shell-registry:
+        condition: service_healthy
+      submodel-registry:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  # AAS Registry
+  shell-registry:
+    image: eclipsebasyx/aas-registry-log-mem:2.0.0-milestone-05
+    container_name: shell-registry
+    ports:
+      - 9082:8080
+    volumes:
+      - ./basyx/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # Submodel Registry
+  submodel-registry:
+    image: eclipsebasyx/submodel-registry-log-mem:2.0.0-milestone-05
+    container_name: submodel-registry
+    ports:
+      - 9083:8080
+    volumes:
+      - ./basyx/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+
+  # AAS Discovery
+  shell-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-05
+    container_name: shell-discovery
+    ports:
+      - 9084:8081
+    volumes:
+      - ./basyx/aas-discovery.properties:/application/application.properties
+    restart: always
+
+  # AAS Web UI
+  aas-web-ui:
+    image: inowshin19/testorchestrator_gui:latest
+    container_name: aas-web-ui
+    ports:
+      - "9080:3000"
+    environment:
+      AAS_DISCOVERY_PATH: "http://localhost:9084/lookup/shells"
+      AAS_REGISTRY_PATH: "http://localhost:9082/shell-descriptors"
+      SUBMODEL_REGISTRY_PATH: "http://localhost:9083/submodel-descriptors"
+      AAS_REPO_PATH: "http://localhost:9081/shells"
+      SUBMODEL_REPO_PATH: "http://localhost:9081/submodels"
+      CD_REPO_PATH: "http://localhost:9081/concept-descriptions"
+      PRIMARY_COLOR: "#76b900"
+      LOGO_PATH: "HTW.svg"
+    volumes:
+      - ./logo:/usr/src/app/dist/Logo
+    restart: always
+    depends_on:
+      aas-environment:
+        condition: service_healthy
