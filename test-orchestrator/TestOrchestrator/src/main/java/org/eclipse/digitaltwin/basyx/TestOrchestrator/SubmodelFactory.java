@@ -19,11 +19,10 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.io.File;
-
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,11 @@ import java.util.stream.Collectors;
 
 public class SubmodelFactory {
 
-    private static OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient client = new OkHttpClient.Builder()
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .build();
+
 
     public static Submodel creationSubmodel() {
         List<LangStringTextType> description = new ArrayList<>();
@@ -94,90 +97,135 @@ public class SubmodelFactory {
     public static OperationVariable[] creationLink(OperationVariable[] inputs) {
         Property userInputLink = (Property) inputs[0].getValue();
         Property customInputLink = (Property) inputs[1].getValue();
-
         String userProvidedUrl = String.valueOf(userInputLink.getValue());
 
-        List<String> predefinedLinks = getPredefinedLinks(); // Predefined links from IDTA
-
         try {
-            // Fetch user-provided submodel
-            Submodel userSubmodel = fetchSubmodelFromUrl(userProvidedUrl);
 
-            List<String> schemaLinks;
+            Request request = new Request.Builder().url(userProvidedUrl).get().build();
 
-            // Determine whether to use predefined links or the custom input
-            if (customInputLink == null || customInputLink.getValue() == null || customInputLink.getValue().isEmpty()) {
-                System.out.println("Using predefined schema links for comparison.");
-                schemaLinks = predefinedLinks;
-            } else {
-                System.out.println("Using custom schema link for comparison.");
-                schemaLinks = List.of(String.valueOf(customInputLink.getValue()));
-            }
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Failed to fetch AAS or Submodel: " + response.code());
+                }
 
-            boolean matchFound = false;
+                String responseJson = response.body().string();
+                JsonDeserializer deserializer = new JsonDeserializer();
 
-            for (String schemaLink : schemaLinks) {
-                System.out.println(schemaLink);
-                Submodel schemaSubmodel = fetchSubmodelFromUrl(schemaLink);
-                System.out.println(userSubmodel.getSemanticId());
-                // Check if the semantic ID matches
-                if (userSubmodel.getSemanticId().getKeys().get(0).getValue().equals(schemaSubmodel.getSemanticId().getKeys().get(0).getValue())) {
-                    matchFound = true;
-                    System.out.println("Matching submodel found: " + schemaSubmodel.getIdShort());
+                try {
+                    // Parse as AAS
+                    AssetAdministrationShell aas = deserializer.read(responseJson, DefaultAssetAdministrationShell.class);
+                    String baseUrl = userProvidedUrl.split("/shells/")[0];
+                    List<Reference> submodelRefs = aas.getSubmodels();
 
-                    // Perform comparison
-                    ComparisonResult comparisonResult = Comparator.compare(schemaSubmodel, userSubmodel);
-                    ResultSubmodelFactory.addResultToSubmodel(comparisonResult, userSubmodel, schemaSubmodel);
+                    if (submodelRefs == null || submodelRefs.isEmpty()) {
+                        userInputLink.setValue("No submodels found in the provided AAS.");
+                        return new OperationVariable[]{new DefaultOperationVariable.Builder().value(userInputLink).build()};
+                    }
 
-                    // Log or set the result
-                    System.out.println("Comparison Result: " + comparisonResult);
-                    userInputLink.setValue("Comparison Result: " + comparisonResult);
-                    userInputLink.setIdShort("Result");
-                    break; // Exit loop once a match is found and compared
+                    for (Reference ref : submodelRefs) {
+                        String submodelId = ref.getKeys().get(0).getValue();
+                        String encodedId = java.util.Base64.getEncoder().encodeToString(submodelId.getBytes(StandardCharsets.UTF_8));
+
+
+                        String submodelUrl = baseUrl + "/submodels/" + encodedId;
+                        System.out.println("The requested url: " + submodelUrl);
+                        Submodel submodel = fetchSubmodelFromUrl(submodelUrl);
+                        compareWithSchemas(submodel, customInputLink);
+                    }
+
+                    userInputLink.setValue("Comparison completed for all submodels in AAS.");
+                } catch (Exception e) {
+                    // Fallback: try parsing as Submodel
+                    try {
+                        Submodel userSubmodel = deserializer.read(responseJson, DefaultSubmodel.class);
+                        compareWithSchemas(userSubmodel, customInputLink);
+                        userInputLink.setValue("Comparison completed for provided Submodel.");
+                    } catch (Exception fallbackError) {
+                        userInputLink.setValue("Failed to parse input as AAS or Submodel: " + fallbackError.getMessage());
+                    }
                 }
             }
-            if (!matchFound) {
-                // If no match, fallback to local resource schemas
-                System.out.println("Falling back to local schemas in resources...");
-                List<String> localSchemas = getAllSchemaFilesFromResources();
-                matchFound = compareSchemasFromFiles(localSchemas, userSubmodel);
-            }
-
-            if (!matchFound) {
-                System.out.println("No matching schema file found for user-provided submodel.");
-                ResultSubmodelFactory.addNoMatchResultToSubmodel(userSubmodel);
-                userInputLink.setValue("No matching schema found for the provided submodel.");
-            }
-
-        } catch (IOException | DeserializationException |
-                 org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException e) {
+        } catch (Exception e) {
             userInputLink.setValue("Comparison failed: " + e.getMessage());
             e.printStackTrace();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
 
         return new OperationVariable[]{new DefaultOperationVariable.Builder().value(userInputLink).build()};
     }
+
+    private static void compareWithSchemas(Submodel userSubmodel, Property customInputLink)
+            throws IOException, URISyntaxException, org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException {
+
+        List<String> schemaLinks;
+        if (customInputLink == null || customInputLink.getValue() == null || customInputLink.getValue().isEmpty()) {
+            schemaLinks = getPredefinedLinks();
+        } else {
+            schemaLinks = List.of(String.valueOf(customInputLink.getValue()));
+        }
+
+        boolean matchFound = false;
+
+        for (String schemaLink : schemaLinks) {
+            Submodel schemaSubmodel = fetchSubmodelFromUrl(schemaLink);
+            if (schemaSubmodel.getSemanticId().getKeys().get(0).getValue()
+                    .equals(userSubmodel.getSemanticId().getKeys().get(0).getValue())) {
+                matchFound = true;
+                ComparisonResult result = Comparator.compare(schemaSubmodel, userSubmodel);
+                ResultSubmodelFactory.addResultToSubmodel(result, userSubmodel, schemaSubmodel);
+                break;
+            }
+        }
+
+        if (!matchFound) {
+            System.out.println("No match found in remote. Checking local resources...");
+            List<String> localSchemas = getAllSchemaFilesFromResources();
+            matchFound = compareSchemasFromFiles(localSchemas, userSubmodel);
+        }
+
+        if (!matchFound) {
+            System.out.println("Checking external schema folder...");
+            List<String> externalSchemas = getAllSchemaFilesFromExternalFolder("external-schemas/");
+            matchFound = compareSchemasFromFiles(externalSchemas, userSubmodel);
+        }
+
+        if (!matchFound) {
+            ResultSubmodelFactory.addNoMatchResultToSubmodel(userSubmodel);
+        }
+    }
+
 
     private static List<String> getPredefinedLinks() {
         return Arrays.asList(
                 "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQ29udGFjdEluZm9ybWF0aW9uLzEvMA==", // ContactInformation v.1.0
                 "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvU29mdHdhcmVOYW1lcGxhdGUvMS8w", // SoftwareNameplate v1.0
                 "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvSGFuZG92ZXJEb2N1bWVudGF0aW9uLzEvMA==",  // HandoverDocumentation/1/0 v1.2
-                "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9aVkVJL1RlY2huaWNhbERhdGEvU3VibW9kZWwvMS8y",  // TechnicalData/Submodel/1/2 v1.2
-                "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvVGltZVNlcmllcy8xLzE=",  // TimeSeries/1/1 v1.1
+              //  "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9aVkVJL1RlY2huaWNhbERhdGEvU3VibW9kZWwvMS8y",  // TechnicalData/Submodel/1/2 v1.2
+              //  "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvVGltZVNlcmllcy8xLzE=",  // TimeSeries/1/1 v1.1
                 "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQ2FyYm9uRm9vdHByaW50LzAvOQ==",  // CarbonFootprint/0/9 v0.9
                 "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvUmVsaWFiaWxpdHkvMS8w",  // Reliability/1/0 v1.0
                 "http://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvRnVuY3Rpb25hbFNhZmV0eS8xLzA=",  // FunctionalSafety/1/0 v1.0
                 "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvRGlnaXRhbE5hbWVwbGF0ZS8zLzA=",  // DigitalNameplate/3/0 v3.0
                 "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvSGllcmFyY2hpY2FsU3RydWN0dXJlc0JvTS8xLzE=",  // HierarchicalStructures/1/1/Submodel v1.0
                 "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvU2VydmljZVJlcXVlc3ROb3RpZmljYXRpb24vMS8w", // ServiceRequestNotification/1/0 v1.0
-                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQXNzZXRJbnRlcmZhY2VzRGVzY3JpcHRpb24=" // AssetInterfacesDescription/1/0/Submodel v1.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQXNzZXRJbnRlcmZhY2VzRGVzY3JpcHRpb24=", // AssetInterfacesDescription/1/0/Submodel v1.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL0JhY2tlbmRTcGVjaWZpY01hdGVyaWFsSW5mb3JtYXRpb24vMS8wLw==", // BackendSpecificMaterial v1.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvd29ya3N0YXRpb25NYXRjaGluZy8xLzA=", // WorkstationWorkerMatchingData v1.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvRGF0YVJldGVudGlvblBvbGljaWVzLzEvMA==", // DataRetentionPolicies v1.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvREVYUEkvMS8w", // DEXPI
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvTW9kdWxlVHlwZVBhY2thZ2UvMS8w", // ModuleTypePackage
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvVGltZVNlcmllc1dpdGhPcGVyYXRpb25zLzEvMQ==", // TimeSeriesWithOperations
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvU2l6aW5nb2ZQb3dlckRyaXZlVHJhaW5zLzEvMA==", // PowerDriveTrainSizing
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvV2lyZWxlc3NDb21tdW5pY2F0aW9uLzEvMA==", // WirelessCommunication
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQXNzZXRJbnRlcmZhY2VzTWFwcGluZ0NvbmZpZ3VyYXRpb24vMS8wLw==", // AIMC
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvRGF0YU1vZGVsZm9yQXNzZXRMb2NhdGlvbi8xLzA=", // Asset Location
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvUHJvdmlzaW9uT2YzRE1vZGVscy8xLzA=", // Model3D
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvUEFNU3BlY2lmaWNhdGlvblNoZWV0LzEvMA==", // PAMSpecificationSheet
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQ29udHJvbENvbXBvbmVudC9JbnN0YW5jZS8yLzA=", // ControlComponentInstance v2.0
+                "https://smt-repo.admin-shell-io.com/api/v3.0/submodels/aHR0cHM6Ly9hZG1pbi1zaGVsbC5pby9pZHRhL1N1Ym1vZGVsVGVtcGxhdGUvQ29udHJvbENvbXBvbmVudFR5cGUvMi8w" // ControlComponentType v2.0
         );
     }
 
-    private static Submodel fetchSubmodelFromUrl(String url) throws IOException, DeserializationException, org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException {
+    private static Submodel fetchSubmodelFromUrl(String url) throws IOException, org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException {
         Request request = new Request.Builder().url(url).get().build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
@@ -220,7 +268,7 @@ public class SubmodelFactory {
         Property customInput = (Property) inputs[1].getValue();
         String jsonString = String.valueOf(in.getValue());
 
-        // Create a list to store all comparison results
+        // A list to store all comparison results
         List<ComparisonResult> allComparisonResults = new ArrayList<>();
         try {
             System.out.println("Deserializing Input JSON");
@@ -246,11 +294,11 @@ public class SubmodelFactory {
                 List<String> schemaFiles;
 
                 if (customInput == null || customInput.getValue() == null || customInput.getValue().isEmpty()) {
-                    // Handle the case where customInput is null or its value is null or empty
+                    // Handles the case where customInput is null or its value is null or empty
                     System.out.println("Using the standardized schema files from IDTA for Comparison");
                     schemaFiles = getAllSchemaFilesFromResources();
                 } else {
-                    // customInput is not null, and customInput.getValue() is neither null nor empty
+
                     System.out.println("Using custom schema file from customAASFile");
                     schemaFiles = List.of(String.valueOf(customInput.getValue()));
                 }
@@ -265,7 +313,7 @@ public class SubmodelFactory {
                     for (Submodel schemaSubmodel : schemaSubmodels) {
                         String schemaSemanticId = schemaSubmodel.getSemanticId().getKeys().get(0).getValue();
 
-                        // Step 4: If the semantic ID matches, compare the submodels
+                        // If the semantic ID matches, compare the submodels
                         if (inputSemanticId.equals(schemaSemanticId)) {
                             matchFound = true;
                             System.out.println("Matching submodel found for semantic ID: " + inputSemanticId + " and ID short:" + inputSubmodelIdShort);
@@ -316,7 +364,7 @@ public class SubmodelFactory {
 
         List<String> schemaFilesContent = new ArrayList<>();
 
-        // Use PathMatchingResourcePatternResolver to get all resources inside the "schema" folder
+        // Access all submodels inside the "schema" folder
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath:schema/*.json");
 
@@ -331,7 +379,7 @@ public class SubmodelFactory {
         return schemaFilesContent;
     }
 
-    public static void processReceivedSubmodel(Submodel submodel) throws IOException, DeserializationException, org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException, URISyntaxException {
+    public static void processReceivedSubmodel(Submodel submodel) throws IOException, org.eclipse.digitaltwin.aas4j.v3.dataformat.core.DeserializationException, URISyntaxException {
         System.out.println("Processing Submodel: " + submodel.getIdShort());
         List<String> schemaLinks = getPredefinedLinks();
 

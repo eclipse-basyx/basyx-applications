@@ -25,6 +25,7 @@ public class ComparisonResult {
     // List to store informational messages (e.g., for allowed flexible elements)
     private List<String> infos = new ArrayList<>();
 
+    private List<String> llmPrompts = new ArrayList<>();
     private Set<String> correctElements = new HashSet<>();
     private Set<String> errorElements = new HashSet<>();
     private Set<String> warningElements = new HashSet<>();
@@ -127,6 +128,14 @@ public class ComparisonResult {
      */
     public boolean isValid() {
         return errors.isEmpty();
+    }
+
+    public void addLLMPrompt(String prompt) {
+        llmPrompts.add(prompt);
+    }
+
+    public List<String> getLLMPrompts() {
+        return llmPrompts;
     }
 
     /**

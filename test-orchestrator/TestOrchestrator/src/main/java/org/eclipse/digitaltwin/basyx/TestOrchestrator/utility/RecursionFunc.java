@@ -1,5 +1,6 @@
 package org.eclipse.digitaltwin.basyx.TestOrchestrator.utility;
 
+
 import org.eclipse.digitaltwin.aas4j.v3.model.SubmodelElement;
 import org.eclipse.digitaltwin.aas4j.v3.model.SubmodelElementCollection;
 
@@ -69,6 +70,7 @@ public class RecursionFunc {
             if (!schemaElementMap.containsKey(inputSemanticId)) {
                 // If the qualifier of the input allows extra elements, treat it as info
                 SubmodelElement inputElement = inputElementMap.get(inputSemanticId).get(0);
+                SMEComparator.validateInputProperty(inputElement, result);
                 String inputQualifier = SMEComparator.getQualifierFlag(inputElement);
                 if ("Allowed".equals(inputQualifier)) {
                     result.addInfo("Additional element with semantic ID: " + inputSemanticId + " allowed as per schema flexibility.");

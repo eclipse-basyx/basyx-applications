@@ -19,8 +19,8 @@ This folder contains an example setup for using the **Test Orchestrator**.
 ### 1. **Clone the Repository**
 
 ```bash
-git clone https://gitlab.rz.htw-berlin.de/OpenBasys/java-testorchestrator.git
-cd example
+git clone https://github.com/eclipse-basyx/basyx-applications.git
+cd test-orchestrator/example
 ```
 
 
@@ -97,6 +97,35 @@ Navigate to the **Test Orchestrator** module to:
 
 ![Test_Orchestrator_Module](./logo/Test_Orchestrator_Module.png)
 
-
 ![Module_Visu](./logo/Module_Visu.PNG)
+
+## Semantic Validation
+
+Besides structural validation, Test Orchestrator can also perform semantic validation. The semantic validation includes:
+
+- The unit of a Property SME
+- ID Short matching with the semantic dictionary ECLASS
+- Definition suggestion for a particular IRDI
+
+### Validation using Generative AI
+
+If there are Property Submodel Elements (SME) that have units, then the units for those SME can be queried to know if the unit used is correct for the given SME. 
+
+You can use different models from [Together AI](https://api.together.ai/models) and then provide the `API key`, `Model name` in `llm_config.txt` file inside the `config` directory. 
+
+![LLM Config](./logo/llm_config.PNG)
+
+>**Note:** This is an optional feature. If the API key and Model Name are not provided, then the rest of the validation is not hampered. 
+
+### Validation using ECLASS
+
+Using ECLASS Webservice, the ID Short and Definition of particular Property Submodel Elements can be validated. 
+
+For validating the semantics of the Property Submodel Elements added in the submodels, the `.pfx` file should be kept inside the folder `keys`. 
+
+![ECLASS](./logo/keys.png)
+
+>**Note:** This is an optional feature. If the key is not provided, then the rest of the validation is not hampered. Adding a key ensures the semantic validation of the elements.
+
+Please go through [Basyx Wiki](https://wiki.basyx.org/en/latest/content/user_documentation/basyx_components/testorchestrator/index.html) to know more details about the project.
 

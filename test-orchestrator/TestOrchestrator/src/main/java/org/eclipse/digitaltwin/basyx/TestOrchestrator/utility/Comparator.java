@@ -1,6 +1,9 @@
 package org.eclipse.digitaltwin.basyx.TestOrchestrator.utility;
 
 import org.eclipse.digitaltwin.aas4j.v3.model.Submodel;
+import org.eclipse.digitaltwin.basyx.TestOrchestrator.LLMQueryService;
+
+import java.util.List;
 
 public class Comparator {
 
@@ -8,6 +11,9 @@ public class Comparator {
         ComparisonResult result = new ComparisonResult();
 
         RecursionFunc.compareSubmodelElements(schemaSubmodel.getSubmodelElements(), inputSubmodel.getSubmodelElements(), result);
+        System.out.println("All the LLM prompts: "+result.getLLMPrompts());
+        List<String> prompts = result.getLLMPrompts();
+        LLMQueryService.queryAll(prompts, result);
 
         System.out.println("Comparison complete. Result: " + result + "\n");
 

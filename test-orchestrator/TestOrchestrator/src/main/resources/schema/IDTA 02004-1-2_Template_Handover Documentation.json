@@ -2,10 +2,10 @@
   "assetAdministrationShells": [
     {
       "idShort": "HandoverDocumentationAAS",
-      "id": "https://admin-shell.io/idta/aas/HandoverDocumentation/1/0",
+      "id": "https://admin-shell.io/idta/aas/HandoverDocumentation/1/2",
       "assetInformation": {
         "assetKind": "Type",
-        "globalAssetId": "https://admin-shell.io/idta/asset/HandoverDocumentation/1/0",
+        "globalAssetId": "https://admin-shell.io/idta/asset/HandoverDocumentation/1/2",
         "assetType": "Type"
       },
       "submodels": [
@@ -14,7 +14,7 @@
           "keys": [
             {
               "type": "Submodel",
-              "value": "https://admin-shell.io/idta/SubmodelTemplate/HandoverDocumentation/1/0"
+              "value": "https://admin-shell.io/IDTA02004-1-2"
             }
           ]
         }
@@ -24,7 +24,7 @@
   ],
   "submodels": [
     {
-      "idShort": "HandoverDocumentation",
+      "idShort": "HandoverDocumentation__00__",
       "description": [
         {
           "language": "en",
@@ -35,14 +35,14 @@
         "version": "1",
         "revision": "2"
       },
-      "id": "https://admin-shell.io/idta/SubmodelTemplate/HandoverDocumentation/1/0",
+      "id": "https://admin-shell.io/IDTA02004-1-2",
       "kind": "Template",
       "semanticId": {
         "type": "ModelReference",
         "keys": [
           {
             "type": "Submodel",
-            "value": "0173-1#01-AHF578#003"
+            "value": "0173-1#01-AHF578#001"
           }
         ]
       },
@@ -76,6 +76,7 @@
             }
           ],
           "valueType": "xs:integer",
+          "value": "3",
           "modelType": "Property"
         },
         {
@@ -91,7 +92,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003*01"
+                "value": "0173-1#02-ABI500#001/0173-1#01-AHF579#001*01"
               }
             ]
           },
@@ -126,7 +127,7 @@
                 "keys": [
                   {
                     "type": "GlobalReference",
-                    "value": "0173-1#02-ABI501#003/0173-1#01-AHF580#001*03"
+                    "value": "0173-1#02-ABI501#001/0173-1#01-AHF580#001*01"
                   }
                 ]
               },
@@ -161,7 +162,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH994#003"
+                        "value": "0173-1#02-ABH994#001"
                       }
                     ]
                   },
@@ -196,11 +197,12 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
                   "category": "PARAMETER",
-                  "idShort": "DocumentIdentifier",
+                  "idShort": "ValueId",
                   "description": [
                     {
                       "language": "en",
@@ -212,7 +214,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-AAO099#004"
+                        "value": "0173-1#02-AAO099#002"
                       }
                     ]
                   },
@@ -247,11 +249,12 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
                   "category": "PARAMETER",
-                  "idShort": "DocumentIsPrimary",
+                  "idShort": "IsPrimary",
                   "description": [
                     {
                       "language": "en",
@@ -263,7 +266,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH995#004"
+                        "value": "0173-1#02-ABH995#001"
                       }
                     ]
                   },
@@ -298,6 +301,7 @@
                     }
                   ],
                   "valueType": "xs:boolean",
+                  "value": "true",
                   "modelType": "Property"
                 }
               ],
@@ -317,7 +321,7 @@
                 "keys": [
                   {
                     "type": "GlobalReference",
-                    "value": "0173-1#02-ABI502#003/0173-1#01-AHF581#003*01"
+                    "value": "0173-1#02-ABI502#001/0173-1#01-AHF581#001*01"
                   }
                 ]
               },
@@ -344,7 +348,7 @@
                   "description": [
                     {
                       "language": "en",
-                      "text": "Unique ID of the document class within a classficationsystem. Constraint: If ClassificationSystem is set to \u201CVDI2770:2018\u201D, the given IDs of VDI2770:2018 shall be used"
+                      "text": "Unique ID of the document class within a ClassficationSystem. Constraint: If ClassificationSystem is set to \u201CVDI2770:2018\u201D, the given IDs of VDI2770:2018 shall be used"
                     }
                   ],
                   "semanticId": {
@@ -352,7 +356,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH996#003"
+                        "value": "0173-1#02-ABH996#001"
                       }
                     ]
                   },
@@ -387,6 +391,7 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
@@ -403,7 +408,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABJ219#003"
+                        "value": "0173-1#02-AAO102#003"
                       }
                     ]
                   },
@@ -453,7 +458,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH997#003"
+                        "value": "0173-1#02-ABH997#001"
                       }
                     ]
                   },
@@ -484,10 +489,11 @@
                       },
                       "type": "ExampleValue",
                       "valueType": "xs:string",
-                      "value": "VDI2770:2018"
+                      "value": "VDI2770:2020"
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 }
               ],
@@ -507,7 +513,7 @@
                 "keys": [
                   {
                     "type": "GlobalReference",
-                    "value": "0173-1#02-ABI503#003/0173-1#01-AHF582#003*01"
+                    "value": "0173-1#02-ABI503#001/0173-1#01-AHF582#001*01"
                   }
                 ]
               },
@@ -542,7 +548,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-AAN468#009"
+                        "value": "0173-1#02-AAN468#006"
                       }
                     ]
                   },
@@ -591,15 +597,16 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
                   "category": "PARAMETER",
-                  "idShort": "Version",
+                  "idShort": "DocumentVersionId",
                   "description": [
                     {
                       "language": "en",
-                      "text": "Design that partly deviates from the previous"
+                      "text": "Unambigous identification number of a DocumentVersion."
                     }
                   ],
                   "semanticId": {
@@ -607,7 +614,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-AAP003#005"
+                        "value": "0173-1#02-AAO100#002"
                       }
                     ]
                   },
@@ -642,6 +649,7 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
@@ -650,7 +658,7 @@
                   "description": [
                     {
                       "language": "en",
-                      "text": "Denotes the focus of the document and has a referential or communicative function, which is to refer to the content, subject matter or theme of the document"
+                      "text": "List of language-dependent titles of the Document. Constraint: For each language-depended Title a Summary and at least one KeyWord shall exist for the given language."
                     }
                   ],
                   "semanticId": {
@@ -658,7 +666,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABG940#004"
+                        "value": "0173-1#02-AAO105#002"
                       }
                     ]
                   },
@@ -708,7 +716,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH998#003"
+                        "value": "0173-1#02-ABH998#001"
                       }
                     ]
                   },
@@ -746,11 +754,11 @@
                 },
                 {
                   "category": "PARAMETER",
-                  "idShort": "Description",
+                  "idShort": "Summary",
                   "description": [
                     {
                       "language": "en",
-                      "text": "text note"
+                      "text": "List of language-dependent summaries of the Document. Constraint: For each language-depended Summary a Title and at least one KeyWord shall exist for the given language."
                     }
                   ],
                   "semanticId": {
@@ -758,7 +766,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-AAN466#004"
+                        "value": "0173-1#02-AAO106#002"
                       }
                     ]
                   },
@@ -808,7 +816,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABH999#003"
+                        "value": "0173-1#02-ABH999#001"
                       }
                     ]
                   },
@@ -858,7 +866,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABI000#003"
+                        "value": "0173-1#02-ABI000#001"
                       }
                     ]
                   },
@@ -893,6 +901,7 @@
                     }
                   ],
                   "valueType": "xs:date",
+                  "value": "2023-05-02",
                   "modelType": "Property"
                 },
                 {
@@ -909,7 +918,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABI001#003"
+                        "value": "0173-1#02-ABI001#001"
                       }
                     ]
                   },
@@ -944,11 +953,12 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
                   "category": "PARAMETER",
-                  "idShort": "OrganizationShortName",
+                  "idShort": "OrganizationName",
                   "description": [
                     {
                       "language": "en",
@@ -960,7 +970,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABI002#003"
+                        "value": "0173-1#02-ABI002#001"
                       }
                     ]
                   },
@@ -995,6 +1005,7 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
                 },
                 {
@@ -1011,7 +1022,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABI004#003"
+                        "value": "0173-1#02-ABI004#001"
                       }
                     ]
                   },
@@ -1046,164 +1057,15 @@
                     }
                   ],
                   "valueType": "xs:string",
+                  "value": "",
                   "modelType": "Property"
-                },
-                {
-                  "category": "PARAMETER",
-                  "idShort": "RefersTo__00__",
-                  "description": [
-                    {
-                      "language": "en",
-                      "text": "Forms a generic refers to-relationship to another document or document version. They have a loose relationship"
-                    }
-                  ],
-                  "semanticId": {
-                    "type": "ExternalReference",
-                    "keys": [
-                      {
-                        "type": "GlobalReference",
-                        "value": "0173-1#02-ABK288#002"
-                      }
-                    ]
-                  },
-                  "qualifiers": [
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                          }
-                        ]
-                      },
-                      "type": "Cardinality",
-                      "valueType": "xs:string",
-                      "value": "ZeroToMany"
-                    },
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
-                          }
-                        ]
-                      },
-                      "type": "AllowedIdShort",
-                      "valueType": "xs:string",
-                      "value": "RefersTo[\\d{2,3}]"
-                    }
-                  ],
-                  "modelType": "ReferenceElement"
-                },
-                {
-                  "category": "PARAMETER",
-                  "idShort": "BasedOn__00__",
-                  "description": [
-                    {
-                      "language": "en",
-                      "text": "Forms a based on-relationship to another document or document version. Typically states, that the content of the document bases on another document (e.g. specification requirements). Both have a strong relationship"
-                    }
-                  ],
-                  "semanticId": {
-                    "type": "ExternalReference",
-                    "keys": [
-                      {
-                        "type": "GlobalReference",
-                        "value": "0173-1#02-ABK289#002"
-                      }
-                    ]
-                  },
-                  "qualifiers": [
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                          }
-                        ]
-                      },
-                      "type": "Cardinality",
-                      "valueType": "xs:string",
-                      "value": "ZeroToMany"
-                    },
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
-                          }
-                        ]
-                      },
-                      "type": "AllowedIdShort",
-                      "valueType": "xs:string",
-                      "value": "BasedOn[\\d{2,3}]"
-                    }
-                  ],
-                  "modelType": "ReferenceElement"
-                },
-                {
-                  "category": "PARAMETER",
-                  "idShort": "TranslationOf__00__",
-                  "description": [
-                    {
-                      "language": "en",
-                      "text": "Forms a translation of-relationship to another document or document version. Both have a strong relationship"
-                    }
-                  ],
-                  "semanticId": {
-                    "type": "ExternalReference",
-                    "keys": [
-                      {
-                        "type": "GlobalReference",
-                        "value": "0173-1#02-ABK290#002"
-                      }
-                    ]
-                  },
-                  "qualifiers": [
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                          }
-                        ]
-                      },
-                      "type": "Cardinality",
-                      "valueType": "xs:string",
-                      "value": "ZeroToMany"
-                    },
-                    {
-                      "semanticId": {
-                        "type": "ExternalReference",
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
-                          }
-                        ]
-                      },
-                      "type": "AllowedIdShort",
-                      "valueType": "xs:string",
-                      "value": "TranslationOf[\\d{2,3}]"
-                    }
-                  ],
-                  "modelType": "ReferenceElement"
                 },
                 {
                   "idShort": "DigitalFile__00__",
                   "description": [
                     {
                       "language": "en",
-                      "text": "Note: each DigitalFile represents the same content or Document version, but can be provided in different technical formats (PDF, PDFA, html, etc.) or by a link."
+                      "text": "Note: each DigitalFile represents the same content or Document version, but can be provided in different technical formats (PDF, PDFA, html..) or by a link."
                     }
                   ],
                   "semanticId": {
@@ -1211,7 +1073,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABK126#003"
+                        "value": "0173-1#02-ABI504#001/0173-1#01-AHF583#001"
                       }
                     ]
                   },
@@ -1259,8 +1121,85 @@
                       "value": "DigitalFile[\\d{2,3}]"
                     }
                   ],
-                  "contentType": "application/pdf",
-                  "modelType": "File"
+                  "value": [
+                    {
+                      "category": "PARAMETER",
+                      "idShort": "MimeType",
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "The MIME-Type classifies the data of massage."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-AAO214#002 "
+                          }
+                        ]
+                      },
+                      "qualifiers": [
+                        {
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                              }
+                            ]
+                          },
+                          "type": "Cardinality",
+                          "valueType": "xs:string",
+                          "value": "One"
+                        }
+                      ],
+                      "valueType": "xs:string",
+                      "value": "",
+                      "modelType": "Property"
+                    },
+                    {
+                      "category": "PARAMETER",
+                      "idShort": "DocumentPath",
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "The document path leads to the document."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABI005#001 "
+                          }
+                        ]
+                      },
+                      "qualifiers": [
+                        {
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                              }
+                            ]
+                          },
+                          "type": "Cardinality",
+                          "valueType": "xs:string",
+                          "value": "One"
+                        }
+                      ],
+                      "valueType": "xs:string",
+                      "value": "",
+                      "modelType": "Property"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
                 },
                 {
                   "category": "PARAMETER",
@@ -1276,7 +1215,7 @@
                     "keys": [
                       {
                         "type": "GlobalReference",
-                        "value": "0173-1#02-ABK127#002"
+                        "value": "0173-1#02-ABI505#001 /0173-1#01-AHF584#001"
                       }
                     ]
                   },
@@ -1324,15 +1263,242 @@
                       "value": "PreviewFile[\\d{2,3}]"
                     }
                   ],
-                  "contentType": "image/jpeg",
-                  "modelType": "File"
+                  "value": [
+                    {
+                      "category": "PARAMETER",
+                      "idShort": "MimeType",
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "The MIME-Type classifies the data of massage."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-AAO214#002 "
+                          }
+                        ]
+                      },
+                      "qualifiers": [
+                        {
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                              }
+                            ]
+                          },
+                          "type": "Cardinality",
+                          "valueType": "xs:string",
+                          "value": "One"
+                        }
+                      ],
+                      "valueType": "xs:string",
+                      "value": "",
+                      "modelType": "Property"
+                    },
+                    {
+                      "category": "PARAMETER",
+                      "idShort": "DocumentPath",
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "The document path leads to the document."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABI005#001 "
+                          }
+                        ]
+                      },
+                      "qualifiers": [
+                        {
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                              }
+                            ]
+                          },
+                          "type": "Cardinality",
+                          "valueType": "xs:string",
+                          "value": "One"
+                        }
+                      ],
+                      "valueType": "xs:string",
+                      "value": "",
+                      "modelType": "Property"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "RefersTo__00__",
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Forms a generic RefersTo-relationship to another Document or DocumentVersion. They have a loose relationship. Constraint: reference targets a SMC \u0022Document\u0022 or a \u201CDocumentVersion\u201D."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI006#001"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Cardinality",
+                      "valueType": "xs:string",
+                      "value": "ZeroToMany"
+                    },
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
+                          }
+                        ]
+                      },
+                      "type": "AllowedIdShort",
+                      "valueType": "xs:string",
+                      "value": "RefersTo[\\d{2,3}]"
+                    }
+                  ],
+                  "modelType": "ReferenceElement"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "BasedOn__00__",
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Forms a BasedOn-relationship to another Document or DocumentVersion. Typically states, that the content of the document bases on another document (e.g. specification requirements). Both have a strong relationship. Constraint: reference targets a SMC \u0022Document\u0022 or a \u201CDocumentVersion\u201D."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI007#001"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Cardinality",
+                      "valueType": "xs:string",
+                      "value": "ZeroToMany"
+                    },
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
+                          }
+                        ]
+                      },
+                      "type": "AllowedIdShort",
+                      "valueType": "xs:string",
+                      "value": "BasedOn[\\d{2,3}]"
+                    }
+                  ],
+                  "modelType": "ReferenceElement"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "TranslationOf__00__",
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Forms a TranslationOf-relationship to another Document or DocumentVersion. Both have a strong relationship. Constaint: The (language independent) content must be identical in both documents or document versions. Constraint: reference targets a SMC \u0022Document\u0022 or a \u201CDocumentVersion\u201D."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI008#001"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Cardinality",
+                      "valueType": "xs:string",
+                      "value": "ZeroToMany"
+                    },
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/SubmodelTemplates/AllowedIdShort/1/0"
+                          }
+                        ]
+                      },
+                      "type": "AllowedIdShort",
+                      "valueType": "xs:string",
+                      "value": "TranslationOf[\\d{2,3}]"
+                    }
+                  ],
+                  "modelType": "ReferenceElement"
                 }
               ],
               "modelType": "SubmodelElementCollection"
             },
             {
               "category": "PARAMETER",
-              "idShort": "DocumentedEntity__00__",
+              "idShort": "DocumentedEntity",
               "description": [
                 {
                   "language": "en",
@@ -1371,7 +1537,7 @@
         },
         {
           "category": "PARAMETER",
-          "idShort": "Entity",
+          "idShort": "Entity__00__",
           "description": [
             {
               "language": "en",
@@ -1413,7 +1579,7 @@
   "conceptDescriptions": [
     {
       "idShort": "DocumentDomainId",
-      "id": "0173-1#02-ABH994#003",
+      "id": "0173-1#02-ABH994#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1421,7 +1587,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1434,16 +1600,6 @@
               {
                 "language": "de",
                 "text": "Document Domain Identifikator"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "DocuDomainId"
-              },
-              {
-                "language": "de",
-                "text": "DocuDomainId"
               }
             ],
             "definition": [
@@ -1466,7 +1622,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH994#003"
+              "value": "0173-1#02-ABH994#001"
             }
           ]
         }
@@ -1475,7 +1631,7 @@
     },
     {
       "idShort": "ValueId",
-      "id": "0173-1#02-AAO099#004",
+      "id": "0173-1#02-AAO099#002",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1483,7 +1639,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1528,7 +1684,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-AAO099#004"
+              "value": "0173-1#02-AAO099#002"
             }
           ]
         }
@@ -1537,7 +1693,7 @@
     },
     {
       "idShort": "IsPrimary",
-      "id": "0173-1#02-ABH995#004",
+      "id": "0173-1#02-ABH995#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1545,7 +1701,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1558,16 +1714,6 @@
               {
                 "language": "de",
                 "text": "Dokument ist prim\u00E4r"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "DocuIsprimary"
-              },
-              {
-                "language": "de",
-                "text": "Dokuistprim\u00E4r"
               }
             ],
             "definition": [
@@ -1590,7 +1736,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH995#004"
+              "value": "0173-1#02-ABH995#001"
             }
           ]
         }
@@ -1599,7 +1745,7 @@
     },
     {
       "idShort": "ClassId",
-      "id": "0173-1#02-ABH996#003",
+      "id": "0173-1#02-ABH996#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1607,7 +1753,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1622,20 +1768,10 @@
                 "text": "Klassenidentifikator"
               }
             ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Classid"
-              },
-              {
-                "language": "de",
-                "text": "Klassenid"
-              }
-            ],
             "definition": [
               {
                 "language": "en",
-                "text": "Unique ID of the document class within a classficationsystem"
+                "text": "Unique ID of the document class within a ClassficationSystem"
               },
               {
                 "language": "de",
@@ -1652,7 +1788,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH996#003"
+              "value": "0173-1#02-ABH996#001"
             }
           ]
         }
@@ -1661,7 +1797,7 @@
     },
     {
       "idShort": "ClassName",
-      "id": "0173-1#02-ABJ219#003",
+      "id": "0173-1#02-AAO102#003",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1669,7 +1805,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1714,7 +1850,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABJ219#003"
+              "value": "0173-1#02-AAO102#003"
             }
           ]
         }
@@ -1723,7 +1859,7 @@
     },
     {
       "idShort": "ClassificationSystem",
-      "id": "0173-1#02-ABH997#003",
+      "id": "0173-1#02-ABH997#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1731,7 +1867,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1744,16 +1880,6 @@
               {
                 "language": "de",
                 "text": "Klassifizierungssystem"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Classifsystem"
-              },
-              {
-                "language": "de",
-                "text": "Klassifsystem"
               }
             ],
             "definition": [
@@ -1776,7 +1902,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH997#003"
+              "value": "0173-1#02-ABH997#001"
             }
           ]
         }
@@ -1785,7 +1911,7 @@
     },
     {
       "idShort": "Language",
-      "id": "0173-1#02-AAN468#009",
+      "id": "0173-1#02-AAN468#006",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1793,7 +1919,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1806,16 +1932,6 @@
               {
                 "language": "de",
                 "text": "Sprache des Dokuments"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "languageOfdocu"
-              },
-              {
-                "language": "de",
-                "text": "SpracheDesDoku"
               }
             ],
             "definition": [
@@ -1838,7 +1954,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-AAN468#009"
+              "value": "0173-1#02-AAN468#006"
             }
           ]
         }
@@ -1847,7 +1963,7 @@
     },
     {
       "idShort": "DocumentVersionId",
-      "id": "0173-1#02-AAP003#005",
+      "id": "0173-1#02-AAO100#002",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1855,7 +1971,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1873,11 +1989,11 @@
             "shortName": [
               {
                 "language": "en",
-                "text": "Docu version"
+                "text": "Document version"
               },
               {
                 "language": "de",
-                "text": "Dokuenversion"
+                "text": "Dokumentenversion"
               }
             ],
             "definition": [
@@ -1900,7 +2016,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-AAP003#005"
+              "value": "0173-1#02-AAO100#002"
             }
           ]
         }
@@ -1909,7 +2025,7 @@
     },
     {
       "idShort": "Title",
-      "id": "0173-1#02-ABG940#004",
+      "id": "0173-1#02-AAO105#002",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1917,7 +2033,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -1935,11 +2051,11 @@
             "shortName": [
               {
                 "language": "en",
-                "text": "docuname"
+                "text": "document name"
               },
               {
                 "language": "de",
-                "text": "Dokuenname"
+                "text": "Dokumentenname"
               }
             ],
             "definition": [
@@ -1962,7 +2078,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABG940#004"
+              "value": "0173-1#02-AAO105#002"
             }
           ]
         }
@@ -1971,7 +2087,7 @@
     },
     {
       "idShort": "SubTitle",
-      "id": "0173-1#02-ABH998#003",
+      "id": "0173-1#02-ABH998#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -1979,7 +2095,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2024,7 +2140,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH998#003"
+              "value": "0173-1#02-ABH998#001"
             }
           ]
         }
@@ -2033,7 +2149,7 @@
     },
     {
       "idShort": "Summary",
-      "id": "0173-1#02-AAN466#004",
+      "id": "0173-1#02-AAO106#002",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2041,7 +2157,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2054,16 +2170,6 @@
               {
                 "language": "de",
                 "text": "Dokumentenbeschreibung"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "docudescription"
-              },
-              {
-                "language": "de",
-                "text": "Dokubeschreibung"
               }
             ],
             "definition": [
@@ -2086,7 +2192,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-AAN466#004"
+              "value": "0173-1#02-AAO106#002"
             }
           ]
         }
@@ -2095,7 +2201,7 @@
     },
     {
       "idShort": "KeyWords",
-      "id": "0173-1#02-ABH999#003",
+      "id": "0173-1#02-ABH999#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2103,7 +2209,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2148,7 +2254,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABH999#003"
+              "value": "0173-1#02-ABH999#001"
             }
           ]
         }
@@ -2157,7 +2263,7 @@
     },
     {
       "idShort": "StatusSetDate",
-      "id": "0173-1#02-ABI000#003",
+      "id": "0173-1#02-ABI000#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2165,7 +2271,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2178,12 +2284,6 @@
               {
                 "language": "de",
                 "text": "Datum der Einstellung des Dokumentenstatus"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "set date"
               }
             ],
             "definition": [
@@ -2206,7 +2306,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI000#003"
+              "value": "0173-1#02-ABI000#001"
             }
           ]
         }
@@ -2215,7 +2315,7 @@
     },
     {
       "idShort": "StatusValue",
-      "id": "0173-1#02-ABI001#003",
+      "id": "0173-1#02-ABI001#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2223,7 +2323,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2241,11 +2341,11 @@
             "shortName": [
               {
                 "language": "en",
-                "text": "Docustatus"
+                "text": "Document status"
               },
               {
                 "language": "de",
-                "text": "Dokustatus"
+                "text": "Dokumentstatus"
               }
             ],
             "definition": [
@@ -2268,7 +2368,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI001#003"
+              "value": "0173-1#02-ABI001#001"
             }
           ]
         }
@@ -2277,7 +2377,7 @@
     },
     {
       "idShort": "OrganizationName",
-      "id": "0173-1#02-ABI002#003",
+      "id": "0173-1#02-ABI002#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2285,7 +2385,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2298,16 +2398,6 @@
               {
                 "language": "de",
                 "text": "Kurzname der Organisation"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "OrgaShortName"
-              },
-              {
-                "language": "de",
-                "text": "KurznameOrga"
               }
             ],
             "definition": [
@@ -2330,7 +2420,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI002#003"
+              "value": "0173-1#02-ABI002#001"
             }
           ]
         }
@@ -2339,7 +2429,7 @@
     },
     {
       "idShort": "OrganizationOfficialName",
-      "id": "0173-1#02-ABI004#003",
+      "id": "0173-1#02-ABI004#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2347,7 +2437,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2360,16 +2450,6 @@
               {
                 "language": "de",
                 "text": "Offizieller Name der Organisation"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "officialName"
-              },
-              {
-                "language": "de",
-                "text": "OffiziellerName"
               }
             ],
             "definition": [
@@ -2392,7 +2472,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI004#003"
+              "value": "0173-1#02-ABI004#001"
             }
           ]
         }
@@ -2401,7 +2481,7 @@
     },
     {
       "idShort": "RefersTo",
-      "id": "0173-1#02-ABK288#002",
+      "id": "0173-1#02-ABI006#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2409,7 +2489,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2424,20 +2504,10 @@
                 "text": "Verweis auf ein anderes Dokument"
               }
             ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Reference"
-              },
-              {
-                "language": "de",
-                "text": "Verweis"
-              }
-            ],
             "definition": [
               {
                 "language": "en",
-                "text": "Forms a generic refers to-relationship to another document or document version. They have a loose relationship"
+                "text": "Forms a generic RefersTo-relationship to another Document or DocumentVersion. They have a loose relationship"
               },
               {
                 "language": "de",
@@ -2454,7 +2524,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABK288#002"
+              "value": "0173-1#02-ABI006#001"
             }
           ]
         }
@@ -2463,7 +2533,7 @@
     },
     {
       "idShort": "BasedOn",
-      "id": "0173-1#02-ABK289#002",
+      "id": "0173-1#02-ABI007#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2471,7 +2541,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2486,16 +2556,10 @@
                 "text": "Basierend auf einem anderen Dokument"
               }
             ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "BasedonOtherDocu"
-              }
-            ],
             "definition": [
               {
                 "language": "en",
-                "text": "Forms a based on-relationship to another document or document version. Typically states, that the content of the document bases on another document (e.g. specification requirements). Both have a strong relationship"
+                "text": "Forms a BasedOn-relationship to another Document or DocumentVersion. Typically states, that the content of the document bases on another document (e.g. specification requirements). Both have a strong relationship"
               },
               {
                 "language": "de",
@@ -2512,7 +2576,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABK289#002"
+              "value": "0173-1#02-ABI007#001"
             }
           ]
         }
@@ -2521,7 +2585,7 @@
     },
     {
       "idShort": "TranslationOf",
-      "id": "0173-1#02-ABK290#002",
+      "id": "0173-1#02-ABI008#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2529,7 +2593,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2544,20 +2608,10 @@
                 "text": "\u00DCbersetzung eines anderen Dokuments"
               }
             ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "TransofDocu"
-              },
-              {
-                "language": "de",
-                "text": "\u00DCbersetzungDoku"
-              }
-            ],
             "definition": [
               {
                 "language": "en",
-                "text": "Forms a translation of-relationship to another document or document version. Both have a strong relationship"
+                "text": "Forms a TranslationOf-relationship to another Document or DocumentVersion. Both have a strong relationship"
               },
               {
                 "language": "de",
@@ -2574,7 +2628,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABK290#002"
+              "value": "0173-1#02-ABI008#001"
             }
           ]
         }
@@ -2591,7 +2645,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2653,7 +2707,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2707,7 +2761,7 @@
     },
     {
       "idShort": "Document",
-      "id": "0173-1#02-ABI500#003/0173-1#01-AHF579#003*01",
+      "id": "0173-1#02-ABI500#001/0173-1#01-AHF579#001*01",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2715,7 +2769,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2728,16 +2782,6 @@
               {
                 "language": "de",
                 "text": "Dokument (\u00DCbergabedokumentation)"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Document"
-              },
-              {
-                "language": "de",
-                "text": "Dokument "
               }
             ],
             "definition": [
@@ -2760,7 +2804,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003*01"
+              "value": "0173-1#02-ABI500#001/0173-1#01-AHF579#001*01"
             }
           ]
         }
@@ -2769,7 +2813,7 @@
     },
     {
       "idShort": "DocumentId",
-      "id": "0173-1#02-ABI501#003/0173-1#01-AHF580#001*03",
+      "id": "0173-1#02-ABI501#001/0173-1#01-AHF580#001*01",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2777,7 +2821,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2790,16 +2834,6 @@
               {
                 "language": "de",
                 "text": "Dokumentidentifikator"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Documentid"
-              },
-              {
-                "language": "de",
-                "text": "Dokumentid"
               }
             ],
             "definition": [
@@ -2822,7 +2856,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI501#003/0173-1#01-AHF580#001*03"
+              "value": "0173-1#02-ABI501#001/0173-1#01-AHF580#001*01"
             }
           ]
         }
@@ -2831,7 +2865,7 @@
     },
     {
       "idShort": "DocumentClassification",
-      "id": "0173-1#02-ABI502#003/0173-1#01-AHF581#003*01",
+      "id": "0173-1#02-ABI502#001/0173-1#01-AHF581#001*01",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2839,7 +2873,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2852,16 +2886,6 @@
               {
                 "language": "de",
                 "text": "Dokumentenklassifizierung"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "Docuclassif"
-              },
-              {
-                "language": "de",
-                "text": "Dokuklassif"
               }
             ],
             "definition": [
@@ -2884,7 +2908,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI502#003/0173-1#01-AHF581#003*01"
+              "value": "0173-1#02-ABI502#001/0173-1#01-AHF581#001*01"
             }
           ]
         }
@@ -2893,7 +2917,7 @@
     },
     {
       "idShort": "DocumentVersion",
-      "id": "0173-1#02-ABI503#003/0173-1#01-AHF582#003*01",
+      "id": "0173-1#02-ABI503#001/0173-1#01-AHF582#001*01",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2901,7 +2925,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -2946,7 +2970,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABI503#003/0173-1#01-AHF582#003*01"
+              "value": "0173-1#02-ABI503#001/0173-1#01-AHF582#001*01"
             }
           ]
         }
@@ -2955,7 +2979,7 @@
     },
     {
       "idShort": "DigitalFile",
-      "id": "0173-1#02-ABK126#003",
+      "id": "0173-1#02-ABI504#001/0173-1#01-AHF583#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -2963,7 +2987,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -3008,7 +3032,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABK126#003"
+              "value": "0173-1#02-ABI504#001/0173-1#01-AHF583#001"
             }
           ]
         }
@@ -3017,7 +3041,7 @@
     },
     {
       "idShort": "PreviewFile",
-      "id": "0173-1#02-ABK127#002",
+      "id": "0173-1#02-ABI505#001 /0173-1#01-AHF584#001",
       "embeddedDataSpecifications": [
         {
           "dataSpecification": {
@@ -3025,22 +3049,12 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
           "dataSpecificationContent": {
             "preferredName": [
-              {
-                "language": "en",
-                "text": "Preview file"
-              },
-              {
-                "language": "de",
-                "text": "Vorschaudatei"
-              }
-            ],
-            "shortName": [
               {
                 "language": "en",
                 "text": "Preview file"
@@ -3070,7 +3084,7 @@
           "keys": [
             {
               "type": "ConceptDescription",
-              "value": "0173-1#02-ABK127#002"
+              "value": "0173-1#02-ABI505#001 /0173-1#01-AHF584#001"
             }
           ]
         }
@@ -3097,7 +3111,7 @@
             "keys": [
               {
                 "type": "GlobalReference",
-                "value": "http://admin-shell.io/DataSpecificationTemplates/DataSpecificationIEC61360/3/0"
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0"
               }
             ]
           },
@@ -3110,16 +3124,6 @@
               {
                 "language": "de",
                 "text": " Anzahl der Dokumente (\u00DCbergabedokumentation)"
-              }
-            ],
-            "shortName": [
-              {
-                "language": "en",
-                "text": "NumOfdocu"
-              },
-              {
-                "language": "de",
-                "text": " AnzahlderDoku"
               }
             ],
             "definition": [

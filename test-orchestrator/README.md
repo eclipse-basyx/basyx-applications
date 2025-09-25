@@ -20,6 +20,8 @@ The **Test Orchestrator** is a Java-based validation engine designed to automate
 - **Result Storage**  
   Validation outcomes are saved in two dedicated submodels: `TestResults` and `UnsuccessfulTestResults`.
 
+- **Semantic Validation**
+  Semantic validation can be conducted using ECLASS and Generative AI.   
 ---
 
 ## 🧠 System Architecture
@@ -47,6 +49,7 @@ The validation logic follows the workflow illustrated below:
 | **Supported formats**                         | AASX, JSON, XML | AASX   |  AASX, JSON, XML  | AASX, JSON, XML               |
 | **Output format**                            | HTML view / console | Detailed web UI + downloadable JSON report    | Console log (CLI steps and errors) | Categorized results + Visualization in Web UI + downloadable JSON report |
 | **Result classification**                    | Flat errors     | Flat errors grouped by occurence       | Steps with SUCCESS/FAILED  | Categorized - Errors, Warnings, Differences, Infos grouped by Submodel     |
+| **Semantic Validation of Submodel Elements**                    | ❌     | ❌       | ❌  | ✅   |
 
 ---
 
@@ -73,5 +76,8 @@ You can find ready-to-use examples and configurations of Test Orchestrator in th
 ### Clone the Project
 
 ```bash
-git clone https://gitlab.rz.htw-berlin.de/OpenBasys/java-testorchestrator.git
+git clone https://github.com/eclipse-basyx/basyx-applications.git
+cd test-orchestrator
+```
 
+Please go through [Basyx Wiki](https://wiki.basyx.org/en/latest/content/user_documentation/basyx_components/testorchestrator/index.html) to know more details about the project.

@@ -6,29 +6,32 @@ import org.eclipse.digitaltwin.aas4j.v3.model.Property;
 import org.eclipse.digitaltwin.aas4j.v3.model.Submodel;
 import org.eclipse.digitaltwin.aas4j.v3.model.SubmodelElementCollection;
 import org.eclipse.digitaltwin.aas4j.v3.model.impl.DefaultSubmodel;
+import org.eclipse.digitaltwin.basyx.TestOrchestrator.config.AppConfig;
 import org.eclipse.digitaltwin.basyx.submodelrepository.SubmodelRepository;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.time.Instant;
+
 
 @Service
 public class MqttSubscriber {
+
 
     private static final String MQTT_BROKER = "tcp://mosquitto:1883";
     private static final String TOPIC_NEW = "sm-repository/sm-repo/submodels/created";
     private static final String TOPIC_UPDATE = "sm-repository/sm-repo/submodels/updated";
     private static final String TOPIC_DELETE = "sm-repository/sm-repo/submodels/deleted";
     private static final String TOPIC_UPDATE_SME = "sm-repository/sm-repo/submodels/#";
-    private static Instant batchStartTime = null;
+
 
     private final SubmodelRepository submodelRepository;
+    private final AppConfig appConfig;
 
-    public MqttSubscriber(SubmodelRepository submodelRepository) {
+    public MqttSubscriber(SubmodelRepository submodelRepository, AppConfig appConfig) {
         this.submodelRepository = submodelRepository;
+        this.appConfig = appConfig;
         subscribeToMqtt();
     }
 
@@ -80,7 +83,6 @@ public class MqttSubscriber {
                             e.printStackTrace();
                         }
                     }
-
                 }
                 private String extractBase64IdFromTopic(String topic) {
                     String[] parts = topic.split("/");
@@ -89,8 +91,8 @@ public class MqttSubscriber {
                 }
 
                 private Submodel fetchSubmodelOverHttp(String base64EncodedId) throws IOException, DeserializationException {
-                    String url = "http://host.docker.internal:9081/submodels/" + base64EncodedId;
-
+                    String url = appConfig.getSubmodelApiBaseUrl() + "/submodels/" + base64EncodedId;
+                    System.out.println("The submodel repo url: " + url);
                     java.net.URL apiUrl = new java.net.URL(url);
                     java.net.HttpURLConnection conn = (java.net.HttpURLConnection) apiUrl.openConnection();
                     conn.setRequestMethod("GET");
@@ -111,7 +113,6 @@ public class MqttSubscriber {
                     try {
 
                         String decodedSubmodelId = new String(Base64.getUrlDecoder().decode(base64SubmodelId)).trim().toLowerCase();
-
                         Submodel testResultSubmodel = submodelRepository.getSubmodel("TestResults");
 
                         List<String> toDelete = testResultSubmodel.getSubmodelElements().stream()
@@ -147,10 +148,10 @@ public class MqttSubscriber {
 
                         System.out.println("Deleting test results for Submodel with ID: " + deletedSubmodelId);
 
-                        // Step 1: Retrieve the TestResults submodel
+                        // Retrieve the TestResults submodel
                         Submodel testResultSubmodel = submodelRepository.getSubmodel("TestResults");
 
-                        // Step 2: Collect matching SMC idShorts first (avoid concurrent modification)
+                        // Collect matching SMC idShorts first (avoid concurrent modification)
                         List<String> collectionsToDelete = testResultSubmodel.getSubmodelElements().stream()
                                 .filter(element -> element instanceof SubmodelElementCollection)
                                 .map(element -> (SubmodelElementCollection) element)
@@ -162,10 +163,10 @@ public class MqttSubscriber {
                                 .map(SubmodelElementCollection::getIdShort)  // Collect idShorts
                                 .toList();
 
-                        // Step 3: Safely delete using the collected idShorts
+                        // Safely delete using the collected idShorts
                         for (String idShort : collectionsToDelete) {
                             try {
-                                 submodelRepository.deleteSubmodelElement("TestResults", idShort);
+                                submodelRepository.deleteSubmodelElement("TestResults", idShort);
                                 System.out.println("Deleted SMC with ComparedSubmodelId: " + deletedSubmodelId + " (idShort: " + idShort + ")");
                             } catch (Exception e) {
                                 System.err.println("Failed to delete SMC (idShort: " + idShort + "): " + e.getMessage());
@@ -181,9 +182,6 @@ public class MqttSubscriber {
 
 
                 private void processSubmodel(String submodelJson) {
-                    if (batchStartTime == null) {
-                        batchStartTime = Instant.now(); // Start timing when the first submodel arrives
-                    }
 
                     System.out.println(" Processing Submodel...");
                     try {
