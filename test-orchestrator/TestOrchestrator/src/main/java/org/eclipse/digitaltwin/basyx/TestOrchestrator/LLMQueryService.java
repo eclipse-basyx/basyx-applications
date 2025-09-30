@@ -57,15 +57,11 @@ public class LLMQueryService {
     public static void queryAll(List<String> prompts, ComparisonResult result) {
         if (prompts.isEmpty()) return;
 
-        // Construct batched prompt with numbering
         StringBuilder batchedPrompt = new StringBuilder();
         for (int i = 0; i < prompts.size(); i++) {
             batchedPrompt.append(i + 1).append(". ").append(prompts.get(i)).append("\n");
         }
 
-        System.out.println("Model " + MODEL);
-        System.out.println("API " + API_KEY);
-        System.out.println("Endpoint " + ENDPOINT);
 
         try {
 
@@ -79,7 +75,6 @@ public class LLMQueryService {
             );
 
             String json = mapper.writeValueAsString(requestBody);
-            System.out.println("JSON:\n" + json);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -107,22 +102,18 @@ public class LLMQueryService {
             JsonNode root = mapper.readTree(jsonResponse);
 
             String content = root.path("choices").get(0).path("message").path("content").asText();
-            System.out.println("Content: "+content);
             String[] lines = content.split("\\n");
-            System.out.println("Split line: "+lines);
+
 
             for (int i = 0; i < lines.length && i < prompts.size(); i++) {
                 String line = lines[i].trim();
                 if (line.isEmpty()) continue;
 
-                // Extract answer part
                 String answerPart;
                 if (line.contains(". ")) {
                     answerPart = line.substring(line.indexOf(". ") + 2);
-                    System.out.println("answerPart: "+answerPart);
                 } else {
                     answerPart = line;
-                    System.out.println("answerPart: "+answerPart);
                 }
 
                 if (answerPart.toLowerCase().startsWith("no")) {
@@ -137,7 +128,6 @@ public class LLMQueryService {
                     if (index != -1) {
                         String originalSuggestedPart = answerPart.substring(index);
 
-                        // Clean and transform: remove brackets, replace commas with ' or '
                         String cleaned = originalSuggestedPart
                                 .replaceFirst("(?i)suggested", "|| Correction: Suggested Unit")
                                 .replace("[", "")

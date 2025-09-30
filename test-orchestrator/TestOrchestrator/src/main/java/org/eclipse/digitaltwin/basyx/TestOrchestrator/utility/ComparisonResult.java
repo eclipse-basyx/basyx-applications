@@ -13,16 +13,13 @@ import java.util.HashSet;
 public class ComparisonResult {
 
 
-    // List to store critical errors (mismatches or critical validation failures)
+
     private List<String> errors = new ArrayList<>();
 
-    // List to store warnings (non-critical issues such as spaces or optional elements)
     private List<String> warnings = new ArrayList<>();
 
-    // List to store differences (non-blocking differences in data)
     private List<String> differences = new ArrayList<>();
 
-    // List to store informational messages (e.g., for allowed flexible elements)
     private List<String> infos = new ArrayList<>();
 
     private List<String> llmPrompts = new ArrayList<>();

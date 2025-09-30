@@ -66,10 +66,10 @@ public class SubmodelFactory {
         System.out.println("Creating Invokable Operation for uploading in Test Orchestrator");
 
         return new InvokableOperation.Builder()
-                .idShort("AASUpload")
-                .inputVariables(Arrays.asList(createStringOperationVariable("aasFile"),
-                        createStringOperationVariable("customAASFile")))
-                .outputVariables(createStringOperationVariable("result"))
+                .idShort("AASJSON")
+                .inputVariables(Arrays.asList(createStringOperationVariable("aasJSONInput"),
+                        createStringOperationVariable("customAASJSONInput")))
+                .outputVariables(createStringOperationVariable("Result"))
                 .invokable(SubmodelFactory::creation)
                 .build();
     }
@@ -79,9 +79,9 @@ public class SubmodelFactory {
 
         return new InvokableOperation.Builder()
                 .idShort("AASLink")
-                .inputVariables(Arrays.asList(createStringOperationVariable("inputAASLink"),
-                        createStringOperationVariable("customAASLink")))
-                .outputVariables(createStringOperationVariable("result"))
+                .inputVariables(Arrays.asList(createStringOperationVariable("inputAAS/SMLink"),
+                        createStringOperationVariable("customAAS/SMLink")))
+                .outputVariables(createStringOperationVariable("Result"))
                 .invokable(SubmodelFactory::creationLink)
                 .build();
     }
@@ -112,7 +112,7 @@ public class SubmodelFactory {
                 JsonDeserializer deserializer = new JsonDeserializer();
 
                 try {
-                    // Parse as AAS
+
                     AssetAdministrationShell aas = deserializer.read(responseJson, DefaultAssetAdministrationShell.class);
                     String baseUrl = userProvidedUrl.split("/shells/")[0];
                     List<Reference> submodelRefs = aas.getSubmodels();
@@ -135,7 +135,7 @@ public class SubmodelFactory {
 
                     userInputLink.setValue("Comparison completed for all submodels in AAS.");
                 } catch (Exception e) {
-                    // Fallback: try parsing as Submodel
+
                     try {
                         Submodel userSubmodel = deserializer.read(responseJson, DefaultSubmodel.class);
                         compareWithSchemas(userSubmodel, customInputLink);
@@ -247,11 +247,11 @@ public class SubmodelFactory {
                     if (userSemanticId.equals(schemaSemanticId)) {
                         System.out.println("Matching local schema found for semantic ID: " + userSemanticId);
 
-                        // Compare submodels
+
                         ComparisonResult comparisonResult = Comparator.compare(schemaSubmodel, userSubmodel);
                         ResultSubmodelFactory.addResultToSubmodel(comparisonResult, userSubmodel, schemaSubmodel);
 
-                        return true; // Match found
+                        return true;
                     }
                 }
             }
@@ -259,7 +259,7 @@ public class SubmodelFactory {
             System.err.println("Error during schema comparison from files: " + e.getMessage());
             e.printStackTrace();
         }
-        return false; // No match found
+        return false;
     }
 
     public static OperationVariable[] creation(OperationVariable[] inputs) {
@@ -268,7 +268,7 @@ public class SubmodelFactory {
         Property customInput = (Property) inputs[1].getValue();
         String jsonString = String.valueOf(in.getValue());
 
-        // A list to store all comparison results
+
         List<ComparisonResult> allComparisonResults = new ArrayList<>();
         try {
             System.out.println("Deserializing Input JSON");
@@ -278,7 +278,7 @@ public class SubmodelFactory {
             for (AssetAdministrationShell inputAAS : inputEnv.getAssetAdministrationShells()) {
                 System.out.println("Processing AAS: " + inputAAS.getIdShort());
 
-                // Filter submodels that belong to the current AAS
+
                 List<Reference> submodelReferences = inputAAS.getSubmodels();
                 List<Submodel> associatedSubmodels = inputEnv.getSubmodels().stream()
                         .filter(submodel -> submodelReferences.stream()
@@ -294,7 +294,7 @@ public class SubmodelFactory {
                 List<String> schemaFiles;
 
                 if (customInput == null || customInput.getValue() == null || customInput.getValue().isEmpty()) {
-                    // Handles the case where customInput is null or its value is null or empty
+
                     System.out.println("Using the standardized schema files from IDTA for Comparison");
                     schemaFiles = getAllSchemaFilesFromResources();
                 } else {
@@ -308,20 +308,18 @@ public class SubmodelFactory {
 
                     Environment schemaEnv = Deserializer.deserializejsonFile(schemaFileContent);
 
-                    // Get the semantic ID of the schema's submodel
                     List<Submodel> schemaSubmodels = schemaEnv.getSubmodels();
                     for (Submodel schemaSubmodel : schemaSubmodels) {
                         String schemaSemanticId = schemaSubmodel.getSemanticId().getKeys().get(0).getValue();
 
-                        // If the semantic ID matches, compare the submodels
                         if (inputSemanticId.equals(schemaSemanticId)) {
                             matchFound = true;
                             System.out.println("Matching submodel found for semantic ID: " + inputSemanticId + " and ID short:" + inputSubmodelIdShort);
-                            // Perform the comparison between the input submodel and schema submodel
+
                             ComparisonResult comparisonResult = Comparator.compare(schemaSubmodel, inputSubmodel);
-                            allComparisonResults.add(comparisonResult); // Add the result to the list
+                            allComparisonResults.add(comparisonResult);
                             ResultSubmodelFactory.addResultToSubmodel(comparisonResult, inputSubmodel, schemaSubmodel);
-                            break;  // Exit loop if a match is found
+                            break;
                         }
                     }
                     if (matchFound) {
@@ -347,14 +345,12 @@ public class SubmodelFactory {
         }
 
 
-        // Convert allComparisonResults to a single string representation
         StringBuilder resultBuilder = new StringBuilder();
         for (ComparisonResult result : allComparisonResults) {
             resultBuilder.append(result.toString()).append("\n");
         }
         String finalResultString = resultBuilder.toString();
 
-        // Set the result value
         in.setValue(finalResultString);
         in.setIdShort("result");
         return new OperationVariable[]{createOperationVariable(in)};
@@ -364,7 +360,7 @@ public class SubmodelFactory {
 
         List<String> schemaFilesContent = new ArrayList<>();
 
-        // Access all submodels inside the "schema" folder
+
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath:schema/*.json");
 
@@ -386,20 +382,20 @@ public class SubmodelFactory {
         boolean matchFound = false;
         for (String schemaLink : schemaLinks) {
             Submodel schemaSubmodel = fetchSubmodelFromUrl(schemaLink);
-            // Check if the semantic ID matches
+
             if (submodel.getSemanticId().getKeys().get(0).getValue().equals(schemaSubmodel.getSemanticId().getKeys().get(0).getValue())) {
                 matchFound = true;
                 System.out.println("Matching submodel found: " + schemaSubmodel.getIdShort());
 
-                // Perform comparison
+
                 ComparisonResult comparisonResult = Comparator.compare(schemaSubmodel, submodel);
                 ResultSubmodelFactory.addResultToSubmodel(comparisonResult, submodel, schemaSubmodel);
 
-                break; // Exit loop once a match is found and compared
+                break;
             }
         }
         if (!matchFound) {
-            // If no match, fallback to local resource schemas
+
             System.out.println("Falling back to local schemas in resources...");
             List<String> localSchemas = getAllSchemaFilesFromResources();
             matchFound = compareSchemasFromFiles(localSchemas, submodel);

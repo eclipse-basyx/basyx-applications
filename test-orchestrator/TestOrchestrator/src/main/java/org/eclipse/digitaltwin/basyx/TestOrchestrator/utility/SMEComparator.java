@@ -19,7 +19,6 @@ public class SMEComparator {
 
         List<SubmodelElement> matchingElements = findAllMatchingInputElements(schemaElement, inputElementMap);
 
-        // Multiplicity check
         if (matchingElements.isEmpty()) {
             result.addError("Expected one element with semantic ID (One): " + semanticId + " but found none. || Correction: Add the element with Semantic ID: " + semanticId);
             result.markError(semanticId);
@@ -28,7 +27,6 @@ public class SMEComparator {
             result.markError(semanticId);
         }
 
-        // Content validation continues regardless of warnings
         if (!matchingElements.isEmpty()) {
             validateElement(schemaElement, matchingElements.get(0), result);
         }
@@ -56,16 +54,12 @@ public class SMEComparator {
         List<SubmodelElement> matchingElements = findAllMatchingInputElements(schemaElement, inputElementMap);
         String semanticId = getSemanticIdValue(schemaElement);
 
-
-
-        // Multiplicity check
         if (matchingElements.size() > 1) {
             result.addError("Alert: More than one element found for semantic ID (ZeroToOne): " + getSemanticIdValue(schemaElement) + ". Only one element is accepted. || Correction: Remove the extra elements with Semantic ID: " + getSemanticIdValue(schemaElement));
             result.markError(semanticId);
 
         }
 
-        // Content validation continues regardless of warnings
         if (!matchingElements.isEmpty()) {
             validateElement(schemaElement, matchingElements.get(0), result);
         }
@@ -75,50 +69,33 @@ public class SMEComparator {
     public static void checkMultiplicityZeroToMany(SubmodelElement schemaElement, Map<String, List<SubmodelElement>> inputElementMap, ComparisonResult result) {
         List<SubmodelElement> matchingElements = findAllMatchingInputElements(schemaElement, inputElementMap);
 
-        // Content validation continues regardless of warnings
+
         for (SubmodelElement inputElement : matchingElements) {
             validateElement(schemaElement, inputElement, result);
         }
     }
 
-
-
-    // New validation logic
     public static void validateElement(SubmodelElement schemaElement, SubmodelElement inputElement, ComparisonResult result) {
         String semanticId = getSemanticIdValue(schemaElement);
         String inputSemanticId = getSemanticIdValue(inputElement);
 
-        boolean hasIssues = false;
-        // Check for spaces in idShort and semanticId and log warnings
         checkForSpaces(inputElement, result);
 
-
-        // Check if the element is marked as Required
-        boolean isRequired = "Required".equals(getQualifierFlag(schemaElement));
-
-        // If it's not required, log an info and skip validation
-        if (!isRequired) {
-            //result.addInfo("Optional element found: " + inputElement.getIdShort());
-            //return;
-        }
-
-        // Check IDShort by trimming spaces
-        String schemaIdShort = schemaElement.getIdShort().replaceAll("[^a-zA-Z]", "");
-        String inputIdShort = inputElement.getIdShort().replaceAll("[^a-zA-Z]", "");
+        String schemaIdShort = schemaElement.getIdShort().replaceAll("[^a-zA-Z]", "").toLowerCase();
+        String inputIdShort = inputElement.getIdShort().replaceAll("[^a-zA-Z]", "").toLowerCase();
 
 
         if (!schemaIdShort.equals(inputIdShort)) {
             String difference = "IDShort mismatch for element with semantic ID: "
                     + getSemanticIdValue(schemaElement)
                     + ". Expected: " + schemaIdShort + ", Found: " + inputIdShort
-                    + " || Correction: Replace idShort" + inputIdShort + "with" + schemaIdShort;
+                    + " || Correction: Replace idShort " + inputElement.getIdShort() + " with " + schemaElement.getIdShort();
             result.addDifference(difference);
             result.markError(semanticId);
-            hasIssues = true;
         }
 
 
-        // Check value for Property elements
+
         if (schemaElement instanceof Property && inputElement instanceof Property) {
             Property schemaProperty = (Property) schemaElement;
             Property inputProperty = (Property) inputElement;
@@ -128,16 +105,13 @@ public class SMEComparator {
             String inputValue = inputProperty.getValue() != null ? inputProperty.getValue().replaceAll("\\s", "") : "";
 
 
-            // ValueType validation
             DataTypeDefXsd expectedvalueType = schemaProperty.getValueType();
             DataTypeDefXsd actualValueType = inputProperty.getValueType();
             if (expectedvalueType != null && actualValueType != null && !expectedvalueType.equals(actualValueType)) {
                 result.addDifference("ValueType mismatch for semantic ID: " + semanticId + ". Expected: " + expectedvalueType + " but found value: " + actualValueType);
-                hasIssues = true;
             }
 
 
-            // Extract unit, datatype from concept description
             validateInputProperty(inputElement, result);
 
 
@@ -158,14 +132,12 @@ public class SMEComparator {
                                 throw new IllegalArgumentException("Invalid boolean: " + inputValue);
                             break;
                         case DATE:
-                            // Simple format check for ISO date (need to check more)
                             if (!inputValue.matches("\\d{4}-\\d{2}-\\d{2}")) {
                                 throw new IllegalArgumentException("Invalid date format: " + inputValue);
                             }
                             break;
                         case STRING:
                         default:
-                            // Accept all as valid for STRING
                             break;
                     }
                 } catch (Exception e) {
@@ -175,7 +147,6 @@ public class SMEComparator {
             }
 
 
-            // Check against ECLASS
             if (EClassQueryService.isEClassEnabled() && inputSemanticId != null && inputSemanticId.contains("0173-1")) {
 
                 try{
@@ -214,7 +185,7 @@ public class SMEComparator {
 
     public static void validateInputProperty(SubmodelElement inputElement, ComparisonResult result){
 
-        // Only proceed if the input element is a Property
+
         if (!(inputElement instanceof Property)) {
             return;
         }
@@ -225,7 +196,7 @@ public class SMEComparator {
 
         try {
 
-            // Request ConceptDescription
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(AppConfig.getStaticSubmodelApiBaseUrl()+"/concept-descriptions/"+encodedSemanticId)
@@ -239,7 +210,7 @@ public class SMEComparator {
 
                     String unit = null;
                     String dataType = null;
-                    String preferredName_idShort = inputProperty.getIdShort();  // Extract idShort
+                    String preferredName_idShort = inputProperty.getIdShort();
 
                     for (EmbeddedDataSpecification eds : cd.getEmbeddedDataSpecifications()) {
                         if (eds.getDataSpecificationContent() instanceof DataSpecificationIec61360) {
@@ -248,16 +219,15 @@ public class SMEComparator {
                             dataType = spec.getDataType() != null ? spec.getDataType().name() : null;
 
                             if (spec.getPreferredName() != null && !spec.getPreferredName().isEmpty()) {
-                                preferredName_idShort = spec.getPreferredName().get(0).getText(); // e.g., "min. ambient temperature"
+                                preferredName_idShort = spec.getPreferredName().get(0).getText();
                             }
                         }
                     }
 
-                    // If unit is present, validate via LLM
+
                     if (unit != null && !unit.isBlank()) {
                         String prompt = String.format("Is '%s' a valid unit for the property '%s'?", unit, preferredName_idShort);
-                        System.out.println(prompt);
-                        result.addLLMPrompt(prompt); // Send the prompt to LLM
+                        result.addLLMPrompt(prompt);
                     }
 
                 } else {
@@ -268,22 +238,19 @@ public class SMEComparator {
             e.printStackTrace();
         }
     }
-    // Method to check for spaces in both idShort and semanticId
+
     public static void checkForSpaces(SubmodelElement inputElement, ComparisonResult result) {
-        // Check if the input IDShort contains spaces and log a warning
 
         if (inputElement.getIdShort().contains(" ")) {
             result.addWarning("IDShort contains spaces: " + inputElement.getIdShort() + " || Correction: Remove spaces from the IDShort");
         }
 
-        // Check if the input Semantic ID contains spaces and log a warning
         String semanticIdValue = getSemanticIdValue(inputElement);
         if (semanticIdValue != null && semanticIdValue.contains(" ")) {
             result.addWarning("SemanticId contains spaces: " + semanticIdValue + " || Correction: Remove spaces from the Semantic ID");
         }
     }
 
-    // Method to find all matching input elements based on semanticId
     private static List<SubmodelElement> findAllMatchingInputElements(SubmodelElement schemaElement, Map<String, List<SubmodelElement>> inputElementMap) {
         String schemaSemanticId = getSemanticIdValue(schemaElement);
         return inputElementMap.getOrDefault(schemaSemanticId, List.of());
@@ -306,7 +273,8 @@ public class SMEComparator {
                 String type = qualifier.getType();
                 if ("Multiplicity".equalsIgnoreCase(type) ||
                         "Cardinality".equalsIgnoreCase(type) ||
-                        "SMT/Cardinality".equalsIgnoreCase(type)) {
+                        "SMT/Cardinality".equalsIgnoreCase(type) ||
+                        "SMT/SMT/Cardinality".equalsIgnoreCase(type)) {
                     return qualifier.getValue();
 
                 }
@@ -323,19 +291,19 @@ public class SMEComparator {
                 }
             }
         }
-        return "Not Allowed";  // Default to "Not Allowed" if no qualifier is found
+        return "Not Allowed";
     }
 
-    // Updated method to check for spaces and ignore everything after '*'
+
     public static String getSemanticIdValue(SubmodelElement element) {
         if (element.getSemanticId() != null && !element.getSemanticId().getKeys().isEmpty()) {
             String value = element.getSemanticId().getKeys().get(0).getValue();
 
-            // Ignore everything after '*'
+
             if (value.contains("*")) {
                 value = value.split("\\*")[0];
             }
-            return value.trim();  // Trimming of any leading or trailing spaces
+            return value.trim();
         }
         return null;
     }

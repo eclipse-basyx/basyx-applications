@@ -11,7 +11,6 @@ public class Comparator {
         ComparisonResult result = new ComparisonResult();
 
         RecursionFunc.compareSubmodelElements(schemaSubmodel.getSubmodelElements(), inputSubmodel.getSubmodelElements(), result);
-        System.out.println("All the LLM prompts: "+result.getLLMPrompts());
         List<String> prompts = result.getLLMPrompts();
         LLMQueryService.queryAll(prompts, result);
 

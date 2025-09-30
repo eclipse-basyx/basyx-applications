@@ -49,7 +49,6 @@ public class MqttSubscriber {
                     String payload = new String(message.getPayload());
                     System.out.println("\nMQTT Message Received on " + topic);
 
-                    // Handle different topics
                     if (topic.equals(TOPIC_NEW)) {
                         System.out.println("New Submodel detected! Running tests...");
                         processSubmodel(payload);
@@ -69,7 +68,7 @@ public class MqttSubscriber {
 
                         if (isAttachmentUpdate) {
                             System.out.println("Attachment update detected — skipping deletion and revalidation.");
-                            return; // Skip processing
+                            return;
                         }
 
                         try {
@@ -86,7 +85,6 @@ public class MqttSubscriber {
                 }
                 private String extractBase64IdFromTopic(String topic) {
                     String[] parts = topic.split("/");
-                    // parts[3] should be the base64-encoded ID
                     return parts.length >= 4 ? parts[3] : null;
                 }
 
@@ -148,10 +146,9 @@ public class MqttSubscriber {
 
                         System.out.println("Deleting test results for Submodel with ID: " + deletedSubmodelId);
 
-                        // Retrieve the TestResults submodel
                         Submodel testResultSubmodel = submodelRepository.getSubmodel("TestResults");
 
-                        // Collect matching SMC idShorts first (avoid concurrent modification)
+
                         List<String> collectionsToDelete = testResultSubmodel.getSubmodelElements().stream()
                                 .filter(element -> element instanceof SubmodelElementCollection)
                                 .map(element -> (SubmodelElementCollection) element)
@@ -163,7 +160,6 @@ public class MqttSubscriber {
                                 .map(SubmodelElementCollection::getIdShort)  // Collect idShorts
                                 .toList();
 
-                        // Safely delete using the collected idShorts
                         for (String idShort : collectionsToDelete) {
                             try {
                                 submodelRepository.deleteSubmodelElement("TestResults", idShort);
@@ -185,20 +181,18 @@ public class MqttSubscriber {
 
                     System.out.println(" Processing Submodel...");
                     try {
-                        // Deserialize submodel JSON
+
                         JsonDeserializer deserializer = new JsonDeserializer();
                         Submodel submodel = deserializer.read(submodelJson, DefaultSubmodel.class);
 
                         System.out.println("Successfully Deserialized Submodel: " + submodel.getIdShort());
 
-                        // Check for semanticId before processing
                         if (submodel.getSemanticId() == null || submodel.getSemanticId().getKeys().isEmpty()) {
                             System.err.println(" Skipping submodel '" + submodel.getIdShort() + "' due to missing SemanticId.");
                             ResultSubmodelFactory.addUnsuccessfulResultToSubmodel(submodel);
                             return;
                         }
 
-                        // Pass full submodel to SubmodelFactory for processing
                         SubmodelFactory.processReceivedSubmodel(submodel);
 
                     } catch (Exception e) {

@@ -92,10 +92,6 @@
         </dependency>
 
         <!-- Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -187,13 +183,6 @@
         </dependency>
 
 
-        <!--  <dependency>
-              <groupId>org.eclipse.digitaltwin.basyx</groupId>
-              <artifactId>basyx-component</artifactId>
-              <version>2.0.0-milestone-02</version>
-          </dependency>-->
-
-
         <!-- AAS4J -->
         <dependency>
             <groupId>org.eclipse.digitaltwin.aas4j</groupId>
@@ -225,25 +214,6 @@
             <artifactId>basyx.core</artifactId>
             <version>2.0.0-milestone-02</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.eclipse.digitaltwin.basyx</groupId>
-            <artifactId>basyx.conceptdescriptionrepository-backend-inmemory</artifactId>
-            <version>2.0.0-milestone-06</version>
-        </dependency>-->
-
-
-        <!--<dependency>
-            <groupId>org.eclipse.digitaltwin.basyx</groupId>
-            <artifactId>basyx.conceptdescriptionrepository-http</artifactId>
-            <version>2.0.0-milestone-03</version>
-        </dependency>-->
-<!--        <dependency>
-            <groupId>org.eclipse.digitaltwin.basyx</groupId>
-            <artifactId>basyx.conceptdescriptionrepository-core</artifactId>
-            <version>2.0.0-milestone-03</version>
-        </dependency>-->
-
-
 
     </dependencies>
     <build>

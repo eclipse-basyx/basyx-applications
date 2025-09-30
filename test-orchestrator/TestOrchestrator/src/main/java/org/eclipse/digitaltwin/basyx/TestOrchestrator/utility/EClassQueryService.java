@@ -72,16 +72,15 @@ public class EClassQueryService {
     }
 
     private static String findKeyFile() {
-        // Check Docker keys folder first
+
         File dockerDir = new File(DOCKER_KEYS_PATH);
         if (dockerDir.exists() && dockerDir.isDirectory()) {
             File[] files = dockerDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".pfx"));
             if (files != null && files.length > 0) {
-                return files[0].getAbsolutePath(); // Use the first .pfx found
+                return files[0].getAbsolutePath();
             }
         }
 
-        // Fallback to local dev path
         return LOCAL_KEY_PATH;
     }
 }

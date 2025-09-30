@@ -31,7 +31,7 @@ public class TestOrchestrator {
             }
         }
 
-        // Ensure MQTT Subscriber is initialized
+
         context.getBean(MqttSubscriber.class);
     }
 }
