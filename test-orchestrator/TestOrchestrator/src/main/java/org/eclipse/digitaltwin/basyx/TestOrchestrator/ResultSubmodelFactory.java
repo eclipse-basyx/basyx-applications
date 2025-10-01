@@ -3,6 +3,7 @@ package org.eclipse.digitaltwin.basyx.TestOrchestrator;
 import org.eclipse.digitaltwin.aas4j.v3.model.*;
 import org.eclipse.digitaltwin.aas4j.v3.model.impl.*;
 import org.eclipse.digitaltwin.basyx.TestOrchestrator.utility.ComparisonResult;
+import org.eclipse.digitaltwin.basyx.core.exceptions.RepositoryRegistryLinkException;
 import org.eclipse.digitaltwin.basyx.submodelrepository.SubmodelRepository;
 import org.eclipse.digitaltwin.basyx.core.exceptions.ElementDoesNotExistException;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component  // Ensures Spring manages this class
+@Component
 public class ResultSubmodelFactory {
 
     private static final String TEST_RESULTS_SUBMODEL_ID = "TestResults";
@@ -32,7 +33,22 @@ public class ResultSubmodelFactory {
             System.out.println(submodelId + " submodel already exists.");
         } catch (ElementDoesNotExistException e) {
             System.out.println(submodelId + " submodel not found. Creating new submodel...");
-            submodelRepository.createSubmodel(createAndStoreSubmodel(submodelId));
+
+            try{
+                submodelRepository.createSubmodel(createAndStoreSubmodel(submodelId));
+            }
+            catch (RepositoryRegistryLinkException ex) {
+                Throwable cause = ex.getCause();
+                if (cause instanceof org.eclipse.digitaltwin.basyx.submodelregistry.client.ApiException apiEx) {
+                    if (apiEx.getCode() == 409) {
+                        System.out.println(submodelId + " already registered in registry. Skipping registration.");
+                    } else {
+                        throw ex; // not a duplicate, rethrow
+                    }
+                } else {
+                    throw ex; // unexpected error
+                }
+            }
         }
     }
 

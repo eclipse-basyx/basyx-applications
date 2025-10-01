@@ -19,13 +19,18 @@ services:
 
   # TestOrchestrator Service
   testorchestrator:
-    image: inowshin19/testorchestrator:latest
+    image: inowshin19/testorchestrator:v2.1
     container_name: testorchestrator
     ports:
       - '8082:8082'
+    environment:
+      - SUBMODEL_API_BASE_URL=http://aas-environment:8081
+      - SPRING_CONFIG_LOCATION=file:/app/application.properties
     volumes:
       - ./basyx/testorchestrator.properties:/app/application.properties
-      - ./external-schemas:/app/external-schemas:ro  # Mount read-only
+      - ./external-schemas:/app/external-schemas:ro  
+      - ./keys:/app/keys
+      - ./config:/app/config
     restart: on-failure
     depends_on:
       mosquitto:

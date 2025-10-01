@@ -90,3 +90,13 @@ local.properties
 /.env
 
 **.iml
+
+# Ignore local dev key
+/TestOrchestrator/*.pfx
+
+# Ignore keys except gitkeep (inside example)
+example/keys/*
+!example/keys/.gitkeep
+
+# Ignore macOS system files 
+.DS_Store
