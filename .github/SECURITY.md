@@ -1,13 +1,11 @@
 # Security Policy
 
-## Reporting a Vulnerability
+## End of Life
 
-Please report (suspected) security vulnerabilities to **basyx-dev@eclipse.org**. You will receive a response from us within 48 hours. After the initial reply, we will keep you updated on the progress towards a fix and full announcement, and may ask for additional information or guidance.
+This project is end of life and has been archived. It is no longer maintained, and no further releases, fixes, or security updates will be provided.
 
-## Disclosure Policy
+## Reporting Vulnerabilities
 
-We ask all security researchers to keep vulnerabilities and communications around vulnerability submissions confidential until we resolve the issue. We will provide a public acknowledgment after the issue is resolved.
+This project no longer accepts vulnerability reports. Please do not open security advisories, issues, discussions, or pull requests for this repository.
 
-## Rewards
-
-If you report a security issue that we confirm and fix, we may acknowledge your contribution in the release notes for the fix.
+If you continue to use this archived project, you are responsible for assessing and mitigating any security risks.
